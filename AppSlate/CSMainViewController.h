@@ -7,8 +7,13 @@
 //
 
 #import "CSFlipsideViewController.h"
+#import "CSBlueprintController.h"
 
 @interface CSMainViewController : UIViewController <CSFlipsideViewControllerDelegate>
+{
+    CSBlueprintController   *blueprintCtrl;
+    IBOutlet    UIToolbar   *toolBar;
+}
 
 @property (strong, nonatomic) UIPopoverController *flipsidePopoverController;
 

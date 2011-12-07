@@ -14,7 +14,11 @@
 - (void)flipsideViewControllerDidFinish:(CSFlipsideViewController *)controller;
 @end
 
-@interface CSFlipsideViewController : UIViewController
+@interface CSFlipsideViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+{
+    IBOutlet UITableView *tableView;
+    NSArray     *gearList;
+}
 
 @property (weak, nonatomic) IBOutlet id <CSFlipsideViewControllerDelegate> delegate;
 

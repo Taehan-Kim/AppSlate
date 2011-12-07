@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		18145150146ADA3400AE2B83 /* CSLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1814514F146ADA3400AE2B83 /* CSLabel.m */; };
+		18A899F4148EC47000E5EFA9 /* editbtn_size.png in Resources */ = {isa = PBXBuildFile; fileRef = 18A899F2148EC47000E5EFA9 /* editbtn_size.png */; };
+		18A899F5148EC47000E5EFA9 /* editbtn_x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18A899F3148EC47000E5EFA9 /* editbtn_x.png */; };
 		5438D641146A68AB00CE9136 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5438D640146A68AB00CE9136 /* UIKit.framework */; };
 		5438D643146A68AB00CE9136 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5438D642146A68AB00CE9136 /* Foundation.framework */; };
 		5438D645146A68AB00CE9136 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5438D644146A68AB00CE9136 /* CoreGraphics.framework */; };
@@ -18,26 +21,48 @@
 		5438D65A146A68AB00CE9136 /* CSMainViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5438D658146A68AB00CE9136 /* CSMainViewController_iPhone.xib */; };
 		5438D65D146A68AB00CE9136 /* CSMainViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5438D65B146A68AB00CE9136 /* CSMainViewController_iPad.xib */; };
 		5438D660146A68AB00CE9136 /* CSFlipsideViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5438D65E146A68AB00CE9136 /* CSFlipsideViewController.xib */; };
+		5438D674146A949600CE9136 /* CSGearObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5438D673146A949600CE9136 /* CSGearObject.m */; };
+		545CF92B14764FEA00D3B544 /* CSBlueprintController.m in Sources */ = {isa = PBXBuildFile; fileRef = 545CF92A14764FEA00D3B544 /* CSBlueprintController.m */; };
+		545CF92F14765E8200D3B544 /* BlueObjData.m in Sources */ = {isa = PBXBuildFile; fileRef = 545CF92E14765E8200D3B544 /* BlueObjData.m */; };
+		5474F86D1470BF01002C8652 /* CSTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 5474F86C1470BF01002C8652 /* CSTextField.m */; };
+		5486166A14739CCA0007709E /* UserContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 5486166914739CCA0007709E /* UserContext.m */; };
+		5486166E14739D950007709E /* WaitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5486166D14739D950007709E /* WaitView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1814514E146ADA3400AE2B83 /* CSLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CSLabel.h; path = GearObjects/CSLabel.h; sourceTree = "<group>"; };
+		1814514F146ADA3400AE2B83 /* CSLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CSLabel.m; path = GearObjects/CSLabel.m; sourceTree = "<group>"; };
+		18A899F2148EC47000E5EFA9 /* editbtn_size.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = editbtn_size.png; sourceTree = "<group>"; };
+		18A899F3148EC47000E5EFA9 /* editbtn_x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = editbtn_x.png; sourceTree = "<group>"; };
 		5438D63C146A68AB00CE9136 /* AppSlate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppSlate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5438D640146A68AB00CE9136 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		5438D642146A68AB00CE9136 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		5438D644146A68AB00CE9136 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		5438D648146A68AB00CE9136 /* AppSlate-Info.plist */ = {isa = PBXFileReference; path = "AppSlate-Info.plist"; sourceTree = "<group>"; };
+		5438D648146A68AB00CE9136 /* AppSlate-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AppSlate-Info.plist"; sourceTree = "<group>"; };
 		5438D64A146A68AB00CE9136 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5438D64C146A68AB00CE9136 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		5438D64E146A68AB00CE9136 /* AppSlate-Prefix.pch */ = {isa = PBXFileReference; path = "AppSlate-Prefix.pch"; sourceTree = "<group>"; };
-		5438D64F146A68AB00CE9136 /* CSAppDelegate.h */ = {isa = PBXFileReference; path = CSAppDelegate.h; sourceTree = "<group>"; };
+		5438D64E146A68AB00CE9136 /* AppSlate-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppSlate-Prefix.pch"; sourceTree = "<group>"; };
+		5438D64F146A68AB00CE9136 /* CSAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CSAppDelegate.h; sourceTree = "<group>"; };
 		5438D650146A68AB00CE9136 /* CSAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CSAppDelegate.m; sourceTree = "<group>"; };
-		5438D652146A68AB00CE9136 /* CSMainViewController.h */ = {isa = PBXFileReference; path = CSMainViewController.h; sourceTree = "<group>"; };
+		5438D652146A68AB00CE9136 /* CSMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CSMainViewController.h; sourceTree = "<group>"; };
 		5438D653146A68AB00CE9136 /* CSMainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CSMainViewController.m; sourceTree = "<group>"; };
-		5438D655146A68AB00CE9136 /* CSFlipsideViewController.h */ = {isa = PBXFileReference; path = CSFlipsideViewController.h; sourceTree = "<group>"; };
+		5438D655146A68AB00CE9136 /* CSFlipsideViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CSFlipsideViewController.h; sourceTree = "<group>"; };
 		5438D656146A68AB00CE9136 /* CSFlipsideViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CSFlipsideViewController.m; sourceTree = "<group>"; };
 		5438D659146A68AB00CE9136 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/CSMainViewController_iPhone.xib; sourceTree = "<group>"; };
 		5438D65C146A68AB00CE9136 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/CSMainViewController_iPad.xib; sourceTree = "<group>"; };
 		5438D65F146A68AB00CE9136 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/CSFlipsideViewController.xib; sourceTree = "<group>"; };
+		5438D672146A949600CE9136 /* CSGearObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CSGearObject.h; path = GearObjects/CSGearObject.h; sourceTree = "<group>"; };
+		5438D673146A949600CE9136 /* CSGearObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CSGearObject.m; path = GearObjects/CSGearObject.m; sourceTree = "<group>"; };
+		545CF92914764FEA00D3B544 /* CSBlueprintController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CSBlueprintController.h; path = Blueprint/CSBlueprintController.h; sourceTree = "<group>"; };
+		545CF92A14764FEA00D3B544 /* CSBlueprintController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CSBlueprintController.m; path = Blueprint/CSBlueprintController.m; sourceTree = "<group>"; };
+		545CF92D14765E8200D3B544 /* BlueObjData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BlueObjData.h; path = Blueprint/BlueObjData.h; sourceTree = "<group>"; };
+		545CF92E14765E8200D3B544 /* BlueObjData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BlueObjData.m; path = Blueprint/BlueObjData.m; sourceTree = "<group>"; };
+		5474F86B1470BF01002C8652 /* CSTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CSTextField.h; path = GearObjects/CSTextField.h; sourceTree = "<group>"; };
+		5474F86C1470BF01002C8652 /* CSTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CSTextField.m; path = GearObjects/CSTextField.m; sourceTree = "<group>"; };
+		5486166814739CCA0007709E /* UserContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserContext.h; sourceTree = "<group>"; };
+		5486166914739CCA0007709E /* UserContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserContext.m; sourceTree = "<group>"; };
+		5486166C14739D950007709E /* WaitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WaitView.h; path = Utils/WaitView/WaitView.h; sourceTree = "<group>"; };
+		5486166D14739D950007709E /* WaitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WaitView.m; path = Utils/WaitView/WaitView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,11 +79,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		18A899F1148EC47000E5EFA9 /* images_ipad */ = {
+			isa = PBXGroup;
+			children = (
+				18A899F2148EC47000E5EFA9 /* editbtn_size.png */,
+				18A899F3148EC47000E5EFA9 /* editbtn_x.png */,
+			);
+			path = images_ipad;
+			sourceTree = "<group>";
+		};
 		5438D631146A68AA00CE9136 = {
 			isa = PBXGroup;
 			children = (
+				5486166F14739D9F0007709E /* Utils */,
+				5486166714739CCA0007709E /* Base */,
+				5438D66E146A929500CE9136 /* Blueprint */,
+				5438D66D146A90A500CE9136 /* GearObjects */,
+				5438D66C146A900B00CE9136 /* iPhoneView */,
+				5438D66A146A8FFD00CE9136 /* iPadView */,
 				5438D646146A68AB00CE9136 /* AppSlate */,
 				5438D63F146A68AB00CE9136 /* Frameworks */,
+				54A09CE5148E0B3C00CB9974 /* Resources */,
 				5438D63D146A68AB00CE9136 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -90,8 +131,6 @@
 				5438D653146A68AB00CE9136 /* CSMainViewController.m */,
 				5438D655146A68AB00CE9136 /* CSFlipsideViewController.h */,
 				5438D656146A68AB00CE9136 /* CSFlipsideViewController.m */,
-				5438D658146A68AB00CE9136 /* CSMainViewController_iPhone.xib */,
-				5438D65B146A68AB00CE9136 /* CSMainViewController_iPad.xib */,
 				5438D65E146A68AB00CE9136 /* CSFlipsideViewController.xib */,
 				5438D647146A68AB00CE9136 /* Supporting Files */,
 			);
@@ -107,6 +146,80 @@
 				5438D64E146A68AB00CE9136 /* AppSlate-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		5438D66A146A8FFD00CE9136 /* iPadView */ = {
+			isa = PBXGroup;
+			children = (
+				5438D65B146A68AB00CE9136 /* CSMainViewController_iPad.xib */,
+			);
+			name = iPadView;
+			sourceTree = "<group>";
+		};
+		5438D66C146A900B00CE9136 /* iPhoneView */ = {
+			isa = PBXGroup;
+			children = (
+				5438D658146A68AB00CE9136 /* CSMainViewController_iPhone.xib */,
+			);
+			name = iPhoneView;
+			sourceTree = "<group>";
+		};
+		5438D66D146A90A500CE9136 /* GearObjects */ = {
+			isa = PBXGroup;
+			children = (
+				5438D672146A949600CE9136 /* CSGearObject.h */,
+				5438D673146A949600CE9136 /* CSGearObject.m */,
+				1814514E146ADA3400AE2B83 /* CSLabel.h */,
+				1814514F146ADA3400AE2B83 /* CSLabel.m */,
+				5474F86B1470BF01002C8652 /* CSTextField.h */,
+				5474F86C1470BF01002C8652 /* CSTextField.m */,
+			);
+			name = GearObjects;
+			sourceTree = "<group>";
+		};
+		5438D66E146A929500CE9136 /* Blueprint */ = {
+			isa = PBXGroup;
+			children = (
+				545CF92914764FEA00D3B544 /* CSBlueprintController.h */,
+				545CF92A14764FEA00D3B544 /* CSBlueprintController.m */,
+				545CF92D14765E8200D3B544 /* BlueObjData.h */,
+				545CF92E14765E8200D3B544 /* BlueObjData.m */,
+			);
+			name = Blueprint;
+			sourceTree = "<group>";
+		};
+		5486166714739CCA0007709E /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				5486166814739CCA0007709E /* UserContext.h */,
+				5486166914739CCA0007709E /* UserContext.m */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		5486166F14739D9F0007709E /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				5486167014739DA90007709E /* WaitView */,
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
+		5486167014739DA90007709E /* WaitView */ = {
+			isa = PBXGroup;
+			children = (
+				5486166C14739D950007709E /* WaitView.h */,
+				5486166D14739D950007709E /* WaitView.m */,
+			);
+			name = WaitView;
+			sourceTree = "<group>";
+		};
+		54A09CE5148E0B3C00CB9974 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				18A899F1148EC47000E5EFA9 /* images_ipad */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -135,7 +248,8 @@
 		5438D633146A68AA00CE9136 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0430;
+				ORGANIZATIONNAME = ChocolateSoft;
 			};
 			buildConfigurationList = 5438D636146A68AA00CE9136 /* Build configuration list for PBXProject "AppSlate" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -163,6 +277,8 @@
 				5438D65A146A68AB00CE9136 /* CSMainViewController_iPhone.xib in Resources */,
 				5438D65D146A68AB00CE9136 /* CSMainViewController_iPad.xib in Resources */,
 				5438D660146A68AB00CE9136 /* CSFlipsideViewController.xib in Resources */,
+				18A899F4148EC47000E5EFA9 /* editbtn_size.png in Resources */,
+				18A899F5148EC47000E5EFA9 /* editbtn_x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -177,6 +293,13 @@
 				5438D651146A68AB00CE9136 /* CSAppDelegate.m in Sources */,
 				5438D654146A68AB00CE9136 /* CSMainViewController.m in Sources */,
 				5438D657146A68AB00CE9136 /* CSFlipsideViewController.m in Sources */,
+				5438D674146A949600CE9136 /* CSGearObject.m in Sources */,
+				18145150146ADA3400AE2B83 /* CSLabel.m in Sources */,
+				5474F86D1470BF01002C8652 /* CSTextField.m in Sources */,
+				5486166A14739CCA0007709E /* UserContext.m in Sources */,
+				5486166E14739D950007709E /* WaitView.m in Sources */,
+				545CF92B14764FEA00D3B544 /* CSBlueprintController.m in Sources */,
+				545CF92F14765E8200D3B544 /* BlueObjData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,6 +320,7 @@
 				5438D659146A68AB00CE9136 /* en */,
 			);
 			name = CSMainViewController_iPhone.xib;
+			path = AppSlate;
 			sourceTree = "<group>";
 		};
 		5438D65B146A68AB00CE9136 /* CSMainViewController_iPad.xib */ = {
@@ -205,6 +329,7 @@
 				5438D65C146A68AB00CE9136 /* en */,
 			);
 			name = CSMainViewController_iPad.xib;
+			path = AppSlate;
 			sourceTree = "<group>";
 		};
 		5438D65E146A68AB00CE9136 /* CSFlipsideViewController.xib */ = {
@@ -306,6 +431,7 @@
 				5438D665146A68AB00CE9136 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

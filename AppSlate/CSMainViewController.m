@@ -3,7 +3,7 @@
 //  AppSlate
 //
 //  Created by 태한 김 on 11. 11. 9..
-//  Copyright (c) 2011년 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2011년 ChocolateSoft. All rights reserved.
 //
 
 #import "CSMainViewController.h"
@@ -24,6 +24,12 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    blueprintCtrl = [[CSBlueprintController alloc] init];
+    [blueprintCtrl.view setFrame:CGRectMake(0, 0, self.view.frame.size.width,
+                                            self.view.frame.size.height-toolBar.frame.size.height)];
+    [blueprintCtrl.view setAutoresizingMask:UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth];
+
+    [self.view addSubview:blueprintCtrl.view];
 }
 
 - (void)viewDidUnload
