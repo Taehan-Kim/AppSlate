@@ -15,12 +15,14 @@
 //
 static UserContext *_sharedUserContext = nil;
 
+@synthesize gearsArray, pop;
+
 + (UserContext *)sharedUserContext
 {
-	@synchronized([UserContext class])
+	@synchronized(self)
 	{
 		if (!_sharedUserContext) {
-			[[self alloc] initWithDefault];
+			_sharedUserContext = [[self alloc] initWithDefault];
 		}
 		return _sharedUserContext;
 	}
@@ -30,10 +32,12 @@ static UserContext *_sharedUserContext = nil;
 
 + (id)alloc
 {
-	@synchronized([UserContext class])
+	@synchronized(self)
 	{
 		NSAssert(_sharedUserContext == nil, @"Attempted to allocate a second instance of a singleton.");
 		_sharedUserContext = [super alloc];
+        _sharedUserContext.gearsArray = [[NSMutableArray alloc] initWithCapacity:50];
+
 		return _sharedUserContext;
 	}
 	// to avoid compiler warning
@@ -86,3 +90,17 @@ static UserContext *_sharedUserContext = nil;
 }
 
 @end
+
+void draw1PxStroke(CGContextRef context, CGPoint startPoint, CGPoint endPoint, CGColorRef color)
+{
+    //    CGFloat dash1[] = {5.0, 2.0};
+    CGContextSaveGState(context);
+    CGContextSetLineCap(context, kCGLineCapSquare);
+    CGContextSetStrokeColorWithColor(context, color);
+    //    CGContextSetLineDash(context, 2.0, dash1, 0);
+    CGContextSetLineWidth(context, 4.0);
+    CGContextMoveToPoint(context, startPoint.x + 0.5, startPoint.y + 0.5);
+    CGContextAddLineToPoint(context, endPoint.x + 0.5, endPoint.y + 0.5);
+    CGContextStrokePath(context);
+    CGContextRestoreGState(context);
+}

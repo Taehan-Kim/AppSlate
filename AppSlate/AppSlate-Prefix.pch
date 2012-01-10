@@ -13,6 +13,9 @@
     #import <Foundation/Foundation.h>
 #endif
 
+#import "UserContext.h"
+#import "BButton.h"
+
 // 폰트
 #define CS_BOLD_FONT(s) [UIFont fontWithName:@"Helvetica-Bold" size:s]
 #define CS_FONT(s) [UIFont fontWithName:@"Helvetica" size:s]
@@ -32,3 +35,6 @@
 
 // NSNotification
 #define NOTI_PUT_GEAR       @"noti_put_gear"
+#define NOTI_RUN            @"noti_run"
+#define NOTI_STOP           @"noti_stop"
+#define NOTI_ACTION_LINK    @"noti_action_link_start"

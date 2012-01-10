@@ -8,16 +8,26 @@
 
 //  Superclass of all gear objects.
 //  
+#import <Foundation/Foundation.h>
 
 #define CS_LABEL        101
 #define CS_LAMP         102
 #define CS_TEXTFIELD    103
 
-#define LK_CODE         @"linkedmagiccode"
-#define LK_NAME         @"linkedname"
+#define MINSIZE         30
 
+#define P_TXT           @"text"
+#define P_COLOR         @"color"
+#define P_NUM           @"number"
+#define P_ALIGN         @"align"
+#define P_FONT          @"font"
 
-#import <Foundation/Foundation.h>
+#define A_TXT           @"textAct"
+#define A_NUM           @"numberAct"
+
+#define MAKE_PROPERTY_D(_d1,_d2,_d3,_d4) [[NSDictionary alloc]initWithObjectsAndKeys:_d1,@"name",_d2,@"type",[NSValue valueWithPointer:_d3],@"selector",[NSValue valueWithPointer:_d4],@"getSelector",nil]
+
+#define MAKE_ACTION_D(_d1,_d2) [[NSMutableDictionary alloc]initWithObjectsAndKeys:_d1,@"name",_d2,@"type",[NSValue valueWithPointer:nil],@"selector",[NSNumber numberWithInteger:0],@"mNum"]
 
 @interface CSGearObject : NSObject
 {
@@ -25,9 +35,11 @@
     NSUInteger csCode;
     // Magic Number Code
     NSUInteger csMagicNum;
+    // Information
+    NSString    *info;
 
-    // 좌표
-    CGRect  csFrame;
+    // 보이는 실체.
+    UIView  *csView;
 
     // 보이는가 아닌가?
     BOOL    csShow;
@@ -41,9 +53,15 @@
     // 배경색
     UIColor *csBackColor;
 
-    // 객체간 링크 정보
-    NSArray *csLinks;
+    // 속성 목록
+    NSArray *pListArray;
+    // 액션 목록
+    NSArray *actionArray;
+
+    UITapGestureRecognizer  *tapGR;
 }
+
+-(id) object;
 
 -(NSArray*) getInStringProperties;
 
@@ -53,15 +71,36 @@
 
 -(NSArray*) getOutNumberProperties;
 
--(NSArray*) actionNames;
+-(NSArray*) getActionList;
+
+-(NSArray*) getPropertiesList;
 
 @property (nonatomic)   NSUInteger csMagicNum;
-@property (nonatomic)   CGRect  csFrame;
+@property (nonatomic, retain) UIView *csView;
+@property (nonatomic, strong) UITapGestureRecognizer *tapGR;
+@property (nonatomic, strong) NSString *info;
 
 // 연결 설정
--(BOOL) setActionName:(NSString*)name to:(NSUInteger)magicNum property:(NSString*)toName;
+-(BOOL) setActionIndex:(NSUInteger)idx to:(NSUInteger)magicNum selector:(SEL)selectorName;
 // 연결 해제
--(BOOL) unlinkActionName:(NSString*)name;
+-(BOOL) unlinkActionIndex:(NSUInteger)idx;
 -(BOOL) unlinkActionMCode:(NSNumber*) mCode;
+
+
+// every getters and setters ...
+-(void) setText:(NSString*)txt;
+-(NSString*) getText;
+
+-(void) setTextColor:(UIColor*)color;
+-(UIColor*) getTextColor;
+
+-(void) setBackgroundColor:(UIColor*)color;
+-(UIColor*) getBackgroundColor;
+
+-(void) setFont:(UIFont*)font;
+-(UIFont*) getFont;
+
+-(void) setTextAlignment:(UITextAlignment)align;
+-(UITextAlignment) getTextAlignment;
 
 @end

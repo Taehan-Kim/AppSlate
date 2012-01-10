@@ -13,18 +13,22 @@
 
 @interface CSBlueprintController : UIViewController
 {
-    // 청사진에 등록된 객체들을 관리하는 저장소.
-    NSMutableArray  *gearsArray;
-
     NSUInteger      modifyIdx;
     NSUInteger      modifyMagicNum;
     UIView          *modifyView;
 
     // 수정용 도구 버튼들.
     UIButton        *xButton;
+    UIButton        *propButton;
     UIView          *sizeButton;
     UIPanGestureRecognizer *dragReco;
     UIPanGestureRecognizer *sizeReco;
+
+    UIPopoverController *propertyPopoverController;
+
+    // 선택된 객체가 항목에서 도면으로 떨어지는 효과를 위한 것 들.
+    UIView *cView;
+    CSGearObject *newObj;
 }
 
 // 청사진에 새로운 객체를 추가한다.

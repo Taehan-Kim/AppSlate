@@ -9,16 +9,26 @@
 #import <Foundation/Foundation.h>
 #import "CSGearObject.h"
 
-@interface CSTextField : CSGearObject
+@interface CSTextField : CSGearObject <UITextFieldDelegate>
 {
-    NSString    *text;
-    UIColor     *textColor;
-    UIFont      *textFont;
 }
 
 -(id) initGear;
 
 
-@property (nonatomic, strong)   NSString    *text;
+-(void) setText:(NSString*)txt;
+-(NSString*) getText;
+
+-(void) setTextColor:(UIColor*)color;
+-(UIColor*) getTextColor;
+
+-(void) setBackgroundColor:(UIColor*)color;
+-(UIColor*) getBackgroundColor;
+
+-(void) setFont:(UIFont*)font;
+-(UIFont*) getFont;
+
+-(void) setTextAlignment:(NSNumber*)alignNum;
+-(NSNumber *) getTextAlignment;
 
 @end

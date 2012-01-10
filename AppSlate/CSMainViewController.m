@@ -34,6 +34,8 @@
 
 - (void)viewDidUnload
 {
+    playButton = nil;
+    stopButton = nil;
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -80,7 +82,7 @@
     }
 }
 
-- (IBAction)showInfo:(id)sender
+- (IBAction)showGearList:(id)sender
 {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
         CSFlipsideViewController *controller = [[CSFlipsideViewController alloc] initWithNibName:@"CSFlipsideViewController" bundle:nil];
@@ -100,6 +102,24 @@
             [self.flipsidePopoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         }
     }
+}
+
+- (IBAction)playAction:(id)sender {
+    [playButton setEnabled:NO];
+    [stopButton setEnabled:YES];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:NOTI_RUN
+                                                        object:nil];
+
+}
+
+- (IBAction)stopAction:(id)sender {
+    [playButton setEnabled:YES];
+    [stopButton setEnabled:NO];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:NOTI_STOP
+                                                        object:nil];
+    
 }
 
 @end

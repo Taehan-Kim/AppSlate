@@ -3,7 +3,7 @@
 //  AppSlate
 //
 //  Created by 태한 김 on 11. 11. 9..
-//  Copyright (c) 2011년 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2011년 Chocolate Soft. All rights reserved.
 //
 
 #import "CSAppDelegate.h"

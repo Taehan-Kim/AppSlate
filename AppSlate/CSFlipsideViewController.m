@@ -18,7 +18,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self.contentSizeForViewInPopover = CGSizeMake(320.0, 480.0);
+        self.contentSizeForViewInPopover = CGSizeMake(320.0, 400.0);
 
         // 목록에 나타날 부품 항목을 구성한다. 각 항목 하나는 Dictionary 로 되어 있음.
         NSArray  *keys = [[NSArray alloc] initWithObjects:@"name",@"desc",@"icon",@"tag", nil];
@@ -54,6 +54,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [tableView reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -99,18 +100,19 @@
 - (void)tableView:(UITableView *)tView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // 선택하였다.
-    [[tView cellForRowAtIndexPath:indexPath] setSelected:NO animated:YES];
+    UITableViewCell *theCell = [tView cellForRowAtIndexPath:indexPath];
+    [theCell setSelected:NO animated:YES];
 
     // 이 화면은 닫자.
     [self.delegate flipsideViewControllerDidFinish:self];
 
     // BluePrint 화면에 선택한 놈을 놓자.
+    NSMutableDictionary *gearInfo = [NSMutableDictionary dictionaryWithDictionary:[gearList objectAtIndex:indexPath.row]];
+    [gearInfo setObject:theCell forKey:@"cell"];
     [[NSNotificationCenter defaultCenter] postNotificationName:NOTI_PUT_GEAR
                                                         object:self
-                                                      userInfo:[gearList objectAtIndex:indexPath.row]
+                                                      userInfo:gearInfo
      ];
-
-    // TODO: 선택한 곳에서 설계도 중앙으로 떨어지는 뭐 그런 애니메이션 효과...
 }
 
 #pragma mark - TableView DataSource

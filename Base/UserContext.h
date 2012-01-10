@@ -19,7 +19,15 @@
 @interface UserContext: NSObject 
 {	
 	WaitView	*waitV;
+    UIPopoverController *pop;
+
+    // 청사진에 등록된 객체들을 관리하는 저장소.
+    NSMutableArray  *gearsArray;
 }
+
+@property (nonatomic, strong)   NSMutableArray  *gearsArray;
+@property (nonatomic, strong)   UIPopoverController *pop;
+
 
 + (UserContext *)sharedUserContext;
 - (id) initWithDefault;
@@ -28,3 +36,5 @@
 - (void) stopWaitView;
 
 @end
+
+void draw1PxStroke(CGContextRef context, CGPoint startPoint, CGPoint endPoint, CGColorRef color);

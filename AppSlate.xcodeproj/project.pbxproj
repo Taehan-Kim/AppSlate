@@ -8,8 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		18145150146ADA3400AE2B83 /* CSLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1814514F146ADA3400AE2B83 /* CSLabel.m */; };
+		1851B7881493554D0029CFEF /* editbtn_prop.png in Resources */ = {isa = PBXBuildFile; fileRef = 1851B7871493554D0029CFEF /* editbtn_prop.png */; };
+		1851B78C1494825E0029CFEF /* PropertyTVController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1851B78B1494825E0029CFEF /* PropertyTVController.m */; };
 		18A899F4148EC47000E5EFA9 /* editbtn_size.png in Resources */ = {isa = PBXBuildFile; fileRef = 18A899F2148EC47000E5EFA9 /* editbtn_size.png */; };
 		18A899F5148EC47000E5EFA9 /* editbtn_x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18A899F3148EC47000E5EFA9 /* editbtn_x.png */; };
+		18E8A72214B7488A00E61C05 /* PropertyLinkTVController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18E8A72114B7488A00E61C05 /* PropertyLinkTVController.m */; };
+		5404080214AB0B63002A764B /* HRBrightnessCursor.m in Sources */ = {isa = PBXBuildFile; fileRef = 540407F714AB0B63002A764B /* HRBrightnessCursor.m */; };
+		5404080314AB0B63002A764B /* HRCgUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 540407F914AB0B63002A764B /* HRCgUtil.m */; };
+		5404080414AB0B63002A764B /* HRColorCursor.m in Sources */ = {isa = PBXBuildFile; fileRef = 540407FB14AB0B63002A764B /* HRColorCursor.m */; };
+		5404080514AB0B63002A764B /* HRColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 540407FD14AB0B63002A764B /* HRColorPickerView.m */; };
+		5404080614AB0B63002A764B /* HRColorPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 540407FF14AB0B63002A764B /* HRColorPickerViewController.m */; };
+		5404080714AB0B63002A764B /* HRColorUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 5404080114AB0B63002A764B /* HRColorUtil.m */; };
+		542A310814AD5B8B00150060 /* AlignSettingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 542A310714AD5B8B00150060 /* AlignSettingController.m */; };
+		5434EFEC14A0A65600433710 /* StringSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5434EFEB14A0A65600433710 /* StringSettingViewController.m */; };
 		5438D641146A68AB00CE9136 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5438D640146A68AB00CE9136 /* UIKit.framework */; };
 		5438D643146A68AB00CE9136 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5438D642146A68AB00CE9136 /* Foundation.framework */; };
 		5438D645146A68AB00CE9136 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5438D644146A68AB00CE9136 /* CoreGraphics.framework */; };
@@ -22,18 +33,54 @@
 		5438D65D146A68AB00CE9136 /* CSMainViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5438D65B146A68AB00CE9136 /* CSMainViewController_iPad.xib */; };
 		5438D660146A68AB00CE9136 /* CSFlipsideViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5438D65E146A68AB00CE9136 /* CSFlipsideViewController.xib */; };
 		5438D674146A949600CE9136 /* CSGearObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5438D673146A949600CE9136 /* CSGearObject.m */; };
+		54421DD814AC5D84006226B4 /* CMFontSelectTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54421DCE14AC5D84006226B4 /* CMFontSelectTableViewController.m */; };
+		54421DD914AC5D84006226B4 /* CMFontSelectTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54421DCF14AC5D84006226B4 /* CMFontSelectTableViewController.xib */; };
+		54421DDA14AC5D84006226B4 /* CMFontStyleSelectTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54421DD114AC5D84006226B4 /* CMFontStyleSelectTableViewController.m */; };
+		54421DDB14AC5D84006226B4 /* CMFontStyleSelectTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54421DD214AC5D84006226B4 /* CMFontStyleSelectTableViewController.xib */; };
+		54421DDC14AC5D84006226B4 /* CMTextStylePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54421DD414AC5D84006226B4 /* CMTextStylePickerViewController.m */; };
+		54421DDD14AC5D84006226B4 /* CMTextStylePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54421DD514AC5D84006226B4 /* CMTextStylePickerViewController.xib */; };
+		54421DDE14AC5D84006226B4 /* CMUpDownControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 54421DD714AC5D84006226B4 /* CMUpDownControl.m */; };
+		54421DE214AC6153006226B4 /* FontSettingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54421DE114AC6153006226B4 /* FontSettingController.m */; };
 		545CF92B14764FEA00D3B544 /* CSBlueprintController.m in Sources */ = {isa = PBXBuildFile; fileRef = 545CF92A14764FEA00D3B544 /* CSBlueprintController.m */; };
 		545CF92F14765E8200D3B544 /* BlueObjData.m in Sources */ = {isa = PBXBuildFile; fileRef = 545CF92E14765E8200D3B544 /* BlueObjData.m */; };
+		546A8E5214B5A4A900AB71BD /* CSBlueprintView.m in Sources */ = {isa = PBXBuildFile; fileRef = 546A8E5114B5A4A900AB71BD /* CSBlueprintView.m */; };
 		5474F86D1470BF01002C8652 /* CSTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 5474F86C1470BF01002C8652 /* CSTextField.m */; };
 		5486166A14739CCA0007709E /* UserContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 5486166914739CCA0007709E /* UserContext.m */; };
 		5486166E14739D950007709E /* WaitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5486166D14739D950007709E /* WaitView.m */; };
+		5493734314A8864F00697A40 /* BButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5493734214A8864F00697A40 /* BButton.m */; };
+		5493734514A88E3500697A40 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5493734414A88E3500697A40 /* QuartzCore.framework */; };
+		549CC83F14BC2A5D00FD15DD /* bluePaper.png in Resources */ = {isa = PBXBuildFile; fileRef = 549CC83E14BC2A5D00FD15DD /* bluePaper.png */; };
+		54D7326614B6C8EF0092FD98 /* CMPopTipView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D7326514B6C8EF0092FD98 /* CMPopTipView.m */; };
+		54E5BBE214AC05D000C84F69 /* SettingViewCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E5BBE114AC05D000C84F69 /* SettingViewCommon.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1814514E146ADA3400AE2B83 /* CSLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CSLabel.h; path = GearObjects/CSLabel.h; sourceTree = "<group>"; };
 		1814514F146ADA3400AE2B83 /* CSLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CSLabel.m; path = GearObjects/CSLabel.m; sourceTree = "<group>"; };
+		1851B7871493554D0029CFEF /* editbtn_prop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = editbtn_prop.png; sourceTree = "<group>"; };
+		1851B78A1494825E0029CFEF /* PropertyTVController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyTVController.h; path = Blueprint/PropertyTVController.h; sourceTree = "<group>"; };
+		1851B78B1494825E0029CFEF /* PropertyTVController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyTVController.m; path = Blueprint/PropertyTVController.m; sourceTree = "<group>"; };
 		18A899F2148EC47000E5EFA9 /* editbtn_size.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = editbtn_size.png; sourceTree = "<group>"; };
 		18A899F3148EC47000E5EFA9 /* editbtn_x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = editbtn_x.png; sourceTree = "<group>"; };
+		18E8A72014B7488A00E61C05 /* PropertyLinkTVController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyLinkTVController.h; path = Blueprint/PropertyLinkTVController.h; sourceTree = "<group>"; };
+		18E8A72114B7488A00E61C05 /* PropertyLinkTVController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyLinkTVController.m; path = Blueprint/PropertyLinkTVController.m; sourceTree = "<group>"; };
+		540407F614AB0B63002A764B /* HRBrightnessCursor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HRBrightnessCursor.h; sourceTree = "<group>"; };
+		540407F714AB0B63002A764B /* HRBrightnessCursor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HRBrightnessCursor.m; sourceTree = "<group>"; };
+		540407F814AB0B63002A764B /* HRCgUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HRCgUtil.h; sourceTree = "<group>"; };
+		540407F914AB0B63002A764B /* HRCgUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HRCgUtil.m; sourceTree = "<group>"; };
+		540407FA14AB0B63002A764B /* HRColorCursor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HRColorCursor.h; sourceTree = "<group>"; };
+		540407FB14AB0B63002A764B /* HRColorCursor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HRColorCursor.m; sourceTree = "<group>"; };
+		540407FC14AB0B63002A764B /* HRColorPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HRColorPickerView.h; sourceTree = "<group>"; };
+		540407FD14AB0B63002A764B /* HRColorPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HRColorPickerView.m; sourceTree = "<group>"; };
+		540407FE14AB0B63002A764B /* HRColorPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HRColorPickerViewController.h; sourceTree = "<group>"; };
+		540407FF14AB0B63002A764B /* HRColorPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HRColorPickerViewController.m; sourceTree = "<group>"; };
+		5404080014AB0B63002A764B /* HRColorUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HRColorUtil.h; sourceTree = "<group>"; };
+		5404080114AB0B63002A764B /* HRColorUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HRColorUtil.m; sourceTree = "<group>"; };
+		542A310614AD5B8B00150060 /* AlignSettingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlignSettingController.h; path = SettingControllers/AlignSettingController.h; sourceTree = "<group>"; };
+		542A310714AD5B8B00150060 /* AlignSettingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AlignSettingController.m; path = SettingControllers/AlignSettingController.m; sourceTree = "<group>"; };
+		5434EFEA14A0A65600433710 /* StringSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StringSettingViewController.h; path = SettingControllers/StringSettingViewController.h; sourceTree = "<group>"; };
+		5434EFEB14A0A65600433710 /* StringSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StringSettingViewController.m; path = SettingControllers/StringSettingViewController.m; sourceTree = "<group>"; };
+		5434EFED14A0A91D00433710 /* SettingViewCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingViewCommon.h; path = SettingControllers/SettingViewCommon.h; sourceTree = "<group>"; };
 		5438D63C146A68AB00CE9136 /* AppSlate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppSlate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5438D640146A68AB00CE9136 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		5438D642146A68AB00CE9136 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -53,16 +100,38 @@
 		5438D65F146A68AB00CE9136 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/CSFlipsideViewController.xib; sourceTree = "<group>"; };
 		5438D672146A949600CE9136 /* CSGearObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CSGearObject.h; path = GearObjects/CSGearObject.h; sourceTree = "<group>"; };
 		5438D673146A949600CE9136 /* CSGearObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CSGearObject.m; path = GearObjects/CSGearObject.m; sourceTree = "<group>"; };
+		54421DCD14AC5D84006226B4 /* CMFontSelectTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMFontSelectTableViewController.h; sourceTree = "<group>"; };
+		54421DCE14AC5D84006226B4 /* CMFontSelectTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMFontSelectTableViewController.m; sourceTree = "<group>"; };
+		54421DCF14AC5D84006226B4 /* CMFontSelectTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CMFontSelectTableViewController.xib; sourceTree = "<group>"; };
+		54421DD014AC5D84006226B4 /* CMFontStyleSelectTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMFontStyleSelectTableViewController.h; sourceTree = "<group>"; };
+		54421DD114AC5D84006226B4 /* CMFontStyleSelectTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMFontStyleSelectTableViewController.m; sourceTree = "<group>"; };
+		54421DD214AC5D84006226B4 /* CMFontStyleSelectTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CMFontStyleSelectTableViewController.xib; sourceTree = "<group>"; };
+		54421DD314AC5D84006226B4 /* CMTextStylePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMTextStylePickerViewController.h; sourceTree = "<group>"; };
+		54421DD414AC5D84006226B4 /* CMTextStylePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMTextStylePickerViewController.m; sourceTree = "<group>"; };
+		54421DD514AC5D84006226B4 /* CMTextStylePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CMTextStylePickerViewController.xib; sourceTree = "<group>"; };
+		54421DD614AC5D84006226B4 /* CMUpDownControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMUpDownControl.h; sourceTree = "<group>"; };
+		54421DD714AC5D84006226B4 /* CMUpDownControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMUpDownControl.m; sourceTree = "<group>"; };
+		54421DE014AC6153006226B4 /* FontSettingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FontSettingController.h; path = SettingControllers/FontSettingController.h; sourceTree = "<group>"; };
+		54421DE114AC6153006226B4 /* FontSettingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FontSettingController.m; path = SettingControllers/FontSettingController.m; sourceTree = "<group>"; };
 		545CF92914764FEA00D3B544 /* CSBlueprintController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CSBlueprintController.h; path = Blueprint/CSBlueprintController.h; sourceTree = "<group>"; };
 		545CF92A14764FEA00D3B544 /* CSBlueprintController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CSBlueprintController.m; path = Blueprint/CSBlueprintController.m; sourceTree = "<group>"; };
 		545CF92D14765E8200D3B544 /* BlueObjData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BlueObjData.h; path = Blueprint/BlueObjData.h; sourceTree = "<group>"; };
 		545CF92E14765E8200D3B544 /* BlueObjData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BlueObjData.m; path = Blueprint/BlueObjData.m; sourceTree = "<group>"; };
+		546A8E5014B5A4A900AB71BD /* CSBlueprintView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CSBlueprintView.h; path = Blueprint/CSBlueprintView.h; sourceTree = "<group>"; };
+		546A8E5114B5A4A900AB71BD /* CSBlueprintView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CSBlueprintView.m; path = Blueprint/CSBlueprintView.m; sourceTree = "<group>"; };
 		5474F86B1470BF01002C8652 /* CSTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CSTextField.h; path = GearObjects/CSTextField.h; sourceTree = "<group>"; };
 		5474F86C1470BF01002C8652 /* CSTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CSTextField.m; path = GearObjects/CSTextField.m; sourceTree = "<group>"; };
 		5486166814739CCA0007709E /* UserContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserContext.h; sourceTree = "<group>"; };
 		5486166914739CCA0007709E /* UserContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserContext.m; sourceTree = "<group>"; };
 		5486166C14739D950007709E /* WaitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WaitView.h; path = Utils/WaitView/WaitView.h; sourceTree = "<group>"; };
 		5486166D14739D950007709E /* WaitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WaitView.m; path = Utils/WaitView/WaitView.m; sourceTree = "<group>"; };
+		5493734114A8864F00697A40 /* BButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BButton.h; path = Utils/BButton/BButton.h; sourceTree = "<group>"; };
+		5493734214A8864F00697A40 /* BButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BButton.m; path = Utils/BButton/BButton.m; sourceTree = "<group>"; };
+		5493734414A88E3500697A40 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		549CC83E14BC2A5D00FD15DD /* bluePaper.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bluePaper.png; sourceTree = "<group>"; };
+		54D7326414B6C8EF0092FD98 /* CMPopTipView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMPopTipView.h; sourceTree = "<group>"; };
+		54D7326514B6C8EF0092FD98 /* CMPopTipView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMPopTipView.m; sourceTree = "<group>"; };
+		54E5BBE114AC05D000C84F69 /* SettingViewCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingViewCommon.m; path = SettingControllers/SettingViewCommon.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +139,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5493734514A88E3500697A40 /* QuartzCore.framework in Frameworks */,
 				5438D641146A68AB00CE9136 /* UIKit.framework in Frameworks */,
 				5438D643146A68AB00CE9136 /* Foundation.framework in Frameworks */,
 				5438D645146A68AB00CE9136 /* CoreGraphics.framework in Frameworks */,
@@ -82,15 +152,53 @@
 		18A899F1148EC47000E5EFA9 /* images_ipad */ = {
 			isa = PBXGroup;
 			children = (
+				549CC83E14BC2A5D00FD15DD /* bluePaper.png */,
+				1851B7871493554D0029CFEF /* editbtn_prop.png */,
 				18A899F2148EC47000E5EFA9 /* editbtn_size.png */,
 				18A899F3148EC47000E5EFA9 /* editbtn_x.png */,
 			);
 			path = images_ipad;
 			sourceTree = "<group>";
 		};
+		540407F514AB0B63002A764B /* ColorPicker */ = {
+			isa = PBXGroup;
+			children = (
+				540407F614AB0B63002A764B /* HRBrightnessCursor.h */,
+				540407F714AB0B63002A764B /* HRBrightnessCursor.m */,
+				540407F814AB0B63002A764B /* HRCgUtil.h */,
+				540407F914AB0B63002A764B /* HRCgUtil.m */,
+				540407FA14AB0B63002A764B /* HRColorCursor.h */,
+				540407FB14AB0B63002A764B /* HRColorCursor.m */,
+				540407FC14AB0B63002A764B /* HRColorPickerView.h */,
+				540407FD14AB0B63002A764B /* HRColorPickerView.m */,
+				540407FE14AB0B63002A764B /* HRColorPickerViewController.h */,
+				540407FF14AB0B63002A764B /* HRColorPickerViewController.m */,
+				5404080014AB0B63002A764B /* HRColorUtil.h */,
+				5404080114AB0B63002A764B /* HRColorUtil.m */,
+			);
+			name = ColorPicker;
+			path = Utils/ColorPicker;
+			sourceTree = "<group>";
+		};
+		5434EFE814A0A5BA00433710 /* SettingControllers */ = {
+			isa = PBXGroup;
+			children = (
+				5434EFED14A0A91D00433710 /* SettingViewCommon.h */,
+				54E5BBE114AC05D000C84F69 /* SettingViewCommon.m */,
+				5434EFEA14A0A65600433710 /* StringSettingViewController.h */,
+				5434EFEB14A0A65600433710 /* StringSettingViewController.m */,
+				54421DE014AC6153006226B4 /* FontSettingController.h */,
+				54421DE114AC6153006226B4 /* FontSettingController.m */,
+				542A310614AD5B8B00150060 /* AlignSettingController.h */,
+				542A310714AD5B8B00150060 /* AlignSettingController.m */,
+			);
+			name = SettingControllers;
+			sourceTree = "<group>";
+		};
 		5438D631146A68AA00CE9136 = {
 			isa = PBXGroup;
 			children = (
+				5434EFE814A0A5BA00433710 /* SettingControllers */,
 				5486166F14739D9F0007709E /* Utils */,
 				5486166714739CCA0007709E /* Base */,
 				5438D66E146A929500CE9136 /* Blueprint */,
@@ -115,6 +223,7 @@
 		5438D63F146A68AB00CE9136 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5493734414A88E3500697A40 /* QuartzCore.framework */,
 				5438D640146A68AB00CE9136 /* UIKit.framework */,
 				5438D642146A68AB00CE9136 /* Foundation.framework */,
 				5438D644146A68AB00CE9136 /* CoreGraphics.framework */,
@@ -184,8 +293,33 @@
 				545CF92A14764FEA00D3B544 /* CSBlueprintController.m */,
 				545CF92D14765E8200D3B544 /* BlueObjData.h */,
 				545CF92E14765E8200D3B544 /* BlueObjData.m */,
+				1851B78A1494825E0029CFEF /* PropertyTVController.h */,
+				1851B78B1494825E0029CFEF /* PropertyTVController.m */,
+				546A8E5014B5A4A900AB71BD /* CSBlueprintView.h */,
+				546A8E5114B5A4A900AB71BD /* CSBlueprintView.m */,
+				18E8A72014B7488A00E61C05 /* PropertyLinkTVController.h */,
+				18E8A72114B7488A00E61C05 /* PropertyLinkTVController.m */,
 			);
 			name = Blueprint;
+			sourceTree = "<group>";
+		};
+		54421DCC14AC5D84006226B4 /* TextStylePicker */ = {
+			isa = PBXGroup;
+			children = (
+				54421DCD14AC5D84006226B4 /* CMFontSelectTableViewController.h */,
+				54421DCE14AC5D84006226B4 /* CMFontSelectTableViewController.m */,
+				54421DCF14AC5D84006226B4 /* CMFontSelectTableViewController.xib */,
+				54421DD014AC5D84006226B4 /* CMFontStyleSelectTableViewController.h */,
+				54421DD114AC5D84006226B4 /* CMFontStyleSelectTableViewController.m */,
+				54421DD214AC5D84006226B4 /* CMFontStyleSelectTableViewController.xib */,
+				54421DD314AC5D84006226B4 /* CMTextStylePickerViewController.h */,
+				54421DD414AC5D84006226B4 /* CMTextStylePickerViewController.m */,
+				54421DD514AC5D84006226B4 /* CMTextStylePickerViewController.xib */,
+				54421DD614AC5D84006226B4 /* CMUpDownControl.h */,
+				54421DD714AC5D84006226B4 /* CMUpDownControl.m */,
+			);
+			name = TextStylePicker;
+			path = Utils/TextStylePicker;
 			sourceTree = "<group>";
 		};
 		5486166714739CCA0007709E /* Base */ = {
@@ -200,6 +334,10 @@
 		5486166F14739D9F0007709E /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				54D7326314B6C8EF0092FD98 /* CMPopTipView */,
+				54421DCC14AC5D84006226B4 /* TextStylePicker */,
+				540407F514AB0B63002A764B /* ColorPicker */,
+				5493733F14A885F000697A40 /* BButton */,
 				5486167014739DA90007709E /* WaitView */,
 			);
 			name = Utils;
@@ -214,12 +352,31 @@
 			name = WaitView;
 			sourceTree = "<group>";
 		};
+		5493733F14A885F000697A40 /* BButton */ = {
+			isa = PBXGroup;
+			children = (
+				5493734114A8864F00697A40 /* BButton.h */,
+				5493734214A8864F00697A40 /* BButton.m */,
+			);
+			name = BButton;
+			sourceTree = "<group>";
+		};
 		54A09CE5148E0B3C00CB9974 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
 				18A899F1148EC47000E5EFA9 /* images_ipad */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		54D7326314B6C8EF0092FD98 /* CMPopTipView */ = {
+			isa = PBXGroup;
+			children = (
+				54D7326414B6C8EF0092FD98 /* CMPopTipView.h */,
+				54D7326514B6C8EF0092FD98 /* CMPopTipView.m */,
+			);
+			name = CMPopTipView;
+			path = Utils/CMPopTipView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -279,6 +436,11 @@
 				5438D660146A68AB00CE9136 /* CSFlipsideViewController.xib in Resources */,
 				18A899F4148EC47000E5EFA9 /* editbtn_size.png in Resources */,
 				18A899F5148EC47000E5EFA9 /* editbtn_x.png in Resources */,
+				1851B7881493554D0029CFEF /* editbtn_prop.png in Resources */,
+				54421DD914AC5D84006226B4 /* CMFontSelectTableViewController.xib in Resources */,
+				54421DDB14AC5D84006226B4 /* CMFontStyleSelectTableViewController.xib in Resources */,
+				54421DDD14AC5D84006226B4 /* CMTextStylePickerViewController.xib in Resources */,
+				549CC83F14BC2A5D00FD15DD /* bluePaper.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -300,6 +462,25 @@
 				5486166E14739D950007709E /* WaitView.m in Sources */,
 				545CF92B14764FEA00D3B544 /* CSBlueprintController.m in Sources */,
 				545CF92F14765E8200D3B544 /* BlueObjData.m in Sources */,
+				1851B78C1494825E0029CFEF /* PropertyTVController.m in Sources */,
+				5434EFEC14A0A65600433710 /* StringSettingViewController.m in Sources */,
+				5493734314A8864F00697A40 /* BButton.m in Sources */,
+				5404080214AB0B63002A764B /* HRBrightnessCursor.m in Sources */,
+				5404080314AB0B63002A764B /* HRCgUtil.m in Sources */,
+				5404080414AB0B63002A764B /* HRColorCursor.m in Sources */,
+				5404080514AB0B63002A764B /* HRColorPickerView.m in Sources */,
+				5404080614AB0B63002A764B /* HRColorPickerViewController.m in Sources */,
+				5404080714AB0B63002A764B /* HRColorUtil.m in Sources */,
+				54E5BBE214AC05D000C84F69 /* SettingViewCommon.m in Sources */,
+				54421DD814AC5D84006226B4 /* CMFontSelectTableViewController.m in Sources */,
+				54421DDA14AC5D84006226B4 /* CMFontStyleSelectTableViewController.m in Sources */,
+				54421DDC14AC5D84006226B4 /* CMTextStylePickerViewController.m in Sources */,
+				54421DDE14AC5D84006226B4 /* CMUpDownControl.m in Sources */,
+				54421DE214AC6153006226B4 /* FontSettingController.m in Sources */,
+				542A310814AD5B8B00150060 /* AlignSettingController.m in Sources */,
+				546A8E5214B5A4A900AB71BD /* CSBlueprintView.m in Sources */,
+				54D7326614B6C8EF0092FD98 /* CMPopTipView.m in Sources */,
+				18E8A72214B7488A00E61C05 /* PropertyLinkTVController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,7 +10,65 @@
 
 @implementation CSTextField
 
-@synthesize text;
+-(id) object
+{
+    return ((UITextField*)csView);
+}
+
+//===========================================================================
+#pragma mark -
+
+-(void) setText:(NSString*)txt;
+{
+    [((UITextField*)csView) setText:txt];
+}
+
+-(NSString*) getText
+{
+    return ((UITextField*)csView).text;
+}
+
+-(void) setTextColor:(UIColor*)color
+{
+    [((UITextField*)csView) setTextColor:color];
+}
+
+-(UIColor*) getTextColor
+{
+    return ((UITextField*)csView).textColor;
+}
+
+-(void) setBackgroundColor:(UIColor*)color
+{
+    [((UITextField*)csView) setBackgroundColor:color];
+}
+
+-(UIColor*) getBackgroundColor
+{
+    return ((UITextField*)csView).backgroundColor;
+}
+
+-(void) setFont:(UIFont*)font
+{
+    [((UITextField*)csView) setFont:font];
+}
+-(UIFont*) getFont
+{
+    return ((UITextField*)csView).font;
+}
+
+-(void) setTextAlignment:(NSNumber*)alignNum
+{
+    UITextAlignment align = [alignNum integerValue];
+    [((UITextField*)csView) setTextAlignment:align];
+}
+
+-(NSNumber*) getTextAlignment
+{
+    return [NSNumber numberWithInteger:((UITextField*)csView).textAlignment];
+}
+
+//===========================================================================
 
 
 -(NSArray*) getInStringProperties
@@ -29,31 +87,43 @@
 {
     if( ![super init] ) return nil;
 
-    csFrame = CGRectMake(0, 0, 310, 20); // 기본 크기 정하기.
+    csView = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, 310, MINSIZE)];
+    [csView setBackgroundColor:[UIColor whiteColor]];
 
     csCode = CS_TEXTFIELD;
 
-    textColor = [UIColor blackColor];
+    ((UITextField*)csView).textColor = [UIColor blackColor];
+    ((UITextField*)csView).font = CS_FONT(16);
+    [(UITextField*)csView setText:NSLocalizedString(@"Text Field",@"Text Field")];
+    [(UITextField*)csView setBorderStyle:UITextBorderStyleRoundedRect];
+    [(UITextField*)csView setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
+    [(UITextField*)csView setDelegate:self];
 
-    textFont = CS_FONT(16);
+    self.info = NSLocalizedString(@"Text Field", @"Text Field");
 
-    csLinks = [[NSArray alloc] initWithObjects:
-               [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                @"changedText",@"name",
-                @"send the text when changed it.",@"desc",
-                nil,LK_CODE,
-                nil,LK_NAME,nil],
-               nil];
+    NSDictionary *d1 = MAKE_PROPERTY_D(@"Default Text", P_TXT, @selector(setText:),@selector(getText));
+    NSDictionary *d2 = MAKE_PROPERTY_D(@"Text Color", P_COLOR, @selector(setTextColor:),@selector(getTextColor));
+    NSDictionary *d3 = MAKE_PROPERTY_D(@"Background Color", P_COLOR, @selector(setBackgroundColor:),@selector(getBackgroundColor));
+    NSDictionary *d4 = MAKE_PROPERTY_D(@"Text Font", P_FONT, @selector(setFont:),@selector(getFont));
+    NSDictionary *d5 = MAKE_PROPERTY_D(@"L/R Alignment", P_ALIGN, @selector(setTextAlignment:),@selector(getTextAlignment));
+    
+    pListArray = [NSArray arrayWithObjects:d1,d2,d3,d4,d5, nil];
+
+    NSMutableDictionary *a1 = MAKE_ACTION_D(@"Enter Text", A_TXT);
+    actionArray = [NSArray arrayWithObjects:a1, nil];
 
     return self;
 }
 
-// 액션의 종류들, 링크 정보를 알려준다.
-// name: xxxxx    desc:xxxxxx...
-// linkedmagiccode:xxxxx linkedname: xxxxx...
-//-(NSArray*) actionNames
-//{
-//    ;
-//}
+// 설정될 수 있는 속성 목록.
+-(NSArray*) getPropertiesList
+{
+    return pListArray;
+}
+
+-(NSArray*) getActionList
+{
+    return actionArray;
+}
 
 @end
