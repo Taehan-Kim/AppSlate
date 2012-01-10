@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 //#import <CoreLocation/CoreLocation.h>
 #import "WaitView.h"
+#import "CSGearObject.h"
 
 #define USERCONTEXT     [UserContext sharedUserContext]
 
@@ -34,6 +35,8 @@
 
 - (void) startWaitView: (NSInteger) yDeltaPos;
 - (void) stopWaitView;
+
+-(CSGearObject*) getGearWithMagicNum:(NSUInteger) magicNum;
 
 @end
 

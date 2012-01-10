@@ -89,6 +89,17 @@ static UserContext *_sharedUserContext = nil;
 	}
 }
 
+-(CSGearObject*) getGearWithMagicNum:(NSUInteger) magicNum
+{
+    for( CSGearObject *g in gearsArray )
+    {
+        if( g.csMagicNum == magicNum ){
+            return g;
+        }
+    }
+    return nil;
+}
+
 @end
 
 void draw1PxStroke(CGContextRef context, CGPoint startPoint, CGPoint endPoint, CGColorRef color)

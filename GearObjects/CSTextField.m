@@ -109,8 +109,9 @@
     
     pListArray = [NSArray arrayWithObjects:d1,d2,d3,d4,d5, nil];
 
-    NSMutableDictionary *a1 = MAKE_ACTION_D(@"Enter Text", A_TXT);
-    actionArray = [NSArray arrayWithObjects:a1, nil];
+    NSMutableDictionary MAKE_ACTION_D(@"Enter Text", A_TXT, a1);
+    NSMutableDictionary MAKE_ACTION_D(@"Close Keyboard", A_TXT, a2);
+    actionArray = [NSArray arrayWithObjects:a1, a2, nil];
 
     return self;
 }
@@ -124,6 +125,43 @@
 -(NSArray*) getActionList
 {
     return actionArray;
+}
+
+#pragma mark - Gear's Unique Actions
+
+// Enter Text 동작.
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{    
+    [textField resignFirstResponder];
+
+    SEL act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:0] objectForKey:@"selector"]).pointerValue;
+    
+    if( nil == act ) return YES;  // do nothing
+    
+    NSNumber *nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:0]) objectForKey:@"mNum"];
+    
+    CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+
+    if( nil != gObj )
+        [gObj performSelector:act withObject:textField.text];
+
+    return YES;
+}
+
+
+// End Text Editing 동작.
+-(void) textFieldDidEndEditing:(UITextField *)textField
+{
+    SEL act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:1] objectForKey:@"selector"]).pointerValue;
+    
+    if( nil == act ) return;  // do nothing
+    
+    NSNumber *nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:1]) objectForKey:@"mNum"];
+    
+    CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+
+    if( nil != gObj )
+        [gObj performSelector:act withObject:textField.text];
 }
 
 @end
