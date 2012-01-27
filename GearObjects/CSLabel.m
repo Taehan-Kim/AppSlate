@@ -20,7 +20,11 @@
 
 -(void) setText:(NSString*)txt;
 {
-    [((UILabel*)csView) setText:txt];
+    if( [txt isKindOfClass:[NSString class]] )
+        [((UILabel*)csView) setText:txt];
+
+    else if([txt isKindOfClass:[NSNumber class]] )
+        [((UILabel*)csView) setText:[((NSNumber*)txt) stringValue]];
 }
 
 -(NSString*) getText
@@ -30,7 +34,8 @@
 
 -(void) setTextColor:(UIColor*)color
 {
-    [((UILabel*)csView) setTextColor:color];
+    if( [color isKindOfClass:[UIColor class]] )
+        [((UILabel*)csView) setTextColor:color];
 }
 
 -(UIColor*) getTextColor
@@ -40,7 +45,8 @@
 
 -(void) setBackgroundColor:(UIColor*)color
 {
-    [((UILabel*)csView) setBackgroundColor:color];
+    if( [color isKindOfClass:[UIColor class]] )
+        [((UILabel*)csView) setBackgroundColor:color];
 }
 
 -(UIColor*) getBackgroundColor
@@ -50,8 +56,10 @@
 
 -(void) setFont:(UIFont*)font
 {
-    [((UILabel*)csView) setFont:font];
+    if( [font isKindOfClass:[UIFont class]] )
+        [((UILabel*)csView) setFont:font];
 }
+
 -(UIFont*) getFont
 {
     return ((UILabel*)csView).font;
@@ -66,6 +74,25 @@
 -(NSNumber *) getTextAlignment
 {
     return [NSNumber numberWithInteger:((UILabel*)csView).textAlignment];
+}
+
+-(void) setRoundBorder:(NSNumber*)BoolValue
+{
+    BOOL isRound = [BoolValue boolValue];
+
+    if( isRound ){
+        [((UILabel*)csView).layer setCornerRadius:6.0];
+    }else{
+        [((UILabel*)csView).layer setCornerRadius:0.0];
+    }
+//    [((UILabel*)csView) setNeedsDisplay];
+}
+
+-(NSNumber*) getRoundBorder
+{
+    BOOL isRound = (((UILabel*)csView).layer.cornerRadius > 0.0) ? YES : NO;
+
+    return [NSNumber numberWithBool:isRound];
 }
 
 //===========================================================================
@@ -97,6 +124,7 @@
     ((UILabel*)csView).textColor = [UIColor blackColor];
     ((UILabel*)csView).font = CS_FONT(16);
     [(UILabel*)csView setText:@"Text Label"];
+    [(UILabel*)csView setClipsToBounds:YES];
 
     self.info = NSLocalizedString(@"Text Label", @"Text Label");
 
@@ -105,8 +133,9 @@
     NSDictionary *d3 = MAKE_PROPERTY_D(@"Background Color", P_COLOR, @selector(setBackgroundColor:),@selector(getBackgroundColor));
     NSDictionary *d4 = MAKE_PROPERTY_D(@"Text Font", P_FONT, @selector(setFont:),@selector(getFont));
     NSDictionary *d5 = MAKE_PROPERTY_D(@"L/R Alignment", P_ALIGN, @selector(setTextAlignment:),@selector(getTextAlignment));
+    NSDictionary *d6 = MAKE_PROPERTY_D(@"Rounded Border", P_BOOL, @selector(setRoundBorder:),@selector(getRoundBorder));
 
-    pListArray = [NSArray arrayWithObjects:d1,d2,d3,d4,d5, nil];
+    pListArray = [NSArray arrayWithObjects:d1,d2,d3,d4,d5,d6, nil];
 
     return self;
 }

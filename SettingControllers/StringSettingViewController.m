@@ -52,7 +52,9 @@
     [textField setFont:[UIFont systemFontOfSize:15.0]];
     [textField.layer setCornerRadius:5.0];
     [textField setClipsToBounds:YES];
-    [textField setText:[[theGear object] text]];
+//    [textField setText:[[theGear object] text]];
+    NSString *sText = objc_msgSend(theGear,[[pInfoDic objectForKey:@"getSelector"] pointerValue]);
+    [textField setText:sText];
     [self.view addSubview:textField];
     NSLog(@"%@", textField);
 

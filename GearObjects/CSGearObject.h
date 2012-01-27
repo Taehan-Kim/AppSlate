@@ -11,16 +11,25 @@
 #import <Foundation/Foundation.h>
 
 #define CS_LABEL        101
-#define CS_LAMP         102
+#define CS_MASKEDLABEL  102
 #define CS_TEXTFIELD    103
+#define CS_BTNTEXTFIELD   104
+#define CS_SWITCH       105
+#define CS_BUTTON       106
+#define CS_TOGGLEBTN    107
+#define CS_FLIPCNT      108
+#define CS_SLIDER       109
+
 
 #define MINSIZE         30
+#define MINSIZE2        43
 
 #define P_TXT           @"text"
 #define P_COLOR         @"color"
 #define P_NUM           @"number"
 #define P_ALIGN         @"align"
 #define P_FONT          @"font"
+#define P_BOOL          @"bool"
 
 #define A_TXT           @"textAct"
 #define A_NUM           @"numberAct"
@@ -48,7 +57,7 @@
     BOOL    csResizable;
 
     // 설계 화면에 보여질 형태 이미지
-    UIImage *csFaceImage;
+    //UIImage *csFaceImage;
 
     // 배경색
     UIColor *csBackColor;
@@ -59,6 +68,9 @@
     NSArray *actionArray;
 
     UITapGestureRecognizer  *tapGR;
+
+    // iOS API 의 컴포넌트를 그대로 사용하는가에 대한 표식.
+    BOOL    isUIObj;
 }
 
 -(id) object;
@@ -76,9 +88,12 @@
 -(NSArray*) getPropertiesList;
 
 @property (nonatomic)   NSUInteger csMagicNum;
+@property (nonatomic)   BOOL isUIObj;
 @property (nonatomic, retain) UIView *csView;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGR;
 @property (nonatomic, strong) NSString *info;
+@property (nonatomic, strong) NSArray *gestureArray;
+
 
 // 연결 설정
 -(BOOL) setActionIndex:(NSUInteger)idx to:(NSUInteger)magicNum selector:(SEL)selectorName;
@@ -86,6 +101,7 @@
 -(BOOL) unlinkActionIndex:(NSUInteger)idx;
 -(BOOL) unlinkActionMCode:(NSNumber*) mCode;
 
+-(BOOL) isResizable;
 
 // every getters and setters ...
 -(void) setText:(NSString*)txt;

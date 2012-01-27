@@ -7,6 +7,7 @@
 //
 
 #import "CSMainViewController.h"
+#import "FileGalleryController.h"
 
 @implementation CSMainViewController
 
@@ -36,6 +37,7 @@
 {
     playButton = nil;
     stopButton = nil;
+    gearListButton = nil;
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -64,11 +66,16 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
-    } else {
+//    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+//        return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+//    } else {
+//        return YES;
+//    }
+    if( interfaceOrientation == UIInterfaceOrientationPortrait ||
+       interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown )
         return YES;
-    }
+
+    return NO;
 }
 
 #pragma mark - Flipside View Controller
@@ -80,6 +87,13 @@
     } else {
         [self.flipsidePopoverController dismissPopoverAnimated:YES];
     }
+}
+
+- (IBAction)OpenFileGallery:(id)sender {
+    FileGalleryController *fvc = [[FileGalleryController alloc] init];
+
+    [fvc setModalPresentationStyle:UIModalPresentationFullScreen];
+    [self presentModalViewController:fvc animated:YES];
 }
 
 - (IBAction)showGearList:(id)sender
@@ -107,6 +121,7 @@
 - (IBAction)playAction:(id)sender {
     [playButton setEnabled:NO];
     [stopButton setEnabled:YES];
+    [gearListButton setEnabled:NO];
 
     [[NSNotificationCenter defaultCenter] postNotificationName:NOTI_RUN
                                                         object:nil];
@@ -116,7 +131,9 @@
 - (IBAction)stopAction:(id)sender {
     [playButton setEnabled:YES];
     [stopButton setEnabled:NO];
-    
+
+    [gearListButton setEnabled:YES];
+
     [[NSNotificationCenter defaultCenter] postNotificationName:NOTI_STOP
                                                         object:nil];
     

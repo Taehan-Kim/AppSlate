@@ -8,9 +8,11 @@
 #import <objc/message.h>
 #import "PropertyTVController.h"
 #import "StringSettingViewController.h"
+#import "NumberSettingViewController.h"
 #import "HRColorPickerViewController.h"
 #import "FontSettingController.h"
 #import "AlignSettingController.h"
+#import "BoolSettingController.h"
 
 @implementation PropertyTVController
 
@@ -226,7 +228,14 @@
         {
             VC = [[AlignSettingController alloc] initWithGear:theGear propertyInfo:info];
         }
-        
+        else if( [[info objectForKey:@"type"] isEqualToString:P_BOOL] )
+        {
+            VC = [[BoolSettingController alloc] initWithGear:theGear propertyInfo:info];
+        }
+        else if( [[info objectForKey:@"type"] isEqualToString:P_NUM] )
+        {
+            VC = [[NumberSettingViewController alloc] initWithGear:theGear propertyInfo:info];
+        }
         if( nil == VC ) return;
 
         NSLog(@"p name:%@", [info objectForKey:@"name"] );
@@ -269,13 +278,11 @@
     NSMutableDictionary *acDic = [alist objectAtIndex:alertView.tag];
 
     NSNumber *nsMagicNum = [acDic objectForKey:@"mNum"];
-    for( CSGearObject *g in USERCONTEXT.gearsArray )
-    {
-        if( g.csMagicNum == nsMagicNum.integerValue ){
-            [g.csView.layer setBorderColor:[UIColor clearColor].CGColor];
-            [g.csView.layer setBorderWidth:0.0];
-            break;
-        }
+    CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+
+    if( nil != gObj ){
+        [gObj.csView.layer setBorderColor:[UIColor clearColor].CGColor];
+        [gObj.csView.layer setBorderWidth:0.0];
     }
 
     if( 0 == buttonIndex ) return;  // cancel
@@ -295,29 +302,28 @@
     NSMutableDictionary *acDic = [alist objectAtIndex:((UIButton*)sender).tag];
 
     NSNumber *nsMagicNum = [acDic objectForKey:@"mNum"];
-    for( CSGearObject *g in USERCONTEXT.gearsArray )
-    {
-        if( g.csMagicNum == nsMagicNum.integerValue ){
-            [g.csView.layer setBorderColor:[UIColor redColor].CGColor];
-            [g.csView.layer setBorderWidth:4.0];
-            break;
-        }
+    CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+
+    if( nil != gObj ){
+        [gObj.csView.layer setBorderColor:[UIColor redColor].CGColor];
+        [gObj.csView.layer setBorderWidth:4.0];
     }
 }
 
 -(void) removeLineAction:(id)sender
 {
+    // 연결되지 않은 액션 항목이다. 버튼은 동작하지 않는다.
+    if( NSIntegerMax == ((UIButton*)sender).tag ) return;
+
     NSArray *alist = [theGear getActionList];
     NSMutableDictionary *acDic = [alist objectAtIndex:((UIButton*)sender).tag];
     
     NSNumber *nsMagicNum = [acDic objectForKey:@"mNum"];
-    for( CSGearObject *g in USERCONTEXT.gearsArray )
-    {
-        if( g.csMagicNum == nsMagicNum.integerValue ){
-            [g.csView.layer setBorderColor:[UIColor clearColor].CGColor];
-            [g.csView.layer setBorderWidth:0.0];
-            break;
-        }
+    CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+    
+    if( nil != gObj ){
+        [gObj.csView.layer setBorderColor:[UIColor clearColor].CGColor];
+        [gObj.csView.layer setBorderWidth:0.0];
     }
 }
 

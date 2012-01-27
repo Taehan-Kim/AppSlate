@@ -1,0 +1,30 @@
+//
+//  CSMaskedLabel.h
+//  AppSlate
+//
+//  Created by 김태한 on 11. 11. 10..
+//  Copyright (c) 2011년 ChocolateSoft. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import "CSGearObject.h"
+#import "RSMaskedLabel.h"
+
+@interface CSMaskedLabel : CSGearObject
+{
+//    RSMaskedLabel *msLabel;
+}
+
+-(id) initGear;
+
+
+-(void) setText:(NSString*)txt;
+-(NSString*) getText;
+
+-(void) setBackgroundColor:(UIColor*)color;
+-(UIColor*) getBackgroundColor;
+
+-(void) setFont:(UIFont*)font;
+-(UIFont*) getFont;
+
+@end

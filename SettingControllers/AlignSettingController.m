@@ -50,7 +50,7 @@
     CGSize size = CGSizeMake(320, 120); // size of view in popover
     self.contentSizeForViewInPopover = size;
     self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
-    
+
     alignSegment = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:NSLocalizedString(@"Left",@"L"), NSLocalizedString(@"Center",@"C"), NSLocalizedString(@"Right",@"R"), nil]];
     [alignSegment setFrame:CGRectMake(C_GAP, C_GAP, C_WIDTH, 40.0)];
     [alignSegment setSegmentedControlStyle:UISegmentedControlStylePlain];

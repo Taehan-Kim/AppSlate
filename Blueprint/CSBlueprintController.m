@@ -11,6 +11,7 @@
 #import "PropertyTVController.h"
 #import "StringSettingViewController.h"
 
+
 @implementation CSBlueprintController
 
 - (id)init
@@ -77,7 +78,7 @@
 {
     NSUInteger getCode = [[[noti userInfo] objectForKey:@"tag"] integerValue];
     cView = ((UIView*)[[noti userInfo] objectForKey:@"cell"]);
-    CGRect startFrame = [self.view convertRect:cView.frame fromView:cView];
+    CGRect startFrame = [cView convertRect:cView.frame toView:self.view];
 
     [cView setFrame:startFrame];
     [self.view addSubview:cView];
@@ -87,13 +88,32 @@
         case CS_LABEL:
             newObj = [[CSLabel alloc] initGear];
             break;
-        case CS_LAMP:
+        case CS_MASKEDLABEL:
+            newObj = [[CSMaskedLabel alloc] initGear];
             break;
         case CS_TEXTFIELD:
             newObj = [[CSTextField alloc] initGear];
             break;
-        default:
+        case CS_BTNTEXTFIELD:
+            newObj = [[CSBtnTextField alloc] initGear];
             break;
+        case CS_SWITCH:
+            newObj = [[CSSwitch alloc] initGear];
+            break;
+        case CS_BUTTON:
+            newObj = [[CSButton alloc] initGear];
+            break;
+        case CS_TOGGLEBTN:
+            newObj = [[CSToggleButton alloc] initGear];
+            break;
+        case CS_FLIPCNT:
+            newObj = [[CSFlipCounter alloc] initGear];
+            break;
+        case CS_SLIDER:
+            newObj = [[CSSlider alloc] initGear];
+            break;
+        default:
+            return;
     }
 
     // 새로 추가된 녀석을 화면에 보이게 하고, 수정 모드로 놓자.
@@ -107,8 +127,8 @@
 
     CGPoint endPoint = self.view.center;
     CGMutablePathRef curvedPath = CGPathCreateMutable();
-    CGPathMoveToPoint(curvedPath, NULL, cView.frame.origin.x, cView.frame.origin.y);
-    CGPathAddCurveToPoint(curvedPath, NULL, endPoint.x, cView.frame.origin.y, endPoint.x, cView.frame.origin.y, endPoint.x, endPoint.y);
+    CGPathMoveToPoint(curvedPath, NULL, startFrame.origin.x, startFrame.origin.y);
+    CGPathAddCurveToPoint(curvedPath, NULL, endPoint.x-30, cView.frame.origin.y, endPoint.x-40, endPoint.y, endPoint.x, endPoint.y);
     pathAnimation.path = curvedPath;
     CGPathRelease(curvedPath);
 
@@ -123,10 +143,10 @@
     group.fillMode = kCAFillModeForwards;
     group.removedOnCompletion = YES;
     [group setAnimations:[NSArray arrayWithObjects: pathAnimation, resizeAnimation,nil]];
-    group.duration = 0.5f;
+    group.duration = 0.6f;
     group.delegate = self;
     [group setValue:cView forKey:@"imageViewBeingAnimated"];
-    
+
     [cView.layer addAnimation:group forKey:@"curveAnimation"];
 }
 
@@ -153,7 +173,18 @@
 
     // 기어 뷰 를 설계도에 놓는다.
     [aV setTag:((CSGearObject*)gearObj).csMagicNum];
+
+    for( UIView* sv in aV.subviews )  // 사용자 반응 중지.
+        [sv setUserInteractionEnabled:NO];
+
+    // Gesture Recognizer Backup
+    ((CSGearObject*)gearObj).gestureArray = [((CSGearObject*)gearObj).csView gestureRecognizers];
+    for( UIGestureRecognizer *gr in [((CSGearObject*)gearObj).csView gestureRecognizers] )
+        [((CSGearObject*)gearObj).csView removeGestureRecognizer:gr];
+
+    // 탭 제스쳐 인식자를 놓는다.
     [((CSGearObject*)gearObj).csView addGestureRecognizer:((CSGearObject*)gearObj).tapGR];
+
     [self.view addSubview:aV];
 
     // 지금 추가된 객체는 에디팅 모드로 설정한다.
@@ -199,13 +230,29 @@
     // 전체 부품들에서 제스쳐 인식자들을 제거한다.
     for( CSGearObject *gO in USERCONTEXT.gearsArray ){
         [gO.csView removeGestureRecognizer:gO.tapGR];
-        [gO.csView.layer setShadowOpacity:0.0];
+        gO.tapGR = nil;
+        [gO.csView setUserInteractionEnabled:YES];
+//        [gO.csView.layer setShadowOpacity:0.0];
+
+        // Restore Gesture Recognizers
+        for( UIGestureRecognizer *gr in gO.gestureArray )
+            [gO.csView addGestureRecognizer:gr];
+        gO.gestureArray = nil;
+
+        if( NO == gO.isUIObj ){
+            for( UIView* sv in ((UIView*)(gO.csView)).subviews )  // 사용자 반응 활성화.
+                [sv setUserInteractionEnabled:YES];
+        }
     }
 
     // 에디트 모드로 있던 하나의 객체를 해제한다.
     [xButton removeFromSuperview]; xButton = nil;
     [propButton removeFromSuperview];
     [sizeButton removeFromSuperview];
+    // 이전의 뷰에서 gesture recognizer 없애기.
+    [[USERCONTEXT getGearWithMagicNum:modifyMagicNum].csView removeGestureRecognizer:dragReco];
+
+    modifyMagicNum = 0;
 
     // TODO: 실행한다.
 }
@@ -214,9 +261,16 @@
 {
     // 전체 부품들에 기본적인 Tap 제스쳐 인식자들을 붙인다.
     for( CSGearObject *gO in USERCONTEXT.gearsArray ){
+        // 원래 제스쳐 인식자들은 다시 백업 후 제거한다.
+        gO.gestureArray = gO.csView.gestureRecognizers;
+        for( UIGestureRecognizer *gr in gO.csView.gestureRecognizers )
+            [gO.csView removeGestureRecognizer:gr];
+
         UITapGestureRecognizer *tapGR = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeEditGear:)];
         [gO setTapGR:tapGR];
         [gO.csView addGestureRecognizer:tapGR];
+        for( UIView* sv in ((UIView*)(gO.csView)).subviews )  // 사용자 반응 중지.
+            [sv setUserInteractionEnabled:NO];
     }
 
 }
@@ -262,13 +316,8 @@
     }
 
     // 이전의 뷰에서 gesture recognizer 없애기.
-    for( UIView *gv in self.view.subviews ){
-        if( gv.tag == modifyMagicNum ){
-            [gv removeGestureRecognizer:dragReco];
-            [gv.layer setShadowColor:[UIColor clearColor].CGColor];
-            break;
-        }
-    }
+    [[USERCONTEXT getGearWithMagicNum:modifyMagicNum].csView removeGestureRecognizer:dragReco];
+///         [gv.layer setShadowColor:[UIColor clearColor].CGColor];
 
     // 목적하는 객체 화면에 제어 버튼들을 붙인다.
     for( UIView *gv in self.view.subviews )
@@ -290,14 +339,22 @@
             [self.view bringSubviewToFront:sizeButton];
 
             [gv addGestureRecognizer:dragReco];
+            for( UIView* sv in gv.subviews )  // 사용자 반응 중지.
+                [sv setUserInteractionEnabled:NO];
 
             modifyView = gv;
 
-            [gv.layer setMasksToBounds:NO];
-            [gv.layer setShadowColor:[UIColor blackColor].CGColor];
-            [gv.layer setShadowOffset:CGSizeMake(1, 1)];
-            [gv.layer setShadowOpacity:1.0];
-            [gv.layer setShadowRadius:15.0];
+            // 크기 조절이 불가능한 부품들이 있다.
+            if( [[USERCONTEXT getGearWithMagicNum:magicNum] isResizable] )
+                [sizeButton setAlpha:1.0];
+            else
+                [sizeButton setAlpha:0.0]; // 그런 경우, 크기 조절 앵커는 사라진다.
+
+//            [gv.layer setMasksToBounds:NO];
+//            [gv.layer setShadowColor:[UIColor blackColor].CGColor];
+//            [gv.layer setShadowOffset:CGSizeMake(1, 1)];
+//            [gv.layer setShadowOpacity:1.0];
+//            [gv.layer setShadowRadius:15.0];
             break;
         }
     }
@@ -326,13 +383,10 @@
     PropertyTVController *tview = (PropertyTVController*)((UINavigationController*)(propertyPopoverController.contentViewController)).topViewController;
 
     // 해당 객체를 선택해주고, 목록에 내용이 표시될 수 있도록 준비해줌.
-    for( CSGearObject *g in USERCONTEXT.gearsArray )
-    {
-        if( g.csMagicNum == ((UIButton*)sender).tag ){
-            [tview setSelectedGear:g];
-            [propertyPopoverController presentPopoverFromRect:((UIView*)sender).frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-            return;
-        }
+    CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:((UIButton*)sender).tag];
+    if( nil != gObj ){
+        [tview setSelectedGear:gObj];
+        [propertyPopoverController presentPopoverFromRect:((UIView*)sender).frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     }
 
     // 만일 여기로 온다면, 매직 넘버를 찾지 못했다는 것. 문제가 있는 경우다.
@@ -342,6 +396,10 @@
 -(void) moveGear:(UIPanGestureRecognizer*)recognizer
 {
     static CGPoint startPoint;
+
+    // 실행 모드라면 움직이지 않게 하자. (마지막 하나가 움직일 수 있는 상태가 됨)
+    // GestureRecognizer 를 없애는 것 보다 여기서 체크하는게 싸게 먹힌다.
+    if( 0 == modifyMagicNum ) return;
 
     if ([recognizer state] == UIGestureRecognizerStateBegan )
 	{

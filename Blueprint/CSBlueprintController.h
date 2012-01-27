@@ -10,6 +10,13 @@
 #import "CSGearObject.h"
 #import "CSLabel.h"
 #import "CSTextField.h"
+#import "CSBtnTextField.h"
+#import "CSSwitch.h"
+#import "CSButton.h"
+#import "CSToggleButton.h"
+#import "CSMAskedlabel.h"
+#import "CSFlipCounter.h"
+#import "CSSlider.h"
 
 @interface CSBlueprintController : UIViewController
 {

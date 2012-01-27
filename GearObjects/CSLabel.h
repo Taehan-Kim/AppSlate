@@ -31,4 +31,7 @@
 -(void) setTextAlignment:(NSNumber*)alignNum;
 -(NSNumber *) getTextAlignment;
 
+-(void) setRoundBorder:(NSNumber*)BoolValue;
+-(NSNumber*) getRoundBorder;
+
 @end

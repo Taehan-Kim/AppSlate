@@ -21,7 +21,7 @@
         [self.layer setCornerRadius:5.0];
         [self.layer setBorderColor:[UIColor whiteColor].CGColor];
 
-        CAGradientLayer *gradient = [CAGradientLayer layer];
+        gradient = [CAGradientLayer layer];
         [gradient setFrame:[self bounds]];
         [gradient setColors:[NSArray arrayWithObjects:(id)[[UIColor clearColor] CGColor], (id)[[UIColor blackColor] CGColor], nil]];
         [gradient setOpacity:0.5];
@@ -37,27 +37,25 @@
     return self;
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
+-(void)layoutSubviews
 {
-    // Drawing code
+    gradient.frame = self.bounds;   // make the subview frame match its view
+
+    [super layoutSubviews];
 }
-*/
+
+
 
 -(void) touchIn:(id)sender
 {
-    moreGradient = [CAGradientLayer layer];
-    [moreGradient setFrame:[self bounds]];
-    [moreGradient setColors:[NSArray arrayWithObjects:(id)[[UIColor clearColor] CGColor], (id)[[UIColor blackColor] CGColor], nil]];
-    [moreGradient setOpacity:0.8];
-    [self.layer addSublayer:moreGradient];
+//    gradient.opacity = 0.9;
+    [gradient setColors:[NSArray arrayWithObjects:(id)[[UIColor blackColor] CGColor], (id)[[UIColor clearColor] CGColor], nil]];
 }
 
 -(void) touchUp:(id)sender
 {
-    [moreGradient removeFromSuperlayer];
+//    gradient.opacity = 0.5;
+    [gradient setColors:[NSArray arrayWithObjects:(id)[[UIColor clearColor] CGColor], (id)[[UIColor blackColor] CGColor], nil]];
 }
 
 #pragma mark -
@@ -67,6 +65,13 @@
     [self setTitle:txt forState:UIControlStateNormal];
     [self setTitle:txt forState:UIControlStateHighlighted];
     [self setTitle:txt forState:UIControlStateSelected];
+}
+
+-(void) setTitleColor:(UIColor *)color
+{
+    [self setTitleColor:color forState:UIControlStateNormal];
+    [self setTitleColor:color forState:UIControlStateHighlighted];
+    [self setTitleColor:color forState:UIControlStateSelected];
 }
 
 -(void) addTarget:(id)tg action:(SEL)selector

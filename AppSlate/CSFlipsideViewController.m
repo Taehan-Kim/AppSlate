@@ -24,7 +24,14 @@
         NSArray  *keys = [[NSArray alloc] initWithObjects:@"name",@"desc",@"icon",@"tag", nil];
         gearList = [[NSArray alloc] initWithObjects:
                     [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Label",@"Simple Text Label", @"li_label.png", NSNUM(CS_LABEL), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Masked Label",@"Masked Text Label", @"li_label.png", NSNUM(CS_MASKEDLABEL), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Flip Counter",@"Flip Number Counter", @"li_label.png", NSNUM(CS_FLIPCNT), nil] forKeys:keys],
                     [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Text Field",@"User can input some text", @"li_textfield.png", NSNUM(CS_TEXTFIELD), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Button Text Field",@"Input text filed with button", @"li_textfield.png", NSNUM(CS_BTNTEXTFIELD), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Basic Switch",@"On/Off switch", @"li_textfield.png", NSNUM(CS_SWITCH), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Button", @"Basic button", @"li_textfield.png", NSNUM(CS_BUTTON), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Toggle Button", @"Toggle button", @"li_textfield.png", NSNUM(CS_TOGGLEBTN), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Slider", @"Bar Slider", @"li_textfield.png", NSNUM(CS_SLIDER), nil] forKeys:keys],
                     nil];
     }
     return self;

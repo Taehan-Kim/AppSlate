@@ -48,6 +48,7 @@
     [actionHandle setClipsToBounds:YES];
     [actionHandle setAlpha:0.7];
     [actionHandle setCenter:actionGear.csView.center];
+    [actionHandle addSubview:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"arrow-cross.png"]]];
     [self addSubview:actionHandle];
 
     linkStartPoint = actionHandle.center;

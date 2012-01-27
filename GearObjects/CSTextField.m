@@ -20,7 +20,11 @@
 
 -(void) setText:(NSString*)txt;
 {
-    [((UITextField*)csView) setText:txt];
+    if( [txt isKindOfClass:[NSString class]] )
+        [((UITextField*)csView) setText:txt];
+
+    else if([txt isKindOfClass:[NSNumber class]] )
+        [((UITextField*)csView) setText:[((NSNumber*)txt) stringValue]];
 }
 
 -(NSString*) getText
@@ -68,19 +72,6 @@
     return [NSNumber numberWithInteger:((UITextField*)csView).textAlignment];
 }
 
-//===========================================================================
-
-
--(NSArray*) getInStringProperties
-{
-    return [NSArray arrayWithObjects:@"setText", nil];
-}
-
--(NSArray*) getOutStringProperties
-{
-    return [NSArray arrayWithObjects:@"text", nil];
-}
-
 #pragma mark -
 
 -(id) initGear
@@ -91,6 +82,7 @@
     [csView setBackgroundColor:[UIColor whiteColor]];
 
     csCode = CS_TEXTFIELD;
+    isUIObj = YES;
 
     ((UITextField*)csView).textColor = [UIColor blackColor];
     ((UITextField*)csView).font = CS_FONT(16);
@@ -98,6 +90,8 @@
     [(UITextField*)csView setBorderStyle:UITextBorderStyleRoundedRect];
     [(UITextField*)csView setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
     [(UITextField*)csView setDelegate:self];
+    [(UITextField*)csView setClearButtonMode:UITextFieldViewModeWhileEditing];
+    [(UITextField*)csView setUserInteractionEnabled:YES];
 
     self.info = NSLocalizedString(@"Text Field", @"Text Field");
 
@@ -142,9 +136,12 @@
     
     CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
 
-    if( nil != gObj )
-        [gObj performSelector:act withObject:textField.text];
-
+    if( nil != gObj ){
+        if( [gObj respondsToSelector:act] )
+            [gObj performSelector:act withObject:textField.text];
+        else
+            ; // todo: error handleing
+    }
     return YES;
 }
 
@@ -160,8 +157,12 @@
     
     CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
 
-    if( nil != gObj )
-        [gObj performSelector:act withObject:textField.text];
+    if( nil != gObj ){
+        if( [gObj respondsToSelector:act] )
+            [gObj performSelector:act withObject:textField.text];
+        else
+            ;
+    }
 }
 
 @end

@@ -10,8 +10,8 @@
 
 @implementation CSGearObject
 
-@synthesize csMagicNum, csView, tapGR;
-@synthesize info;
+@synthesize csMagicNum, csView, tapGR, gestureArray;
+@synthesize info, isUIObj;
 
 
 // 객체에 전달되어 입력될 수 있는 문자열 자료 연결점에 대한 배열을 외부에 알려준다.
@@ -44,6 +44,12 @@
 //[NSDate timeIntervalSinceReferenceDate]
     csMagicNum = rand();
 
+    // 기본적으로 크기 조절이 가능하다고 세팅한다.
+    csResizable = YES;
+
+    // 기본적으로 존재하지 않는 UI 객체.
+    isUIObj = NO;
+
     return self;
 }
 
@@ -53,6 +59,11 @@
 -(NSArray*) getActionList
 {
     return nil;
+}
+
+-(BOOL) isResizable
+{
+    return csResizable;
 }
 
 // 연결 설정

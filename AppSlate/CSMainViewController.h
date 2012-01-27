@@ -15,11 +15,14 @@
     IBOutlet    UIToolbar   *toolBar;
     __weak IBOutlet UIBarButtonItem *playButton;
     __weak IBOutlet UIBarButtonItem *stopButton;
+    __weak IBOutlet UIBarButtonItem *gearListButton;
 
     UIImage *psImage;
 }
 
 @property (strong, nonatomic) UIPopoverController *flipsidePopoverController;
+
+- (IBAction)OpenFileGallery:(id)sender;
 
 - (IBAction)showGearList:(id)sender;
 - (IBAction)playAction:(id)sender;
