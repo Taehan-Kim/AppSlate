@@ -6,6 +6,7 @@
 //  Copyright (c) 2011년 ChocolateSoft. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
 #import "CSBlueprintView.h"
 #import "CSBlueprintController.h"
 #import "PropertyTVController.h"
@@ -78,10 +79,12 @@
 {
     NSUInteger getCode = [[[noti userInfo] objectForKey:@"tag"] integerValue];
     cView = ((UIView*)[[noti userInfo] objectForKey:@"cell"]);
-    CGRect startFrame = [cView convertRect:cView.frame toView:self.view];
+    [cView setClipsToBounds:YES];
+    CGRect startFrame = [cView convertRect:cView.bounds toView:self.view];
 
-    [cView setFrame:startFrame];
     [self.view addSubview:cView];
+    [cView setFrame:startFrame];
+    NSLog(@"start frame:%f,%f",startFrame.origin.x,startFrame.origin.y);
 
     switch (getCode)
     {
@@ -112,6 +115,12 @@
         case CS_SLIDER:
             newObj = [[CSSlider alloc] initGear];
             break;
+        case CS_TABLE:
+            newObj = [[CSTable alloc] initGear];
+            break; 
+        case CS_BULB:
+            newObj = [[CSBulb alloc] initGear];
+            break; 
         default:
             return;
     }
@@ -133,21 +142,21 @@
     CGPathRelease(curvedPath);
 
     // setup scaling
-    CABasicAnimation *resizeAnimation = [CABasicAnimation animationWithKeyPath:@"frame"];
-    [resizeAnimation setToValue:[NSValue valueWithCGRect:toFrame]];
+    CABasicAnimation *resizeAnimation = [CABasicAnimation animationWithKeyPath:@"bounds.size"];
+    [resizeAnimation setToValue:[NSValue valueWithCGSize:toFrame.size]];
     resizeAnimation.fillMode = kCAFillModeForwards;
     resizeAnimation.removedOnCompletion = NO;
 
     CAAnimationGroup *group = [CAAnimationGroup animation]; 
     [group setValue:@"_drop" forKey:@"name"];
     group.fillMode = kCAFillModeForwards;
-    group.removedOnCompletion = YES;
+    group.removedOnCompletion = NO;
     [group setAnimations:[NSArray arrayWithObjects: pathAnimation, resizeAnimation,nil]];
     group.duration = 0.6f;
     group.delegate = self;
     [group setValue:cView forKey:@"imageViewBeingAnimated"];
 
-    [cView.layer addAnimation:group forKey:@"curveAnimation"];
+    [cView.layer addAnimation:group forKey:@"myCurveAnimation"];
 }
 
 - (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag
@@ -174,8 +183,9 @@
     // 기어 뷰 를 설계도에 놓는다.
     [aV setTag:((CSGearObject*)gearObj).csMagicNum];
 
-    for( UIView* sv in aV.subviews )  // 사용자 반응 중지.
-        [sv setUserInteractionEnabled:NO];
+    if( NO == ((CSGearObject*)gearObj).isUIObj )
+        for( UIView* sv in aV.subviews )  // 사용자 반응 중지.
+            [sv setUserInteractionEnabled:NO];
 
     // Gesture Recognizer Backup
     ((CSGearObject*)gearObj).gestureArray = [((CSGearObject*)gearObj).csView gestureRecognizers];
@@ -223,6 +233,35 @@
     }
 }
 
+#pragma mark -
+
+-(void) deleteAllGear
+{
+
+    for( CSGearObject *g in USERCONTEXT.gearsArray )
+        [g.csView removeFromSuperview];
+
+    [USERCONTEXT.gearsArray removeAllObjects];
+
+    modifyView = nil;
+    modifyMagicNum = 0;
+
+    [xButton removeFromSuperview]; xButton = nil;
+    [propButton removeFromSuperview];
+    [sizeButton removeFromSuperview];
+}
+
+-(void) putAllGearsToView
+{
+    for( CSGearObject *g in USERCONTEXT.gearsArray ){
+        [self.view addSubview:g.csView];
+        // 기어 뷰 를 설계도에 놓는다.
+        [g.csView setTag:g.csMagicNum];
+        [g setTapGR: [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeEditGear:)]];
+        [g.csView addGestureRecognizer:g.tapGR];
+    }
+}
+
 #pragma mark - Run and Stop
 
 -(void) runRequest:(NSNotification*)noti
@@ -239,10 +278,10 @@
             [gO.csView addGestureRecognizer:gr];
         gO.gestureArray = nil;
 
-        if( NO == gO.isUIObj ){
+        // NOTE: 두 가지 경우에 대해서 처리 하지 않음.
+        if( NO == gO.isUIObj || [gO.csView isKindOfClass:[UITableView class]] )
             for( UIView* sv in ((UIView*)(gO.csView)).subviews )  // 사용자 반응 활성화.
                 [sv setUserInteractionEnabled:YES];
-        }
     }
 
     // 에디트 모드로 있던 하나의 객체를 해제한다.
@@ -250,9 +289,11 @@
     [propButton removeFromSuperview];
     [sizeButton removeFromSuperview];
     // 이전의 뷰에서 gesture recognizer 없애기.
-    [[USERCONTEXT getGearWithMagicNum:modifyMagicNum].csView removeGestureRecognizer:dragReco];
+    if( nil != modifyView )
+        [modifyView removeGestureRecognizer:dragReco];
 
     modifyMagicNum = 0;
+    modifyView = nil;
 
     // TODO: 실행한다.
 }
@@ -269,8 +310,12 @@
         UITapGestureRecognizer *tapGR = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeEditGear:)];
         [gO setTapGR:tapGR];
         [gO.csView addGestureRecognizer:tapGR];
-        for( UIView* sv in ((UIView*)(gO.csView)).subviews )  // 사용자 반응 중지.
-            [sv setUserInteractionEnabled:NO];
+        
+        if( NO == gO.isUIObj || [gO.csView isKindOfClass:[UITableView class]] )
+        {
+            for( UIView* sv in ((UIView*)(gO.csView)).subviews )  // 사용자 반응 중지.
+                [sv setUserInteractionEnabled:NO];
+        }
     }
 
 }
@@ -315,49 +360,48 @@
         [self.view addSubview:sizeButton];
     }
 
+    CSGearObject *mGear = [USERCONTEXT getGearWithMagicNum:magicNum];
+    UIView *targetView = mGear.csView;
+
     // 이전의 뷰에서 gesture recognizer 없애기.
-    [[USERCONTEXT getGearWithMagicNum:modifyMagicNum].csView removeGestureRecognizer:dragReco];
+    [targetView removeGestureRecognizer:dragReco];
 ///         [gv.layer setShadowColor:[UIColor clearColor].CGColor];
 
     // 목적하는 객체 화면에 제어 버튼들을 붙인다.
-    for( UIView *gv in self.view.subviews )
+    [xButton setFrame:CGRectMake(0, 0, 30, 30)];
+    [propButton setFrame:CGRectMake(0, 0, 30, 30)];
+    [sizeButton setFrame:CGRectMake(0, 0, 30, 30)];
+
+    [xButton setFrame:CGRectOffset(xButton.frame, targetView.frame.origin.x-15, targetView.frame.origin.y-15)];
+    [xButton setTag:targetView.tag];   // magic number 를 동일하게 해줌.
+    [propButton setFrame:CGRectOffset(xButton.frame, 32, 0)];
+    [propButton setTag:targetView.tag];  // magic number 를 동일하게 해줌.
+    [sizeButton setFrame:CGRectOffset(sizeButton.frame, targetView.frame.origin.x+targetView.frame.size.width-15, targetView.frame.origin.y+targetView.frame.size.height-15)];
+
+    [self.view bringSubviewToFront:xButton];
+    [self.view bringSubviewToFront:propButton];
+    [self.view bringSubviewToFront:sizeButton];
+
+    [targetView addGestureRecognizer:dragReco];
+
+    if( NO == mGear.isUIObj && [mGear.csView isKindOfClass:[UITableView class]] )
     {
-        if( gv.tag == magicNum )
-        {
-            [xButton setFrame:CGRectMake(0, 0, 30, 30)];
-            [propButton setFrame:CGRectMake(0, 0, 30, 30)];
-            [sizeButton setFrame:CGRectMake(0, 0, 30, 30)];
-
-            [xButton setFrame:CGRectOffset(xButton.frame, gv.frame.origin.x-15, gv.frame.origin.y-15)];
-            [xButton setTag:gv.tag];   // magic number 를 동일하게 해줌.
-            [propButton setFrame:CGRectOffset(xButton.frame, 32, 0)];
-            [propButton setTag:gv.tag];  // magic number 를 동일하게 해줌.
-            [sizeButton setFrame:CGRectOffset(sizeButton.frame, gv.frame.origin.x+gv.frame.size.width-15, gv.frame.origin.y+gv.frame.size.height-15)];
-
-            [self.view bringSubviewToFront:xButton];
-            [self.view bringSubviewToFront:propButton];
-            [self.view bringSubviewToFront:sizeButton];
-
-            [gv addGestureRecognizer:dragReco];
-            for( UIView* sv in gv.subviews )  // 사용자 반응 중지.
-                [sv setUserInteractionEnabled:NO];
-
-            modifyView = gv;
-
-            // 크기 조절이 불가능한 부품들이 있다.
-            if( [[USERCONTEXT getGearWithMagicNum:magicNum] isResizable] )
-                [sizeButton setAlpha:1.0];
-            else
-                [sizeButton setAlpha:0.0]; // 그런 경우, 크기 조절 앵커는 사라진다.
+        for( UIView* sv in targetView.subviews )  // 사용자 반응 중지.
+            [sv setUserInteractionEnabled:NO];
+    }
+    // 크기 조절이 불가능한 부품들이 있다.
+    if( [[USERCONTEXT getGearWithMagicNum:magicNum] isResizable] )
+        [sizeButton setAlpha:1.0];
+    else
+        [sizeButton setAlpha:0.0]; // 그런 경우, 크기 조절 앵커는 사라진다.
 
 //            [gv.layer setMasksToBounds:NO];
 //            [gv.layer setShadowColor:[UIColor blackColor].CGColor];
 //            [gv.layer setShadowOffset:CGSizeMake(1, 1)];
 //            [gv.layer setShadowOpacity:1.0];
 //            [gv.layer setShadowRadius:15.0];
-            break;
-        }
-    }
+
+    modifyView = targetView;
     modifyMagicNum = magicNum;
 }
 

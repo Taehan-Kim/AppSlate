@@ -43,8 +43,15 @@
     if (self) 
     {
         [self RS_commonInit];
+        text = [aDecoder decodeObjectForKey:@"text"];
     }
     return self;
+}
+
+-(void)encodeWithCoder:(NSCoder *)encoder
+{
+    [super encodeWithCoder:encoder];
+    [encoder encodeObject:text forKey:@"text"];
 }
 
 + (Class)layerClass
@@ -81,7 +88,7 @@
     // create a nice gradient layer to use as our fill
 //    CAGradientLayer *gradientLayer = (CAGradientLayer *)[self layer];
     CALayer *gradientLayer = [self layer];
-    [gradientLayer setBackgroundColor:[[UIColor grayColor] CGColor]];
+    [gradientLayer setBackgroundColor:[[UIColor lightGrayColor] CGColor]];
 //    [gradientLayer setColors: colors];
 //    [gradientLayer setLocations:gradientLocations];
 //    [gradientLayer setStartPoint:CGPointMake(0.0, 0.0)];

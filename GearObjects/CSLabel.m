@@ -99,18 +99,6 @@
 
 #pragma mark -
 
--(NSArray*) getInStringProperties
-{
-    return [NSArray arrayWithObjects:@"setText", nil];
-}
-
--(NSArray*) getOutStringProperties
-{
-    return [NSArray arrayWithObjects:@"text", nil];
-}
-
-#pragma mark -
-
 -(id) initGear
 {
     if( ![super init] ) return nil;

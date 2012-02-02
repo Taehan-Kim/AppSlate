@@ -88,15 +88,20 @@
     return self;
 }
 
-// 설정될 수 있는 속성 목록.
--(NSArray*) getPropertiesList
+-(id) initWithCoder:(NSCoder *)aDecoder
 {
-    return pListArray;
+    if( (self=[super initWithCoder:aDecoder]) ){
+//        csView = [aDecoder decodeObjectForKey:@"cView"];
+        checkNumber = [aDecoder decodeIntegerForKey:@"checkNumber"];
+    }
+    return self;
 }
 
--(NSArray*) getActionList
+-(void)encodeWithCoder:(NSCoder *)encoder
 {
-    return actionArray;
+    [super encodeWithCoder:encoder];
+//    [encoder encodeObject:csView forKey:@"csView"];
+    [encoder encodeInteger:checkNumber forKey:@"checkNumber"];
 }
 
 #pragma mark - Flip counter Delegate

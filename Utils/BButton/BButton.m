@@ -19,7 +19,7 @@
         
         [self.layer setBorderWidth:2.5];
         [self.layer setCornerRadius:5.0];
-        [self.layer setBorderColor:[UIColor whiteColor].CGColor];
+        [self.layer setBorderColor:[UIColor lightGrayColor].CGColor];
 
         gradient = [CAGradientLayer layer];
         [gradient setFrame:[self bounds]];

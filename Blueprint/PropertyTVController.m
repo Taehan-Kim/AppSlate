@@ -13,6 +13,7 @@
 #import "FontSettingController.h"
 #import "AlignSettingController.h"
 #import "BoolSettingController.h"
+#import "CellSettingController.h"
 
 @implementation PropertyTVController
 
@@ -56,7 +57,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    CGSize size = CGSizeMake(320, 480); // size of view in popover
+    CGSize size = CGSizeMake(320, 400); // size of view in popover
     self.contentSizeForViewInPopover = size;
 
     // HACK: Gear 가 바뀌어도 이전 정보가 남아있지 못하도록 테이블 셀 뷰를 지운다.
@@ -68,9 +69,13 @@
 //    [self.tableView endUpdates];
 }
 
-- (void)viewDidAppear:(BOOL)animated
+// UIPopover Controller 의 크기를 조정해주기 위해서 사용하는 팁 같은 코드.
+-(void) viewDidAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
+    CGSize currentSetSizeForPopover = self.contentSizeForViewInPopover;
+    CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
+    self.contentSizeForViewInPopover = fakeMomentarySize;
+    self.contentSizeForViewInPopover = currentSetSizeForPopover;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -201,7 +206,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary *info = [[theGear getPropertiesList] objectAtIndex:indexPath.row];
     UIViewController *VC = nil;
 
     // 선택 표시는 다시 풀자.
@@ -209,6 +213,8 @@
 
     if( 0 == indexPath.section ) // ----------------------------------------------------------------
     {
+        NSDictionary *info = [[theGear getPropertiesList] objectAtIndex:indexPath.row];
+
         // Navigation logic may go here. Create and push another view controller.
         if( [[info objectForKey:@"type"] isEqualToString:P_TXT] )
         {
@@ -235,6 +241,10 @@
         else if( [[info objectForKey:@"type"] isEqualToString:P_NUM] )
         {
             VC = [[NumberSettingViewController alloc] initWithGear:theGear propertyInfo:info];
+        }
+        else if( [[info objectForKey:@"type"] isEqualToString:P_CELL] )
+        {
+            VC = [[CellSettingController alloc] initWithGear:theGear propertyInfo:info];
         }
         if( nil == VC ) return;
 

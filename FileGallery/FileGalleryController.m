@@ -62,6 +62,7 @@
     // Bookshelf View Controller
     if( nil == bookshelfVC ){
         bookshelfVC = [[BookshelfViewController alloc] init];
+        [bookshelfVC setParentController:self];
         [bookshelfVC.view setFrame:CGRectMake(0, 44, self.view.frame.size.width, self.view.frame.size.height-44)];
         [self.view addSubview:bookshelfVC.view];
     }

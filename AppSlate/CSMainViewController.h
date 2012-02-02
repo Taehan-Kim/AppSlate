@@ -9,15 +9,16 @@
 #import "CSFlipsideViewController.h"
 #import "CSBlueprintController.h"
 
-@interface CSMainViewController : UIViewController <CSFlipsideViewControllerDelegate>
+@interface CSMainViewController : UIViewController <CSFlipsideViewControllerDelegate, UIActionSheetDelegate, UIAlertViewDelegate>
 {
     CSBlueprintController   *blueprintCtrl;
     IBOutlet    UIToolbar   *toolBar;
+    BOOL    runButton;
     __weak IBOutlet UIBarButtonItem *playButton;
-    __weak IBOutlet UIBarButtonItem *stopButton;
     __weak IBOutlet UIBarButtonItem *gearListButton;
+    __weak IBOutlet UIBarButtonItem *saveButton;
 
-    UIImage *psImage;
+    UIImage *blueprintViewImage;
 }
 
 @property (strong, nonatomic) UIPopoverController *flipsidePopoverController;
@@ -26,6 +27,9 @@
 
 - (IBAction)showGearList:(id)sender;
 - (IBAction)playAction:(id)sender;
-- (IBAction)stopAction:(id)sender;
+- (IBAction)saveAction:(id)sender;
+
+-(void) saveAppFile;
+-(UIImage*)resizedImage:(UIImage*)inImage inRect:(CGRect)thumbRect;
 
 @end

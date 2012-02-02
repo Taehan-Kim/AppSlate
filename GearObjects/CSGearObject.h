@@ -13,12 +13,26 @@
 #define CS_LABEL        101
 #define CS_MASKEDLABEL  102
 #define CS_TEXTFIELD    103
-#define CS_BTNTEXTFIELD   104
+#define CS_BTNTEXTFIELD 104
 #define CS_SWITCH       105
 #define CS_BUTTON       106
 #define CS_TOGGLEBTN    107
 #define CS_FLIPCNT      108
 #define CS_SLIDER       109
+#define CS_TABLE        110
+#define CS_RSSTABLE     111
+#define CS_WEBVIEW      112
+#define CS_BULB         113
+
+#define CS_ALERT        120
+
+#define CS_NOT          200
+#define CS_AND          201
+#define CS_OR           202
+#define CS_XOR          203
+
+#define CS_RECT         300
+#define CS_LINE         301
 
 
 #define MINSIZE         30
@@ -30,6 +44,7 @@
 #define P_ALIGN         @"align"
 #define P_FONT          @"font"
 #define P_BOOL          @"bool"
+#define P_CELL          @"cell"
 
 #define A_TXT           @"textAct"
 #define A_NUM           @"numberAct"
@@ -38,7 +53,7 @@
 
 #define MAKE_ACTION_D(_d1,_d2,_v) *(_v)=[[NSMutableDictionary alloc] initWithCapacity:4];[_v setObject:(_d1) forKey:@"name"];[_v setObject:_d2 forKey:@"type"];[_v setObject:[NSValue valueWithPointer:nil] forKey:@"selector"];[_v setObject:[NSNumber numberWithInteger:0] forKey:@"mNum"]
 
-@interface CSGearObject : NSObject
+@interface CSGearObject : NSObject <NSCoding>
 {
     // Gear Code
     NSUInteger csCode;
@@ -63,9 +78,9 @@
     UIColor *csBackColor;
 
     // 속성 목록
-    NSArray *pListArray;
+    NSArray *pListArray, *pListTemp;
     // 액션 목록
-    NSArray *actionArray;
+    NSArray *actionArray, *actionTemp;
 
     UITapGestureRecognizer  *tapGR;
 
@@ -75,13 +90,7 @@
 
 -(id) object;
 
--(NSArray*) getInStringProperties;
-
--(NSArray*) getInNumberProperties;
-
--(NSArray*) getOutStringProperties;
-
--(NSArray*) getOutNumberProperties;
+-(void) makeUpSelectorArray;
 
 -(NSArray*) getActionList;
 
@@ -94,6 +103,10 @@
 @property (nonatomic, strong) NSString *info;
 @property (nonatomic, strong) NSArray *gestureArray;
 
++(NSArray*) makePListForSave:(NSArray*)list;
++(NSArray*) makePListForUse:(NSArray*)list;
++(NSArray*) makeAListForSave:(NSArray*)list;
++(NSArray*) makeAListForUse:(NSArray*)list;
 
 // 연결 설정
 -(BOOL) setActionIndex:(NSUInteger)idx to:(NSUInteger)magicNum selector:(SEL)selectorName;
@@ -112,11 +125,5 @@
 
 -(void) setBackgroundColor:(UIColor*)color;
 -(UIColor*) getBackgroundColor;
-
--(void) setFont:(UIFont*)font;
--(UIFont*) getFont;
-
--(void) setTextAlignment:(UITextAlignment)align;
--(UITextAlignment) getTextAlignment;
 
 @end

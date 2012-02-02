@@ -7,6 +7,7 @@
 //
 
 #import "CSGearObject.h"
+#import <objc/runtime.h>
 
 @implementation CSGearObject
 
@@ -14,35 +15,11 @@
 @synthesize info, isUIObj;
 
 
-// 객체에 전달되어 입력될 수 있는 문자열 자료 연결점에 대한 배열을 외부에 알려준다.
--(NSArray*) getInStringProperties
-{
-    return nil;
-}
-
-// 객체에 전달되어 입력될 수 있는 숫자 자료 연결점에 대한 배열을 외부에 알려준다.
--(NSArray*) getInNumberProperties
-{
-    return nil;
-}
-
-// 객체로부터 외부에 출력될 수 있는 문자열 자료 연결점에 대한 배열을 외부에 알려준다.
--(NSArray*) getOutStringProperties
-{
-    return nil;
-}
-
-// 객체로부터 외부에 출력될 수 있는 숫자 자료 연결점에 대한 배열을 외부에 알려준다.
--(NSArray*) getOutNumberProperties
-{
-    return nil;
-}
-
 -(id) init
 {
     if( ![super init] ) return nil;
 //[NSDate timeIntervalSinceReferenceDate]
-    csMagicNum = rand();
+    csMagicNum = arc4random();
 
     // 기본적으로 크기 조절이 가능하다고 세팅한다.
     csResizable = YES;
@@ -50,15 +27,155 @@
     // 기본적으로 존재하지 않는 UI 객체.
     isUIObj = NO;
 
+    actionArray = nil;
+
     return self;
 }
 
-// 액션의 종류들, 링크 정보를 알려준다.
-// name: xxxxx    desc:xxxxxx...
-// linkedmagiccode:xxxxx linkedname: xxxxx...
+-(id)initWithCoder:(NSCoder *)decoder
+{
+    if( (self=[super init]) ) {
+        csCode = [decoder decodeIntegerForKey:@"csCode"];
+        csMagicNum = [decoder decodeIntegerForKey:@"csMagicNum"];
+        info = [decoder decodeObjectForKey:@"info"];
+        csView = [decoder decodeObjectForKey:@"csView"];
+        csResizable = [decoder decodeBoolForKey:@"csResizable"];
+        csBackColor = [decoder decodeObjectForKey:@"csBackColor"];
+        actionTemp = [decoder decodeObjectForKey:@"actionArray"];
+        pListTemp = [decoder decodeObjectForKey:@"pListArray"];
+        isUIObj = [decoder decodeBoolForKey:@"isUIObj"];
+        gestureArray = [decoder decodeObjectForKey:@"gestureArray"];
+    }
+    return self;
+}
+
+// initWithCoder 가 호출되고 나서, 나중에 호출되어서 selector array 를 생성해야 한다.
+-(void) makeUpSelectorArray
+{
+    actionArray = [CSGearObject makeAListForUse:actionTemp];
+    pListArray = [CSGearObject makePListForUse:pListTemp];
+    actionTemp = pListTemp = nil;
+}
+
+-(void)encodeWithCoder:(NSCoder *)encoder
+{
+    [encoder encodeInteger:csCode forKey:@"csCode"];
+    [encoder encodeInteger:csMagicNum forKey:@"csMagicNum"];
+    [encoder encodeObject:info forKey:@"info"];
+    [encoder encodeObject:csView forKey:@"csView"];
+    [encoder encodeBool:csShow forKey:@"csShow"];
+    [encoder encodeBool:csResizable forKey:@"csResizable"];
+    [encoder encodeObject:csBackColor forKey:@"csBackColor"];
+    [encoder encodeObject:[CSGearObject makeAListForSave:actionArray] forKey:@"actionArray"];
+    [encoder encodeObject:[CSGearObject makePListForSave:pListArray] forKey:@"pListArray"];
+    [encoder encodeBool:isUIObj forKey:@"isUIObj"];
+    [encoder encodeObject:gestureArray forKey:@"gestureArray"];
+}
+
+// 저장할 수 있는 프로퍼티 목록을 생성해서 반환한다.
++(NSArray*) makePListForSave:(NSArray*)list
+{
+    NSMutableArray *theArray = [[NSMutableArray alloc] initWithCapacity:4];
+
+    for( NSDictionary *dic in list )
+    {
+        const char *sel_name_c = sel_getName([((NSValue*)[dic objectForKey:@"selector"]) pointerValue]);
+        const char *getSel_name_c = sel_getName([((NSValue*)[dic objectForKey:@"getSelector"]) pointerValue]);
+
+        NSDictionary *newDic = [NSDictionary dictionaryWithObjectsAndKeys:
+         [dic objectForKey:@"name"], @"name",
+         [dic objectForKey:@"type"], @"type",
+         [NSString stringWithCString:sel_name_c encoding:NSUTF8StringEncoding], @"selector",
+         [NSString stringWithCString:getSel_name_c encoding:NSUTF8StringEncoding], @"getSelector", nil];
+
+        [theArray addObject:newDic];
+    }
+
+    return theArray;
+}
+
++(NSArray*) makePListForUse:(NSArray*)list
+{
+    NSMutableArray *theArray = [[NSMutableArray alloc] initWithCapacity:4];
+    
+    for( NSDictionary *dic in list )
+    {
+        const char *sel_name_c = [(NSString*)[dic objectForKey:@"selector"] cStringUsingEncoding:NSUTF8StringEncoding];
+        const char *getSel_name_c = [(NSString*)[dic objectForKey:@"getSelector"] cStringUsingEncoding:NSUTF8StringEncoding];
+        
+        NSMutableDictionary *newDic = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                [dic objectForKey:@"name"], @"name",
+                                [dic objectForKey:@"type"], @"type",
+                                [NSValue valueWithPointer:sel_registerName(sel_name_c)], @"selector",
+                                [NSValue valueWithPointer:sel_registerName(getSel_name_c)], @"getSelector", nil];
+
+        [theArray addObject:newDic];
+    }
+    
+    return theArray;
+}
+
++(NSArray*) makeAListForSave:(NSArray*)list
+{
+    if( nil == list ) return nil;
+
+    NSMutableArray *theArray = [[NSMutableArray alloc] initWithCapacity:3];
+
+    for( NSDictionary *dic in list )
+    {
+        const char *sel_name_c;
+        if( NULL == [((NSValue*)[dic objectForKey:@"selector"]) pointerValue] )
+            sel_name_c = "%";
+        else
+            sel_name_c = sel_getName([((NSValue*)[dic objectForKey:@"selector"]) pointerValue]);
+
+        NSDictionary *newDic = [NSDictionary dictionaryWithObjectsAndKeys:
+                                [dic objectForKey:@"name"], @"name",
+                                [dic objectForKey:@"type"], @"type",
+                                [NSString stringWithCString:sel_name_c encoding:NSUTF8StringEncoding], @"selector",
+                                [dic objectForKey:@"mNum"], @"mNum", nil];
+        
+        [theArray addObject:newDic];
+    }
+    
+    return theArray;
+}
+
++(NSArray*) makeAListForUse:(NSArray*)list
+{
+    if( nil == list ) return nil;
+    NSMutableArray *theArray = [[NSMutableArray alloc] initWithCapacity:3];
+    
+    for( NSDictionary *dic in list )
+    {
+        NSValue *selValue;
+        const char *sel_name_c = [(NSString*)[dic objectForKey:@"selector"] cStringUsingEncoding:NSUTF8StringEncoding];
+        if( '%' == *sel_name_c )
+            selValue = [NSValue valueWithPointer:NULL];
+        else
+            selValue = [NSValue valueWithPointer:sel_registerName(sel_name_c)];
+        
+        NSMutableDictionary *newDic = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                [dic objectForKey:@"name"], @"name",
+                                [dic objectForKey:@"type"], @"type",
+                                selValue, @"selector",
+                                [dic objectForKey:@"mNum"], @"mNum", nil];
+        
+        [theArray addObject:newDic];
+    }
+
+    return theArray;
+}
+
+// 설정될 수 있는 속성 목록.
+-(NSArray*) getPropertiesList
+{
+    return pListArray;
+}
+
 -(NSArray*) getActionList
 {
-    return nil;
+    return actionArray;
 }
 
 -(BOOL) isResizable
@@ -104,11 +221,6 @@
         }
     }
     return YES;
-}
-
--(NSArray*) getPropertiesList
-{
-    return nil;
 }
 
 @end

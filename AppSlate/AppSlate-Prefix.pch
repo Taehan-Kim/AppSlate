@@ -38,3 +38,4 @@
 #define NOTI_RUN            @"noti_run"
 #define NOTI_STOP           @"noti_stop"
 #define NOTI_ACTION_LINK    @"noti_action_link_start"
+#define NOTI_FILELOAD       @"noti_file_load"

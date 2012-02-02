@@ -41,7 +41,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    CGSize size = CGSizeMake(320, 140); // size of view in popover
+    CGSize size = CGSizeMake(320, 106); // size of view in popover
     self.contentSizeForViewInPopover = size;
     self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
 
@@ -55,7 +55,7 @@
     NSNumber *sNum = objc_msgSend(theGear,[[pInfoDic objectForKey:@"getSelector"] pointerValue]);
     [textField setText: sNum.stringValue];
     [self.view addSubview:textField];
-    NSLog(@"%@", textField);
+//    NSLog(@"%@", textField);
 
     saveBtn = [[BButton alloc] initWithFrame:CGRectMake(C_GAP, 38.0+(C_GAP*3), C_WIDTH, 40)];
     [saveBtn setTitle:NSLocalizedString(@"APPLY",@"APPLY")];

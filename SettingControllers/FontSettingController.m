@@ -53,14 +53,14 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    CGSize size = CGSizeMake(320, 300); // size of view in popover
+    CGSize size = CGSizeMake(320, 219); // size of view in popover
     self.contentSizeForViewInPopover = size;
 
     [cmtController.view setFrame:self.view.frame];
     [cmtController viewWillAppear:animated];
     [self.view addSubview:cmtController.view];
 
-    saveBtn = [[BButton alloc] initWithFrame:CGRectMake(C_GAP, 200.0+(C_GAP*3), C_WIDTH, 40)];
+    saveBtn = [[BButton alloc] initWithFrame:CGRectMake(C_GAP, 150.0+(C_GAP*3), C_WIDTH, 40)];
     [saveBtn setTitle:NSLocalizedString(@"APPLY",@"APPLY")];
     [saveBtn addTarget:self action:@selector(setTheValue:)];
     [saveBtn setEnabled:YES];

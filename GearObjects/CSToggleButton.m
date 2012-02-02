@@ -137,15 +137,27 @@
     return self;
 }
 
-// 설정될 수 있는 속성 목록.
--(NSArray*) getPropertiesList
+-(id) initWithCoder:(NSCoder *)aDecoder
 {
-    return pListArray;
+    if( (self=[super initWithCoder:aDecoder]) ){
+        toggleValue = [aDecoder decodeBoolForKey:@"toggleValue"];
+        onColor = [aDecoder decodeObjectForKey:@"onColor"];
+        offColor = [aDecoder decodeObjectForKey:@"offColor"];
+        onText = [aDecoder decodeObjectForKey:@"onText"];
+        offText = [aDecoder decodeObjectForKey:@"offText"];
+        [(BButton*)csView addTarget:self action:@selector(pushAction:)];
+    }
+    return self;
 }
 
--(NSArray*) getActionList
+-(void)encodeWithCoder:(NSCoder *)encoder
 {
-    return actionArray;
+    [super encodeWithCoder:encoder];
+    [encoder encodeBool:toggleValue forKey:@"toggleValue"];
+    [encoder encodeObject:onColor forKey:@"onColor"];
+    [encoder encodeObject:offColor forKey:@"offColor"];
+    [encoder encodeObject:onText forKey:@"onText"];
+    [encoder encodeObject:offText forKey:@"offText"];
 }
 
 #pragma mark - Gear's Unique Actions

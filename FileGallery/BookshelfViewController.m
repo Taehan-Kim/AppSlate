@@ -29,7 +29,25 @@
         self.gridView.delegate = self;
         self.gridView.dataSource = self;
         
-        _imageNames = [NSArray arrayWithObjects:@"test1", @"test two", @"and three", nil];
+    }
+    _imageNames = [[NSMutableArray alloc] initWithCapacity:6];
+
+#ifdef TARGET_IPHONE_SIMULATOR
+    documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+#else
+    documentsPath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+#endif
+    NSDirectoryEnumerator *dirEnum = [[NSFileManager defaultManager] enumeratorAtPath:documentsPath];
+
+    NSString *file;
+    while (file = [dirEnum nextObject]) {
+        NSDictionary *attr = [dirEnum fileAttributes];
+        if( [[attr objectForKey:@"NSFileType"] isEqualToString:NSFileTypeDirectory] ){
+            NSLog(@"%@",file);
+            [_imageNames addObject:file]; // add name.
+        }
+
+        [dirEnum skipDescendants];  // do not recursion.
     }
     return self;
 }
@@ -84,8 +102,8 @@
                                                  reuseIdentifier:@"PlainCell"];
         plainCell.selectionGlowColor = [UIColor blueColor];
     }
-    
-    plainCell.image = [UIImage imageNamed:@"appFileIcon.png"];
+
+    plainCell.image = [UIImage imageWithContentsOfFile:[documentsPath stringByAppendingFormat:@"/%@/Face.png",[_imageNames objectAtIndex:index]]];
     plainCell.title = [_imageNames objectAtIndex:index];
 
     cell = plainCell;
@@ -98,11 +116,20 @@
     return ( CGSizeMake(224.0, 168.0) );
 }
 
+-(void) setParentController:(id) obj
+{
+    pObj = obj;
+}
+
 #pragma mark - GridView Delegate
 
 - (void) gridView: (AQGridView *) gridView didSelectItemAtIndex: (NSUInteger) index
 {
     NSLog(@"Icon selected: %d", index);
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:NOTI_FILELOAD
+                                                        object:[documentsPath stringByAppendingFormat:@"/%@/Contents.obj",[_imageNames objectAtIndex:index]]];
+    [pObj dismissModalViewControllerAnimated:YES];
 }
 
 @end

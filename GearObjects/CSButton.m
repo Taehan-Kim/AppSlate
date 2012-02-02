@@ -12,7 +12,7 @@
 
 -(id) object
 {
-    return ((UILabel*)csView);
+    return ((BButton*)csView);
 }
 
 //===========================================================================
@@ -95,15 +95,12 @@
     return self;
 }
 
-// 설정될 수 있는 속성 목록.
--(NSArray*) getPropertiesList
+-(id)initWithCoder:(NSCoder *)decoder
 {
-    return pListArray;
-}
-
--(NSArray*) getActionList
-{
-    return actionArray;
+    if( (self=[super initWithCoder:decoder]) ) {
+        [(BButton*)csView addTarget:self action:@selector(pushAction)];
+    }
+    return self;
 }
 
 #pragma mark - Gear's Unique Actions

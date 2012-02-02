@@ -24,6 +24,14 @@
 		5404080514AB0B63002A764B /* HRColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 540407FD14AB0B63002A764B /* HRColorPickerView.m */; };
 		5404080614AB0B63002A764B /* HRColorPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 540407FF14AB0B63002A764B /* HRColorPickerViewController.m */; };
 		5404080714AB0B63002A764B /* HRColorUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 5404080114AB0B63002A764B /* HRColorUtil.m */; };
+		5404643F14D795D800BDD727 /* gi_flipcount.png in Resources */ = {isa = PBXBuildFile; fileRef = 5404643D14D795D800BDD727 /* gi_flipcount.png */; };
+		5404644014D795D800BDD727 /* gi_maskedlabel.png in Resources */ = {isa = PBXBuildFile; fileRef = 5404643E14D795D800BDD727 /* gi_maskedlabel.png */; };
+		541F750514D67E7300B4A517 /* gi_label.png in Resources */ = {isa = PBXBuildFile; fileRef = 541F74FC14D67E7300B4A517 /* gi_label.png */; };
+		541F750714D67E7300B4A517 /* gi_none.png in Resources */ = {isa = PBXBuildFile; fileRef = 541F74FE14D67E7300B4A517 /* gi_none.png */; };
+		541F750914D67E7300B4A517 /* gi_slider.png in Resources */ = {isa = PBXBuildFile; fileRef = 541F750014D67E7300B4A517 /* gi_slider.png */; };
+		541F750B14D67E7300B4A517 /* gi_switch.png in Resources */ = {isa = PBXBuildFile; fileRef = 541F750214D67E7300B4A517 /* gi_switch.png */; };
+		541F751014D68ED600B4A517 /* run_.png in Resources */ = {isa = PBXBuildFile; fileRef = 541F750E14D68ED600B4A517 /* run_.png */; };
+		541F751114D68ED600B4A517 /* stop_.png in Resources */ = {isa = PBXBuildFile; fileRef = 541F750F14D68ED600B4A517 /* stop_.png */; };
 		542A310814AD5B8B00150060 /* AlignSettingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 542A310714AD5B8B00150060 /* AlignSettingController.m */; };
 		542F3B4A14C68EF60066B13D /* FileGalleryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 542F3B4914C68EF60066B13D /* FileGalleryController.m */; };
 		542F3B4D14C69C710066B13D /* BookshelfViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 542F3B4C14C69C710066B13D /* BookshelfViewController.m */; };
@@ -38,7 +46,6 @@
 		542F3B7214C6A17B0066B13D /* NSIndexSet+AQIsSetContiguous.m in Sources */ = {isa = PBXBuildFile; fileRef = 542F3B6714C6A17B0066B13D /* NSIndexSet+AQIsSetContiguous.m */; };
 		542F3B7314C6A17B0066B13D /* UIColor+AQGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = 542F3B6914C6A17B0066B13D /* UIColor+AQGridView.m */; };
 		542F3B7614C6B85B0066B13D /* FileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 542F3B7514C6B85B0066B13D /* FileCell.m */; };
-		542F3B7814C6C4B70066B13D /* appFileIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 542F3B7714C6C4B70066B13D /* appFileIcon.png */; };
 		5434EFEC14A0A65600433710 /* StringSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5434EFEB14A0A65600433710 /* StringSettingViewController.m */; };
 		5438D641146A68AB00CE9136 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5438D640146A68AB00CE9136 /* UIKit.framework */; };
 		5438D643146A68AB00CE9136 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5438D642146A68AB00CE9136 /* Foundation.framework */; };
@@ -75,10 +82,18 @@
 		5493734314A8864F00697A40 /* BButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5493734214A8864F00697A40 /* BButton.m */; };
 		5493734514A88E3500697A40 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5493734414A88E3500697A40 /* QuartzCore.framework */; };
 		549CC83F14BC2A5D00FD15DD /* bluePaper.png in Resources */ = {isa = PBXBuildFile; fileRef = 549CC83E14BC2A5D00FD15DD /* bluePaper.png */; };
+		54D13BE114D7B207005D4616 /* gi_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 54D13BDD14D7B207005D4616 /* gi_button.png */; };
+		54D13BE214D7B207005D4616 /* gi_textfield.png in Resources */ = {isa = PBXBuildFile; fileRef = 54D13BDE14D7B207005D4616 /* gi_textfield.png */; };
+		54D13BE314D7B207005D4616 /* gi_textfieldbtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 54D13BDF14D7B207005D4616 /* gi_textfieldbtn.png */; };
+		54D13BE414D7B207005D4616 /* gi_togglebtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 54D13BE014D7B207005D4616 /* gi_togglebtn.png */; };
+		54D13BE814D7B542005D4616 /* CSBulb.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D13BE714D7B542005D4616 /* CSBulb.m */; };
+		54D13BEB14D7BF43005D4616 /* bulbOff.png in Resources */ = {isa = PBXBuildFile; fileRef = 54D13BEA14D7BF43005D4616 /* bulbOff.png */; };
 		54D326AD14C7F57A00AF1CDE /* CSBtnTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D326AC14C7F57A00AF1CDE /* CSBtnTextField.m */; };
 		54D7326614B6C8EF0092FD98 /* CMPopTipView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D7326514B6C8EF0092FD98 /* CMPopTipView.m */; };
 		54E5BBE214AC05D000C84F69 /* SettingViewCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E5BBE114AC05D000C84F69 /* SettingViewCommon.m */; };
 		54F3264914BD6944005EC167 /* BoolSettingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F3264814BD6944005EC167 /* BoolSettingController.m */; };
+		54FC43C814D24C550015E977 /* CSTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FC43C714D24C550015E977 /* CSTable.m */; };
+		54FC43CC14D288080015E977 /* CellSettingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FC43CB14D288080015E977 /* CellSettingController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -113,6 +128,14 @@
 		540407FF14AB0B63002A764B /* HRColorPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HRColorPickerViewController.m; sourceTree = "<group>"; };
 		5404080014AB0B63002A764B /* HRColorUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HRColorUtil.h; sourceTree = "<group>"; };
 		5404080114AB0B63002A764B /* HRColorUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HRColorUtil.m; sourceTree = "<group>"; };
+		5404643D14D795D800BDD727 /* gi_flipcount.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gi_flipcount.png; sourceTree = "<group>"; };
+		5404643E14D795D800BDD727 /* gi_maskedlabel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gi_maskedlabel.png; sourceTree = "<group>"; };
+		541F74FC14D67E7300B4A517 /* gi_label.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gi_label.png; sourceTree = "<group>"; };
+		541F74FE14D67E7300B4A517 /* gi_none.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gi_none.png; sourceTree = "<group>"; };
+		541F750014D67E7300B4A517 /* gi_slider.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gi_slider.png; sourceTree = "<group>"; };
+		541F750214D67E7300B4A517 /* gi_switch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gi_switch.png; sourceTree = "<group>"; };
+		541F750E14D68ED600B4A517 /* run_.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = run_.png; sourceTree = "<group>"; };
+		541F750F14D68ED600B4A517 /* stop_.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stop_.png; sourceTree = "<group>"; };
 		542A310614AD5B8B00150060 /* AlignSettingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlignSettingController.h; path = SettingControllers/AlignSettingController.h; sourceTree = "<group>"; };
 		542A310714AD5B8B00150060 /* AlignSettingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AlignSettingController.m; path = SettingControllers/AlignSettingController.m; sourceTree = "<group>"; };
 		542F3B4814C68EF60066B13D /* FileGalleryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FileGalleryController.h; path = FileGallery/FileGalleryController.h; sourceTree = "<group>"; };
@@ -144,7 +167,6 @@
 		542F3B6914C6A17B0066B13D /* UIColor+AQGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+AQGridView.m"; sourceTree = "<group>"; };
 		542F3B7414C6B85B0066B13D /* FileCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FileCell.h; path = FileGallery/FileCell.h; sourceTree = "<group>"; };
 		542F3B7514C6B85B0066B13D /* FileCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FileCell.m; path = FileGallery/FileCell.m; sourceTree = "<group>"; };
-		542F3B7714C6C4B70066B13D /* appFileIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appFileIcon.png; sourceTree = "<group>"; };
 		5434EFEA14A0A65600433710 /* StringSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StringSettingViewController.h; path = SettingControllers/StringSettingViewController.h; sourceTree = "<group>"; };
 		5434EFEB14A0A65600433710 /* StringSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StringSettingViewController.m; path = SettingControllers/StringSettingViewController.m; sourceTree = "<group>"; };
 		5434EFED14A0A91D00433710 /* SettingViewCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingViewCommon.h; path = SettingControllers/SettingViewCommon.h; sourceTree = "<group>"; };
@@ -206,6 +228,13 @@
 		5493734214A8864F00697A40 /* BButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BButton.m; path = Utils/BButton/BButton.m; sourceTree = "<group>"; };
 		5493734414A88E3500697A40 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		549CC83E14BC2A5D00FD15DD /* bluePaper.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bluePaper.png; sourceTree = "<group>"; };
+		54D13BDD14D7B207005D4616 /* gi_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gi_button.png; sourceTree = "<group>"; };
+		54D13BDE14D7B207005D4616 /* gi_textfield.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gi_textfield.png; sourceTree = "<group>"; };
+		54D13BDF14D7B207005D4616 /* gi_textfieldbtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gi_textfieldbtn.png; sourceTree = "<group>"; };
+		54D13BE014D7B207005D4616 /* gi_togglebtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gi_togglebtn.png; sourceTree = "<group>"; };
+		54D13BE614D7B542005D4616 /* CSBulb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CSBulb.h; path = GearObjects/CSBulb/CSBulb.h; sourceTree = "<group>"; };
+		54D13BE714D7B542005D4616 /* CSBulb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CSBulb.m; path = GearObjects/CSBulb/CSBulb.m; sourceTree = "<group>"; };
+		54D13BEA14D7BF43005D4616 /* bulbOff.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bulbOff.png; path = GearObjects/CSBulb/bulbOff.png; sourceTree = "<group>"; };
 		54D326AB14C7F57A00AF1CDE /* CSBtnTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CSBtnTextField.h; path = GearObjects/CSBtnTextField.h; sourceTree = "<group>"; };
 		54D326AC14C7F57A00AF1CDE /* CSBtnTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CSBtnTextField.m; path = GearObjects/CSBtnTextField.m; sourceTree = "<group>"; };
 		54D7326414B6C8EF0092FD98 /* CMPopTipView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMPopTipView.h; sourceTree = "<group>"; };
@@ -213,6 +242,10 @@
 		54E5BBE114AC05D000C84F69 /* SettingViewCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingViewCommon.m; path = SettingControllers/SettingViewCommon.m; sourceTree = "<group>"; };
 		54F3264714BD6944005EC167 /* BoolSettingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BoolSettingController.h; path = SettingControllers/BoolSettingController.h; sourceTree = "<group>"; };
 		54F3264814BD6944005EC167 /* BoolSettingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BoolSettingController.m; path = SettingControllers/BoolSettingController.m; sourceTree = "<group>"; };
+		54FC43C614D24C550015E977 /* CSTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CSTable.h; path = GearObjects/CSTable.h; sourceTree = "<group>"; };
+		54FC43C714D24C550015E977 /* CSTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CSTable.m; path = GearObjects/CSTable.m; sourceTree = "<group>"; };
+		54FC43CA14D288080015E977 /* CellSettingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CellSettingController.h; path = SettingControllers/CellSettingController.h; sourceTree = "<group>"; };
+		54FC43CB14D288080015E977 /* CellSettingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CellSettingController.m; path = SettingControllers/CellSettingController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -243,7 +276,8 @@
 		18A899F1148EC47000E5EFA9 /* images_ipad */ = {
 			isa = PBXGroup;
 			children = (
-				542F3B7714C6C4B70066B13D /* appFileIcon.png */,
+				541F750E14D68ED600B4A517 /* run_.png */,
+				541F750F14D68ED600B4A517 /* stop_.png */,
 				548636DC14C519D500238F24 /* arrow-cross.png */,
 				549CC83E14BC2A5D00FD15DD /* bluePaper.png */,
 				1851B7871493554D0029CFEF /* editbtn_prop.png */,
@@ -271,6 +305,23 @@
 			);
 			name = ColorPicker;
 			path = Utils/ColorPicker;
+			sourceTree = "<group>";
+		};
+		541F74FA14D67E7300B4A517 /* GearListIcons */ = {
+			isa = PBXGroup;
+			children = (
+				54D13BDD14D7B207005D4616 /* gi_button.png */,
+				54D13BDE14D7B207005D4616 /* gi_textfield.png */,
+				54D13BDF14D7B207005D4616 /* gi_textfieldbtn.png */,
+				54D13BE014D7B207005D4616 /* gi_togglebtn.png */,
+				5404643D14D795D800BDD727 /* gi_flipcount.png */,
+				5404643E14D795D800BDD727 /* gi_maskedlabel.png */,
+				541F74FC14D67E7300B4A517 /* gi_label.png */,
+				541F74FE14D67E7300B4A517 /* gi_none.png */,
+				541F750014D67E7300B4A517 /* gi_slider.png */,
+				541F750214D67E7300B4A517 /* gi_switch.png */,
+			);
+			path = GearListIcons;
 			sourceTree = "<group>";
 		};
 		542F3B4614C68E040066B13D /* FileGallery */ = {
@@ -320,6 +371,8 @@
 		5434EFE814A0A5BA00433710 /* SettingControllers */ = {
 			isa = PBXGroup;
 			children = (
+				54FC43CA14D288080015E977 /* CellSettingController.h */,
+				54FC43CB14D288080015E977 /* CellSettingController.m */,
 				549313E214D1388100F2E7DC /* NumberSettingViewController.h */,
 				549313E314D1388100F2E7DC /* NumberSettingViewController.m */,
 				54F3264714BD6944005EC167 /* BoolSettingController.h */,
@@ -418,6 +471,9 @@
 		5438D66D146A90A500CE9136 /* GearObjects */ = {
 			isa = PBXGroup;
 			children = (
+				54D13BE914D7BF2C005D4616 /* CSBulb */,
+				54FC43C614D24C550015E977 /* CSTable.h */,
+				54FC43C714D24C550015E977 /* CSTable.m */,
 				189CF0E614D19D9C00C1E66F /* CSSlider.h */,
 				189CF0E714D19D9C00C1E66F /* CSSlider.m */,
 				180095E114CFCF3D0057DCC8 /* CSMaskedLabel.h */,
@@ -534,9 +590,20 @@
 		54A09CE5148E0B3C00CB9974 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				541F74FA14D67E7300B4A517 /* GearListIcons */,
 				18A899F1148EC47000E5EFA9 /* images_ipad */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		54D13BE914D7BF2C005D4616 /* CSBulb */ = {
+			isa = PBXGroup;
+			children = (
+				54D13BEA14D7BF43005D4616 /* bulbOff.png */,
+				54D13BE614D7B542005D4616 /* CSBulb.h */,
+				54D13BE714D7B542005D4616 /* CSBulb.m */,
+			);
+			name = CSBulb;
 			sourceTree = "<group>";
 		};
 		54D7326314B6C8EF0092FD98 /* CMPopTipView */ = {
@@ -612,8 +679,20 @@
 				54421DDD14AC5D84006226B4 /* CMTextStylePickerViewController.xib in Resources */,
 				549CC83F14BC2A5D00FD15DD /* bluePaper.png in Resources */,
 				548636DD14C519D500238F24 /* arrow-cross.png in Resources */,
-				542F3B7814C6C4B70066B13D /* appFileIcon.png in Resources */,
 				549313DE14D11C6000F2E7DC /* digits.png in Resources */,
+				541F750514D67E7300B4A517 /* gi_label.png in Resources */,
+				541F750714D67E7300B4A517 /* gi_none.png in Resources */,
+				541F750914D67E7300B4A517 /* gi_slider.png in Resources */,
+				541F750B14D67E7300B4A517 /* gi_switch.png in Resources */,
+				541F751014D68ED600B4A517 /* run_.png in Resources */,
+				541F751114D68ED600B4A517 /* stop_.png in Resources */,
+				5404643F14D795D800BDD727 /* gi_flipcount.png in Resources */,
+				5404644014D795D800BDD727 /* gi_maskedlabel.png in Resources */,
+				54D13BE114D7B207005D4616 /* gi_button.png in Resources */,
+				54D13BE214D7B207005D4616 /* gi_textfield.png in Resources */,
+				54D13BE314D7B207005D4616 /* gi_textfieldbtn.png in Resources */,
+				54D13BE414D7B207005D4616 /* gi_togglebtn.png in Resources */,
+				54D13BEB14D7BF43005D4616 /* bulbOff.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -678,6 +757,9 @@
 				549313E114D11F0200F2E7DC /* CSFlipCounter.m in Sources */,
 				549313E414D1388100F2E7DC /* NumberSettingViewController.m in Sources */,
 				189CF0E814D19D9C00C1E66F /* CSSlider.m in Sources */,
+				54FC43C814D24C550015E977 /* CSTable.m in Sources */,
+				54FC43CC14D288080015E977 /* CellSettingController.m in Sources */,
+				54D13BE814D7B542005D4616 /* CSBulb.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

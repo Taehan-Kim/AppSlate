@@ -12,7 +12,6 @@
 
 @interface CSMaskedLabel : CSGearObject
 {
-//    RSMaskedLabel *msLabel;
 }
 
 -(id) initGear;

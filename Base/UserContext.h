@@ -23,9 +23,11 @@
     UIPopoverController *pop;
 
     // 청사진에 등록된 객체들을 관리하는 저장소.
+    NSString        *appName;
     NSMutableArray  *gearsArray;
 }
 
+@property (nonatomic, strong)   NSString        *appName;
 @property (nonatomic, strong)   NSMutableArray  *gearsArray;
 @property (nonatomic, strong)   UIPopoverController *pop;
 

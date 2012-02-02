@@ -74,7 +74,7 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    CGSize size = CGSizeMake(320, 300); // size of view in popover
+    CGSize size = CGSizeMake(320, 470); // size of view in popover
     self.contentSizeForViewInPopover = size;
 
     saveBtn = [[BButton alloc] initWithFrame:CGRectMake(C_GAP, colorPickerView.frame.size.height+C_GAP, C_WIDTH, 40)];
@@ -82,6 +82,15 @@
     [saveBtn addTarget:self action:@selector(save:)];
     [saveBtn setEnabled:YES];
     [self.view addSubview:saveBtn];
+}
+
+// UIPopover Controller 의 크기를 조정해주기 위해서 사용하는 팁 같은 코드.
+-(void) viewDidAppear:(BOOL)animated
+{
+    CGSize currentSetSizeForPopover = self.contentSizeForViewInPopover;
+    CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
+    self.contentSizeForViewInPopover = fakeMomentarySize;
+    self.contentSizeForViewInPopover = currentSetSizeForPopover;
 }
 
 - (void)viewDidLoad

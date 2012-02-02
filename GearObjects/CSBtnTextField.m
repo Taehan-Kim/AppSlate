@@ -147,15 +147,22 @@
     return self;
 }
 
-// 설정될 수 있는 속성 목록.
--(NSArray*) getPropertiesList
+-(id) initWithCoder:(NSCoder *)aDecoder
 {
-    return pListArray;
+    if( (self=[super initWithCoder:aDecoder]) ){
+        txtField = [aDecoder decodeObjectForKey:@"txtField"];
+        [txtField setDelegate:self];
+        confirmButton = [aDecoder decodeObjectForKey:@"confirmButton"];
+        [confirmButton addTarget:self action:@selector(confirmAction:)];
+    }
+    return self;
 }
 
--(NSArray*) getActionList
+-(void)encodeWithCoder:(NSCoder *)encoder
 {
-    return actionArray;
+    [super encodeWithCoder:encoder];
+    [encoder encodeObject:txtField forKey:@"txtField"];
+    [encoder encodeObject:confirmButton forKey:@"confirmButton"];
 }
 
 #pragma mark - Gear's Unique Actions

@@ -17,6 +17,8 @@
 #import "CSMAskedlabel.h"
 #import "CSFlipCounter.h"
 #import "CSSlider.h"
+#import "CSTable.h"
+#import "CSBulb.h"
 
 @interface CSBlueprintController : UIViewController
 {
@@ -43,5 +45,10 @@
 
 // 고유넘버의 객체를 수정 모드로 설정한다.
 -(void) setEditModeGearOfMagicNum:(NSUInteger)magicNum;
+
+// 모두 제거한다.
+-(void) deleteAllGear;
+
+-(void) putAllGearsToView;
 
 @end

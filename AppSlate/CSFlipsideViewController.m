@@ -23,15 +23,16 @@
         // 목록에 나타날 부품 항목을 구성한다. 각 항목 하나는 Dictionary 로 되어 있음.
         NSArray  *keys = [[NSArray alloc] initWithObjects:@"name",@"desc",@"icon",@"tag", nil];
         gearList = [[NSArray alloc] initWithObjects:
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Label",@"Simple Text Label", @"li_label.png", NSNUM(CS_LABEL), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Masked Label",@"Masked Text Label", @"li_label.png", NSNUM(CS_MASKEDLABEL), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Flip Counter",@"Flip Number Counter", @"li_label.png", NSNUM(CS_FLIPCNT), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Text Field",@"User can input some text", @"li_textfield.png", NSNUM(CS_TEXTFIELD), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Button Text Field",@"Input text filed with button", @"li_textfield.png", NSNUM(CS_BTNTEXTFIELD), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Basic Switch",@"On/Off switch", @"li_textfield.png", NSNUM(CS_SWITCH), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Button", @"Basic button", @"li_textfield.png", NSNUM(CS_BUTTON), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Toggle Button", @"Toggle button", @"li_textfield.png", NSNUM(CS_TOGGLEBTN), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Slider", @"Bar Slider", @"li_textfield.png", NSNUM(CS_SLIDER), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Label",@"Simple Text Label", @"gi_label.png", NSNUM(CS_LABEL), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Masked Label",@"Inverse Color Text Label", @"gi_maskedlabel.png", NSNUM(CS_MASKEDLABEL), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Light Bulb",@"Small Bulb", @"gi_none.png", NSNUM(CS_BULB), nil] forKeys:keys],                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Flip Counter",@"Flip Animation Number Counter", @"gi_flipcount.png", NSNUM(CS_FLIPCNT), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Text Field",@"User can input some text", @"gi_textfield.png", NSNUM(CS_TEXTFIELD), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Button Text Field",@"Input text filed with button", @"gi_textfieldbtn.png", NSNUM(CS_BTNTEXTFIELD), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Basic Switch",@"On/Off switch", @"gi_switch.png", NSNUM(CS_SWITCH), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Button", @"Basic button", @"gi_button.png", NSNUM(CS_BUTTON), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Toggle Button", @"Toggle push button", @"gi_togglebtn.png", NSNUM(CS_TOGGLEBTN), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Slider", @"Horizontal Bar Slider", @"gi_slider.png", NSNUM(CS_SLIDER), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Table", @"Basic Table", @"gi_none.png", NSNUM(CS_TABLE), nil] forKeys:keys],
                     nil];
     }
     return self;
@@ -61,6 +62,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [tableView setSeparatorColor:[UIColor lightGrayColor]];
     [tableView reloadData];
 }
 
@@ -108,7 +110,7 @@
 {
     // 선택하였다.
     UITableViewCell *theCell = [tView cellForRowAtIndexPath:indexPath];
-    [theCell setSelected:NO animated:YES];
+    [theCell setSelected:NO animated:NO];
 
     // 이 화면은 닫자.
     [self.delegate flipsideViewControllerDidFinish:self];
@@ -132,8 +134,10 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"listCell"];
     }
 
-    [cell.textLabel setText:[[gearList objectAtIndex:indexPath.row] objectForKey:@"name"]];
-    [cell.detailTextLabel setText:[[gearList objectAtIndex:indexPath.row] objectForKey:@"desc"]];
+    NSDictionary *cellDic = [gearList objectAtIndex:indexPath.row];
+    [cell.textLabel setText:[cellDic objectForKey:@"name"]];
+    [cell.detailTextLabel setText:[cellDic objectForKey:@"desc"]];
+    [cell.imageView setImage:[UIImage imageNamed:[cellDic objectForKey:@"icon"]]];
 
     return cell;
 }

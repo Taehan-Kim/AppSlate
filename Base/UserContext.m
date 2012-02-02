@@ -15,7 +15,7 @@
 //
 static UserContext *_sharedUserContext = nil;
 
-@synthesize gearsArray, pop;
+@synthesize gearsArray, appName, pop;
 
 + (UserContext *)sharedUserContext
 {

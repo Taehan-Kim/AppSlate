@@ -12,7 +12,7 @@
 
 -(id) object
 {
-    return ((UILabel*)csView);
+    return ((UISwitch*)csView);
 }
 
 //===========================================================================
@@ -58,16 +58,13 @@
     csCode = CS_SWITCH;
     csResizable = NO;
 
-//    ((UILabel*)csView).textColor = [UIColor blackColor];
-//    ((UILabel*)csView).font = CS_FONT(16);
     [(UISwitch*)csView setOn:YES];
     [(UISwitch*)csView addTarget:self action:@selector(valueChanged) forControlEvents:UIControlEventValueChanged];
-//    [(UILabel*)csView setClipsToBounds:YES];
 
     self.info = NSLocalizedString(@"Basic Switch", @"Basic Switch");
 
     NSDictionary *d1 = MAKE_PROPERTY_D(@"On Tint Color", P_COLOR, @selector(setTintColor:),@selector(getTintColor));
-    NSDictionary *d2 = MAKE_PROPERTY_D(@"Default Value", P_BOOL, @selector(setOnValue:),@selector(getOnValue));
+    NSDictionary *d2 = MAKE_PROPERTY_D(@"On Value", P_BOOL, @selector(setOnValue:),@selector(getOnValue));
 
     pListArray = [NSArray arrayWithObjects:d1,d2, nil];
 
@@ -79,16 +76,14 @@
     return self;
 }
 
-// 설정될 수 있는 속성 목록.
--(NSArray*) getPropertiesList
+-(id)initWithCoder:(NSCoder *)decoder
 {
-    return pListArray;
+    if( (self=[super initWithCoder:decoder]) ) {
+        [(UISwitch*)csView addTarget:self action:@selector(valueChanged) forControlEvents:UIControlEventValueChanged];
+    }
+    return self;
 }
 
--(NSArray*) getActionList
-{
-    return actionArray;
-}
 
 #pragma mark - Gear's Unique Actions
 

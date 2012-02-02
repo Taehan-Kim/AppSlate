@@ -11,10 +11,15 @@
 
 @interface BookshelfViewController : UIViewController <AQGridViewDelegate, AQGridViewDataSource>
 {
-    NSArray * _imageNames;
+    NSMutableArray * _imageNames;
     AQGridView * _gridView;
+
+    NSString* documentsPath;
+    id pObj;
 }
 
 @property (nonatomic, retain) IBOutlet AQGridView * gridView;
+
+-(void) setParentController:(id) obj;
 
 @end

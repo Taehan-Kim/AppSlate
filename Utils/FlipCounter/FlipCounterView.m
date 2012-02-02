@@ -51,6 +51,22 @@
     return self;
 }
 
+-(id) initWithCoder:(NSCoder *)aDecoder
+{
+    CGRect frame = [aDecoder decodeCGRectForKey:@"flipFrame"];
+
+    if( (self=[self initWithFrame:frame]) ) {
+        [self setCounterValue:[aDecoder decodeIntegerForKey:@"rawCounterValue"]];
+    }
+    return self;
+}
+
+-(void) encodeWithCoder:(NSCoder *)encoder
+{
+    [super encodeWithCoder:encoder];
+    [encoder encodeCGRect:self.frame forKey:@"flipFrame"];
+    [encoder encodeInteger:rawCounterValue forKey:@"rawCounterValue"];
+}
 
 - (void) loadImagePool
 {
@@ -134,7 +150,21 @@
 {
     int newDelta = value - rawCounterValue;
 
-    [self add:newDelta];
+    if (isAnimating) {
+        addQueue = newDelta;
+    } else {
+        rawCounterValue = value;
+
+        FlipCounterViewDigitSprite* digitIndex = [digits objectAtIndex:0];
+        
+        int overhang = [digitIndex incr:newDelta];
+
+        if (overhang != 0) {
+            [self carry:overhang base:0];
+        }
+        
+        [self animate];
+    }
 }
 
 - (void) carry:(int)overhang base:(int)base
@@ -168,7 +198,7 @@
     if ((rawCounterValue + amount) < 0) {
         return;
     }
-    
+
     if (isAnimating) {
         addQueue += amount;
     } else {

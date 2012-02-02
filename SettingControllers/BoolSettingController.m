@@ -47,7 +47,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    CGSize size = CGSizeMake(320, 120); // size of view in popover
+    CGSize size = CGSizeMake(320, 106); // size of view in popover
     self.contentSizeForViewInPopover = size;
     self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
 
