@@ -53,6 +53,13 @@
 
 #define MAKE_ACTION_D(_d1,_d2,_v) *(_v)=[[NSMutableDictionary alloc] initWithCapacity:4];[_v setObject:(_d1) forKey:@"name"];[_v setObject:_d2 forKey:@"type"];[_v setObject:[NSValue valueWithPointer:nil] forKey:@"selector"];[_v setObject:[NSNumber numberWithInteger:0] forKey:@"mNum"]
 
+#define DEFAULT_CENTER_D  NSDictionary*xc=MAKE_PROPERTY_D(@"Center X Position",P_NUM,@selector(setCenterX:),@selector(getCenterX));NSDictionary*yc=MAKE_PROPERTY_D(@"Center Y Position",P_NUM,@selector(setCenterY:),@selector(getCenterY))
+
+#define ALPHA_D [[NSDictionary alloc]initWithObjectsAndKeys:@"Alpha",@"name",P_NUM,@"type",[NSValue valueWithPointer:@selector(setAlpha:)],@"selector",[NSValue valueWithPointer:@selector(getAlpha)],@"getSelector",nil]
+
+#define EXCLAMATION [[UserContext sharedUserContext] errorTik:self]
+
+
 @interface CSGearObject : NSObject <NSCoding>
 {
     // Gear Code
@@ -117,13 +124,11 @@
 -(BOOL) isResizable;
 
 // every getters and setters ...
--(void) setText:(NSString*)txt;
--(NSString*) getText;
-
--(void) setTextColor:(UIColor*)color;
--(UIColor*) getTextColor;
-
--(void) setBackgroundColor:(UIColor*)color;
--(UIColor*) getBackgroundColor;
+-(NSNumber*) getCenterX;
+-(void) setCenterX:(NSNumber*) xpos;
+-(NSNumber*) getCenterY;
+-(void) setCenterY:(NSNumber*) ypos;
+-(NSNumber*) getAlpha;
+-(void) setAlpha:(NSNumber*) alphaValue;
 
 @end

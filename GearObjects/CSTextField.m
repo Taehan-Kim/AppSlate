@@ -95,13 +95,15 @@
 
     self.info = NSLocalizedString(@"Text Field", @"Text Field");
 
+    DEFAULT_CENTER_D;
+    NSDictionary *d0 = ALPHA_D;
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Default Text", P_TXT, @selector(setText:),@selector(getText));
     NSDictionary *d2 = MAKE_PROPERTY_D(@"Text Color", P_COLOR, @selector(setTextColor:),@selector(getTextColor));
     NSDictionary *d3 = MAKE_PROPERTY_D(@"Background Color", P_COLOR, @selector(setBackgroundColor:),@selector(getBackgroundColor));
     NSDictionary *d4 = MAKE_PROPERTY_D(@"Text Font", P_FONT, @selector(setFont:),@selector(getFont));
     NSDictionary *d5 = MAKE_PROPERTY_D(@"L/R Alignment", P_ALIGN, @selector(setTextAlignment:),@selector(getTextAlignment));
     
-    pListArray = [NSArray arrayWithObjects:d1,d2,d3,d4,d5, nil];
+    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2,d3,d4,d5, nil];
 
     NSMutableDictionary MAKE_ACTION_D(@"Enter Text", A_TXT, a1);
     NSMutableDictionary MAKE_ACTION_D(@"Close Keyboard", A_TXT, a2);
@@ -137,7 +139,7 @@
         if( [gObj respondsToSelector:act] )
             [gObj performSelector:act withObject:textField.text];
         else
-            ; // todo: error handleing
+            EXCLAMATION;
     }
     return YES;
 }

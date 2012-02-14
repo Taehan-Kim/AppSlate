@@ -6,30 +6,45 @@
 //  Copyright (c) 2011년 ChocolateSoft. All rights reserved.
 //
 
-#import "CSFlipsideViewController.h"
-#import "CSBlueprintController.h"
+#import <AudioToolbox/AudioToolbox.h>
 
-@interface CSMainViewController : UIViewController <CSFlipsideViewControllerDelegate, UIActionSheetDelegate, UIAlertViewDelegate>
+#import "CSFlipsideViewController.h"
+#import "CSLayerTableViewController.h"
+#import "CSBlueprintController.h"
+#import "PaperSetModal.h"
+
+@interface CSMainViewController : UIViewController <CSFlipsideViewControllerDelegate, UIActionSheetDelegate, UIAlertViewDelegate, UAModalPanelDelegate>
 {
     CSBlueprintController   *blueprintCtrl;
     IBOutlet    UIToolbar   *toolBar;
     BOOL    runButton;
+    UIViewController *menuFolder;
+    SystemSoundID drawerOpenSoundID, drawerCloseSoundID;
+
     __weak IBOutlet UIBarButtonItem *playButton;
     __weak IBOutlet UIBarButtonItem *gearListButton;
-    __weak IBOutlet UIBarButtonItem *saveButton;
+    __weak IBOutlet UIBarButtonItem *menuButton;
+    __weak IBOutlet UIBarButtonItem *layerButton;
 
     UIImage *blueprintViewImage;
 }
 
 @property (strong, nonatomic) UIPopoverController *flipsidePopoverController;
+@property (strong, nonatomic) UIPopoverController *layerPopoverController;
 
-- (IBAction)OpenFileGallery:(id)sender;
+- (void)OpenFileGallery:(id)sender;
+- (void)folderWillClose:(id)sender;
 
 - (IBAction)showGearList:(id)sender;
+- (IBAction)showLayerList:(id)sender;
 - (IBAction)playAction:(id)sender;
-- (IBAction)saveAction:(id)sender;
+- (IBAction)openMenuFolder:(id)sender;
+
+- (void)saveAction:(id)sender;
 
 -(void) saveAppFile;
 -(UIImage*)resizedImage:(UIImage*)inImage inRect:(CGRect)thumbRect;
+
+-(void) setBlueprintColor:(UIColor*)color;
 
 @end

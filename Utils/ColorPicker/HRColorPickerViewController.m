@@ -69,6 +69,11 @@
         _fullColor = fullColor;
         _saveStyle = saveStyle;
     }
+
+    // blade
+    NSURL *fileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"setSound" ofType:@"wav"]];
+    AudioServicesCreateSystemSoundID((__bridge CFURLRef)fileURL, &myID);
+
     return self;
 }
 
@@ -80,7 +85,7 @@
     saveBtn = [[BButton alloc] initWithFrame:CGRectMake(C_GAP, colorPickerView.frame.size.height+C_GAP, C_WIDTH, 40)];
     [saveBtn setTitle:NSLocalizedString(@"APPLY",@"APPLY")];
     [saveBtn addTarget:self action:@selector(save:)];
-    [saveBtn setEnabled:YES];
+//    [saveBtn setEnabled:YES];
     [self.view addSubview:saveBtn];
 }
 

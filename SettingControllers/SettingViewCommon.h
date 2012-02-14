@@ -9,6 +9,7 @@
 
 #import <UIKit/UIKit.h>
 #import "CSGearObject.h"
+#import <AudioToolbox/AudioToolbox.h>
 
 #define C_GAP   7
 #define C_WIDTH (self.view.frame.size.width-(C_GAP*2))
@@ -17,11 +18,13 @@
 {    
     id    theGear;
     NSDictionary *pInfoDic;
+    SystemSoundID myID;
 }
 
 -(void) setGearValue:(id)gear propertyInfo:(NSDictionary*)infoDic;
 
 -(void) saveValue:(id)value;
+-(void) doSound;
 
 - (id)initWithGear:(id)gear propertyInfo:(NSDictionary*)infoDic;
 

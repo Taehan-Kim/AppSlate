@@ -12,9 +12,6 @@
 @interface WaitView : UIView
 {
 	UIActivityIndicatorView *activityIndicationView;
-	UILabel	*label;
 }
-
-- (void)hideText;
 
 @end

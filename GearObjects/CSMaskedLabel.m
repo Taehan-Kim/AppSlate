@@ -72,13 +72,15 @@
     [(RSMaskedLabel*)csView setClipsToBounds:YES];
     
     self.info = NSLocalizedString(@"Masked Label", @"Masked Label");
-    
+
+    DEFAULT_CENTER_D;
+    NSDictionary *d0 = ALPHA_D;
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Default Text", P_TXT, @selector(setText:),@selector(getText));
     NSDictionary *d2 = MAKE_PROPERTY_D(@"Background Color", P_COLOR, @selector(setBackgroundColor:),@selector(getBackgroundColor));
     NSDictionary *d3 = MAKE_PROPERTY_D(@"Text Font", P_FONT, @selector(setFont:),@selector(getFont));
 //    NSDictionary *d5 = MAKE_PROPERTY_D(@"L/R Alignment", P_ALIGN, @selector(setTextAlignment:),@selector(getTextAlignment));
 
-    pListArray = [NSArray arrayWithObjects:d1,d2,d3, nil];
+    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2,d3, nil];
 
     return self;
 }

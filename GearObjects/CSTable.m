@@ -139,13 +139,15 @@
 
     self.info = NSLocalizedString(@"Table", @"Table");
 
+    DEFAULT_CENTER_D;
+    NSDictionary *d0 = ALPHA_D;
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Table Cell Number", P_NUM, @selector(setCellNumber:),@selector(getCellNumber));
     NSDictionary *d2 = MAKE_PROPERTY_D(@"Access Cell Index", P_NUM, @selector(setAccessIndex:),@selector(getAccessIndex));
     NSDictionary *d3 = MAKE_PROPERTY_D(@"Text At Access Index", P_TXT, @selector(setTextAtAccessIndex:),@selector(getTextAtAccessIndex));
     NSDictionary *d4 = MAKE_PROPERTY_D(@"Subtext At Access Index", P_TXT, @selector(setSubtextAtAccessIndex:),@selector(getSubtextAtAccessIndex));
     NSDictionary *d5 = MAKE_PROPERTY_D(@"Table Cell Data", P_CELL, @selector(setCellData:index:),@selector(getCellDataIndex:));
 
-    pListArray = [NSArray arrayWithObjects:d1,d2,d3,d4,d5, nil];
+    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2,d3,d4,d5, nil];
 
     NSMutableDictionary MAKE_ACTION_D(@"Selected Cell Index", A_NUM, a1);
     NSMutableDictionary MAKE_ACTION_D(@"Selected Cell Text", A_NUM, a2);
@@ -224,7 +226,7 @@
             if( [gObj respondsToSelector:act] )
                 [gObj performSelector:act withObject:[NSNumber numberWithInteger:indexPath.row]];
             else
-                ; // todo: error handleing
+                EXCLAMATION;
         }
     }
     // 2. Selected Cell's String
@@ -237,7 +239,7 @@
             if( [gObj respondsToSelector:act] )
                 [gObj performSelector:act withObject:[((NSDictionary*)[cellArray objectAtIndex:indexPath.row]) objectForKey:@"Text"] ];
             else
-                ; // todo: error handleing
+                EXCLAMATION;
         }
     }
 }

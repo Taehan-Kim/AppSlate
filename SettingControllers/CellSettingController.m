@@ -62,7 +62,7 @@
     getBtn = [[BButton alloc] initWithFrame:CGRectMake(220, C_GAP*2, 80, 33.0)];
     [getBtn setTitle:NSLocalizedString(@"GET",@"GET")];
     [getBtn addTarget:self action:@selector(getCellValue:)];
-    [getBtn setEnabled:YES];
+//    [getBtn setEnabled:YES];
     [self.view addSubview:getBtn];
 
     NSDictionary *sDic = objc_msgSend(theGear,[[pInfoDic objectForKey:@"getSelector"] pointerValue],0);
@@ -84,7 +84,7 @@
     saveBtn = [[BButton alloc] initWithFrame:CGRectMake(C_GAP, 143.0+(C_GAP*10), C_WIDTH, 40)];
     [saveBtn setTitle:NSLocalizedString(@"APPLY",@"APPLY")];
     [saveBtn addTarget:self action:@selector(setTheValue:)];
-    [saveBtn setEnabled:YES];
+//    [saveBtn setEnabled:YES];
     [self.view addSubview:saveBtn];
 
     [super viewWillAppear:animated];
@@ -118,6 +118,8 @@
 
     NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:textField.text,@"Text",subTextField.text,@"Sub", nil];
     objc_msgSend(theGear, selector, dic, [indexField.text integerValue] );
+
+    [self doSound];
 }
 
 #pragma mark - TextField Delegate

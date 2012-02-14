@@ -12,27 +12,17 @@
 @implementation WaitView
 
 
-- (id)initWithFrame:(CGRect)frame {
-    
+- (id)initWithFrame:(CGRect)frame
+{    
     self = [super initWithFrame:frame];
     if (self) {
-        int textWidth = 80;
-
 		self.backgroundColor = [UIColor colorWithRed:0.0 green:0 blue:0 alpha:0.7];
 		self.layer.cornerRadius = 10.0;
 		self.clipsToBounds = YES;
 
-		label = [[UILabel alloc] initWithFrame: CGRectMake((self.bounds.size.width-(textWidth+30))/2 + 30, 0, textWidth, self.bounds.size.height)];
-		label.text = NSLocalizedString(@"Loading", @"Loading");
-		label.backgroundColor = CSCLEAR;
-		label.textColor = [UIColor whiteColor];
-		label.textAlignment = UITextAlignmentCenter;
-		label.font = CS_FONT(15);
-		[self addSubview:label];
+		activityIndicationView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleWhiteLarge];
 		
-		activityIndicationView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleWhite];
-		
-		activityIndicationView.center = CGPointMake((self.bounds.size.width-(textWidth+30))/2+10, self.bounds.size.height / 2);
+		activityIndicationView.center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
 		[self addSubview: activityIndicationView];
     }
     return self;
@@ -44,12 +34,6 @@
 - (void)drawRect:(CGRect)rect {
     // Drawing code.
 	[activityIndicationView startAnimating];
-}
-
-- (void)hideText
-{
-	activityIndicationView.center = CGPointMake(self.frame.size.width / 2.0, activityIndicationView.center.y);
-	label.hidden = YES;
 }
 
 @end

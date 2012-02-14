@@ -21,55 +21,55 @@
 -(void) setText:(NSString*)txt;
 {
     if( [txt isKindOfClass:[NSString class]] )
-        [((UITextField*)csView) setText:txt];
+        [txtField setText:txt];
 
     else if([txt isKindOfClass:[NSNumber class]] )
-        [((UITextField*)csView) setText:[((NSNumber*)txt) stringValue]];
+        [txtField setText:[((NSNumber*)txt) stringValue]];
 }
 
 -(NSString*) getText
 {
-    return ((UITextField*)csView).text;
+    return txtField.text;
 }
 
 -(void) setTextColor:(UIColor*)color
 {
-    [((UITextField*)csView) setTextColor:color];
+    [txtField setTextColor:color];
 }
 
 -(UIColor*) getTextColor
 {
-    return ((UITextField*)csView).textColor;
+    return txtField.textColor;
 }
 
 -(void) setBackgroundColor:(UIColor*)color
 {
-    [((UITextField*)csView) setBackgroundColor:color];
+    [txtField setBackgroundColor:color];
 }
 
 -(UIColor*) getBackgroundColor
 {
-    return ((UITextField*)csView).backgroundColor;
+    return txtField.backgroundColor;
 }
 
 -(void) setFont:(UIFont*)font
 {
-    [((UITextField*)csView) setFont:font];
+    [txtField setFont:font];
 }
 -(UIFont*) getFont
 {
-    return ((UITextField*)csView).font;
+    return txtField.font;
 }
 
 -(void) setTextAlignment:(NSNumber*)alignNum
 {
     UITextAlignment align = [alignNum integerValue];
-    [((UITextField*)csView) setTextAlignment:align];
+    [txtField setTextAlignment:align];
 }
 
 -(NSNumber*) getTextAlignment
 {
-    return [NSNumber numberWithInteger:((UITextField*)csView).textAlignment];
+    return [NSNumber numberWithInteger:txtField.textAlignment];
 }
 
 -(void) setButtonBackgroundColor:(UIColor*)color
@@ -89,7 +89,7 @@
 
 -(NSString*) getButtonText
 {
-    return confirmButton.titleLabel.text;
+    return confirmButton.btn.titleLabel.text;
 }
 
 //===========================================================================
@@ -111,7 +111,7 @@
     confirmButton = [[BButton alloc] initWithFrame:CGRectMake(251, 0, 70, MINSIZE2)];
     [confirmButton addTarget:self action:@selector(confirmAction:)];
     [confirmButton setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleHeight];
-    [confirmButton.titleLabel setFont:CS_FONT(13)];
+    [confirmButton.btn.titleLabel setFont:CS_FONT(13)];
     [confirmButton setTitle:@"Confirm"];
 
     [csView addSubview:txtField];
@@ -129,7 +129,9 @@
 
     self.info = NSLocalizedString(@"Button Text Field", @"Button Text Field");
 
-    NSDictionary *d1 = MAKE_PROPERTY_D(@"Default Text", P_TXT, @selector(setText:),@selector(getText));
+    DEFAULT_CENTER_D;
+    NSDictionary *d0 = ALPHA_D;
+    NSDictionary *d1 = MAKE_PROPERTY_D(@"Text", P_TXT, @selector(setText:),@selector(getText));
     NSDictionary *d2 = MAKE_PROPERTY_D(@"Text Color", P_COLOR, @selector(setTextColor:),@selector(getTextColor));
     NSDictionary *d3 = MAKE_PROPERTY_D(@"Background Color", P_COLOR, @selector(setBackgroundColor:),@selector(getBackgroundColor));
     NSDictionary *d4 = MAKE_PROPERTY_D(@"Text Font", P_FONT, @selector(setFont:),@selector(getFont));
@@ -137,7 +139,7 @@
     NSDictionary *d6 = MAKE_PROPERTY_D(@"Button Text", P_TXT, @selector(setButtonText:),@selector(getButtonText));
     NSDictionary *d7 = MAKE_PROPERTY_D(@"Button Background Color", P_COLOR, @selector(setButtonBackgroundColor:),@selector(getButtonBackgroundColor));
 
-    pListArray = [NSArray arrayWithObjects:d1,d2,d3,d4,d5,d6,d7, nil];
+    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2,d3,d4,d5,d6,d7, nil];
 
     NSMutableDictionary MAKE_ACTION_D(@"Enter Text", A_TXT, a1);
     NSMutableDictionary MAKE_ACTION_D(@"Close Keyboard", A_TXT, a2);
@@ -184,7 +186,7 @@
         if( [gObj respondsToSelector:act] )
             [gObj performSelector:act withObject:textField.text];
         else
-            ; // todo: error handleing
+            EXCLAMATION;
     }
     return YES;
 }
@@ -226,7 +228,7 @@
         if( [gObj respondsToSelector:act] )
             [gObj performSelector:act withObject:txtField.text];
         else
-            ; // todo: error handleing
+            EXCLAMATION;
     }
 }
 

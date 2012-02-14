@@ -63,7 +63,7 @@
     saveBtn = [[BButton alloc] initWithFrame:CGRectMake(C_GAP, 150.0+(C_GAP*3), C_WIDTH, 40)];
     [saveBtn setTitle:NSLocalizedString(@"APPLY",@"APPLY")];
     [saveBtn addTarget:self action:@selector(setTheValue:)];
-    [saveBtn setEnabled:YES];
+//    [saveBtn setEnabled:YES];
     [cmtController.view addSubview:saveBtn];
 
     [super viewWillAppear:animated];

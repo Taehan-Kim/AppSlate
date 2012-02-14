@@ -39,20 +39,24 @@
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    NSURL *fileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"tock" ofType:@"wav"]];
+    AudioServicesCreateSystemSoundID((__bridge CFURLRef)fileURL, &tockSoundID);
 }
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+
+    AudioServicesDisposeSystemSoundID(tockSoundID);
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    CGSize size = CGSizeMake(200, 220); // size of view in popover
+    NSUInteger height;
+    if( [[destGear getPropertiesList] count] > 6 ) height = 220;
+    else height = [[destGear getPropertiesList] count] * 36;
+
+    CGSize size = CGSizeMake(200, height); // size of view in popover
     self.contentSizeForViewInPopover = size;
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.separatorColor = [UIColor grayColor];
@@ -111,7 +115,9 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.contentView.backgroundColor = [UIColor clearColor];
         cell.textLabel.textColor = [UIColor whiteColor];
-        cell.textLabel.font = CS_FONT(12);
+        cell.textLabel.font = CS_FONT(14);
+        cell.textLabel.shadowColor = [UIColor blackColor];
+        cell.textLabel.shadowOffset = CGSizeMake(1, 1);
     }
     
     // Configure the cell...
@@ -125,7 +131,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 40.0;
+    return 45.0;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -149,6 +155,8 @@
     } completion:^(BOOL finished){
         [USERCONTEXT.pop dismissPopoverAnimated:YES];
     }];
+
+    AudioServicesPlaySystemSound(tockSoundID);
 }
 
 @end

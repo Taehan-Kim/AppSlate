@@ -27,10 +27,18 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopRequest:) name:NOTI_STOP object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(actionLinkRequest:) name:NOTI_ACTION_LINK object:nil];
         [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bluePaper.png"]]];
+        USERCONTEXT.wallpaperIndex = 1; // default paper
 
         xButton = nil;
         modifyView = nil;
         propertyPopoverController = nil;
+
+        NSURL *fileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"run" ofType:@"wav"]];
+        AudioServicesCreateSystemSoundID((__bridge CFURLRef)fileURL, &runSoundID);
+        fileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"objectDrop" ofType:@"wav"]];
+        AudioServicesCreateSystemSoundID((__bridge CFURLRef)fileURL, &putSoundID);
+        fileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"delSound" ofType:@"wav"]];
+        AudioServicesCreateSystemSoundID((__bridge CFURLRef)fileURL, &delSoundID);
     }
     return self;
 }
@@ -157,6 +165,7 @@
     [group setValue:cView forKey:@"imageViewBeingAnimated"];
 
     [cView.layer addAnimation:group forKey:@"myCurveAnimation"];
+    [cView setAlpha:0.7];
 }
 
 - (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag
@@ -197,8 +206,18 @@
 
     [self.view addSubview:aV];
 
+    // 약간 움찔하는 동작.
+    [aV setFrame:CGRectMake(aV.frame.origin.x+4, aV.frame.origin.y+4,
+                            aV.frame.size.width-8, aV.frame.size.height-8)];
+    [UIView animateWithDuration:0.1 animations:^(void){
+        [aV setFrame:CGRectMake(aV.frame.origin.x-4, aV.frame.origin.y-4,
+                                aV.frame.size.width+8, aV.frame.size.height+8)];
+    }];
+
     // 지금 추가된 객체는 에디팅 모드로 설정한다.
     [self setEditModeGearOfMagicNum:aV.tag];
+
+    AudioServicesPlaySystemSound(putSoundID);
 }
 
 // 청사진에 객체를 제거한다.
@@ -253,12 +272,24 @@
 
 -(void) putAllGearsToView
 {
-    for( CSGearObject *g in USERCONTEXT.gearsArray ){
+    NSUInteger idx = 0;
+
+    // 순서를 지키기 위해서 의도적으로 index 를 사용.
+    for( idx = 0; idx < [USERCONTEXT.gearsArray count]; idx++ )
+    {
+        CSGearObject *g = [USERCONTEXT.gearsArray objectAtIndex:idx];
         [self.view addSubview:g.csView];
         // 기어 뷰 를 설계도에 놓는다.
         [g.csView setTag:g.csMagicNum];
         [g setTapGR: [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeEditGear:)]];
         [g.csView addGestureRecognizer:g.tapGR];
+
+        if( NO == g.isUIObj || [g.csView isKindOfClass:[UITableView class]] )
+        {
+            for( UIView* sv in ((UIView*)(g.csView)).subviews )  // 사용자 반응 중지.
+                [sv setUserInteractionEnabled:NO];
+        }
+
     }
 }
 
@@ -285,15 +316,9 @@
     }
 
     // 에디트 모드로 있던 하나의 객체를 해제한다.
-    [xButton removeFromSuperview]; xButton = nil;
-    [propButton removeFromSuperview];
-    [sizeButton removeFromSuperview];
-    // 이전의 뷰에서 gesture recognizer 없애기.
-    if( nil != modifyView )
-        [modifyView removeGestureRecognizer:dragReco];
+    [self removeModifyMode];
 
-    modifyMagicNum = 0;
-    modifyView = nil;
+    AudioServicesPlaySystemSound(runSoundID);
 
     // TODO: 실행한다.
 }
@@ -318,6 +343,19 @@
         }
     }
 
+}
+
+-(void) removeModifyMode
+{
+    [xButton removeFromSuperview]; xButton = nil;
+    [propButton removeFromSuperview];
+    [sizeButton removeFromSuperview];
+    // 이전의 뷰에서 gesture recognizer 없애기.
+    if( nil != modifyView )
+        [modifyView removeGestureRecognizer:dragReco];
+    
+    modifyMagicNum = 0;
+    modifyView = nil;
 }
 
 #pragma mark - Action Linking
@@ -407,7 +445,15 @@
 
 -(void) xButtonAction:(id)sender
 {
-    [self deleteGear:((UIButton*)sender).tag];
+    AudioServicesPlaySystemSound(delSoundID);
+    [UIView animateWithDuration:0.3 animations:^(){
+        UIView *v = [USERCONTEXT getGearWithMagicNum:((UIButton*)sender).tag].csView;
+        [v setAlpha:0.3];
+        [v setCenter:v.frame.origin];
+        [v setTransform:CGAffineTransformMakeScale(0.0001, 0.0001)];
+    } completion:^(BOOL finished) {
+        [self deleteGear:((UIButton*)sender).tag];
+    }];
 }
 
 -(void) propButtonAction:(id)sender

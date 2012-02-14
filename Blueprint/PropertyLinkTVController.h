@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AudioToolbox/AudioToolbox.h>
 #import "CSGearObject.h"
 
 @interface PropertyLinkTVController : UITableViewController
@@ -14,6 +15,8 @@
     CSGearObject *destGear;
     CSGearObject *actionGear;
     NSUInteger  actionIdx;
+
+    SystemSoundID tockSoundID;
 }
 
 -(void) setDestinationGear:(CSGearObject*)objD actionGear:(CSGearObject*)objA actionIndex:(NSUInteger)idx;

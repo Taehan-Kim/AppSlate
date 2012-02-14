@@ -44,7 +44,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    CGSize size = CGSizeMake(320, 220); // size of view in popover
+    CGSize size = CGSizeMake(320, 156); // size of view in popover
     self.contentSizeForViewInPopover = size;
     self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
 
@@ -61,7 +61,7 @@
     saveBtn = [[BButton alloc] initWithFrame:CGRectMake(C_GAP, 85.0+(C_GAP*3), C_WIDTH, 40)];
     [saveBtn setTitle:NSLocalizedString(@"APPLY",@"APPLY")];
     [saveBtn addTarget:self action:@selector(setTheValue:)];
-    [saveBtn setEnabled:YES];
+//    [saveBtn setEnabled:YES];
     [self.view addSubview:saveBtn];
 
     [super viewWillAppear:animated];
@@ -74,6 +74,8 @@
     CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
     self.contentSizeForViewInPopover = fakeMomentarySize;
     self.contentSizeForViewInPopover = currentSetSizeForPopover;
+
+    [textField becomeFirstResponder];
 }
 
 #pragma mark - Setting Button Action

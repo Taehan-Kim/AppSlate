@@ -10,30 +10,49 @@
 
 @implementation BButton
 
+@synthesize btn;
+
+- (void) commonInit
+{
+    // Initialization code
+    self.clipsToBounds = YES;
+    [self.layer setBorderWidth:2.5];
+    [self.layer setCornerRadius:5.0];
+    [self.layer setBorderColor:[UIColor lightGrayColor].CGColor];
+    
+    gradient = [CAGradientLayer layer];
+    [gradient setFrame:[self bounds]];
+    [gradient setColors:[NSArray arrayWithObjects:(id)[[UIColor clearColor] CGColor], (id)[[UIColor blackColor] CGColor], nil]];
+    [gradient setOpacity:0.5];
+    [self.layer addSublayer:gradient];
+    
+    btn = [[UIButton alloc] initWithFrame:self.bounds];
+    [btn setBackgroundColor:[UIColor clearColor]];
+    [btn setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
+    [self addSubview:btn];
+    
+    // Default Color
+    [self.layer setBackgroundColor:[UIColor blueColor].CGColor];
+    
+    [btn addTarget:self action:@selector(touchIn:) forControlEvents:UIControlEventTouchDown];
+    [btn addTarget:self action:@selector(touchUp:) forControlEvents:UIControlEventTouchUpOutside];
+    [btn addTarget:self action:@selector(touchUp:) forControlEvents:UIControlEventTouchUpInside];
+}
+
 - (id)initWithFrame:(CGRect)frame
 {
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-        self.clipsToBounds = YES;
-        
-        [self.layer setBorderWidth:2.5];
-        [self.layer setCornerRadius:5.0];
-        [self.layer setBorderColor:[UIColor lightGrayColor].CGColor];
-
-        gradient = [CAGradientLayer layer];
-        [gradient setFrame:[self bounds]];
-        [gradient setColors:[NSArray arrayWithObjects:(id)[[UIColor clearColor] CGColor], (id)[[UIColor blackColor] CGColor], nil]];
-        [gradient setOpacity:0.5];
-        [self.layer addSublayer:gradient];
-
-        // Default Color
-        [self.layer setBackgroundColor:[UIColor blueColor].CGColor];
-
-        [self addTarget:self action:@selector(touchIn:) forControlEvents:UIControlEventTouchDown];
-        [self addTarget:self action:@selector(touchUp:) forControlEvents:UIControlEventTouchUpOutside];
-        [self addTarget:self action:@selector(touchUp:) forControlEvents:UIControlEventTouchUpInside];
+    if( self = [super initWithFrame:frame] ){
+        [self commonInit];
     }
+    return self;
+}
+
+-(id)initWithCoder:(NSCoder *)decoder
+{
+    if( self = [super initWithCoder:decoder] ){
+        [self commonInit];
+    }
+
     return self;
 }
 
@@ -62,21 +81,23 @@
 
 -(void) setTitle:(NSString *)txt
 {
-    [self setTitle:txt forState:UIControlStateNormal];
-    [self setTitle:txt forState:UIControlStateHighlighted];
-    [self setTitle:txt forState:UIControlStateSelected];
+    [btn setTitle:txt forState:UIControlStateNormal];
+//    [self setTitle:txt forState:UIControlStateHighlighted];
+    [btn setTitle:txt forState:UIControlStateSelected];
+
+    [self setNeedsDisplay];
 }
 
 -(void) setTitleColor:(UIColor *)color
 {
-    [self setTitleColor:color forState:UIControlStateNormal];
-    [self setTitleColor:color forState:UIControlStateHighlighted];
-    [self setTitleColor:color forState:UIControlStateSelected];
+    [btn setTitleColor:color forState:UIControlStateNormal];
+//    [self setTitleColor:color forState:UIControlStateHighlighted];
+    [btn setTitleColor:color forState:UIControlStateSelected];
 }
 
 -(void) addTarget:(id)tg action:(SEL)selector
 {
-    [self addTarget:tg action:selector forControlEvents:UIControlEventTouchUpInside];
+    [btn addTarget:tg action:selector forControlEvents:UIControlEventTouchUpInside];
 }
 
 @end

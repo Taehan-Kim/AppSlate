@@ -15,7 +15,7 @@
 //
 static UserContext *_sharedUserContext = nil;
 
-@synthesize gearsArray, appName, pop;
+@synthesize gearsArray, appName, pop, wallpapers, wallpaperIndex;
 
 + (UserContext *)sharedUserContext
 {
@@ -37,6 +37,20 @@ static UserContext *_sharedUserContext = nil;
 		NSAssert(_sharedUserContext == nil, @"Attempted to allocate a second instance of a singleton.");
 		_sharedUserContext = [super alloc];
         _sharedUserContext.gearsArray = [[NSMutableArray alloc] initWithCapacity:50];
+        _sharedUserContext.wallpapers = \
+            [[NSArray alloc] initWithObjects:[UIColor whiteColor],
+              [UIColor colorWithPatternImage:[UIImage imageNamed:@"bluePaper.png"]],
+              [UIColor lightGrayColor],
+              [UIColor grayColor],
+              [UIColor darkGrayColor],
+              [UIColor cyanColor],
+              [UIColor brownColor],
+              [UIColor magentaColor],
+              [UIColor colorWithPatternImage:[UIImage imageNamed:@"brushedsteelPaper.png"]],
+              [UIColor colorWithPatternImage:[UIImage imageNamed:@"blockPaper.png"]],
+              [UIColor colorWithPatternImage:[UIImage imageNamed:@"leatherPaper.png"]],
+              [UIColor colorWithPatternImage:[UIImage imageNamed:@"brownLeatherPaper.png"]],
+                                         nil];
 
 		return _sharedUserContext;
 	}
@@ -60,7 +74,7 @@ static UserContext *_sharedUserContext = nil;
 {
 	if( nil == waitV ) {
 		UIWindow* mainWindow = [[UIApplication sharedApplication] keyWindow];
-		waitV = [[WaitView alloc] initWithFrame:CGRectMake(mainWindow.frame.size.width/2-60, (mainWindow.frame.size.height/2)+yDeltaPos,120,50)];
+		waitV = [[WaitView alloc] initWithFrame:CGRectMake(mainWindow.frame.size.width/2-40, (mainWindow.frame.size.height/2)-40+yDeltaPos,80,80)];
 
         [waitV setAlpha:0.0];
         [waitV setTransform:CGAffineTransformMakeScale(1.5, 1.5)];
@@ -72,6 +86,7 @@ static UserContext *_sharedUserContext = nil;
         } completion:^(BOOL finished) {
             ;
         }];
+//??        [mainWindow setUserInteractionEnabled:NO];
 	}
 }
 
@@ -86,8 +101,44 @@ static UserContext *_sharedUserContext = nil;
             [waitV removeFromSuperview];
         }];
 		waitV = nil;
+//??        [[[UIApplication sharedApplication] keyWindow] setUserInteractionEnabled:YES];
 	}
 }
+
+#pragma mark - Error Toast Mark
+
+- (void) errorTik:(CSGearObject*)obj
+{
+    UIView *signView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+    [signView setClipsToBounds:YES];
+    [signView setBackgroundColor:[UIColor redColor]];
+    [signView.layer setCornerRadius:20.0];
+    UILabel *exclamation = [[UILabel alloc] initWithFrame:signView.frame];
+    [exclamation setTextAlignment:UITextAlignmentCenter];
+    [exclamation setFont:CS_FONT(17)];
+    [exclamation setBackgroundColor:[UIColor clearColor]];
+    [exclamation setTextColor:[UIColor yellowColor]];
+    [signView addSubview:exclamation];
+    [signView setCenter:obj.csView.center];
+    [signView setTransform:CGAffineTransformMakeScale(0.2, 0.2)];
+    [signView setAlpha:0.1];
+
+    [[UIApplication sharedApplication].keyWindow addSubview:signView];
+
+    [UIView animateWithDuration:0.4 animations:^(){
+        [signView setTransform:CGAffineTransformMakeScale(1.0, 1.0)];
+        [signView setAlpha:1.0];
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.2 delay:1.0 options:UIViewAnimationOptionTransitionNone
+                         animations:^()
+        {
+            [signView setTransform:CGAffineTransformMakeScale(0.5, 0.5)];
+            [signView setAlpha:0.0];
+        } completion:^(BOOL finished){}];
+    }];
+}
+
+#pragma mark -
 
 -(CSGearObject*) getGearWithMagicNum:(NSUInteger) magicNum
 {

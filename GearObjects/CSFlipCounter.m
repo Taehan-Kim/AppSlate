@@ -75,11 +75,13 @@
     checkNumber = 10;
     self.info = NSLocalizedString(@"Flip Counter", @"Flip Counter");
 
+    DEFAULT_CENTER_D;
+    NSDictionary *d0 = ALPHA_D;
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Counter Number", P_NUM, @selector(setNumber:),@selector(getNumber));
     NSDictionary *d2 = MAKE_PROPERTY_D(@"Add Number Action", P_NUM, @selector(setAddNumber:),@selector(getAddNumber));
     NSDictionary *d3 = MAKE_PROPERTY_D(@"Subtract Number Action", P_NUM, @selector(setSubtractNumber:),@selector(getSubtractNumber));
 
-    pListArray = [NSArray arrayWithObjects:d1,d2,d3, nil];
+    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2,d3, nil];
     
     NSMutableDictionary MAKE_ACTION_D(@"Changed Value", A_NUM, a1);
     NSMutableDictionary MAKE_ACTION_D(@"Number is Zero", A_NUM, a2);
@@ -145,7 +147,7 @@
             if( [gObj respondsToSelector:act] )
                 [gObj performSelector:act withObject:[NSNumber numberWithInteger:myValue]];
             else
-                ; // todo: error handleing
+                EXCLAMATION;
         }
     }
 }
@@ -166,7 +168,7 @@
             if( [gObj respondsToSelector:act] )
                 [gObj performSelector:act withObject:[NSNumber numberWithInteger:0]];
             else
-                ; // todo: error handleing
+                EXCLAMATION;
         }
     }
 }

@@ -7,11 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AudioToolbox/AudioToolbox.h>
 #import "CSGearObject.h"
 
 @interface PropertyTVController : UITableViewController <UIAlertViewDelegate>
 {
     CSGearObject *theGear;
+    
+    SystemSoundID tockSoundID;
 }
 
 -(void) setSelectedGear:(CSGearObject*) obj;

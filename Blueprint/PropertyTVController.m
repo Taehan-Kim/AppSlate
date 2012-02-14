@@ -44,20 +44,24 @@
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    NSURL *fileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"tock" ofType:@"wav"]];
+    AudioServicesCreateSystemSoundID((__bridge CFURLRef)fileURL, &tockSoundID);
 }
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+
+    AudioServicesDisposeSystemSoundID(tockSoundID);
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    CGSize size = CGSizeMake(320, 400); // size of view in popover
+    CGFloat hs = ([[theGear getPropertiesList] count]*46) + ([[theGear getActionList] count]*60) + 40.0;
+
+    if( hs > 500 ) hs = 500;
+
+    CGSize size = CGSizeMake(320, hs); // size of view in popover
     self.contentSizeForViewInPopover = size;
 
     // HACK: Gear 가 바뀌어도 이전 정보가 남아있지 못하도록 테이블 셀 뷰를 지운다.
@@ -138,9 +142,9 @@
             // 연결하거나, 연결 상태를 알려줄 버튼.
             BButton *btn = [[BButton alloc] initWithFrame:CGRectMake(270,15,30,30)];
             [btn.layer setCornerRadius:9.0];
-            [btn addTarget:self action:@selector(unlinkAction:) forControlEvents:UIControlEventTouchUpInside];
-            [btn addTarget:self action:@selector(lineAction:) forControlEvents:UIControlEventTouchDown];
-            [btn addTarget:self action:@selector(removeLineAction:) forControlEvents:UIControlEventTouchUpOutside];
+            [btn.btn addTarget:self action:@selector(unlinkAction:) forControlEvents:UIControlEventTouchUpInside];
+            [btn.btn addTarget:self action:@selector(lineAction:) forControlEvents:UIControlEventTouchDown];
+            [btn.btn addTarget:self action:@selector(removeLineAction:) forControlEvents:UIControlEventTouchUpOutside];
             [cell.contentView addSubview:btn];
         }
         NSArray *alist = [theGear getActionList];
@@ -262,6 +266,8 @@
                                                             object:self
                                                           userInfo:gearInfo];
     }
+
+    AudioServicesPlaySystemSound(tockSoundID);
 }
 
 #pragma mark - unlink button Action
@@ -291,8 +297,7 @@
     CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
 
     if( nil != gObj ){
-        [gObj.csView.layer setBorderColor:[UIColor clearColor].CGColor];
-        [gObj.csView.layer setBorderWidth:0.0];
+        [[gObj.csView.subviews lastObject] removeFromSuperview];
     }
 
     if( 0 == buttonIndex ) return;  // cancel
@@ -315,8 +320,11 @@
     CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
 
     if( nil != gObj ){
-        [gObj.csView.layer setBorderColor:[UIColor redColor].CGColor];
-        [gObj.csView.layer setBorderWidth:4.0];
+        UIView *chV = [[UIView alloc] initWithFrame:gObj.csView.bounds];
+        [chV setBackgroundColor:[UIColor redColor]];
+        [chV setAlpha:0.3];
+        [gObj.csView addSubview:chV];
+        [gObj.csView setNeedsDisplay];
     }
 }
 
@@ -332,8 +340,7 @@
     CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
     
     if( nil != gObj ){
-        [gObj.csView.layer setBorderColor:[UIColor clearColor].CGColor];
-        [gObj.csView.layer setBorderWidth:0.0];
+        [[gObj.csView.subviews lastObject] removeFromSuperview];
     }
 }
 

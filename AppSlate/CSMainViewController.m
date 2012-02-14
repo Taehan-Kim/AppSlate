@@ -8,10 +8,18 @@
 
 #import "CSMainViewController.h"
 #import "FileGalleryController.h"
+#import "JWFolders.h"
+
+enum alertTypes {
+    kRenameAlert = 10,
+    kNewAlert,
+    kNone
+};
 
 @implementation CSMainViewController
 
 @synthesize flipsidePopoverController = _flipsidePopoverController;
+@synthesize layerPopoverController;
 
 - (void)didReceiveMemoryWarning
 {
@@ -25,7 +33,12 @@
 {
     [super viewDidLoad];
     runButton = YES;
-	// Do any additional setup after loading the view, typically from a nib.
+
+    NSURL *fileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"drawerOpen" ofType:@"wav"]];
+    AudioServicesCreateSystemSoundID((__bridge CFURLRef)fileURL, &drawerOpenSoundID);
+    fileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"drawerClose" ofType:@"wav"]];
+    AudioServicesCreateSystemSoundID((__bridge CFURLRef)fileURL, &drawerCloseSoundID);
+
     blueprintCtrl = [[CSBlueprintController alloc] init];
     [blueprintCtrl.view setFrame:CGRectMake(0, 0, self.view.frame.size.width,
                                             self.view.frame.size.height-toolBar.frame.size.height)];
@@ -41,7 +54,9 @@
 {
     playButton = nil;
     gearListButton = nil;
-    saveButton = nil;
+    menuButton = nil;
+    menuButton = nil;
+    layerButton = nil;
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -93,8 +108,10 @@
     }
 }
 
-- (IBAction)OpenFileGallery:(id)sender {
+- (void)OpenFileGallery:(id)sender
+{
     FileGalleryController *fvc = [[FileGalleryController alloc] init];
+    [self folderWillClose:nil];
 
     [fvc setModalPresentationStyle:UIModalPresentationFullScreen];
     [self presentModalViewController:fvc animated:YES];
@@ -126,11 +143,11 @@
 
 - (IBAction)playAction:(id)sender
 {
-//    [playButton setEnabled:NO];
-
     if( runButton ){
         runButton = NO;
+        [layerButton setEnabled:NO];
         [gearListButton setEnabled:NO];
+        [menuButton setEnabled:NO];
         [playButton setImage:[UIImage imageNamed:@"stop_.png"]];
 
         [[NSNotificationCenter defaultCenter] postNotificationName:NOTI_RUN
@@ -139,17 +156,114 @@
     else
     {
         runButton = YES;
+        [layerButton setEnabled:YES];
         [gearListButton setEnabled:YES];
+        [menuButton setEnabled:YES];
         [playButton setImage:[UIImage imageNamed:@"run_.png"]];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:NOTI_STOP
                                                             object:nil];
     }
-
 }
 
-- (IBAction)saveAction:(id)sender
+- (IBAction)openMenuFolder:(id)sender
 {
+    menuFolder = [[UIViewController alloc] init];
+    [menuFolder.view setFrame:CGRectMake(0, 0, blueprintCtrl.view.frame.size.width, 55)];
+    [menuFolder.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"plateBack.png"]]];
+
+    UIButton *b0 = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
+    [b0 setBackgroundImage:[UIImage imageNamed:@"i_files.png"] forState:UIControlStateNormal];
+    [b0 addTarget:self action:@selector(OpenFileGallery:) forControlEvents:UIControlEventTouchUpInside];
+    UIButton *b1 = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
+    [b1 setBackgroundImage:[UIImage imageNamed:@"i_new.png"] forState:UIControlStateNormal];
+    [b1 addTarget:self action:@selector(newContentAction:) forControlEvents:UIControlEventTouchUpInside];
+    UIButton *b2 = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
+    [b2 setBackgroundImage:[UIImage imageNamed:@"i_save.png"] forState:UIControlStateNormal];
+    [b2 addTarget:self action:@selector(saveAction:) forControlEvents:UIControlEventTouchUpInside];
+    UIButton *b3 = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
+    [b3 setBackgroundImage:[UIImage imageNamed:@"i_phone.png"] forState:UIControlStateNormal];
+    [b3 addTarget:self action:@selector(paperAction:) forControlEvents:UIControlEventTouchUpInside];
+
+    UIScrollView *hsview = [[UIScrollView alloc] initWithFrame:menuFolder.view.frame];
+    [hsview setBackgroundColor:[UIColor clearColor]];
+    [hsview setShowsHorizontalScrollIndicator:NO];
+    [hsview setShowsVerticalScrollIndicator:NO];
+
+    NSArray *btns = [NSArray arrayWithObjects:b0,b1,b2,b3, nil];
+    [hsview setContentSize:CGSizeMake([btns count]*60+50, menuFolder.view.frame.size.height)];
+    NSUInteger idx = 0;
+    for( UIButton *btn in btns ){
+        [btn setFrame:CGRectOffset(btn.frame, idx*60 + 30, 11)];
+        [btn.layer setShadowColor:[UIColor blackColor].CGColor];
+        [btn.layer setShadowRadius:5.0];
+        [btn.layer setShadowOffset:CGSizeMake(0, 1)];
+        [btn.layer setShadowOpacity:0.8];
+        [hsview addSubview:btn];
+        idx ++;
+    }
+
+    [menuFolder.view addSubview:hsview];
+
+    AudioServicesPlaySystemSound( drawerOpenSoundID );
+    [JWFolders openFolderWithViewController:menuFolder atPosition:CGPointMake(10, blueprintCtrl.view.frame.size.height-55) inContainerView:self.view sender:self];
+}
+
+- (IBAction)showLayerList:(id)sender
+{
+    // 목록이 없다면 동작하지도 말자.
+    if( 0 == [USERCONTEXT.gearsArray count] ) return;
+
+    // 컨트롤 버튼 3개는 화면에서 없어야 한다. View 의 Layer 순서 처리에 방해가 된다.
+    [blueprintCtrl removeModifyMode];
+
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+            CSLayerTableViewController *controller = [[CSLayerTableViewController alloc] initWithStyle:UITableViewStylePlain];
+        controller.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        [self presentModalViewController:controller animated:YES];
+    } else {
+        if (!self.layerPopoverController) {
+            CSLayerTableViewController *controller = [[CSLayerTableViewController alloc] initWithStyle:UITableViewStylePlain];
+            [controller setBlueprintViewController:blueprintCtrl];
+
+            self.layerPopoverController = [[UIPopoverController alloc] initWithContentViewController:controller];
+        }
+        if( ([USERCONTEXT.gearsArray count] * 45) < 700 )
+            self.layerPopoverController.popoverContentSize = CGSizeMake(320, ([USERCONTEXT.gearsArray count] * 45) );
+        
+        if( [self.layerPopoverController isPopoverVisible] )
+            [self.layerPopoverController dismissPopoverAnimated:YES];
+        else
+            [self.layerPopoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    }
+}
+
+- (void)folderWillClose:(id)sender
+{
+    AudioServicesPlaySystemSound( drawerCloseSoundID );
+    [JWFolders closeFolderWithCompletionBlock:^{
+        if( menuFolder )
+            [menuFolder.view removeFromSuperview], menuFolder = nil;
+    }];    
+}
+
+#pragma mark -
+
+- (void)newContentAction:(id)sender
+{
+    UIAlertView *newAlert = [[UIAlertView alloc] initWithTitle:@"New Slate"
+                                                          message:@"Reset your slate." delegate:self
+                                                cancelButtonTitle:@"Cancel"
+                                                otherButtonTitles:@"OK", nil];
+    [newAlert setAlertViewStyle:UIAlertViewStyleDefault];
+    [newAlert setTag:kNewAlert];
+    [newAlert show];
+}
+
+- (void)saveAction:(id)sender
+{
+    [self folderWillClose:nil];
+
     // Screen capture and resize for app's icon image;
     UIGraphicsBeginImageContext(blueprintCtrl.view.frame.size);
 	[blueprintCtrl.view.layer renderInContext:UIGraphicsGetCurrentContext()];
@@ -157,7 +271,7 @@
 
     blueprintViewImage = [self resizedImage:tmpImage inRect:CGRectMake(0, 0, 88, 120)];
 
-    NSLog(@"%f %f", blueprintViewImage.size.width, blueprintViewImage.scale);
+//    NSLog(@"%f %f", blueprintViewImage.size.width, blueprintViewImage.scale);
 	UIGraphicsEndImageContext();
 
     UIActionSheet *ac = [[UIActionSheet alloc] initWithTitle:@"App Save" delegate:self
@@ -211,6 +325,24 @@
 	return result;
 }
 
+-(void)paperAction:(id)sender
+{
+    PaperSetModal *modalPanel = [[PaperSetModal alloc] initWithFrame:blueprintCtrl.view.bounds
+                                                               title:@"Slate Wallpaper"];
+    modalPanel.delegate = self;
+    modalPanel.onClosePressed = ^(UAModalPanel* panel) {
+        // [panel hide];
+        [panel hideWithOnComplete:^(BOOL finished) {
+            [panel removeFromSuperview];
+        }];
+    };
+
+    [self folderWillClose:nil];
+
+    [blueprintCtrl.view addSubview:modalPanel];
+    [modalPanel showFromPoint:[sender center]];
+}
+
 #pragma mark - Delegate
 
 -(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -231,6 +363,7 @@
                                                         otherButtonTitles:@"OK", nil];
             [renameAlert setAlertViewStyle:UIAlertViewStylePlainTextInput];
             [[renameAlert textFieldAtIndex:0] setText:USERCONTEXT.appName];
+            [renameAlert setTag:kRenameAlert];
             [renameAlert show];
             break;
     }
@@ -240,10 +373,23 @@
 {
     if( 0 == buttonIndex ) return;  // cancel is do nothing.
 
-    NSLog(@"Do rename");
-    [USERCONTEXT setAppName:[alertView textFieldAtIndex:0].text];
+    switch ( alertView.tag ) {
+        case kRenameAlert:            
+            NSLog(@"Do rename");
+            [USERCONTEXT setAppName:[alertView textFieldAtIndex:0].text];
+            
+            [self saveAppFile];
+            break;
+        case kNewAlert:
+            NSLog(@"Do New");
+            [self folderWillClose:nil];
+            [blueprintCtrl deleteAllGear];
+            USERCONTEXT.appName = @"noname";
+            break;
 
-    [self saveAppFile];
+        default:
+            break;
+    }
 }
 
 //------------------------------------------------------------------------------------------------------
@@ -274,6 +420,10 @@
                                                              error:&error])
         {
             NSLog(@"Create directory error: %@", error);
+            if( error.code != 516 ){
+                STOP_WAIT_VIEW;
+                return;
+            }
         }
         
         // write contents
@@ -282,8 +432,19 @@
                                         toFile:[theFile stringByAppendingPathComponent:@"Contents.obj"]] )
         {
             NSLog(@"File error");
+            STOP_WAIT_VIEW;
+            return;
         }
-        
+
+        // saving wallpaper
+        if( ![NSKeyedArchiver archiveRootObject:[NSNumber numberWithInteger:USERCONTEXT.wallpaperIndex]
+                                         toFile:[theFile stringByAppendingPathComponent:@"PaperSet.obj"]] )
+        {
+            NSLog(@"File error");
+            STOP_WAIT_VIEW;
+            return;
+        }
+
         // write screenshot
         [UIImagePNGRepresentation(blueprintViewImage) writeToFile:[theFile stringByAppendingPathComponent:@"Face.png"] atomically:YES];
 
@@ -306,7 +467,7 @@
 
         NSLog(@"%@",noti.object);
     
-        NSData *fileData = [[NSFileManager defaultManager] contentsAtPath:noti.object];
+        NSData *fileData = [[NSFileManager defaultManager] contentsAtPath:[noti.object stringByAppendingPathComponent:@"Contents.obj"]];
         NSMutableArray *array = [NSKeyedUnarchiver unarchiveObjectWithData:fileData];
         [USERCONTEXT.gearsArray addObjectsFromArray:array];
 
@@ -315,8 +476,22 @@
         for( CSGearObject *g in USERCONTEXT.gearsArray )
             [g makeUpSelectorArray];
 
+        fileData = [[NSFileManager defaultManager] contentsAtPath:[noti.object stringByAppendingPathComponent:@"PaperSet.obj"]];
+        NSNumber *colorIndex = [NSKeyedUnarchiver unarchiveObjectWithData:fileData];
+        USERCONTEXT.wallpaperIndex = [colorIndex integerValue];
+        [self setBlueprintColor:[USERCONTEXT.wallpapers objectAtIndex:USERCONTEXT.wallpaperIndex]];
+
+        // set Name
+        USERCONTEXT.appName = [[[noti.object componentsSeparatedByString:@"/"] lastObject] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
         STOP_WAIT_VIEW;
     });
+}
+
+// 배경이 되는 청사진 화면의 색을 설정한다.
+-(void) setBlueprintColor:(UIColor*)color
+{
+    [blueprintCtrl.view setBackgroundColor:color];
 }
 
 @end

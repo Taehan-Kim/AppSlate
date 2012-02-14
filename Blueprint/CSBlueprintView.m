@@ -32,7 +32,7 @@
         draw1PxStroke(UIGraphicsGetCurrentContext(), linkStartPoint, newP, [UIColor orangeColor].CGColor);
 }
 
-
+// 액션 -> 프로퍼티 연결 작업을 시작하도록 요구가 주어졌다. 연결 표시 손잡이를 보여주고 움직일 수 있도록 세팅한다.
 -(void) startActionLink:(NSDictionary*) userInfo
 {
     panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(actionLinkDragGesture:)];
@@ -42,13 +42,17 @@
     actionIndex = ((NSNumber*)[userInfo objectForKey:@"theActionIndex"]).integerValue;
 
     // handle 을 보여주자.
-    actionHandle = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+    actionHandle = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
     [actionHandle.layer setBackgroundColor:[UIColor orangeColor].CGColor];
-    [actionHandle.layer setCornerRadius:15.0];
+    [actionHandle.layer setCornerRadius:20.0];
+    [actionHandle.layer setBorderColor:[UIColor redColor].CGColor];
+    [actionHandle.layer setBorderWidth:1.0];
     [actionHandle setClipsToBounds:YES];
-    [actionHandle setAlpha:0.7];
+    [actionHandle setAlpha:1.0];
     [actionHandle setCenter:actionGear.csView.center];
-    [actionHandle addSubview:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"arrow-cross.png"]]];
+    UIImageView *arrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"arrow-cross.png"]];
+    [arrow setFrame:CGRectMake(5, 5, 30, 30)];
+    [actionHandle addSubview:arrow];
     [self addSubview:actionHandle];
 
     linkStartPoint = actionHandle.center;

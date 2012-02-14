@@ -18,6 +18,15 @@
 
 #pragma mark -
 
+-(id) init
+{
+    if( self = [super init] ){
+        NSURL *fileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"setSound" ofType:@"wav"]];
+        AudioServicesCreateSystemSoundID((__bridge CFURLRef)fileURL, &myID);
+    }
+    return self;
+}
+
 -(void) setGearValue:(id)gear propertyInfo:(NSDictionary*)infoDic
 {
     theGear = gear;
@@ -34,6 +43,16 @@
     else {
         // TODO: Error Handling
     }
+    [self doSound];
 }
 
+-(void) doSound
+{
+    AudioServicesPlaySystemSound(myID);
+}
+
+-(void) viewWillDisappear:(BOOL)animated
+{
+    AudioServicesDisposeSystemSoundID(myID);
+}
 @end

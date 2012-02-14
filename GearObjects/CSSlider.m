@@ -79,9 +79,9 @@
 
 -(void) setThumbValue:(NSNumber*)number
 {
-    NSUInteger toValue;
+    CGFloat toValue;
     if( [number isKindOfClass:[NSNumber class]] )
-        toValue = [number integerValue];
+        toValue = [number floatValue];
     else if( [number isKindOfClass:[NSString class]] )
         toValue = [(NSString*)number length];
 
@@ -133,15 +133,17 @@
 
     self.info = NSLocalizedString(@"Slider", @"Slider");
 
-    NSDictionary *d0 = MAKE_PROPERTY_D(@"Value", P_NUM, @selector(setThumbValue:),@selector(getThumbValue));
-    NSDictionary *d1 = MAKE_PROPERTY_D(@"Minimum Value", P_NUM, @selector(setMinimumValue:),@selector(getMinimumValue));
-    NSDictionary *d2 = MAKE_PROPERTY_D(@"Maximum Value", P_NUM, @selector(setMaximumValue:),@selector(getMaximumValue));
-    NSDictionary *d3 = MAKE_PROPERTY_D(@"Minimum Bar Color", P_COLOR, @selector(setMinimumBarColor:),@selector(getMinimumBarColor));
-    NSDictionary *d4 = MAKE_PROPERTY_D(@"Maximum Bar Color", P_COLOR, @selector(setMaximumBarColor:),@selector(getMaximumBarColor));
-    NSDictionary *d5 = MAKE_PROPERTY_D(@"Thumb Color", P_COLOR, @selector(setThumbColor:),@selector(getThumbColor));
-    NSDictionary *d6 = MAKE_PROPERTY_D(@"Continuos Change", P_BOOL, @selector(setContinuosChange:),@selector(getContinuosChange));
+    DEFAULT_CENTER_D;
+    NSDictionary *d0 = ALPHA_D;
+    NSDictionary *d1 = MAKE_PROPERTY_D(@"Value", P_NUM, @selector(setThumbValue:),@selector(getThumbValue));
+    NSDictionary *d2 = MAKE_PROPERTY_D(@"Minimum Value", P_NUM, @selector(setMinimumValue:),@selector(getMinimumValue));
+    NSDictionary *d3 = MAKE_PROPERTY_D(@"Maximum Value", P_NUM, @selector(setMaximumValue:),@selector(getMaximumValue));
+    NSDictionary *d4 = MAKE_PROPERTY_D(@"Minimum Bar Color", P_COLOR, @selector(setMinimumBarColor:),@selector(getMinimumBarColor));
+    NSDictionary *d5 = MAKE_PROPERTY_D(@"Maximum Bar Color", P_COLOR, @selector(setMaximumBarColor:),@selector(getMaximumBarColor));
+    NSDictionary *d6 = MAKE_PROPERTY_D(@"Thumb Color", P_COLOR, @selector(setThumbColor:),@selector(getThumbColor));
+    NSDictionary *d7 = MAKE_PROPERTY_D(@"Continuos Change", P_BOOL, @selector(setContinuosChange:),@selector(getContinuosChange));
 
-    pListArray = [NSArray arrayWithObjects:d0,d1,d2,d3,d4,d5,d6, nil];
+    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2,d3,d4,d5,d6,d7, nil];
 
     NSMutableDictionary MAKE_ACTION_D(@"Changed Value", A_NUM, a1);
     NSMutableDictionary MAKE_ACTION_D(@"Minimum Value", A_NUM, a2);
@@ -165,7 +167,7 @@
 {
     SEL act;
     NSNumber *nsMagicNum;
-    NSUInteger myValue = ((UISlider*)sender).value;
+    CGFloat myValue = ((UISlider*)sender).value;
 
     // 1. value changed
     act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:0] objectForKey:@"selector"]).pointerValue;
@@ -175,24 +177,24 @@
         
         if( nil != gObj ){
             if( [gObj respondsToSelector:act] )
-                [gObj performSelector:act withObject:[NSNumber numberWithInteger:myValue]];
+                [gObj performSelector:act withObject:[NSNumber numberWithFloat:myValue]];
             else
-                ; // todo: error handleing
+                EXCLAMATION;
         }
     }
 
     // 2. did min value
     act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:1] objectForKey:@"selector"]).pointerValue;
-    if( nil != act && myValue == (NSUInteger)((UISlider*)sender).minimumValue )
+    if( nil != act && myValue == ((UISlider*)sender).minimumValue )
     {
         nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:1]) objectForKey:@"mNum"];
         CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
         
         if( nil != gObj ){
             if( [gObj respondsToSelector:act] )
-                [gObj performSelector:act withObject:[NSNumber numberWithInteger:myValue]];
+                [gObj performSelector:act withObject:[NSNumber numberWithFloat:myValue]];
             else
-                ; // todo: error handleing
+                EXCLAMATION;
         }
     }
 
@@ -207,7 +209,7 @@
             if( [gObj respondsToSelector:act] )
                 [gObj performSelector:act withObject:[NSNumber numberWithInteger:myValue]];
             else
-                ; // todo: error handleing
+                EXCLAMATION;
         }
     }
 }

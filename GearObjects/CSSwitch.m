@@ -63,10 +63,12 @@
 
     self.info = NSLocalizedString(@"Basic Switch", @"Basic Switch");
 
+    DEFAULT_CENTER_D;
+    NSDictionary *d0 = ALPHA_D;
     NSDictionary *d1 = MAKE_PROPERTY_D(@"On Tint Color", P_COLOR, @selector(setTintColor:),@selector(getTintColor));
     NSDictionary *d2 = MAKE_PROPERTY_D(@"On Value", P_BOOL, @selector(setOnValue:),@selector(getOnValue));
 
-    pListArray = [NSArray arrayWithObjects:d1,d2, nil];
+    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2, nil];
 
     NSMutableDictionary MAKE_ACTION_D(@"Changed Value", A_NUM, a1);
     NSMutableDictionary MAKE_ACTION_D(@"Turn On", A_NUM, a2);
@@ -103,7 +105,7 @@
             if( [gObj respondsToSelector:act] )
                 [gObj performSelector:act withObject:[NSNumber numberWithBool:myBoolValue]];
             else
-                ; // todo: error handleing
+                EXCLAMATION;
         }
     }
 
@@ -117,7 +119,7 @@
             if( [gObj respondsToSelector:act] )
                 [gObj performSelector:act withObject:[NSNumber numberWithBool:YES]];
             else
-                ; // todo: error handleing
+                EXCLAMATION;
         }
     }
 
@@ -129,9 +131,9 @@
         
         if( nil != gObj ){
             if( [gObj respondsToSelector:act] )
-                [gObj performSelector:act withObject:[NSNumber numberWithBool:YES]];
+                [gObj performSelector:act withObject:[NSNumber numberWithBool:NO]];
             else
-                ; // todo: error handleing
+                EXCLAMATION;
         }
     }
 }

@@ -28,7 +28,7 @@
         self.gridView.autoresizesSubviews = YES;
         self.gridView.delegate = self;
         self.gridView.dataSource = self;
-        
+        mode = SELECTION;
     }
     _imageNames = [[NSMutableArray alloc] initWithCapacity:6];
 
@@ -84,6 +84,14 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+// 일반적 선택 모드, 삭제 모드, 혹은 다른 동작 모드로 설정.
+-(void) setMode:(NSUInteger)md
+{
+    mode = md;
+
+    [_gridView reloadData];
+}
+
 #pragma mark Grid View Data Source
 
 - (NSUInteger) numberOfItemsInGridView: (AQGridView *) aGridView
@@ -100,11 +108,12 @@
     {
         plainCell = [[FileCell alloc] initWithFrame: CGRectMake(0.0, 0.0, 200.0, 150.0)
                                                  reuseIdentifier:@"PlainCell"];
-        plainCell.selectionGlowColor = [UIColor blueColor];
+        plainCell.selectionGlowColor = [UIColor lightGrayColor];
     }
 
     plainCell.image = [UIImage imageWithContentsOfFile:[documentsPath stringByAppendingFormat:@"/%@/Face.png",[_imageNames objectAtIndex:index]]];
     plainCell.title = [_imageNames objectAtIndex:index];
+    [plainCell showTrash: DELETING == mode ];
 
     cell = plainCell;
 
@@ -125,11 +134,42 @@
 
 - (void) gridView: (AQGridView *) gridView didSelectItemAtIndex: (NSUInteger) index
 {
-    NSLog(@"Icon selected: %d", index);
+    NSString *fs;
+    NSError *error;
+    NSLog(@"Icon selected: %d, mode:%d", index, mode);
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:NOTI_FILELOAD
-                                                        object:[documentsPath stringByAppendingFormat:@"/%@/Contents.obj",[_imageNames objectAtIndex:index]]];
-    [pObj dismissModalViewControllerAnimated:YES];
+    switch ( mode ) {
+        case SELECTION:
+            [[NSNotificationCenter defaultCenter] postNotificationName:NOTI_FILELOAD
+                                                                object:[documentsPath stringByAppendingFormat:@"/%@",[_imageNames objectAtIndex:index]]];
+            [pObj dismissModalViewControllerAnimated:YES];
+            break;
+
+        case DELETING:
+            fs = [documentsPath stringByAppendingFormat:@"/%@",[_imageNames objectAtIndex:index]];
+            if( [[NSFileManager defaultManager] removeItemAtPath:fs error:&error] )
+            {
+                NSDirectoryEnumerator *dirEnum = [[NSFileManager defaultManager] enumeratorAtPath:documentsPath];
+                [_imageNames removeAllObjects];
+                NSString *file;
+                while (file = [dirEnum nextObject]) {
+                    NSDictionary *attr = [dirEnum fileAttributes];
+                    if( [[attr objectForKey:@"NSFileType"] isEqualToString:NSFileTypeDirectory] ){
+                        NSLog(@"%@",file);
+                        [_imageNames addObject:file]; // add name.
+                    }
+                    
+                    [dirEnum skipDescendants];  // do not recursion.
+                }
+
+                [self.gridView deleteItemsAtIndices:[NSIndexSet indexSetWithIndex:index]
+                                      withAnimation:AQGridViewItemAnimationFade];
+            }
+            break;
+
+        default:
+            break;
+    }
 }
 
 @end

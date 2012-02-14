@@ -75,6 +75,19 @@
     return self;
 }
 
+-(id)initWithCoder:(NSCoder *)decoder
+{
+    if( (self=[super initWithCoder:decoder]) ) {
+        light = [[csView subviews] objectAtIndex:0];
+//        light = [[UIView alloc] initWithFrame:CGRectMake(8, 8, 12, 12)];
+        [light setClipsToBounds:YES];
+        [light.layer setCornerRadius:6];
+        [light setBackgroundColor:[UIColor redColor]];
+        [csView addSubview:light];
+    }
+    return self;
+}
+
 -(void) drawBulb
 {
     if( onValue )

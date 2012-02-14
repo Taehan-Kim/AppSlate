@@ -18,7 +18,7 @@
     
     _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(50, 0, 100, 130)];
     _title = [[UILabel alloc] initWithFrame:CGRectMake(0, frame.size.height-15, frame.size.width, 15)];
-    _title.font = [UIFont boldSystemFontOfSize: 14.0];
+    _title.font = [UIFont boldSystemFontOfSize: 18.0];
     _title.adjustsFontSizeToFitWidth = YES;
     _title.textAlignment = UITextAlignmentCenter;
     _title.backgroundColor = [UIColor clearColor];
@@ -31,11 +31,17 @@
     self.contentView.backgroundColor = self.backgroundColor;
 //    _imageView.backgroundColor = [UIColor clearColor];
     _imageView.layer.cornerRadius = 6.0;
+    _imageView.layer.borderColor = [UIColor blackColor].CGColor;
     _imageView.clipsToBounds = YES;
 
-    
+    trashMark = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+    trashMark.center = self.center;
+    [trashMark setImage:[UIImage imageNamed:@"fileDel.png"]];
+    [trashMark setHidden:YES];
+
     [self.contentView addSubview: _imageView];
     [self.contentView addSubview: _title];
+    [self addSubview:trashMark];
     
     return ( self );
 }
@@ -65,7 +71,12 @@
 
 - (void) setTitle: (NSString *) title
 {
-    _title.text = title;
+    _title.text = [title stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+}
+
+- (void) showTrash:(BOOL) showBool
+{
+    [trashMark setHidden:!showBool];
 }
 
 @end

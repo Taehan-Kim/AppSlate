@@ -223,4 +223,60 @@
     return YES;
 }
 
+#pragma mark -
+
+-(NSNumber*) getCenterX
+{
+    return [NSNumber numberWithFloat:csView.center.x];
+}
+
+-(void) setCenterX:(NSNumber*) xpos
+{
+    if( [xpos isKindOfClass:[NSString class]] ){
+        EXCLAMATION; return;
+    }
+
+    CGFloat x = [xpos floatValue];
+
+    if( 0 > x || x > [UIApplication sharedApplication].keyWindow.frame.size.width ) return;
+
+    csView.center = CGPointMake(x, csView.center.y);
+}
+
+-(NSNumber*) getCenterY
+{
+    return [NSNumber numberWithFloat:csView.center.y];
+}
+
+-(void) setCenterY:(NSNumber*) ypos
+{
+    if( [ypos isKindOfClass:[NSString class]] ){
+        EXCLAMATION; return;
+    }
+
+    CGFloat y = [ypos floatValue];
+    
+    if( 0 > y || y > [UIApplication sharedApplication].keyWindow.frame.size.height ) return;
+    
+    csView.center = CGPointMake(csView.center.x, y);
+}
+
+-(NSNumber*) getAlpha
+{
+    return [NSNumber numberWithFloat:csView.alpha];
+}
+
+-(void) setAlpha:(NSNumber*) alphaValue
+{
+    if( [alphaValue isKindOfClass:[NSString class]] ){
+        EXCLAMATION; return;
+    }
+    CGFloat a = [alphaValue floatValue];
+
+    if( a < 0 ) a = 0.0;
+    else if( a > 1.0 ) a = 1.0;
+
+    [csView setAlpha:a];
+}
+
 @end

@@ -40,7 +40,7 @@
 
 -(NSString*) getText
 {
-    return ((BButton*)csView).titleLabel.text;
+    return ((BButton*)csView).btn.titleLabel.text;
 }
 
 -(void) setTextColor:(UIColor*)color
@@ -51,18 +51,18 @@
 
 -(UIColor*) getTextColor
 {
-    return ((BButton*)csView).titleLabel.textColor;
+    return ((BButton*)csView).btn.titleLabel.textColor;
 }
 
 -(void) setFont:(UIFont*)font
 {
     if( [font isKindOfClass:[UIFont class]] )
-        [((BButton*)csView).titleLabel setFont:font];
+        [((BButton*)csView).btn.titleLabel setFont:font];
 }
 
 -(UIFont*) getFont
 {
-    return ((BButton*)csView).titleLabel.font;
+    return ((BButton*)csView).btn.titleLabel.font;
 }
 
 //===========================================================================
@@ -82,12 +82,14 @@
     [(BButton*)csView addTarget:self action:@selector(pushAction)];
     self.info = NSLocalizedString(@"Button", @"Button");
 
+    DEFAULT_CENTER_D;
+    NSDictionary *d0 = ALPHA_D;
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Tint Color", P_COLOR, @selector(setTintColor:),@selector(getTintColor));
     NSDictionary *d2 = MAKE_PROPERTY_D(@"Button Text", P_TXT, @selector(setText:),@selector(getText));
     NSDictionary *d3 = MAKE_PROPERTY_D(@"Text Color", P_COLOR, @selector(setTextColor:),@selector(getTextColor));
     NSDictionary *d4 = MAKE_PROPERTY_D(@"Text Font", P_FONT, @selector(setFont:),@selector(getFont));
 
-    pListArray = [NSArray arrayWithObjects:d1,d2,d3,d4, nil];
+    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2,d3,d4, nil];
 
     NSMutableDictionary MAKE_ACTION_D(@"Push", A_NUM, a1);
     actionArray = [NSArray arrayWithObjects:a1, nil];
@@ -120,7 +122,7 @@
         if( [gObj respondsToSelector:act] )
             [gObj performSelector:act withObject:[NSNumber numberWithBool:YES]];
         else
-            ; // todo: error handleing
+            EXCLAMATION;
     }
 }
 

@@ -13,6 +13,8 @@
 {
     UIToolbar *toolbar;
     BookshelfViewController *bookshelfVC;
+
+    NSUInteger mode;
 }
 
 @end

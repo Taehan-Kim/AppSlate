@@ -9,6 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "AQGridView.h"
 
+#define SELECTION 0
+#define DELETING  1
+#define RENAME    2  // not yet.
+
 @interface BookshelfViewController : UIViewController <AQGridViewDelegate, AQGridViewDataSource>
 {
     NSMutableArray * _imageNames;
@@ -16,10 +20,14 @@
 
     NSString* documentsPath;
     id pObj;
+
+    NSUInteger mode;
 }
 
 @property (nonatomic, retain) IBOutlet AQGridView * gridView;
 
 -(void) setParentController:(id) obj;
+
+-(void) setMode:(NSUInteger) mode;
 
 @end

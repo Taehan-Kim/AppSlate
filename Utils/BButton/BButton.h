@@ -9,14 +9,16 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 
-@interface BButton : UIButton
+@interface BButton : UIView
 {
-//    CAGradientLayer *moreGradient;
+    UIButton        *btn;
     CAGradientLayer *gradient;
 }
 
 -(void) setTitle:(NSString *)title;
 -(void) setTitleColor:(UIColor *)color;
 -(void) addTarget:(id)tg action:(SEL)selector;
+
+@property (nonatomic,strong)    UIButton *btn;
 
 @end

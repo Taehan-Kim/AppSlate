@@ -84,18 +84,18 @@
 
 -(UIColor*) getTextColor
 {
-    return ((BButton*)csView).titleLabel.textColor;
+    return ((BButton*)csView).btn.titleLabel.textColor;
 }
 
 -(void) setFont:(UIFont*)font
 {
     if( [font isKindOfClass:[UIFont class]] )
-        [((BButton*)csView).titleLabel setFont:font];
+        [((BButton*)csView).btn.titleLabel setFont:font];
 }
 
 -(UIFont*) getFont
 {
-    return ((BButton*)csView).titleLabel.font;
+    return ((BButton*)csView).btn.titleLabel.font;
 }
 
 //===========================================================================
@@ -120,6 +120,8 @@
     [(BButton*)csView addTarget:self action:@selector(pushAction:)];
     self.info = NSLocalizedString(@"Toggle Button", @"Toggle Button");
 
+    DEFAULT_CENTER_D;
+    NSDictionary *d0 = ALPHA_D;
     NSDictionary *d1 = MAKE_PROPERTY_D(@"On Tint Color", P_COLOR, @selector(setOnTintColor:),@selector(getOnTintColor));
     NSDictionary *d2 = MAKE_PROPERTY_D(@"Off Tint Color", P_COLOR, @selector(setOffTintColor:),@selector(getOffTintColor));
     NSDictionary *d3 = MAKE_PROPERTY_D(@"Button On Text", P_TXT, @selector(setOnText:),@selector(getOnText));
@@ -127,7 +129,7 @@
     NSDictionary *d5 = MAKE_PROPERTY_D(@"Text Color", P_COLOR, @selector(setTextColor:),@selector(getTextColor));
     NSDictionary *d6 = MAKE_PROPERTY_D(@"Text Font", P_FONT, @selector(setFont:),@selector(getFont));
 
-    pListArray = [NSArray arrayWithObjects:d1,d2,d3,d4,d5,d6, nil];
+    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2,d3,d4,d5,d6, nil];
 
     NSMutableDictionary MAKE_ACTION_D(@"Button On", A_NUM, a1);
     NSMutableDictionary MAKE_ACTION_D(@"Button Off", A_NUM, a2);
@@ -179,7 +181,7 @@
         if( [gObj respondsToSelector:act] )
             [gObj performSelector:act withObject:[NSNumber numberWithBool:toggleValue]];
         else
-            ; // todo: error handleing
+            EXCLAMATION;
     }
 
     // 2. On or Off actions
@@ -193,7 +195,7 @@
         if( [gObj respondsToSelector:act] ){
             [gObj performSelector:act withObject:[NSNumber numberWithBool:YES]];
         }else
-            ; // todo: error handleing
+            EXCLAMATION;
     }
 
     // 버튼의 상태를 세팅한다.
