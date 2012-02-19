@@ -27,6 +27,7 @@
     __weak IBOutlet UIBarButtonItem *layerButton;
 
     UIImage *blueprintViewImage;
+    UIView  *runIndicator;
 }
 
 @property (strong, nonatomic) UIPopoverController *flipsidePopoverController;

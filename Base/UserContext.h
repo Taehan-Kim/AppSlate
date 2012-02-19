@@ -13,9 +13,7 @@
 
 #define USERCONTEXT     [UserContext sharedUserContext]
 
-/**
- @brief 로그인 유저의 정보를 담고 있는 자료구조
- */
+
 
 @interface UserContext: NSObject 
 {	
@@ -27,6 +25,8 @@
     NSString        *appName;
     NSMutableArray  *gearsArray;
     NSUInteger      wallpaperIndex;
+
+    BOOL            imRunning;
 }
 
 @property (nonatomic, strong)   NSString        *appName;
@@ -34,6 +34,7 @@
 @property (nonatomic, strong)   UIPopoverController *pop;
 @property (nonatomic, strong)   NSArray         *wallpapers;
 @property (nonatomic)           NSUInteger      wallpaperIndex;
+@property (nonatomic)           BOOL            imRunning;
 
 
 + (UserContext *)sharedUserContext;

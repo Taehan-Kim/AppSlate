@@ -16,6 +16,9 @@
 #import "UserContext.h"
 #import "BButton.h"
 
+// Our conversion definition
+#define DEGREES_TO_RADIANS(angle) (angle / 180.0 * 3.1415926)
+
 // 폰트
 #define CS_BOLD_FONT(s) [UIFont fontWithName:@"Helvetica-Bold" size:s]
 #define CS_FONT(s) [UIFont fontWithName:@"Helvetica" size:s]

@@ -81,7 +81,8 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    return( (interfaceOrientation == UIInterfaceOrientationPortrait) ||
+            (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) );
 }
 
 // 일반적 선택 모드, 삭제 모드, 혹은 다른 동작 모드로 설정.

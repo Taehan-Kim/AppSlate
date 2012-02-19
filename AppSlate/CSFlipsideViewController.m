@@ -25,15 +25,29 @@
         gearList = [[NSArray alloc] initWithObjects:
                     [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Label",@"Simple Text Label", @"gi_label.png", NSNUM(CS_LABEL), nil] forKeys:keys],
                     [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Masked Label",@"Inverse Color Text Label", @"gi_maskedlabel.png", NSNUM(CS_MASKEDLABEL), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Light Bulb",@"Small Bulb", @"gi_none.png", NSNUM(CS_BULB), nil] forKeys:keys],                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Flip Counter",@"Flip Animation Number Counter", @"gi_flipcount.png", NSNUM(CS_FLIPCNT), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Light Bulb",@"Small Bulb", @"gi_bulb.png", NSNUM(CS_BULB), nil] forKeys:keys],                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Flip Counter",@"Flip Animation Number Counter", @"gi_flipcount.png", NSNUM(CS_FLIPCNT), nil] forKeys:keys],
                     [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Text Field",@"User can input some text", @"gi_textfield.png", NSNUM(CS_TEXTFIELD), nil] forKeys:keys],
                     [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Button Text Field",@"Input text filed with button", @"gi_textfieldbtn.png", NSNUM(CS_BTNTEXTFIELD), nil] forKeys:keys],
                     [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Basic Switch",@"On/Off switch", @"gi_switch.png", NSNUM(CS_SWITCH), nil] forKeys:keys],
                     [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Button", @"Basic button", @"gi_button.png", NSNUM(CS_BUTTON), nil] forKeys:keys],
                     [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Toggle Button", @"Toggle push button", @"gi_togglebtn.png", NSNUM(CS_TOGGLEBTN), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Touch Button", @"Touch button", @"gi_none.png", NSNUM(CS_TOUCHBTN), nil] forKeys:keys],
                     [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Slider", @"Horizontal Bar Slider", @"gi_slider.png", NSNUM(CS_SLIDER), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Table", @"Basic Table", @"gi_none.png", NSNUM(CS_TABLE), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Table", @"Basic Table", @"gi_table.png", NSNUM(CS_TABLE), nil] forKeys:keys],
+                    //
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Alert", @"Popup Alert View", @"gi_alert.png", NSNUM(CS_ALERT), nil] forKeys:keys],
+                    //
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"NOT", @"Logical NOT Gate", @"gi_not.png", NSNUM(CS_NOT), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"AND", @"Logical AND Gate", @"gi_and.png", NSNUM(CS_AND), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"OR", @"Logical OR Gate", @"gi_or.png", NSNUM(CS_OR), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"XOR", @"Logical Exclusive OR Gate", @"gi_xor.png", NSNUM(CS_XOR), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"NAND", @"Logical NAND Gate", @"gi_none.png", NSNUM(CS_NAND), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"NOR", @"Logical NOR Gate", @"gi_none.png", NSNUM(CS_NOR), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"XNOR", @"Logical Exclusive NOR Gate", @"gi_none.png", NSNUM(CS_XNOR), nil] forKeys:keys],
+                    //
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Rectangular", @"Rectangular Decoration", @"gi_rect.png", NSNUM(CS_RECT), nil] forKeys:keys],
                     nil];
+        
     }
     return self;
 }
@@ -84,11 +98,8 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
-    } else {
-        return YES;
-    }
+    return( (interfaceOrientation == UIInterfaceOrientationPortrait) ||
+           (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) );
 }
 
 #pragma mark - Actions

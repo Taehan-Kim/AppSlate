@@ -43,7 +43,8 @@
     if (self) 
     {
         [self RS_commonInit];
-        text = [aDecoder decodeObjectForKey:@"text"];
+        [self setText:[aDecoder decodeObjectForKey:@"text"]];
+        [self setFont:[aDecoder decodeObjectForKey:@"font"]];
     }
     return self;
 }
@@ -52,6 +53,7 @@
 {
     [super encodeWithCoder:encoder];
     [encoder encodeObject:text forKey:@"text"];
+    [encoder encodeObject:[self getFont] forKey:@"font"];
 }
 
 + (Class)layerClass

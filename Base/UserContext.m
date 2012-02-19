@@ -16,6 +16,7 @@
 static UserContext *_sharedUserContext = nil;
 
 @synthesize gearsArray, appName, pop, wallpapers, wallpaperIndex;
+@synthesize imRunning;
 
 + (UserContext *)sharedUserContext
 {
@@ -45,12 +46,19 @@ static UserContext *_sharedUserContext = nil;
               [UIColor darkGrayColor],
               [UIColor cyanColor],
               [UIColor brownColor],
-              [UIColor magentaColor],
+              [UIColor blueColor],
               [UIColor colorWithPatternImage:[UIImage imageNamed:@"brushedsteelPaper.png"]],
               [UIColor colorWithPatternImage:[UIImage imageNamed:@"blockPaper.png"]],
               [UIColor colorWithPatternImage:[UIImage imageNamed:@"leatherPaper.png"]],
               [UIColor colorWithPatternImage:[UIImage imageNamed:@"brownLeatherPaper.png"]],
+              [UIColor scrollViewTexturedBackgroundColor],
+              [UIColor underPageBackgroundColor],
+              [UIColor viewFlipsideBackgroundColor],
+              [UIColor groupTableViewBackgroundColor],
+              [UIColor colorWithPatternImage:[UIImage imageNamed:@"woodPaper.png"]],
+              [UIColor colorWithPatternImage:[UIImage imageNamed:@"darkWoodPaper.png"]],
                                          nil];
+        _sharedUserContext.imRunning = NO;
 
 		return _sharedUserContext;
 	}

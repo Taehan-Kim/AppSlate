@@ -14,12 +14,22 @@
 #import "CSBtnTextField.h"
 #import "CSSwitch.h"
 #import "CSButton.h"
+#import "CSTouchButton.h"
 #import "CSToggleButton.h"
 #import "CSMAskedlabel.h"
 #import "CSFlipCounter.h"
 #import "CSSlider.h"
 #import "CSTable.h"
 #import "CSBulb.h"
+#import "CSAlert.h"
+#import "CSRect.h"
+#import "CSNot.h"
+#import "CSOr.h"
+#import "CSAnd.h"
+#import "CSXor.h"
+#import "CSNor.h"
+#import "CSNand.h"
+#import "CSXnor.h"
 
 @interface CSBlueprintController : UIViewController
 {

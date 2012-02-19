@@ -130,10 +130,4 @@
     return self;
 }
 
-// 설정될 수 있는 속성 목록.
--(NSArray*) getPropertiesList
-{
-    return pListArray;
-}
-
 @end

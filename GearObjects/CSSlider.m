@@ -54,27 +54,27 @@
 -(void) setMinimumValue:(NSNumber*)number
 {
     if( [number isKindOfClass:[NSNumber class]] )
-        [((UISlider*)csView) setMinimumValue:[number integerValue]];
+        [((UISlider*)csView) setMinimumValue:[number floatValue]];
     else if( [number isKindOfClass:[NSString class]] )
         [((UISlider*)csView) setMinimumValue:[(NSString*)number length]];
 }
 
 -(NSNumber*) getMinimumValue
 {
-    return [NSNumber numberWithInteger:((UISlider*)csView).minimumValue];
+    return [NSNumber numberWithFloat:((UISlider*)csView).minimumValue];
 }
 
 -(void) setMaximumValue:(NSNumber*)number
 {
     if( [number isKindOfClass:[NSNumber class]] )
-        [((UISlider*)csView) setMaximumValue:[number integerValue]];
+        [((UISlider*)csView) setMaximumValue:[number floatValue]];
     else if( [number isKindOfClass:[NSString class]] )
         [((UISlider*)csView) setMaximumValue:[(NSString*)number length]];
 }
 
 -(NSNumber*) getMaximumValue
 {
-    return [NSNumber numberWithInteger:((UISlider*)csView).maximumValue];
+    return [NSNumber numberWithFloat:((UISlider*)csView).maximumValue];
 }
 
 -(void) setThumbValue:(NSNumber*)number

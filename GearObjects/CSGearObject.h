@@ -17,6 +17,7 @@
 #define CS_SWITCH       105
 #define CS_BUTTON       106
 #define CS_TOGGLEBTN    107
+#define CS_TOUCHBTN     114
 #define CS_FLIPCNT      108
 #define CS_SLIDER       109
 #define CS_TABLE        110
@@ -30,6 +31,9 @@
 #define CS_AND          201
 #define CS_OR           202
 #define CS_XOR          203
+#define CS_NAND         204
+#define CS_NOR          205
+#define CS_XNOR         206
 
 #define CS_RECT         300
 #define CS_LINE         301
@@ -122,6 +126,7 @@
 -(BOOL) unlinkActionMCode:(NSNumber*) mCode;
 
 -(BOOL) isResizable;
+-(BOOL) isHiddenGear;
 
 // every getters and setters ...
 -(NSNumber*) getCenterX;

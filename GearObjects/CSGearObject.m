@@ -27,6 +27,9 @@
     // 기본적으로 존재하지 않는 UI 객체.
     isUIObj = NO;
 
+    // 기본적으로 실행시 보인다.
+    csShow = YES;
+
     actionArray = nil;
 
     return self;
@@ -39,6 +42,7 @@
         csMagicNum = [decoder decodeIntegerForKey:@"csMagicNum"];
         info = [decoder decodeObjectForKey:@"info"];
         csView = [decoder decodeObjectForKey:@"csView"];
+        csShow = [decoder decodeBoolForKey:@"csShow"];
         csResizable = [decoder decodeBoolForKey:@"csResizable"];
         csBackColor = [decoder decodeObjectForKey:@"csBackColor"];
         actionTemp = [decoder decodeObjectForKey:@"actionArray"];
@@ -181,6 +185,11 @@
 -(BOOL) isResizable
 {
     return csResizable;
+}
+
+-(BOOL) isHiddenGear
+{
+    return !csShow;
 }
 
 // 연결 설정

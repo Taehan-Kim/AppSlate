@@ -67,13 +67,13 @@
 
 -(void) touchIn:(id)sender
 {
-//    gradient.opacity = 0.9;
+    gradient.opacity = 0.9;
     [gradient setColors:[NSArray arrayWithObjects:(id)[[UIColor blackColor] CGColor], (id)[[UIColor clearColor] CGColor], nil]];
 }
 
 -(void) touchUp:(id)sender
 {
-//    gradient.opacity = 0.5;
+    gradient.opacity = 0.5;
     [gradient setColors:[NSArray arrayWithObjects:(id)[[UIColor clearColor] CGColor], (id)[[UIColor blackColor] CGColor], nil]];
 }
 

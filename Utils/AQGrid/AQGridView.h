@@ -114,8 +114,8 @@ extern NSString * const AQGridViewSelectionDidChangeNotification;
 	NSMutableIndexSet *				_highlightedIndices;
 	UIView *						__unsafe_unretained _touchedContentView;		// weak reference
 
-	UIView *						__unsafe_unretained _backgroundView;
-	UIColor *						__unsafe_unretained _separatorColor;
+	UIView *						_backgroundView;
+	UIColor *						_separatorColor;
 
 	NSInteger						_reloadingSuspendedCount;
 	NSInteger						_displaySuspendedCount;

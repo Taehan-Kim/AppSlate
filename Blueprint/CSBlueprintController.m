@@ -53,20 +53,11 @@
 
 #pragma mark - View lifecycle
 
-/*
-// Implement loadView to create a view hierarchy programmatically, without using a nib.
-- (void)loadView
-{
-}
-*/
+- (void)viewDidAppear:(BOOL)animated
+{    
 
-/*
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
 }
-*/
+
 
 - (void)viewDidUnload
 {
@@ -78,7 +69,8 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    return( (interfaceOrientation == UIInterfaceOrientationPortrait) ||
+           (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) );
 }
 
 #pragma mark -
@@ -117,6 +109,9 @@
         case CS_TOGGLEBTN:
             newObj = [[CSToggleButton alloc] initGear];
             break;
+        case CS_TOUCHBTN:
+            newObj = [[CSTouchButton alloc] initGear];
+            break;
         case CS_FLIPCNT:
             newObj = [[CSFlipCounter alloc] initGear];
             break;
@@ -125,10 +120,37 @@
             break;
         case CS_TABLE:
             newObj = [[CSTable alloc] initGear];
-            break; 
+            break;
         case CS_BULB:
             newObj = [[CSBulb alloc] initGear];
-            break; 
+            break;
+        case CS_ALERT:
+            newObj = [[CSAlert alloc] initGear];
+            break;
+        case CS_RECT:
+            newObj = [[CSRect alloc] initGear];
+            break;
+        case CS_NOT:
+            newObj = [[CSNot alloc] initGear];
+            break;
+        case CS_AND:
+            newObj = [[CSAnd alloc] initGear];
+            break;
+        case CS_OR:
+            newObj = [[CSOr alloc] initGear];
+            break;
+        case CS_XOR:
+            newObj = [[CSXor alloc] initGear];
+            break;
+        case CS_NAND:
+            newObj = [[CSNand alloc] initGear];
+            break;
+        case CS_NOR:
+            newObj = [[CSNor alloc] initGear];
+            break;
+        case CS_XNOR:
+            newObj = [[CSXnor alloc] initGear];
+            break;
         default:
             return;
     }
@@ -313,6 +335,10 @@
         if( NO == gO.isUIObj || [gO.csView isKindOfClass:[UITableView class]] )
             for( UIView* sv in ((UIView*)(gO.csView)).subviews )  // 사용자 반응 활성화.
                 [sv setUserInteractionEnabled:YES];
+
+        // Hidden Style 처리.
+        if( [gO isHiddenGear] )
+            [gO.csView setHidden:YES];
     }
 
     // 에디트 모드로 있던 하나의 객체를 해제한다.
@@ -321,6 +347,7 @@
     AudioServicesPlaySystemSound(runSoundID);
 
     // TODO: 실행한다.
+    USERCONTEXT.imRunning = YES;
 }
 
 -(void) stopRequest:(NSNotification*)noti
@@ -341,8 +368,13 @@
             for( UIView* sv in ((UIView*)(gO.csView)).subviews )  // 사용자 반응 중지.
                 [sv setUserInteractionEnabled:NO];
         }
+
+        // Hidden Style 처리.
+        if( [gO isHiddenGear] )
+            [gO.csView setHidden:NO];
     }
 
+    USERCONTEXT.imRunning = NO;
 }
 
 -(void) removeModifyMode

@@ -9,6 +9,7 @@
 #import "CSMainViewController.h"
 #import "FileGalleryController.h"
 #import "JWFolders.h"
+#import "WelcomeMovieModal.h"
 
 enum alertTypes {
     kRenameAlert = 10,
@@ -48,6 +49,24 @@ enum alertTypes {
                                              selector:@selector(loadAppFile:)
                                                  name:NOTI_FILELOAD object:nil];
     [self.view addSubview:blueprintCtrl.view];
+
+    // 처음 사용자라면 안내 동영상을 보여주자.
+    // Welcome Tutorial testing.
+    if( ![[NSUserDefaults standardUserDefaults] boolForKey:@"WELCOME_SWITCH"] )
+    {
+        WelcomeMovieModal *wmv = [[WelcomeMovieModal alloc] initWithFrame:self.view.bounds];
+        
+        wmv.onClosePressed = ^(UAModalPanel* panel) {
+            // [panel hide];
+            [panel hideWithOnComplete:^(BOOL finished) {
+                [panel removeFromSuperview];
+            }];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        };
+
+        [self.view addSubview:wmv];
+        [wmv showFromPoint:self.view.center];
+    }
 }
 
 - (void)viewDidUnload
@@ -95,6 +114,36 @@ enum alertTypes {
         return YES;
 
     return NO;
+}
+#pragma mark -
+
+-(void) makeRunIndicatorView
+{
+    runIndicator = [[UIView alloc] initWithFrame:CGRectMake(354.5, 1004-40, 59, 38)];
+    [runIndicator setUserInteractionEnabled:NO];
+
+    CALayer*alphaLayer = [CALayer layer];
+    alphaLayer.contents = (__bridge id)([UIImage imageNamed:@"runningImageMask.png"].CGImage);
+    alphaLayer.frame = runIndicator.bounds;
+
+    [runIndicator.layer setMask:alphaLayer];
+    [runIndicator.layer setMasksToBounds:YES];
+
+    UIImageView *runImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"runningLight.png"]];
+    [runImg setFrame:CGRectMake(0, -10, 60, 60)];
+    [runIndicator addSubview:runImg];    
+
+    [runIndicator setBackgroundColor:CSCLEAR];
+    [self.view addSubview:runIndicator];
+
+    // Rotation Infinitly
+    [UIView animateWithDuration:2.5 delay:0.0
+                        options:UIViewAnimationOptionRepeat|UIViewAnimationOptionCurveLinear
+                     animations:^()
+    {
+         CGAffineTransform transform = CGAffineTransformMakeRotation(DEGREES_TO_RADIANS(179.9));
+         runImg.transform = transform;
+    } completion:^(BOOL finish){}];
 }
 
 #pragma mark - Flipside View Controller
@@ -152,6 +201,7 @@ enum alertTypes {
 
         [[NSNotificationCenter defaultCenter] postNotificationName:NOTI_RUN
                                                             object:nil];
+        [self makeRunIndicatorView];
     }
     else
     {
@@ -163,6 +213,8 @@ enum alertTypes {
         
         [[NSNotificationCenter defaultCenter] postNotificationName:NOTI_STOP
                                                             object:nil];
+        [runIndicator removeFromSuperview];
+        runIndicator = nil;
     }
 }
 
