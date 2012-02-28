@@ -32,6 +32,10 @@
         cellNumber = [number integerValue];
     else if( [number isKindOfClass:[NSString class]] )
         cellNumber = [(NSString*)number length];
+    else{
+        EXCLAMATION;
+        return;
+    }
 
     // 새로 변경된 갯수가 이미 있는 셀 데이터 수보다 많은 경우 셀 데이터를 추가로 생성, 추가한다.
     if( [cellArray count] < cellNumber ){
@@ -52,6 +56,10 @@
         accessCellIndex = [number integerValue];
     else if( [number isKindOfClass:[NSString class]] )
         accessCellIndex = [(NSString*)number length];
+    else{
+        EXCLAMATION;
+        return;
+    }
 
     // 이미 있는 셀 데이터 수보다 많은 경우 범위를 넘지 못하게 한다.
     if( [cellArray count] <= accessCellIndex ){
@@ -73,6 +81,10 @@
         [cellDic setValue:txt forKey:@"Text"];
     else if([txt isKindOfClass:[NSNumber class]] )
         [cellDic setValue:[((NSNumber*)txt) stringValue] forKey:@"Text"];
+    else{
+        EXCLAMATION;
+        return;
+    }
 
     [((UITableView*)csView) reloadData];
 }
@@ -92,6 +104,10 @@
         [cellDic setValue:txt forKey:@"Sub"];
     else if([txt isKindOfClass:[NSNumber class]] )
         [cellDic setValue:[((NSNumber*)txt) stringValue] forKey:@"Sub"];
+    else{
+        EXCLAMATION;
+        return;
+    }
     
     [((UITableView*)csView) reloadData];
 }

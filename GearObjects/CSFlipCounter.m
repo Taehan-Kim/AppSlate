@@ -17,6 +17,8 @@
         [(FlipCounterView*)csView setCounterValue:[number integerValue]];
     else if( [number isKindOfClass:[NSString class]] )
         [(FlipCounterView*)csView setCounterValue:[(NSString*)number length]];
+    else
+        return;
 
     [self _checkAndRun];
 }
@@ -32,6 +34,8 @@
         [(FlipCounterView*)csView add:[number integerValue]];
     else if( [number isKindOfClass:[NSString class]] )
         [(FlipCounterView*)csView add:[(NSString*)number length]];
+    else
+        return;
 
     [self _checkAndRun];
 }
@@ -47,6 +51,8 @@
         [(FlipCounterView*)csView subtract:[number integerValue]];
     else if( [number isKindOfClass:[NSString class]] )
         [(FlipCounterView*)csView subtract:[(NSString*)number length]];
+    else
+        return;
 
     [self _checkAndRun];
 }

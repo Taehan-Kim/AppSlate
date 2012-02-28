@@ -21,8 +21,10 @@
 {    
     if( [BoolValue isKindOfClass:[NSString class]] )
         value1 = YES;
-    else
+    else if( [BoolValue isKindOfClass:[NSNumber class]] )
         value1 = [BoolValue boolValue];
+    else
+        return;
     
     if( USERCONTEXT.imRunning ){
         SEL act;
@@ -53,8 +55,10 @@
 {    
     if( [BoolValue isKindOfClass:[NSString class]] )
         value2 = YES;
-    else
+    else if( [BoolValue isKindOfClass:[NSNumber class]] )
         value2 = [BoolValue boolValue];
+    else
+        return;
     
     if( USERCONTEXT.imRunning ){
         SEL act;
@@ -101,7 +105,7 @@
     self.info = NSLocalizedString(@"Logical Exclusive OR", @"XOR");
     
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Input #1", P_NUM, @selector(setInput1Value:),@selector(getInput1Value));
-    NSDictionary *d2 = MAKE_PROPERTY_D(@"Input #2", P_NUM, @selector(setInput2Value:),@selector(getInput2Value));
+    NSDictionary *d2 = MAKE_PROPERTY_D(@">Input #2", P_NUM, @selector(setInput2Value:),@selector(getInput2Value));
     pListArray = [NSArray arrayWithObjects:d1,d2, nil];
     
     NSMutableDictionary MAKE_ACTION_D(@"Output", A_NUM, a1);
@@ -114,8 +118,15 @@
 {
     if( (self=[super initWithCoder:decoder]) ) {
         [(UIImageView*)csView setImage:[UIImage imageNamed:@"gi_xor.png"]];
+        value1 = [decoder decodeBoolForKey:@"value1"];
     }
     return self;
+}
+
+-(void)encodeWithCoder:(NSCoder *)encoder
+{
+    [super encodeWithCoder:encoder];
+    [encoder encodeBool:value1 forKey:@"value1"];
 }
 
 @end

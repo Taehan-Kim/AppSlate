@@ -89,68 +89,92 @@
     switch (getCode)
     {
         case CS_LABEL:
-            newObj = [[CSLabel alloc] initGear];
-            break;
+            newObj = [[CSLabel alloc] initGear];  break;
         case CS_MASKEDLABEL:
-            newObj = [[CSMaskedLabel alloc] initGear];
-            break;
+            newObj = [[CSMaskedLabel alloc] initGear];  break;
         case CS_TEXTFIELD:
-            newObj = [[CSTextField alloc] initGear];
-            break;
+            newObj = [[CSTextField alloc] initGear];     break;
         case CS_BTNTEXTFIELD:
-            newObj = [[CSBtnTextField alloc] initGear];
-            break;
+            newObj = [[CSBtnTextField alloc] initGear];  break;
         case CS_SWITCH:
-            newObj = [[CSSwitch alloc] initGear];
-            break;
+            newObj = [[CSSwitch alloc] initGear];        break;
         case CS_BUTTON:
-            newObj = [[CSButton alloc] initGear];
-            break;
+            newObj = [[CSButton alloc] initGear];        break;
         case CS_TOGGLEBTN:
-            newObj = [[CSToggleButton alloc] initGear];
-            break;
+            newObj = [[CSToggleButton alloc] initGear];   break;
         case CS_TOUCHBTN:
-            newObj = [[CSTouchButton alloc] initGear];
-            break;
+            newObj = [[CSTouchButton alloc] initGear];    break;
         case CS_FLIPCNT:
-            newObj = [[CSFlipCounter alloc] initGear];
-            break;
+            newObj = [[CSFlipCounter alloc] initGear];    break;
         case CS_SLIDER:
-            newObj = [[CSSlider alloc] initGear];
-            break;
+            newObj = [[CSSlider alloc] initGear];         break;
+        case CS_PROGRESS:
+            newObj = [[CSProgressBar alloc] initGear];  break;
         case CS_TABLE:
-            newObj = [[CSTable alloc] initGear];
-            break;
+            newObj = [[CSTable alloc] initGear];         break;
         case CS_BULB:
-            newObj = [[CSBulb alloc] initGear];
-            break;
+            newObj = [[CSBulb alloc] initGear];          break;
         case CS_ALERT:
-            newObj = [[CSAlert alloc] initGear];
-            break;
+            newObj = [[CSAlert alloc] initGear];         break;
+        case CS_TEXTALERT:
+            newObj = [[CSTextAlert alloc] initGear];     break;
         case CS_RECT:
-            newObj = [[CSRect alloc] initGear];
-            break;
+            newObj = [[CSRect alloc] initGear];          break;
         case CS_NOT:
-            newObj = [[CSNot alloc] initGear];
-            break;
+            newObj = [[CSNot alloc] initGear];           break;
         case CS_AND:
-            newObj = [[CSAnd alloc] initGear];
-            break;
+            newObj = [[CSAnd alloc] initGear];           break;
         case CS_OR:
-            newObj = [[CSOr alloc] initGear];
-            break;
+            newObj = [[CSOr alloc] initGear];           break;
         case CS_XOR:
-            newObj = [[CSXor alloc] initGear];
-            break;
+            newObj = [[CSXor alloc] initGear];          break;
         case CS_NAND:
-            newObj = [[CSNand alloc] initGear];
-            break;
+            newObj = [[CSNand alloc] initGear];         break;
         case CS_NOR:
-            newObj = [[CSNor alloc] initGear];
-            break;
+            newObj = [[CSNor alloc] initGear];          break;
         case CS_XNOR:
-            newObj = [[CSXnor alloc] initGear];
-            break;
+            newObj = [[CSXnor alloc] initGear];         break;
+        case CS_TEE:
+            newObj = [[CSTee alloc] initGear];          break;
+        case CS_MAIL:
+            newObj = [[CSMailComposer alloc] initGear];  break;
+        case CS_TWITSEND:
+            newObj = [[CSTwitComposer alloc] initGear];  break;
+        case CS_ALBUM:
+            newObj = [[CSAlbum alloc] initGear];         break;
+        case CS_NUMCOMP:
+            newObj = [[CSNumComp alloc] initGear];         break;
+        case CS_STRCOMP:
+            newObj = [[CSStrComp alloc] initGear];         break;
+        case CS_CALC:
+            newObj = [[CSCalc alloc] initGear];         break;
+        case CS_ATOF:
+            newObj = [[CSAtof alloc] initGear];         break;
+        case CS_IMAGE:
+            newObj = [[CSImage alloc] initGear];  break;
+        case CS_LINE_H:
+            newObj = [[CSHLine alloc] initGear];  break;
+        case CS_LINE_V:
+            newObj = [[CSVLine alloc] initGear];  break;
+        case CS_TICK:
+            newObj = [[CSTick alloc] initGear];  break;
+        case CS_RAND:
+            newObj = [[CSRand alloc] initGear];  break;
+/*        case CS_:
+            newObj = [[CS alloc] initGear];  break;
+        case CS_:
+            newObj = [[CS alloc] initGear];  break;
+        case CS_:
+            newObj = [[CS alloc] initGear];  break;
+        case CS_:
+            newObj = [[CS alloc] initGear];  break;
+        case CS_:
+            newObj = [[CS alloc] initGear];  break;
+        case CS_:
+            newObj = [[CS alloc] initGear];  break;
+        case CS_:
+            newObj = [[CS alloc] initGear];  break;
+ */
         default:
             return;
     }
@@ -164,7 +188,25 @@
     pathAnimation.fillMode = kCAFillModeForwards;
     pathAnimation.removedOnCompletion = NO;
 
-    CGPoint endPoint = self.view.center;
+    CGPoint endPoint;
+    // 낙하 위치를 찾음.
+    if( 0 == [USERCONTEXT.gearsArray count] )
+         endPoint = self.view.center;
+    else {
+        UIView *lobjView = ((CSGearObject*)[USERCONTEXT.gearsArray lastObject]).csView;
+        CGFloat x = lobjView.frame.origin.x + lobjView.frame.size.width + newObj.csView.center.x + 15;
+        CGFloat y = lobjView.center.y;
+        if( self.view.frame.size.width < (x + newObj.csView.frame.size.width) ){
+            x = lobjView.center.x;
+            y = lobjView.frame.origin.y + lobjView.frame.size.height + newObj.csView.center.y + 15;
+            if( self.view.frame.size.height < (y + newObj.csView.frame.size.height) ){
+                x = 20.0 + newObj.csView.center.x;
+                y = 20.0 + newObj.csView.center.y;
+            }
+        }
+        endPoint = CGPointMake(x, y);
+    }
+
     CGMutablePathRef curvedPath = CGPathCreateMutable();
     CGPathMoveToPoint(curvedPath, NULL, startFrame.origin.x, startFrame.origin.y);
     CGPathAddCurveToPoint(curvedPath, NULL, endPoint.x-30, cView.frame.origin.y, endPoint.x-40, endPoint.y, endPoint.x, endPoint.y);
@@ -202,14 +244,31 @@
 // 청사진에 새로운 객체를 추가한다.
 -(void) addNewGear:(id) gearObj
 {
-    [((CSGearObject*)gearObj) setTapGR: [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeEditGear:)] ];
-    [USERCONTEXT.gearsArray addObject:gearObj];
-
     // 형상을 만든다.
     UIView *aV = ((CSGearObject*)gearObj).csView;
-    aV.frame = CGRectOffset(aV.frame,
-                self.view.frame.size.width / 2 - aV.frame.size.width / 2,
-                self.view.frame.size.height / 2 - aV.frame.size.height / 2);
+
+    // 낙하 위치를 찾음.
+    if( 0 == [USERCONTEXT.gearsArray count] )
+        aV.frame = CGRectOffset(aV.frame,
+                    self.view.frame.size.width / 2 - aV.frame.size.width / 2,
+                    self.view.frame.size.height / 2 - aV.frame.size.height / 2);
+    else {
+        UIView *lobjView = ((CSGearObject*)[USERCONTEXT.gearsArray lastObject]).csView;
+        CGFloat x = lobjView.frame.origin.x + lobjView.frame.size.width + 15;
+        CGFloat y = lobjView.frame.origin.y;
+        if( self.view.frame.size.width < (x + aV.frame.size.width) ){
+            x = lobjView.frame.origin.x;
+            y = lobjView.frame.origin.y + lobjView.frame.size.height + 15;
+            if( self.view.frame.size.height < (y + aV.frame.size.height) ){
+                x = 20.0;
+                y = 20.0;
+            }
+        }
+        aV.frame = CGRectOffset(aV.frame, x, y);
+    }
+
+    [((CSGearObject*)gearObj) setTapGR: [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeEditGear:)] ];
+    [USERCONTEXT.gearsArray addObject:gearObj];
 
     // 기어 뷰 를 설계도에 놓는다.
     [aV setTag:((CSGearObject*)gearObj).csMagicNum];

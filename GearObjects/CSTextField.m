@@ -34,7 +34,8 @@
 
 -(void) setTextColor:(UIColor*)color
 {
-    [((UITextField*)csView) setTextColor:color];
+    if( [color isKindOfClass:[UIColor class]] )
+        [((UITextField*)csView) setTextColor:color];
 }
 
 -(UIColor*) getTextColor
@@ -44,7 +45,8 @@
 
 -(void) setBackgroundColor:(UIColor*)color
 {
-    [((UITextField*)csView) setBackgroundColor:color];
+    if( [color isKindOfClass:[UIColor class]] )
+        [((UITextField*)csView) setBackgroundColor:color];
 }
 
 -(UIColor*) getBackgroundColor
@@ -54,8 +56,10 @@
 
 -(void) setFont:(UIFont*)font
 {
-    [((UITextField*)csView) setFont:font];
+    if( [font isKindOfClass:[UIFont class]] )
+        [((UITextField*)csView) setFont:font];
 }
+
 -(UIFont*) getFont
 {
     return ((UITextField*)csView).font;
@@ -63,7 +67,13 @@
 
 -(void) setTextAlignment:(NSNumber*)alignNum
 {
-    UITextAlignment align = [alignNum integerValue];
+    UITextAlignment align;
+    
+    if( [alignNum isKindOfClass:[NSNumber class]] )
+        align = [alignNum integerValue];
+    else
+        align = UITextAlignmentLeft;
+
     [((UITextField*)csView) setTextAlignment:align];
 }
 

@@ -117,7 +117,7 @@
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Text Message", P_TXT, @selector(setText:),@selector(getText));
     NSDictionary *d2 = MAKE_PROPERTY_D(@"Button #1 Text", P_TXT, @selector(setButton1Text:),@selector(getButton1Text));
     NSDictionary *d3 = MAKE_PROPERTY_D(@"Button #2 Text", P_TXT, @selector(setButton2Text:),@selector(getButton2Text));
-    NSDictionary *d4 = MAKE_PROPERTY_D(@"Show Action", P_BOOL, @selector(setShow:),@selector(getShow));
+    NSDictionary *d4 = MAKE_PROPERTY_D(@">Show Action", P_BOOL, @selector(setShow:),@selector(getShow));
     pListArray = [NSArray arrayWithObjects:d1,d2,d3,d4, nil];
 
     NSMutableDictionary MAKE_ACTION_D(@"Closed", A_NUM, a1);

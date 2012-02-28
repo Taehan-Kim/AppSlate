@@ -6,6 +6,7 @@
 //  Copyright (c) 2011년 ChocolateSoft. All rights reserved.
 //
 #import <objc/message.h>
+#import "CSAppDelegate.h"
 #import "PropertyTVController.h"
 #import "StringSettingViewController.h"
 #import "NumberSettingViewController.h"
@@ -133,6 +134,11 @@
         NSArray *plist = [theGear getPropertiesList];
         // Configure the cell...
         cell.textLabel.text = [[plist objectAtIndex:indexPath.row] objectForKey:@"name"];
+
+        if( [cell.textLabel.text hasPrefix:@">"] ) // This is Action Property
+            [cell.textLabel setTextColor:[UIColor grayColor]];
+        else
+            [cell.textLabel setTextColor:[UIColor blackColor]];
     }
     // 2. action list
     if( 1 == indexPath.section ){
@@ -219,6 +225,13 @@
     {
         NSDictionary *info = [[theGear getPropertiesList] objectAtIndex:indexPath.row];
 
+        if( [[info objectForKey:@"name"] hasPrefix:@">"] ) // This is Action Property
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"You can access to Action properties only on running state. " delegate:nil cancelButtonTitle:@"Confirm" otherButtonTitles: nil];
+            [alert show];
+            return;
+        }
+
         // Navigation logic may go here. Create and push another view controller.
         if( [[info objectForKey:@"type"] isEqualToString:P_TXT] )
         {
@@ -249,6 +262,22 @@
         else if( [[info objectForKey:@"type"] isEqualToString:P_CELL] )
         {
             VC = [[CellSettingController alloc] initWithGear:theGear propertyInfo:info];
+        }
+        else if( [[info objectForKey:@"type"] isEqualToString:P_IMG] )
+        {
+            VC = [[UIImagePickerController alloc] init];
+            [(UIImagePickerController*)VC setDelegate:self];
+            [(UIImagePickerController*)VC setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+            tempInfo = info;
+
+            if( nil == libpop )
+                libpop = [[UIPopoverController alloc] initWithContentViewController:VC];
+            UITableViewCell *tc = [tableView cellForRowAtIndexPath:indexPath];
+            UIView *theView = ((CSAppDelegate*)([UIApplication sharedApplication].delegate)).window.rootViewController.view;
+            [libpop presentPopoverFromRect:[tc convertRect:tc.bounds toView:theView]
+                                    inView:theView
+                  permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            return;
         }
         if( nil == VC ) return;
 
@@ -342,6 +371,21 @@
     if( nil != gObj ){
         [[gObj.csView.subviews lastObject] removeFromSuperview];
     }
+}
+
+#pragma mark - ImagePicker Delegate
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+	[libpop dismissPopoverAnimated:YES];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)Info
+{
+    SEL act = [[tempInfo objectForKey:@"selector"] pointerValue];
+    [theGear performSelector:act withObject:image];
+
+	[libpop dismissPopoverAnimated:YES];
 }
 
 @end

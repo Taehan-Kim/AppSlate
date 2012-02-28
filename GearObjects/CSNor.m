@@ -21,8 +21,10 @@
 {    
     if( [BoolValue isKindOfClass:[NSString class]] )
         value1 = YES;
-    else
+    else if( [BoolValue isKindOfClass:[NSNumber class]] )
         value1 = [BoolValue boolValue];
+    else
+        return;
     
     if( USERCONTEXT.imRunning ){
         SEL act;
@@ -53,8 +55,10 @@
 {    
     if( [BoolValue isKindOfClass:[NSString class]] )
         value2 = YES;
-    else
+    else  if( [BoolValue isKindOfClass:[NSNumber class]] )
         value2 = [BoolValue boolValue];
+    else
+        return;
     
     if( USERCONTEXT.imRunning ){
         SEL act;
@@ -71,8 +75,7 @@
                 else
                     EXCLAMATION;
             }
-        }
-        
+        }        
     }
 }
 
@@ -90,20 +93,20 @@
     if( ![super init] ) return nil;
     
     csView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 33, 33)];
-    [(UIImageView*)csView setImage:[UIImage imageNamed:@"gi_none.png"]];
+    [(UIImageView*)csView setImage:[UIImage imageNamed:@"gi_nor.png"]];
     [csView setUserInteractionEnabled:YES];
     
     csCode = CS_NOR;
-    
+
     csResizable = NO;
     csShow = NO;
     
     self.info = NSLocalizedString(@"Logical NOR", @"NOR");
     
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Input #1", P_NUM, @selector(setInput1Value:),@selector(getInput1Value));
-    NSDictionary *d2 = MAKE_PROPERTY_D(@"Input #2", P_NUM, @selector(setInput2Value:),@selector(getInput2Value));
+    NSDictionary *d2 = MAKE_PROPERTY_D(@">Input #2", P_NUM, @selector(setInput2Value:),@selector(getInput2Value));
     pListArray = [NSArray arrayWithObjects:d1,d2, nil];
-    
+
     NSMutableDictionary MAKE_ACTION_D(@"Output", A_NUM, a1);
     actionArray = [NSArray arrayWithObjects:a1, nil];
     
@@ -113,9 +116,16 @@
 -(id)initWithCoder:(NSCoder *)decoder
 {
     if( (self=[super initWithCoder:decoder]) ) {
-        [(UIImageView*)csView setImage:[UIImage imageNamed:@"gi_none.png"]];
+        [(UIImageView*)csView setImage:[UIImage imageNamed:@"gi_nor.png"]];
+        value1 = [decoder decodeBoolForKey:@"value1"];
     }
     return self;
+}
+
+-(void)encodeWithCoder:(NSCoder *)encoder
+{
+    [super encodeWithCoder:encoder];
+    [encoder encodeBool:value1 forKey:@"value1"];
 }
 
 @end

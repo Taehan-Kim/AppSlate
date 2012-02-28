@@ -49,6 +49,21 @@
         [((BButton*)csView) setTitleColor:color];
 }
 
+-(void) setOutputValue:(NSNumber*) number
+{
+    if( [number isKindOfClass:[NSNumber class]] )
+        output = [number floatValue];
+    else if( [number isKindOfClass:[NSString class]] )
+        output = [(NSString*)number length];
+    else
+        EXCLAMATION;
+}
+
+-(NSNumber*) getOutputValue
+{
+    return [NSNumber numberWithFloat:output];
+}
+
 -(UIColor*) getTextColor
 {
     return ((BButton*)csView).btn.titleLabel.textColor;
@@ -78,6 +93,8 @@
     [((BButton*)csView).layer setBackgroundColor:[UIColor lightGrayColor].CGColor];
 
     csCode = CS_TOUCHBTN;
+    output = 1.0;
+
     [((BButton*)csView) setTitle:@"Touch Button"];
     [((BButton*)csView).btn addTarget:self action:@selector(pushAction) forControlEvents:UIControlEventTouchDown];
     [((BButton*)csView).btn addTarget:self action:@selector(releaseAction) forControlEvents:UIControlEventTouchUpInside];
@@ -89,10 +106,11 @@
     NSDictionary *d0 = ALPHA_D;
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Tint Color", P_COLOR, @selector(setTintColor:),@selector(getTintColor));
     NSDictionary *d2 = MAKE_PROPERTY_D(@"Button Text", P_TXT, @selector(setText:),@selector(getText));
-    NSDictionary *d3 = MAKE_PROPERTY_D(@"Text Color", P_COLOR, @selector(setTextColor:),@selector(getTextColor));
-    NSDictionary *d4 = MAKE_PROPERTY_D(@"Text Font", P_FONT, @selector(setFont:),@selector(getFont));
+    NSDictionary *d3 = MAKE_PROPERTY_D(@"Output Value", P_NUM, @selector(setOutputValue:),@selector(getOutputValue));
+    NSDictionary *d4 = MAKE_PROPERTY_D(@"Text Color", P_COLOR, @selector(setTextColor:),@selector(getTextColor));
+    NSDictionary *d5 = MAKE_PROPERTY_D(@"Text Font", P_FONT, @selector(setFont:),@selector(getFont));
     
-    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2,d3,d4, nil];
+    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2,d3,d4,d5, nil];
     
     NSMutableDictionary MAKE_ACTION_D(@"Push Up & Down", A_NUM, a1);
     actionArray = [NSArray arrayWithObjects:a1, nil];
@@ -106,8 +124,15 @@
         [((BButton*)csView).btn addTarget:self action:@selector(pushAction) forControlEvents:UIControlEventTouchDown];
         [((BButton*)csView).btn addTarget:self action:@selector(releaseAction) forControlEvents:UIControlEventTouchUpInside];
         [((BButton*)csView).btn addTarget:self action:@selector(releaseAction) forControlEvents:UIControlEventTouchUpOutside];
+        output = [decoder decodeFloatForKey:@"output"];
     }
     return self;
+}
+
+-(void)encodeWithCoder:(NSCoder *)encoder
+{
+    [super encodeWithCoder:encoder];
+    [encoder encodeFloat:output forKey:@"output"];
 }
 
 #pragma mark - Gear's Unique Actions
@@ -125,7 +150,7 @@
     
     if( nil != gObj ){
         if( [gObj respondsToSelector:act] )
-            [gObj performSelector:act withObject:[NSNumber numberWithBool:YES]];
+            [gObj performSelector:act withObject:[NSNumber numberWithFloat:output]];
         else
             EXCLAMATION;
     }

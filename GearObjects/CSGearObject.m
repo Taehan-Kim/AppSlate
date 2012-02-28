@@ -241,7 +241,7 @@
 
 -(void) setCenterX:(NSNumber*) xpos
 {
-    if( [xpos isKindOfClass:[NSString class]] ){
+    if( ![xpos isKindOfClass:[NSNumber class]] ){
         EXCLAMATION; return;
     }
 
@@ -259,7 +259,7 @@
 
 -(void) setCenterY:(NSNumber*) ypos
 {
-    if( [ypos isKindOfClass:[NSString class]] ){
+    if( ![ypos isKindOfClass:[NSNumber class]] ){
         EXCLAMATION; return;
     }
 
@@ -277,7 +277,7 @@
 
 -(void) setAlpha:(NSNumber*) alphaValue
 {
-    if( [alphaValue isKindOfClass:[NSString class]] ){
+    if( ![alphaValue isKindOfClass:[NSNumber class]] ){
         EXCLAMATION; return;
     }
     CGFloat a = [alphaValue floatValue];

@@ -1,0 +1,23 @@
+//
+//  CSAlbum.h
+//  AppSlate
+//
+//  Created by 김 태한 on 12. 2. 21..
+//  Copyright (c) 2012년 ChocolateSoft. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import "CSGearObject.h"
+
+@interface CSAlbum : CSGearObject <UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+{
+    UIPopoverController *albumPop;
+    UIImagePickerController *imgPicker;
+}
+
+-(id) initGear;
+
+-(void) setShow:(NSNumber*)BoolValue;
+-(NSNumber*) getShow;
+
+@end

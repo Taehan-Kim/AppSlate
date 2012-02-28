@@ -60,6 +60,21 @@
     return onText;
 }
 
+-(void) setOnValue:(NSNumber*) number
+{
+    if( [number isKindOfClass:[NSNumber class]] )
+        outputOn = [number floatValue];
+    else if( [number isKindOfClass:[NSString class]] )
+        outputOn = [(NSString*)number length];
+    else
+        EXCLAMATION;
+}
+
+-(NSNumber*) getOnValue
+{
+    return [NSNumber numberWithFloat:outputOn];
+}
+
 -(void) setOffText:(NSString*)txt;
 {
     if( [txt isKindOfClass:[NSString class]] )
@@ -74,6 +89,21 @@
 -(NSString*) getOffText
 {
     return offText;
+}
+
+-(void) setOffValue:(NSNumber*) number
+{
+    if( [number isKindOfClass:[NSNumber class]] )
+        outputOff = [number floatValue];
+    else if( [number isKindOfClass:[NSString class]] )
+        outputOff = [(NSString*)number length];
+    else
+        EXCLAMATION;
+}
+
+-(NSNumber*) getOffValue
+{
+    return [NSNumber numberWithFloat:outputOff];
 }
 
 -(void) setTextColor:(UIColor*)color
@@ -115,6 +145,8 @@
     offColor = [UIColor grayColor];
     onText = @"Button On";
     offText = @"Button Off";
+    outputOn = 1.0;
+    outputOff = 0.0;
 
     [((BButton*)csView) setTitle:onText];
     [(BButton*)csView addTarget:self action:@selector(pushAction:)];
@@ -125,11 +157,13 @@
     NSDictionary *d1 = MAKE_PROPERTY_D(@"On Tint Color", P_COLOR, @selector(setOnTintColor:),@selector(getOnTintColor));
     NSDictionary *d2 = MAKE_PROPERTY_D(@"Off Tint Color", P_COLOR, @selector(setOffTintColor:),@selector(getOffTintColor));
     NSDictionary *d3 = MAKE_PROPERTY_D(@"Button On Text", P_TXT, @selector(setOnText:),@selector(getOnText));
-    NSDictionary *d4 = MAKE_PROPERTY_D(@"Button Off Text", P_TXT, @selector(setOffText:),@selector(getOffText));
-    NSDictionary *d5 = MAKE_PROPERTY_D(@"Text Color", P_COLOR, @selector(setTextColor:),@selector(getTextColor));
-    NSDictionary *d6 = MAKE_PROPERTY_D(@"Text Font", P_FONT, @selector(setFont:),@selector(getFont));
+    NSDictionary *d4 = MAKE_PROPERTY_D(@"On Output Value", P_NUM, @selector(setOnValue:),@selector(getOnValue));
+    NSDictionary *d5 = MAKE_PROPERTY_D(@"Button Off Text", P_TXT, @selector(setOffText:),@selector(getOffText));
+    NSDictionary *d6 = MAKE_PROPERTY_D(@"Off Output Value", P_NUM, @selector(setOffValue:),@selector(getOffValue));
+    NSDictionary *d7 = MAKE_PROPERTY_D(@"Text Color", P_COLOR, @selector(setTextColor:),@selector(getTextColor));
+    NSDictionary *d8 = MAKE_PROPERTY_D(@"Text Font", P_FONT, @selector(setFont:),@selector(getFont));
 
-    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2,d3,d4,d5,d6, nil];
+    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2,d3,d4,d5,d6,d7,d8, nil];
 
     NSMutableDictionary MAKE_ACTION_D(@"Button On", A_NUM, a1);
     NSMutableDictionary MAKE_ACTION_D(@"Button Off", A_NUM, a2);
@@ -148,6 +182,8 @@
         onText = [aDecoder decodeObjectForKey:@"onText"];
         offText = [aDecoder decodeObjectForKey:@"offText"];
         [(BButton*)csView addTarget:self action:@selector(pushAction:)];
+        outputOn = [aDecoder decodeFloatForKey:@"outputOn"];
+        outputOff = [aDecoder decodeFloatForKey:@"outputOff"];
     }
     return self;
 }
@@ -160,6 +196,8 @@
     [encoder encodeObject:offColor forKey:@"offColor"];
     [encoder encodeObject:onText forKey:@"onText"];
     [encoder encodeObject:offText forKey:@"offText"];
+    [encoder encodeFloat:outputOn forKey:@"outputOn"];
+    [encoder encodeFloat:outputOff forKey:@"outputOff"];
 }
 
 #pragma mark - Gear's Unique Actions
@@ -193,7 +231,7 @@
 
     if( nil != gObj ){
         if( [gObj respondsToSelector:act] ){
-            [gObj performSelector:act withObject:[NSNumber numberWithBool:YES]];
+            [gObj performSelector:act withObject:[NSNumber numberWithFloat:((toggleValue)?outputOn:outputOff)]];
         }else
             EXCLAMATION;
     }

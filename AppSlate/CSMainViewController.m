@@ -221,7 +221,7 @@ enum alertTypes {
 - (IBAction)openMenuFolder:(id)sender
 {
     menuFolder = [[UIViewController alloc] init];
-    [menuFolder.view setFrame:CGRectMake(0, 0, blueprintCtrl.view.frame.size.width, 55)];
+    [menuFolder.view setFrame:CGRectMake(0, 0, blueprintCtrl.view.frame.size.width, 75)];
     [menuFolder.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"plateBack.png"]]];
 
     UIButton *b0 = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
@@ -236,21 +236,57 @@ enum alertTypes {
     UIButton *b3 = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
     [b3 setBackgroundImage:[UIImage imageNamed:@"i_phone.png"] forState:UIControlStateNormal];
     [b3 addTarget:self action:@selector(paperAction:) forControlEvents:UIControlEventTouchUpInside];
+    UIButton *b4 = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
+    [b4 setBackgroundImage:[UIImage imageNamed:@"i_setting.png"] forState:UIControlStateNormal];
+    [b4 addTarget:self action:@selector(settingAction:) forControlEvents:UIControlEventTouchUpInside];
+    UIButton *b5 = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
+    [b5 setBackgroundImage:[UIImage imageNamed:@"i_info.png"] forState:UIControlStateNormal];
+    [b5 addTarget:self action:@selector(infoAction:) forControlEvents:UIControlEventTouchUpInside];
 
+    UILabel *l0 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 44, 15)];
+    [l0 setText:@"Files"];
+    UILabel *l1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 44, 15)];
+    [l1 setText:@"New"];
+    UILabel *l2 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 44, 15)];
+    [l2 setText:@"Save"];
+    UILabel *l3 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 44, 15)];
+    [l3 setText:@"Paper"];
+    UILabel *l4 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 44, 15)];
+    [l4 setText:@"Setting"];
+    UILabel *l5 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 44, 15)];
+    [l5 setText:@"Info"];
     UIScrollView *hsview = [[UIScrollView alloc] initWithFrame:menuFolder.view.frame];
     [hsview setBackgroundColor:[UIColor clearColor]];
     [hsview setShowsHorizontalScrollIndicator:NO];
     [hsview setShowsVerticalScrollIndicator:NO];
 
-    NSArray *btns = [NSArray arrayWithObjects:b0,b1,b2,b3, nil];
-    [hsview setContentSize:CGSizeMake([btns count]*60+50, menuFolder.view.frame.size.height)];
+    NSArray *btns = [NSArray arrayWithObjects:b0,b1,b2,b3,b4,b5, nil];
+    NSArray *labs = [NSArray arrayWithObjects:l0,l1,l2,l3,l4,l5, nil];
+    [hsview setContentSize:CGSizeMake([btns count]*65+50, menuFolder.view.frame.size.height)];
     NSUInteger idx = 0;
     for( UIButton *btn in btns ){
-        [btn setFrame:CGRectOffset(btn.frame, idx*60 + 30, 11)];
+        [btn setFrame:CGRectOffset(btn.frame, idx*65 + 30, 11)];
         [btn.layer setShadowColor:[UIColor blackColor].CGColor];
         [btn.layer setShadowRadius:5.0];
         [btn.layer setShadowOffset:CGSizeMake(0, 1)];
         [btn.layer setShadowOpacity:0.8];
+        [hsview addSubview:btn];
+        idx ++;
+    }
+
+    idx = 0;
+    for( UILabel *btn in labs ){
+        [btn setFrame:CGRectOffset(btn.frame, idx*65 + 26, 47)];
+//        [btn.layer setShadowColor:[UIColor blackColor].CGColor];
+        [btn setBackgroundColor:CSCLEAR];
+        [btn setFont:CS_FONT(14)];
+        [btn setTextColor:[UIColor lightGrayColor]];
+        [btn setTextAlignment:UITextAlignmentCenter];
+        [btn setShadowColor:[UIColor blackColor]];
+        [btn setShadowOffset:CGSizeMake(1, 1)];
+//        [btn.layer setShadowRadius:5.0];
+//        [btn.layer setShadowOffset:CGSizeMake(0, 1)];
+//        [btn.layer setShadowOpacity:0.8];
         [hsview addSubview:btn];
         idx ++;
     }
@@ -391,6 +427,41 @@ enum alertTypes {
 
     [self folderWillClose:nil];
 
+    [blueprintCtrl.view addSubview:modalPanel];
+    [modalPanel showFromPoint:[sender center]];
+}
+
+-(void)settingAction:(id)sender
+{
+    AppSettingModal *modalPanel = [[AppSettingModal alloc] initWithFrame:blueprintCtrl.view.bounds
+                                                               title:@"Sstting"];
+    modalPanel.delegate = self;
+    modalPanel.onClosePressed = ^(UAModalPanel* panel) {
+        // [panel hide];
+        [panel hideWithOnComplete:^(BOOL finished) {
+            [panel removeFromSuperview];
+        }];
+    };
+    
+    [self folderWillClose:nil];
+    
+    [blueprintCtrl.view addSubview:modalPanel];
+    [modalPanel showFromPoint:[sender center]];
+}
+
+-(void)infoAction:(id)sender
+{
+    InfoModal *modalPanel = [[InfoModal alloc] initWithFrame:blueprintCtrl.view.bounds];
+    modalPanel.delegate = self;
+    modalPanel.onClosePressed = ^(UAModalPanel* panel) {
+        // [panel hide];
+        [panel hideWithOnComplete:^(BOOL finished) {
+            [panel removeFromSuperview];
+        }];
+    };
+    
+    [self folderWillClose:nil];
+    
     [blueprintCtrl.view addSubview:modalPanel];
     [modalPanel showFromPoint:[sender center]];
 }

@@ -113,8 +113,8 @@
 
     DEFAULT_CENTER_D;
     NSDictionary *d0 = ALPHA_D;
-    NSDictionary *d1 = MAKE_PROPERTY_D(@"Width", P_NUM, @selector(setWidth:),@selector(getWidth));
-    NSDictionary *d2 = MAKE_PROPERTY_D(@"Height", P_NUM, @selector(setHeight:),@selector(getHeight));
+    NSDictionary *d1 = MAKE_PROPERTY_D(@">Width", P_NUM, @selector(setWidth:),@selector(getWidth));
+    NSDictionary *d2 = MAKE_PROPERTY_D(@">Height", P_NUM, @selector(setHeight:),@selector(getHeight));
     NSDictionary *d3 = MAKE_PROPERTY_D(@"Rect Color", P_COLOR, @selector(setRectColor:),@selector(getRectColor));
     NSDictionary *d4 = MAKE_PROPERTY_D(@"Border Color", P_COLOR, @selector(setBorderColor:),@selector(getBorderColor));
     NSDictionary *d5 = MAKE_PROPERTY_D(@"Border Width", P_NUM, @selector(setBorderWidth:),@selector(getBorderWidth));

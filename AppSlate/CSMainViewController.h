@@ -12,6 +12,8 @@
 #import "CSLayerTableViewController.h"
 #import "CSBlueprintController.h"
 #import "PaperSetModal.h"
+#import "AppSettingModal.h"
+#import "InfoModal.h"
 
 @interface CSMainViewController : UIViewController <CSFlipsideViewControllerDelegate, UIActionSheetDelegate, UIAlertViewDelegate, UAModalPanelDelegate>
 {

@@ -23,8 +23,10 @@
 
     if( [BoolValue isKindOfClass:[NSString class]] )
         value = YES;
-    else
+    else if( [BoolValue isKindOfClass:[NSNumber class]] )
         value = [BoolValue boolValue];
+    else
+        return;
 
     if( USERCONTEXT.imRunning ){
         SEL act;
@@ -63,14 +65,14 @@
     [(UIImageView*)csView setImage:[UIImage imageNamed:@"gi_not.png"]];
     [csView setUserInteractionEnabled:YES];
     
-    csCode = CS_ALERT;
+    csCode = CS_NOT;
     
     csResizable = NO;
     csShow = NO;
 
     self.info = NSLocalizedString(@"Logical NOT", @"Not");
 
-    NSDictionary *d1 = MAKE_PROPERTY_D(@"Input", P_NUM, @selector(setInputValue:),@selector(getInputValue));
+    NSDictionary *d1 = MAKE_PROPERTY_D(@">Input", P_NUM, @selector(setInputValue:),@selector(getInputValue));
     pListArray = [NSArray arrayWithObjects:d1, nil];
     
     NSMutableDictionary MAKE_ACTION_D(@"Output", A_NUM, a1);

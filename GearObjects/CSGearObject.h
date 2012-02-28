@@ -24,8 +24,18 @@
 #define CS_RSSTABLE     111
 #define CS_WEBVIEW      112
 #define CS_BULB         113
+#define CS_PROGRESS     115
+#define CS_IMAGE        116
 
-#define CS_ALERT        120
+#define CS_ALERT        150
+#define CS_TEXTALERT    151
+#define CS_MAIL         152
+#define CS_TWITSEND     153
+#define CS_TICK         154
+#define CS_RAND         155
+#define CS_NOW          156
+#define CS_ACLOMETER    157
+#define CS_ALBUM        158
 
 #define CS_NOT          200
 #define CS_AND          201
@@ -34,9 +44,17 @@
 #define CS_NAND         204
 #define CS_NOR          205
 #define CS_XNOR         206
+#define CS_TEE          207
+#define CS_NUMCOMP      208
+#define CS_STRCOMP      209
+#define CS_CALC         210
+#define CS_ATOF         211
+#define CS_ABS          212
+
 
 #define CS_RECT         300
-#define CS_LINE         301
+#define CS_LINE_H       301
+#define CS_LINE_V       302
 
 
 #define MINSIZE         30
@@ -49,15 +67,17 @@
 #define P_FONT          @"font"
 #define P_BOOL          @"bool"
 #define P_CELL          @"cell"
+#define P_IMG           @"image"
 
 #define A_TXT           @"textAct"
 #define A_NUM           @"numberAct"
+#define A_IMG           @"image"
 
 #define MAKE_PROPERTY_D(_d1,_d2,_d3,_d4) [[NSDictionary alloc]initWithObjectsAndKeys:_d1,@"name",_d2,@"type",[NSValue valueWithPointer:_d3],@"selector",[NSValue valueWithPointer:_d4],@"getSelector",nil]
 
 #define MAKE_ACTION_D(_d1,_d2,_v) *(_v)=[[NSMutableDictionary alloc] initWithCapacity:4];[_v setObject:(_d1) forKey:@"name"];[_v setObject:_d2 forKey:@"type"];[_v setObject:[NSValue valueWithPointer:nil] forKey:@"selector"];[_v setObject:[NSNumber numberWithInteger:0] forKey:@"mNum"]
 
-#define DEFAULT_CENTER_D  NSDictionary*xc=MAKE_PROPERTY_D(@"Center X Position",P_NUM,@selector(setCenterX:),@selector(getCenterX));NSDictionary*yc=MAKE_PROPERTY_D(@"Center Y Position",P_NUM,@selector(setCenterY:),@selector(getCenterY))
+#define DEFAULT_CENTER_D  NSDictionary*xc=MAKE_PROPERTY_D(@">Center X Position",P_NUM,@selector(setCenterX:),@selector(getCenterX));NSDictionary*yc=MAKE_PROPERTY_D(@">Center Y Position",P_NUM,@selector(setCenterY:),@selector(getCenterY))
 
 #define ALPHA_D [[NSDictionary alloc]initWithObjectsAndKeys:@"Alpha",@"name",P_NUM,@"type",[NSValue valueWithPointer:@selector(setAlpha:)],@"selector",[NSValue valueWithPointer:@selector(getAlpha)],@"getSelector",nil]
 

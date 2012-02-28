@@ -31,7 +31,11 @@
 
 -(void) setOnValue:(NSNumber*)BoolValue
 {
-    BOOL isOn = [BoolValue boolValue];
+    BOOL isOn;
+    if( [BoolValue isKindOfClass:[NSNumber class]] )
+        isOn = [BoolValue boolValue];
+    else
+        isOn = YES;
 
     [((UISwitch*)csView) setOn:isOn];
 }

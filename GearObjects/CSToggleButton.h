@@ -17,6 +17,7 @@
     UIColor *offColor;
     NSString *onText;
     NSString *offText;
+    CGFloat outputOn, outputOff;
 }
 
 -(id) initGear;
@@ -31,8 +32,14 @@
 -(void) setOnText:(NSString*)txt;
 -(NSString*) getOnText;
 
+-(void) setOnValue:(NSNumber*) number;
+-(NSNumber*) getOnValue;
+
 -(void) setOffText:(NSString*)txt;
 -(NSString*) getOffText;
+
+-(void) setOffValue:(NSNumber*) number;
+-(NSNumber*) getOffValue;
 
 -(void) setTextColor:(UIColor*)color;
 -(UIColor*) getTextColor;

@@ -34,7 +34,8 @@
 
 -(void) setTextColor:(UIColor*)color
 {
-    [txtField setTextColor:color];
+    if( [color isKindOfClass:[UIColor class]] )
+        [txtField setTextColor:color];
 }
 
 -(UIColor*) getTextColor
@@ -44,7 +45,8 @@
 
 -(void) setBackgroundColor:(UIColor*)color
 {
-    [txtField setBackgroundColor:color];
+    if( [color isKindOfClass:[UIColor class]] )
+        [txtField setBackgroundColor:color];
 }
 
 -(UIColor*) getBackgroundColor
@@ -54,8 +56,10 @@
 
 -(void) setFont:(UIFont*)font
 {
-    [txtField setFont:font];
+    if( [font isKindOfClass:[UIFont class]] )
+        [txtField setFont:font];
 }
+
 -(UIFont*) getFont
 {
     return txtField.font;
@@ -63,7 +67,12 @@
 
 -(void) setTextAlignment:(NSNumber*)alignNum
 {
-    UITextAlignment align = [alignNum integerValue];
+    UITextAlignment align;
+    if( [alignNum isKindOfClass:[NSNumber class]] )
+        align = [alignNum integerValue];
+    else
+        align = UITextAlignmentLeft;
+
     [txtField setTextAlignment:align];
 }
 
@@ -74,7 +83,8 @@
 
 -(void) setButtonBackgroundColor:(UIColor*)color
 {
-    [confirmButton.layer setBackgroundColor:color.CGColor];
+    if( [color isKindOfClass:[UIColor class]] )
+        [confirmButton.layer setBackgroundColor:color.CGColor];
 }
 
 -(UIColor*) getButtonBackgroundColor
@@ -84,7 +94,11 @@
 
 -(void) setButtonText:(NSString*)txt
 {
-    [confirmButton setTitle:txt];
+    if( [txt isKindOfClass:[NSString class]] )
+        [confirmButton setTitle:txt];
+    
+    else if([txt isKindOfClass:[NSNumber class]] )
+        [confirmButton setTitle:[((NSNumber*)txt) stringValue]];
 }
 
 -(NSString*) getButtonText

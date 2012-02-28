@@ -67,7 +67,13 @@
 
 -(void) setTextAlignment:(NSNumber*)alignNum
 {
-    UITextAlignment align = [alignNum integerValue];
+    UITextAlignment align;
+
+    if( [alignNum isKindOfClass:[NSNumber class]] )
+        align = [alignNum integerValue];
+    else
+        align = UITextAlignmentLeft;
+
     [((UILabel*)csView) setTextAlignment:align];
 }
 
@@ -78,14 +84,19 @@
 
 -(void) setRoundBorder:(NSNumber*)BoolValue
 {
-    BOOL isRound = [BoolValue boolValue];
+    BOOL isRound;
+
+    if( [BoolValue isKindOfClass:[NSNumber class]] )
+        isRound = [BoolValue boolValue];
+    else {
+        EXCLAMATION; return;
+    }
 
     if( isRound ){
         [((UILabel*)csView).layer setCornerRadius:6.0];
     }else{
         [((UILabel*)csView).layer setCornerRadius:0.0];
     }
-//    [((UILabel*)csView) setNeedsDisplay];
 }
 
 -(NSNumber*) getRoundBorder

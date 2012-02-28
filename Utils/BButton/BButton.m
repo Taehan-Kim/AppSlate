@@ -69,12 +69,14 @@
 {
     gradient.opacity = 0.9;
     [gradient setColors:[NSArray arrayWithObjects:(id)[[UIColor blackColor] CGColor], (id)[[UIColor clearColor] CGColor], nil]];
+    [self.layer setBorderColor:[UIColor whiteColor].CGColor];
 }
 
 -(void) touchUp:(id)sender
 {
     gradient.opacity = 0.5;
     [gradient setColors:[NSArray arrayWithObjects:(id)[[UIColor clearColor] CGColor], (id)[[UIColor blackColor] CGColor], nil]];
+    [self.layer setBorderColor:[UIColor lightGrayColor].CGColor];
 }
 
 #pragma mark -

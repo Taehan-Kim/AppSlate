@@ -84,6 +84,10 @@
         toValue = [number floatValue];
     else if( [number isKindOfClass:[NSString class]] )
         toValue = [(NSString*)number length];
+    else{
+        EXCLAMATION;
+        return;
+    }
 
     if( toValue > ((UISlider*)csView).maximumValue )
         toValue = ((UISlider*)csView).maximumValue;
@@ -101,7 +105,8 @@
 
 -(void) setContinuosChange:(NSNumber*)boolVal
 {
-    [((UISlider*)csView) setContinuous:[boolVal boolValue]];
+    if( [boolVal isKindOfClass:[NSNumber class]] )
+        [((UISlider*)csView) setContinuous:[boolVal boolValue]];
 }
 
 -(NSNumber*) getContinuosChange

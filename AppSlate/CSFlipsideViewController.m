@@ -31,21 +31,36 @@
                     [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Basic Switch",@"On/Off switch", @"gi_switch.png", NSNUM(CS_SWITCH), nil] forKeys:keys],
                     [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Button", @"Basic button", @"gi_button.png", NSNUM(CS_BUTTON), nil] forKeys:keys],
                     [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Toggle Button", @"Toggle push button", @"gi_togglebtn.png", NSNUM(CS_TOGGLEBTN), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Touch Button", @"Touch button", @"gi_none.png", NSNUM(CS_TOUCHBTN), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Touch Button", @"Touch button", @"gi_touchbtn.png", NSNUM(CS_TOUCHBTN), nil] forKeys:keys],
                     [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Slider", @"Horizontal Bar Slider", @"gi_slider.png", NSNUM(CS_SLIDER), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Progress Bar", @"Horizontal Progress Bar", @"gi_progress.png", NSNUM(CS_PROGRESS), nil] forKeys:keys],
                     [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Table", @"Basic Table", @"gi_table.png", NSNUM(CS_TABLE), nil] forKeys:keys],
-                    //
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Image", @"Image View", @"gi_image.png", NSNUM(CS_IMAGE), nil] forKeys:keys],
+                    //  -- -- -- -- -- -- -- -- -- -- -- -- --
                     [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Alert", @"Popup Alert View", @"gi_alert.png", NSNUM(CS_ALERT), nil] forKeys:keys],
-                    //
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Text Input Alert", @"Popup Alert has Text Field", @"gi_textalert.png", NSNUM(CS_TEXTALERT), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"E-Mail Composer", @"E-mail Composer View", @"gi_mail.png", NSNUM(CS_MAIL), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Tweet Composer", @"Tweet Composer for Twitter", @"gi_tweet.png", NSNUM(CS_TWITSEND), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Photo Album", @"iPad Photo Library", @"gi_album.png", NSNUM(CS_ALBUM), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Tick Generator", @"Tick Signal Generator", @"gi_tick.png", NSNUM(CS_TICK), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Random Number Generator", @"Random number generator", @"gi_rand.png", NSNUM(CS_RAND), nil] forKeys:keys],
+                    //  -- -- -- -- -- -- -- -- -- -- -- -- --
                     [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"NOT", @"Logical NOT Gate", @"gi_not.png", NSNUM(CS_NOT), nil] forKeys:keys],
                     [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"AND", @"Logical AND Gate", @"gi_and.png", NSNUM(CS_AND), nil] forKeys:keys],
                     [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"OR", @"Logical OR Gate", @"gi_or.png", NSNUM(CS_OR), nil] forKeys:keys],
                     [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"XOR", @"Logical Exclusive OR Gate", @"gi_xor.png", NSNUM(CS_XOR), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"NAND", @"Logical NAND Gate", @"gi_none.png", NSNUM(CS_NAND), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"NOR", @"Logical NOR Gate", @"gi_none.png", NSNUM(CS_NOR), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"XNOR", @"Logical Exclusive NOR Gate", @"gi_none.png", NSNUM(CS_XNOR), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"NAND", @"Logical NAND Gate", @"gi_nand.png", NSNUM(CS_NAND), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"NOR", @"Logical NOR Gate", @"gi_nor.png", NSNUM(CS_NOR), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"XNOR", @"Logical Exclusive NOR Gate", @"gi_xnor.png", NSNUM(CS_XNOR), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Tee", @"Split input value", @"gi_tee.png", NSNUM(CS_TEE), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Number Compare", @"Number Compare and output result", @"gi_numcomp.png", NSNUM(CS_NUMCOMP), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"String Compare", @"String Compare and output result", @"gi_strcomp.png", NSNUM(CS_STRCOMP), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Calculator", @"Number Calculator", @"gi_calc.png", NSNUM(CS_CALC), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"String-Number Converter", @"Convert String to Number", @"gi_atof.png", NSNUM(CS_ATOF), nil] forKeys:keys],
                     //
                     [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Rectangular", @"Rectangular Decoration", @"gi_rect.png", NSNUM(CS_RECT), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Horizontal Line", @"Horizontal Line Decoration", @"gi_hline.png", NSNUM(CS_LINE_H), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Vertical Line", @"Vertical Line Decoration", @"gi_vline.png", NSNUM(CS_LINE_V), nil] forKeys:keys],
                     nil];
         
     }

@@ -11,6 +11,9 @@
 #import "BButton.h"
 
 @interface CSTouchButton : CSGearObject
+{
+    CGFloat output;
+}
 
 -(id) initGear;
 
@@ -20,6 +23,9 @@
 
 -(void) setText:(NSString*)txt;
 -(NSString*) getText;
+
+-(void) setOutputValue:(NSNumber*) number;
+-(NSNumber*) getOutputValue;
 
 -(void) setTextColor:(UIColor*)color;
 -(UIColor*) getTextColor;

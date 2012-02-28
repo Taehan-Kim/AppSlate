@@ -90,7 +90,7 @@
     // create a nice gradient layer to use as our fill
 //    CAGradientLayer *gradientLayer = (CAGradientLayer *)[self layer];
     CALayer *gradientLayer = [self layer];
-    [gradientLayer setBackgroundColor:[[UIColor lightGrayColor] CGColor]];
+    [gradientLayer setBackgroundColor:[[UIColor darkGrayColor] CGColor]];
 //    [gradientLayer setColors: colors];
 //    [gradientLayer setLocations:gradientLocations];
 //    [gradientLayer setStartPoint:CGPointMake(0.0, 0.0)];
