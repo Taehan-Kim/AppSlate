@@ -8,10 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import "UATitledModalPanel.h"
+#import "BButton.h"
 
-@interface AppSettingModal : UATitledModalPanel
+@interface AppSettingModal : UATitledModalPanel <FBDialogDelegate>
 {
-    UISwitch   *sndSwitch;
+    UISwitch   *sndSwitch, *hideSwitch, *gridSwitch, *fbSwitch;
+    BButton    *resetAlphaBtn;
 }
 
 - (id)initWithFrame:(CGRect)frame title:(NSString *)title;

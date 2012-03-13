@@ -18,7 +18,7 @@
     self.clipsToBounds = YES;
     [self.layer setBorderWidth:2.5];
     [self.layer setCornerRadius:5.0];
-    [self.layer setBorderColor:[UIColor lightGrayColor].CGColor];
+    [self.layer setBorderColor:[UIColor darkGrayColor].CGColor];
     
     gradient = [CAGradientLayer layer];
     [gradient setFrame:[self bounds]];
@@ -32,8 +32,8 @@
     [self addSubview:btn];
     
     // Default Color
-    [self.layer setBackgroundColor:[UIColor blueColor].CGColor];
-    
+    [self setBackgroundColor:[UIColor blueColor]];
+
     [btn addTarget:self action:@selector(touchIn:) forControlEvents:UIControlEventTouchDown];
     [btn addTarget:self action:@selector(touchUp:) forControlEvents:UIControlEventTouchUpOutside];
     [btn addTarget:self action:@selector(touchUp:) forControlEvents:UIControlEventTouchUpInside];
@@ -76,7 +76,7 @@
 {
     gradient.opacity = 0.5;
     [gradient setColors:[NSArray arrayWithObjects:(id)[[UIColor clearColor] CGColor], (id)[[UIColor blackColor] CGColor], nil]];
-    [self.layer setBorderColor:[UIColor lightGrayColor].CGColor];
+    [self.layer setBorderColor:[UIColor darkGrayColor].CGColor];
 }
 
 #pragma mark -

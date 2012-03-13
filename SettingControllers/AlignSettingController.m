@@ -7,6 +7,7 @@
 //
 
 #import "AlignSettingController.h"
+#import <objc/message.h>
 
 @interface AlignSettingController ()
 

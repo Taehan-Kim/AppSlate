@@ -24,9 +24,27 @@
     } else {
         self.mainViewController = [[CSMainViewController alloc] initWithNibName:@"CSMainViewController_iPad" bundle:nil];
     }
+
+    USERCONTEXT.facebook = [[Facebook alloc] initWithAppId:@"269841146424285" andDelegate:self];
+
     self.window.rootViewController = self.mainViewController;
     [self.window makeKeyAndVisible];
+
+    // facebook SSO
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults objectForKey:@"FBAccessTokenKey"] 
+        && [defaults objectForKey:@"FBExpirationDateKey"]) {
+        USERCONTEXT.facebook.accessToken = [defaults objectForKey:@"FBAccessTokenKey"];
+        USERCONTEXT.facebook.expirationDate = [defaults objectForKey:@"FBExpirationDateKey"];
+    }
+
     return YES;
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    return [USERCONTEXT.facebook handleOpenURL:url]; 
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -66,6 +84,32 @@
      Save data if appropriate.
      See also applicationDidEnterBackground:.
      */
+}
+
+#pragma mark -
+
+- (void)fbDidLogin
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:[USERCONTEXT.facebook accessToken] forKey:@"FBAccessTokenKey"];
+    [defaults setObject:[USERCONTEXT.facebook expirationDate] forKey:@"FBExpirationDateKey"];
+    [defaults synchronize];
+
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"facebook" message:@"Connected." delegate:nil cancelButtonTitle:@"Confirm" otherButtonTitles: nil];
+    [alert show];
+}
+
+- (void) fbDidLogout {
+    // Remove saved authorization information if it exists
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults objectForKey:@"FBAccessTokenKey"]) {
+        [defaults removeObjectForKey:@"FBAccessTokenKey"];
+        [defaults removeObjectForKey:@"FBExpirationDateKey"];
+        [defaults synchronize];
+    }
+
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"facebook" message:@"Disconnected." delegate:nil cancelButtonTitle:@"Confirm" otherButtonTitles: nil];
+    [alert show];
 }
 
 @end

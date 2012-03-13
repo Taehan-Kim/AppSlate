@@ -19,8 +19,8 @@
 
 -(void) setRun:(NSNumber*)BoolValue
 {
-    // BOOL 값인 경우만 반응하자.
-    if( ![BoolValue isKindOfClass:[NSNumber class]] )
+    // YES 값인 경우만 반응하자.
+    if( ![BoolValue boolValue] )
         return;
 
     run = [BoolValue boolValue];

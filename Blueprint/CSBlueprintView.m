@@ -55,6 +55,18 @@
     [actionHandle addSubview:arrow];
     [self addSubview:actionHandle];
 
+    [UIView animateWithDuration:0.15 animations:^(){
+        [actionHandle setFrame:CGRectOffset(actionHandle.frame, -3, 0)];
+    } completion:^(BOOL complete){
+        [UIView animateWithDuration:0.15 animations:^(){
+            [actionHandle setFrame:CGRectOffset(actionHandle.frame, 6, 0)];
+        } completion:^(BOOL complete){
+            [UIView animateWithDuration:0.15 animations:^(){
+                [actionHandle setFrame:CGRectOffset(actionHandle.frame, -3, 0)];
+            }];
+        }];
+    }];
+
     linkStartPoint = actionHandle.center;
 }
 

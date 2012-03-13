@@ -11,6 +11,11 @@
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
+
+//#pragma clang diagnostic push
+
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+
 #endif
 
 #import "UserContext.h"
@@ -42,3 +47,4 @@
 #define NOTI_STOP           @"noti_stop"
 #define NOTI_ACTION_LINK    @"noti_action_link_start"
 #define NOTI_FILELOAD       @"noti_file_load"
+#define NOTI_RESET_ALPHA    @"noti_reset_alpha_0"

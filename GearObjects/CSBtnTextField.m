@@ -84,12 +84,12 @@
 -(void) setButtonBackgroundColor:(UIColor*)color
 {
     if( [color isKindOfClass:[UIColor class]] )
-        [confirmButton.layer setBackgroundColor:color.CGColor];
+        [confirmButton setBackgroundColor:color];
 }
 
 -(UIColor*) getButtonBackgroundColor
 {
-    return( [UIColor colorWithCGColor: confirmButton.layer.backgroundColor ] );
+    return( confirmButton.backgroundColor );
 }
 
 -(void) setButtonText:(NSString*)txt

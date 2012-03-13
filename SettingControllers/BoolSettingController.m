@@ -7,6 +7,7 @@
 //
 
 #import "BoolSettingController.h"
+#import <objc/message.h>
 
 @interface BoolSettingController ()
 

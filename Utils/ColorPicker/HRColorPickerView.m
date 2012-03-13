@@ -48,7 +48,7 @@
 {
     HRColorPickerStyle style;
     style.width = 320.0f;
-    style.headerHeight = 106.0f;
+    style.headerHeight = 70.0;////106.0f;
     style.colorMapTileSize = 15.0f;
     style.colorMapSizeWidth = 20;
     style.colorMapSizeHeight = 20;

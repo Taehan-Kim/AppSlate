@@ -11,6 +11,9 @@
 	<key>CFBundleIconFiles</key>
 	<array>
 		<string>Icon72.png</string>
+		<string>Icon144.png</string>
+		<string>Icon~ipad.png</string>
+		<string>Icon~ipad@2x.png</string>
 	</array>
 	<key>CFBundleIcons</key>
 	<dict>
@@ -19,6 +22,9 @@
 			<key>CFBundleIconFiles</key>
 			<array>
 				<string>Icon72.png</string>
+				<string>Icon144.png</string>
+				<string>Icon~ipad.png</string>
+				<string>Icon~ipad@2x.png</string>
 			</array>
 			<key>UIPrerenderedIcon</key>
 			<true/>
@@ -62,5 +68,14 @@
 	</array>
 	<key>UIViewGroupOpacity</key>
 	<true/>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb269841146424285</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

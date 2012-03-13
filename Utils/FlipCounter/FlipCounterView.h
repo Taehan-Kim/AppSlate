@@ -29,6 +29,7 @@
 + (CGSize) sizeForNumberOfDigits:(int)digitCount;
 
 @property (readwrite,nonatomic,unsafe_unretained) id<FlipCounterViewDelegate> delegate;
+@property (nonatomic, readonly) NSMutableArray *digits;
 
 - (void) add:(int)amount;
 - (void) subtract:(int)amount;

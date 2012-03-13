@@ -67,6 +67,13 @@ enum alertTypes {
         [self.view addSubview:wmv];
         [wmv showFromPoint:self.view.center];
     }
+
+    // 처음 실행 체크.
+    if( ![[NSUserDefaults standardUserDefaults] boolForKey:@"APPSLATE_FIRST"] ){
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"APPSLATE_FIRST"];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SND_SET"];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HIDE_SET"];
+    }
 }
 
 - (void)viewDidUnload
@@ -293,7 +300,10 @@ enum alertTypes {
 
     [menuFolder.view addSubview:hsview];
 
-    AudioServicesPlaySystemSound( drawerOpenSoundID );
+    if( [[NSUserDefaults standardUserDefaults] boolForKey:@"SND_SET"] ){
+        AudioServicesPlaySystemSound( drawerOpenSoundID );
+    }
+
     [JWFolders openFolderWithViewController:menuFolder atPosition:CGPointMake(10, blueprintCtrl.view.frame.size.height-55) inContainerView:self.view sender:self];
 }
 
@@ -328,7 +338,9 @@ enum alertTypes {
 
 - (void)folderWillClose:(id)sender
 {
-    AudioServicesPlaySystemSound( drawerCloseSoundID );
+    if( [[NSUserDefaults standardUserDefaults] boolForKey:@"SND_SET"] )
+        AudioServicesPlaySystemSound( drawerCloseSoundID );
+
     [JWFolders closeFolderWithCompletionBlock:^{
         if( menuFolder )
             [menuFolder.view removeFromSuperview], menuFolder = nil;
@@ -428,7 +440,7 @@ enum alertTypes {
     [self folderWillClose:nil];
 
     [blueprintCtrl.view addSubview:modalPanel];
-    [modalPanel showFromPoint:[sender center]];
+    [modalPanel showFromPoint:[(UIButton*)sender center]];
 }
 
 -(void)settingAction:(id)sender
@@ -446,7 +458,7 @@ enum alertTypes {
     [self folderWillClose:nil];
     
     [blueprintCtrl.view addSubview:modalPanel];
-    [modalPanel showFromPoint:[sender center]];
+    [modalPanel showFromPoint:[(UIButton*)sender center]];
 }
 
 -(void)infoAction:(id)sender
@@ -463,7 +475,7 @@ enum alertTypes {
     [self folderWillClose:nil];
     
     [blueprintCtrl.view addSubview:modalPanel];
-    [modalPanel showFromPoint:[sender center]];
+    [modalPanel showFromPoint:[(UIButton*)sender center]];
 }
 
 #pragma mark - Delegate
@@ -532,7 +544,7 @@ enum alertTypes {
 
     START_WAIT_VIEW;
 
-    dispatch_async(dispatch_queue_create("fw", NULL), ^(void)
+    dispatch_async(dispatch_get_main_queue(), ^(void)
     {
         NSError *error;
 
@@ -584,7 +596,7 @@ enum alertTypes {
     }
 
     START_WAIT_VIEW;
-    dispatch_async(dispatch_queue_create("fw", NULL), ^(void)
+    dispatch_async(dispatch_get_main_queue(), ^(void)
     {
         [blueprintCtrl deleteAllGear];
 

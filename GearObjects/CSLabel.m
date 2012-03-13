@@ -82,6 +82,20 @@
     return [NSNumber numberWithInteger:((UILabel*)csView).textAlignment];
 }
 
+-(void) setLineNumber:(NSNumber*)number
+{
+    if( [number isKindOfClass:[NSNumber class]] )
+        [((UILabel*)csView) setNumberOfLines:[number integerValue]];
+    else if( [number isKindOfClass:[NSString class]] )
+        [((UILabel*)csView) setNumberOfLines:[(NSString*)number integerValue]];
+}
+
+-(NSNumber*) getLineNumber
+{
+    return [NSNumber numberWithInt:((UILabel*)csView).numberOfLines];
+}
+
+
 -(void) setRoundBorder:(NSNumber*)BoolValue
 {
     BOOL isRound;
@@ -134,9 +148,10 @@
     NSDictionary *d3 = MAKE_PROPERTY_D(@"Background Color", P_COLOR, @selector(setBackgroundColor:),@selector(getBackgroundColor));
     NSDictionary *d4 = MAKE_PROPERTY_D(@"Text Font", P_FONT, @selector(setFont:),@selector(getFont));
     NSDictionary *d5 = MAKE_PROPERTY_D(@"L/R Alignment", P_ALIGN, @selector(setTextAlignment:),@selector(getTextAlignment));
-    NSDictionary *d6 = MAKE_PROPERTY_D(@"Rounded Border", P_BOOL, @selector(setRoundBorder:),@selector(getRoundBorder));
+    NSDictionary *d6 = MAKE_PROPERTY_D(@"Line Number", P_NUM, @selector(setLineNumber:),@selector(getLineNumber));
+    NSDictionary *d7 = MAKE_PROPERTY_D(@"Rounded Border", P_BOOL, @selector(setRoundBorder:),@selector(getRoundBorder));
 
-    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2,d3,d4,d5,d6, nil];
+    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2,d3,d4,d5,d6,d7, nil];
 
     return self;
 }

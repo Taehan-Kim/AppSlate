@@ -27,6 +27,13 @@
     return self;
 }
 
+- (id)initWithGear:(id)gear propertyInfo:(NSDictionary*)infoDic
+{
+    self = [self init];
+    [self setGearValue:gear propertyInfo:infoDic];
+    return self;
+}
+
 -(void) setGearValue:(id)gear propertyInfo:(NSDictionary*)infoDic
 {
     theGear = gear;
@@ -48,7 +55,8 @@
 
 -(void) doSound
 {
-    AudioServicesPlaySystemSound(myID);
+    if( [[NSUserDefaults standardUserDefaults] boolForKey:@"SND_SET"] )
+        AudioServicesPlaySystemSound(myID);
 }
 
 -(void) viewWillDisappear:(BOOL)animated

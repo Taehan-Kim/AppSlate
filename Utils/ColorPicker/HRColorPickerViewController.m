@@ -85,8 +85,14 @@
     saveBtn = [[BButton alloc] initWithFrame:CGRectMake(C_GAP, colorPickerView.frame.size.height+C_GAP, C_WIDTH, 40)];
     [saveBtn setTitle:NSLocalizedString(@"APPLY",@"APPLY")];
     [saveBtn addTarget:self action:@selector(save:)];
-//    [saveBtn setEnabled:YES];
     [self.view addSubview:saveBtn];
+
+    clearBtn = [[BButton alloc] initWithFrame:CGRectMake(C_GAP, colorPickerView.frame.size.height+C_GAP+48, C_WIDTH, 36)];
+    [clearBtn setTitle:NSLocalizedString(@"TRANSPARENT APPLY",@"CLEAR APPLY")];
+    [clearBtn addTarget:self action:@selector(clearSave:)];
+    [clearBtn setBackgroundColor:[UIColor grayColor]];
+    [clearBtn setTitleColor:[UIColor blackColor]];
+    [self.view addSubview:clearBtn];
 }
 
 // UIPopover Controller 의 크기를 조정해주기 위해서 사용하는 팁 같은 코드.
@@ -101,9 +107,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     HRRGBColor rgbColor;
-    RGBColorFromUIColor(_color, &rgbColor);
+
+    if( [_color isEqual:CSCLEAR] )
+        RGBColorFromUIColor([UIColor whiteColor], &rgbColor);
+    else
+        RGBColorFromUIColor(_color, &rgbColor);
     
     HRColorPickerStyle style;
     if (_fullColor) {
@@ -113,7 +123,7 @@
     }
     
     colorPickerView = [[HRColorPickerView alloc] initWithStyle:style defaultColor:rgbColor];
-    
+
     [self.view addSubview:colorPickerView];
     
 //    if (_saveStyle == HCPCSaveStyleSaveAndCancel) {
@@ -156,6 +166,11 @@
     HRRGBColor rgbColor = [colorPickerView RGBColor];
     // blade
     [self saveValue:[UIColor colorWithRed:rgbColor.r green:rgbColor.g blue:rgbColor.b alpha:1.0f]];
+}
+
+- (void)clearSave:(id)sender
+{
+    [self saveValue:CSCLEAR];
 }
 
 - (void)cancel:(id)sender

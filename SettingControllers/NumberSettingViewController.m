@@ -7,6 +7,7 @@
 //
 
 #import "NumberSettingViewController.h"
+#import <objc/message.h>
 
 
 @implementation NumberSettingViewController

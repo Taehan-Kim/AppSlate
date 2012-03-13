@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-//#import <CoreLocation/CoreLocation.h>
+#import "FBConnect.h"
 #import "WaitView.h"
 #import "CSGearObject.h"
 
@@ -26,6 +26,8 @@
     NSMutableArray  *gearsArray;
     NSUInteger      wallpaperIndex;
 
+    Facebook   *facebook;
+
     BOOL            imRunning;
 }
 
@@ -35,6 +37,7 @@
 @property (nonatomic, strong)   NSArray         *wallpapers;
 @property (nonatomic)           NSUInteger      wallpaperIndex;
 @property (nonatomic)           BOOL            imRunning;
+@property (nonatomic, strong)   Facebook *facebook;
 
 
 + (UserContext *)sharedUserContext;

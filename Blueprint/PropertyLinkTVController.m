@@ -53,7 +53,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     NSUInteger height;
-    if( [[destGear getPropertiesList] count] > 6 ) height = 220;
+    if( [[destGear getPropertiesList] count] > 7 ) height = 250;
     else height = [[destGear getPropertiesList] count] * 36;
 
     CGSize size = CGSizeMake(200, height); // size of view in popover
@@ -115,14 +115,19 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.contentView.backgroundColor = [UIColor clearColor];
         cell.textLabel.textColor = [UIColor whiteColor];
-        cell.textLabel.font = CS_FONT(14);
+        cell.textLabel.font = CS_FONT(15);
         cell.textLabel.shadowColor = [UIColor blackColor];
         cell.textLabel.shadowOffset = CGSizeMake(1, 1);
     }
     
     // Configure the cell...
     NSArray *plist = [destGear getPropertiesList];
-    cell.textLabel.text = [[plist objectAtIndex:indexPath.row] objectForKey:@"name"];
+    NSString *name = [[plist objectAtIndex:indexPath.row] objectForKey:@"name"];
+
+    if( [name hasPrefix:@">"] )
+        cell.textLabel.text = [name substringFromIndex:1];
+    else
+        cell.textLabel.text = name;
 
     return cell;
 }
@@ -131,7 +136,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 45.0;
+    return 48.0;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -156,7 +161,8 @@
         [USERCONTEXT.pop dismissPopoverAnimated:YES];
     }];
 
-    AudioServicesPlaySystemSound(tockSoundID);
+    if( [[NSUserDefaults standardUserDefaults] boolForKey:@"SND_SET"] )
+        AudioServicesPlaySystemSound(tockSoundID);
 }
 
 @end

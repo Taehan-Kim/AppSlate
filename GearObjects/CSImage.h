@@ -16,4 +16,10 @@
 -(void) setImage:(UIImage*) imageD;
 -(UIImage*) getImage;
 
+-(void) setAspectFit:(NSNumber*) boolValue;
+-(NSNumber*) getAspectFit;
+
+-(void) setBackgroundColor:(UIColor*)color;
+-(UIColor*) getBackgroundColor;
+
 @end

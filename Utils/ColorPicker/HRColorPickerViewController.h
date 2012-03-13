@@ -49,7 +49,7 @@ typedef enum {
     UIColor *_color;
     BOOL _fullColor;
     HCPCSaveStyle _saveStyle;
-    BButton *saveBtn;
+    BButton *saveBtn, *clearBtn;
 }
 
 + (HRColorPickerViewController *)colorPickerViewControllerWithColor:(UIColor *)color;

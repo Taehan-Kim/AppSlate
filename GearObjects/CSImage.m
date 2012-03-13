@@ -34,6 +34,38 @@
     return ((UIImageView*)csView).image;
 }
 
+-(void) setAspectFit:(NSNumber*) boolValue
+{
+    BOOL var;
+    if( [boolValue isKindOfClass:[NSString class]] )
+        var = [(NSString*)boolValue boolValue];
+    else  if( [boolValue isKindOfClass:[NSNumber class]] )
+        var = [boolValue boolValue];
+    else
+        return;
+
+    if( var )
+        [(UIImageView*)csView setContentMode:UIViewContentModeScaleAspectFit];
+    else
+        [(UIImageView*)csView setContentMode:UIViewContentModeScaleToFill];
+}
+
+-(NSNumber*) getAspectFit
+{
+    return [NSNumber numberWithBool:(((UIImageView*)csView).contentMode == UIViewContentModeScaleAspectFit)];
+}
+
+-(void) setBackgroundColor:(UIColor*)color
+{
+    if( [color isKindOfClass:[UIColor class]] )
+        [csView setBackgroundColor:color];
+}
+
+-(UIColor*) getBackgroundColor
+{
+    return csView.backgroundColor;
+}
+
 #pragma mark -
 
 -(id) initGear
@@ -43,7 +75,8 @@
     csView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 300, 300)];
     [csView setBackgroundColor:[UIColor grayColor]];
     [csView setUserInteractionEnabled:YES];
-    
+    [(UIImageView*)csView setContentMode:UIViewContentModeScaleAspectFit];
+
     csCode = CS_IMAGE;
     isUIObj = YES;
 
@@ -53,7 +86,9 @@
     DEFAULT_CENTER_D;
     NSDictionary *d0 = ALPHA_D;
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Image", P_IMG, @selector(setImage:),@selector(getImage));
-    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1, nil];
+    NSDictionary *d2 = MAKE_PROPERTY_D(@"Aspect Fit", P_BOOL, @selector(setAspectFit:),@selector(getAspectFit));
+    NSDictionary *d3 = MAKE_PROPERTY_D(@"Background Color", P_COLOR, @selector(setBackgroundColor:),@selector(getBackgroundColor));
+    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2,d3, nil];
 
     return self;
 }

@@ -15,6 +15,11 @@
 @synthesize info, isUIObj;
 
 
+-(id) object
+{
+    return (csView);
+}
+
 -(id) init
 {
     if( ![super init] ) return nil;

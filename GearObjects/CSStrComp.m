@@ -84,7 +84,7 @@
     }
 }
 
--(NSString*) getVariableValue
+-(NSString*) getVariableString
 {
     return var;
 }

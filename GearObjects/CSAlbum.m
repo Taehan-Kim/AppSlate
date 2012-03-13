@@ -19,7 +19,7 @@
 -(void) setShow:(NSNumber*)BoolValue
 {
     // YES 값인 경우만 반응하자.
-    if( ![BoolValue isKindOfClass:[NSNumber class]] || NO == [BoolValue boolValue] )
+    if( ![BoolValue boolValue] )
         return;
     
     if( USERCONTEXT.imRunning )

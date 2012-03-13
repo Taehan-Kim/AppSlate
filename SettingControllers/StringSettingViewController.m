@@ -7,6 +7,7 @@
 //
 
 #import "StringSettingViewController.h"
+#import <objc/message.h>
 
 //@interface StringSettingViewController ()
 //

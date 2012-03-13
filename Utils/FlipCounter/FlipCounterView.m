@@ -29,7 +29,7 @@
     return CGSizeMake(w, h);
 }
 
-@synthesize delegate;
+@synthesize delegate,digits;
 
 - (id)initWithFrame:(CGRect)frame
 {

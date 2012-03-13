@@ -16,7 +16,7 @@
     if( [number isKindOfClass:[NSNumber class]] )
         [(FlipCounterView*)csView setCounterValue:[number integerValue]];
     else if( [number isKindOfClass:[NSString class]] )
-        [(FlipCounterView*)csView setCounterValue:[(NSString*)number length]];
+        [(FlipCounterView*)csView setCounterValue:[(NSString*)number integerValue]];
     else
         return;
 
@@ -33,7 +33,7 @@
     if( [number isKindOfClass:[NSNumber class]] )
         [(FlipCounterView*)csView add:[number integerValue]];
     else if( [number isKindOfClass:[NSString class]] )
-        [(FlipCounterView*)csView add:[(NSString*)number length]];
+        [(FlipCounterView*)csView add:[(NSString*)number integerValue]];
     else
         return;
 
@@ -70,7 +70,7 @@
 {
     if( ![super init] ) return nil;
     
-    csView = [[FlipCounterView alloc] initWithFrame:CGRectMake(0, 0, 160, H_SIZE)];
+    csView = [[FlipCounterView alloc] initWithFrame:CGRectMake(0, 0, 110, H_SIZE)];
     [csView setBackgroundColor:[UIColor clearColor]];
     [csView setUserInteractionEnabled:YES];
 
@@ -125,7 +125,6 @@
 
 -(void) _checkAndRun
 {
-    checkNumber = ((FlipCounterView*)csView).counterValue;
 
 //TODO: edit 모드에서는 아래 부분은 실행하지 않는 것이 좋다.    if( !csView. ) return;
 
@@ -134,6 +133,8 @@
 
     if( 0 == ((FlipCounterView*)csView).counterValue )
         [self iAmZero];
+
+    checkNumber = ((FlipCounterView*)csView).counterValue;
 }
 
 // 값이 변경되는 모든 경우 설정된 액션을 수행한다.
@@ -156,6 +157,9 @@
                 EXCLAMATION;
         }
     }
+
+    CGSize Se = [FlipCounterView sizeForNumberOfDigits:[((FlipCounterView*)csView).digits count]];
+    [csView setFrame:CGRectMake(csView.frame.origin.x, csView.frame.origin.y, Se.width, H_SIZE)];
 }
 
 // 숫자가 0이 되는 경우 실행되도록 설정된 액션을 수행한다.

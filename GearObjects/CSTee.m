@@ -10,10 +10,10 @@
 
 @implementation CSTee
 
--(id) object
-{
-    return (csView);
-}
+//-(id) object
+//{
+//    return (csView);
+//}
 
 //===========================================================================
 
@@ -22,7 +22,7 @@
     CGFloat value;
 
     if( [BoolValue isKindOfClass:[NSString class]] )
-        value = 1.0;
+        value = [(NSString*)BoolValue floatValue];
     else  if( [BoolValue isKindOfClass:[NSNumber class]] )
         value = [BoolValue floatValue];
     else

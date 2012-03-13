@@ -21,12 +21,12 @@
 -(void) setTintColor:(UIColor*)color
 {
     if( [color isKindOfClass:[UIColor class]] )
-        [((BButton*)csView).layer setBackgroundColor:color.CGColor];
+        [((BButton*)csView) setBackgroundColor:color];
 }
 
 -(UIColor*) getTintColor
 {
-    return [UIColor colorWithCGColor:((BButton*)csView).layer.backgroundColor];
+    return ((BButton*)csView).backgroundColor;
 }
 
 -(void) setText:(NSString*)txt;
@@ -48,7 +48,7 @@
     if( [number isKindOfClass:[NSNumber class]] )
         output = [number floatValue];
     else if( [number isKindOfClass:[NSString class]] )
-        output = [(NSString*)number length];
+        output = [(NSString*)number floatValue];
     else
         EXCLAMATION;
 }

@@ -47,7 +47,7 @@
     if( [number isKindOfClass:[NSNumber class]] )
         [((UIProgressView*)csView) setProgress:[number floatValue] animated:YES];
     else if( [number isKindOfClass:[NSString class]] )
-        [((UIProgressView*)csView) setProgress:[(NSString*)number length] animated:YES];
+        [((UIProgressView*)csView) setProgress:[(NSString*)number floatValue] animated:YES];
 }
 
 -(NSNumber*) getBarValue

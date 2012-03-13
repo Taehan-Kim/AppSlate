@@ -23,7 +23,7 @@
     onColor = color;
 
     if( toggleValue && [color isKindOfClass:[UIColor class]] )
-        [((BButton*)csView).layer setBackgroundColor:color.CGColor];
+        [((BButton*)csView) setBackgroundColor:color];
 }
 
 -(UIColor*) getOnTintColor
@@ -36,7 +36,7 @@
     offColor = color;
 
     if( !toggleValue && [color isKindOfClass:[UIColor class]] )
-        [((BButton*)csView).layer setBackgroundColor:color.CGColor];
+        [((BButton*)csView) setBackgroundColor:color];
 }
 
 -(UIColor*) getOffTintColor

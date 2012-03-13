@@ -7,6 +7,7 @@
 //
 
 #import "CellSettingController.h"
+#import <objc/message.h>
 
 @implementation CellSettingController
 

@@ -64,7 +64,7 @@
     UIAlertView *alertView;
 
     // YES 값인 경우만 반응하자.
-    if( ![BoolValue isKindOfClass:[NSNumber class]] || NO == [BoolValue boolValue] )
+    if( ![BoolValue boolValue] )
         return;
 
     NSString *txt1, *txt2;

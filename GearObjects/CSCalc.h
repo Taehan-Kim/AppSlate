@@ -13,6 +13,7 @@
 {
     CGFloat value1;
     CGFloat value2;
+    BOOL resultSave;
 }
 
 -(id) initGear;

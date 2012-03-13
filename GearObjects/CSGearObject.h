@@ -22,10 +22,12 @@
 #define CS_SLIDER       109
 #define CS_TABLE        110
 #define CS_RSSTABLE     111
+#define CS_TWTABLE      118
 #define CS_WEBVIEW      112
 #define CS_BULB         113
 #define CS_PROGRESS     115
 #define CS_IMAGE        116
+#define CS_MAPVIEW      117
 
 #define CS_ALERT        150
 #define CS_TEXTALERT    151
@@ -36,6 +38,7 @@
 #define CS_NOW          156
 #define CS_ACLOMETER    157
 #define CS_ALBUM        158
+#define CS_FBSEND       159
 
 #define CS_NOT          200
 #define CS_AND          201
@@ -50,7 +53,9 @@
 #define CS_CALC         210
 #define CS_ATOF         211
 #define CS_ABS          212
-
+#define CS_STRCAT       213
+#define CS_STACK        214
+#define CS_QUEUE        215
 
 #define CS_RECT         300
 #define CS_LINE_H       301
@@ -68,6 +73,7 @@
 #define P_BOOL          @"bool"
 #define P_CELL          @"cell"
 #define P_IMG           @"image"
+#define P_NO            @"dont"
 
 #define A_TXT           @"textAct"
 #define A_NUM           @"numberAct"

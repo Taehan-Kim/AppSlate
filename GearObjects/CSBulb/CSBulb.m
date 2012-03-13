@@ -90,9 +90,23 @@
 
 -(void) drawBulb
 {
-    if( onValue )
+    if( onValue ){
         [light setAlpha:1.0];
-    else
+        UIView *flar = [[UIView alloc] initWithFrame:light.frame];
+        [flar setClipsToBounds:YES];
+        [flar.layer setCornerRadius:6.0];
+        [flar setBackgroundColor:CSCLEAR];
+        [flar.layer setBorderColor:light.backgroundColor.CGColor];
+        [flar.layer setBorderWidth:2.0];
+        [csView addSubview:flar];
+        [UIView animateWithDuration:0.3 animations:^(){
+            CGAffineTransform sct = CGAffineTransformMakeScale(3.0, 3.0);
+            [flar setTransform:sct];
+            [flar setAlpha:0.0];
+        } completion:^(BOOL finished){
+            [flar removeFromSuperview];
+        }];
+    } else
         [light setAlpha:0.0];
 }
 

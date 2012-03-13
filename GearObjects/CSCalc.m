@@ -20,7 +20,7 @@
 -(void) setInput1Value:(NSNumber*) Value
 {
     if( [Value isKindOfClass:[NSString class]] )
-        value1 = [(NSString*)Value length];
+        value1 = [(NSString*)Value floatValue];
     else if( [Value isKindOfClass:[NSNumber class]] )
         value1 = [Value floatValue];
 }
@@ -33,7 +33,7 @@
 -(void) setPlusValue:(NSNumber*) Value
 {
     if( [Value isKindOfClass:[NSString class]] )
-        value2 = [(NSString*)Value length];
+        value2 = [(NSString*)Value floatValue];
     else if( [Value isKindOfClass:[NSNumber class]] )
         value2 = [Value floatValue];
     else
@@ -49,9 +49,11 @@
             CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
             
             if( nil != gObj ){
-                if( [gObj respondsToSelector:act] )
+                if( [gObj respondsToSelector:act] ){
                     [gObj performSelector:act withObject:[NSNumber numberWithFloat: (value1 + value2)]];
-                else
+                    if( resultSave )
+                        value1 = (value1 + value2);
+                }else
                     EXCLAMATION;
             }
         }
@@ -66,7 +68,7 @@
 -(void) setMinusValue:(NSNumber*) Value
 {
     if( [Value isKindOfClass:[NSString class]] )
-        value2 = [(NSString*)Value length];
+        value2 = [(NSString*)Value floatValue];
     else if( [Value isKindOfClass:[NSNumber class]] )
         value2 = [Value floatValue];
     else
@@ -82,9 +84,11 @@
             CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
             
             if( nil != gObj ){
-                if( [gObj respondsToSelector:act] )
+                if( [gObj respondsToSelector:act] ){
                     [gObj performSelector:act withObject:[NSNumber numberWithFloat: (value1 - value2)]];
-                else
+                    if( resultSave )
+                        value1 = (value1 - value2);
+                }else
                     EXCLAMATION;
             }
         }
@@ -94,7 +98,7 @@
 -(void) setMultiValue:(NSNumber*) Value
 {
     if( [Value isKindOfClass:[NSString class]] )
-        value2 = [(NSString*)Value length];
+        value2 = [(NSString*)Value floatValue];
     else if( [Value isKindOfClass:[NSNumber class]] )
         value2 = [Value floatValue];
     else
@@ -110,9 +114,11 @@
             CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
             
             if( nil != gObj ){
-                if( [gObj respondsToSelector:act] )
+                if( [gObj respondsToSelector:act] ){
                     [gObj performSelector:act withObject:[NSNumber numberWithFloat: (value1 * value2)]];
-                else
+                    if( resultSave )
+                        value1 = (value1 * value2);
+                }else
                     EXCLAMATION;
             }
         }
@@ -123,7 +129,7 @@
 -(void) setDivValue:(NSNumber*) Value
 {
     if( [Value isKindOfClass:[NSString class]] )
-        value2 = [(NSString*)Value length];
+        value2 = [(NSString*)Value floatValue];
     else if( [Value isKindOfClass:[NSNumber class]] )
         value2 = [Value floatValue];
     else
@@ -144,9 +150,11 @@
             CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
             
             if( nil != gObj ){
-                if( [gObj respondsToSelector:act] )
+                if( [gObj respondsToSelector:act] ){
                     [gObj performSelector:act withObject:[NSNumber numberWithFloat: (value1 / value2)]];
-                else
+                    if( resultSave )
+                        value1 = (value1 / value2);
+                }else
                     EXCLAMATION;
             }
         }
@@ -171,13 +179,15 @@
     csShow = NO;
 
     self.info = NSLocalizedString(@"Calculator + - x /", @"calc");
+    resultSave = NO;
     
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Input #1", P_NUM, @selector(setInput1Value:),@selector(getInput1Value));
     NSDictionary *d2 = MAKE_PROPERTY_D(@">Input for Plus", P_NUM, @selector(setPlusValue:),@selector(getInput2Value));
     NSDictionary *d3 = MAKE_PROPERTY_D(@">Input for Minus", P_NUM, @selector(setMinusValue:),@selector(getInput2Value));
     NSDictionary *d4 = MAKE_PROPERTY_D(@">Input for Multiplication", P_NUM, @selector(setMultiValue:),@selector(getInput2Value));
     NSDictionary *d5 = MAKE_PROPERTY_D(@">Input for Division", P_NUM, @selector(setDivValue:),@selector(getInput2Value));
-    pListArray = [NSArray arrayWithObjects:d1,d2,d3,d4,d5, nil];
+    NSDictionary *d6 = MAKE_PROPERTY_D(@"Output Value Set Input #1 Also", P_BOOL, @selector(setResultSave:),@selector(getResultSave));
+    pListArray = [NSArray arrayWithObjects:d1,d2,d3,d4,d5,d6, nil];
     
     NSMutableDictionary MAKE_ACTION_D(@"Output", A_NUM, a1);
     actionArray = [NSArray arrayWithObjects:a1, nil];
@@ -190,6 +200,7 @@
     if( (self=[super initWithCoder:decoder]) ) {
         [(UIImageView*)csView setImage:[UIImage imageNamed:@"gi_calc.png"]];
         value1 = [decoder decodeFloatForKey:@"value1"];
+        resultSave = [decoder decodeBoolForKey:@"resultSave"];
     }
     return self;
 }
@@ -198,6 +209,7 @@
 {
     [super encodeWithCoder:encoder];
     [encoder encodeFloat:value1 forKey:@"value1"];
+    [encoder encodeBool:resultSave forKey:@"resultSave"];
 }
 
 @end

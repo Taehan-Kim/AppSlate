@@ -20,12 +20,14 @@
     self = [super init];
     if (self) {
         self.view = [[CSBlueprintView alloc] init];
+        [self.view setClipsToBounds:YES];
 
         // Custom initialization
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getAddRequest:) name:NOTI_PUT_GEAR object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(runRequest:) name:NOTI_RUN object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopRequest:) name:NOTI_STOP object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(actionLinkRequest:) name:NOTI_ACTION_LINK object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(alphaResetRequest:) name:NOTI_RESET_ALPHA object:nil];
         [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bluePaper.png"]]];
         USERCONTEXT.wallpaperIndex = 1; // default paper
 
@@ -112,6 +114,8 @@
             newObj = [[CSProgressBar alloc] initGear];  break;
         case CS_TABLE:
             newObj = [[CSTable alloc] initGear];         break;
+        case CS_RSSTABLE:
+            newObj = [[CSRssTable alloc] initGear];      break;
         case CS_BULB:
             newObj = [[CSBulb alloc] initGear];          break;
         case CS_ALERT:
@@ -140,6 +144,8 @@
             newObj = [[CSMailComposer alloc] initGear];  break;
         case CS_TWITSEND:
             newObj = [[CSTwitComposer alloc] initGear];  break;
+        case CS_FBSEND:
+            newObj = [[CSFBSend alloc] initGear];  break;
         case CS_ALBUM:
             newObj = [[CSAlbum alloc] initGear];         break;
         case CS_NUMCOMP:
@@ -152,6 +158,10 @@
             newObj = [[CSAtof alloc] initGear];         break;
         case CS_IMAGE:
             newObj = [[CSImage alloc] initGear];  break;
+        case CS_WEBVIEW:
+            newObj = [[CSWeb alloc] initGear];  break;
+        case CS_MAPVIEW:
+            newObj = [[CSMapView alloc] initGear];  break;
         case CS_LINE_H:
             newObj = [[CSHLine alloc] initGear];  break;
         case CS_LINE_V:
@@ -160,21 +170,21 @@
             newObj = [[CSTick alloc] initGear];  break;
         case CS_RAND:
             newObj = [[CSRand alloc] initGear];  break;
-/*        case CS_:
-            newObj = [[CS alloc] initGear];  break;
-        case CS_:
-            newObj = [[CS alloc] initGear];  break;
-        case CS_:
-            newObj = [[CS alloc] initGear];  break;
-        case CS_:
-            newObj = [[CS alloc] initGear];  break;
-        case CS_:
-            newObj = [[CS alloc] initGear];  break;
-        case CS_:
-            newObj = [[CS alloc] initGear];  break;
-        case CS_:
-            newObj = [[CS alloc] initGear];  break;
- */
+        case CS_ABS:
+            newObj = [[CSAbs alloc] initGear];  break;
+        case CS_NOW:
+            newObj = [[CSTime alloc] initGear];  break;
+        case CS_ACLOMETER:
+            newObj = [[CSAccelero alloc] initGear];  break;
+        case CS_STRCAT:
+            newObj = [[CSLinkStr alloc] initGear];  break;
+        case CS_TWTABLE:
+            newObj = [[CSTwitTable alloc] initGear];  break;
+        case CS_STACK:
+            newObj = [[CSStack alloc] initGear];  break;
+        case CS_QUEUE:
+            newObj = [[CSQueue alloc] initGear];  break;
+
         default:
             return;
     }
@@ -206,6 +216,9 @@
         }
         endPoint = CGPointMake(x, y);
     }
+
+    // update new position.
+    newObj.csView.center = endPoint;
 
     CGMutablePathRef curvedPath = CGPathCreateMutable();
     CGPathMoveToPoint(curvedPath, NULL, startFrame.origin.x, startFrame.origin.y);
@@ -247,25 +260,6 @@
     // 형상을 만든다.
     UIView *aV = ((CSGearObject*)gearObj).csView;
 
-    // 낙하 위치를 찾음.
-    if( 0 == [USERCONTEXT.gearsArray count] )
-        aV.frame = CGRectOffset(aV.frame,
-                    self.view.frame.size.width / 2 - aV.frame.size.width / 2,
-                    self.view.frame.size.height / 2 - aV.frame.size.height / 2);
-    else {
-        UIView *lobjView = ((CSGearObject*)[USERCONTEXT.gearsArray lastObject]).csView;
-        CGFloat x = lobjView.frame.origin.x + lobjView.frame.size.width + 15;
-        CGFloat y = lobjView.frame.origin.y;
-        if( self.view.frame.size.width < (x + aV.frame.size.width) ){
-            x = lobjView.frame.origin.x;
-            y = lobjView.frame.origin.y + lobjView.frame.size.height + 15;
-            if( self.view.frame.size.height < (y + aV.frame.size.height) ){
-                x = 20.0;
-                y = 20.0;
-            }
-        }
-        aV.frame = CGRectOffset(aV.frame, x, y);
-    }
 
     [((CSGearObject*)gearObj) setTapGR: [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeEditGear:)] ];
     [USERCONTEXT.gearsArray addObject:gearObj];
@@ -273,7 +267,10 @@
     // 기어 뷰 를 설계도에 놓는다.
     [aV setTag:((CSGearObject*)gearObj).csMagicNum];
 
-    if( NO == ((CSGearObject*)gearObj).isUIObj )
+    if( NO == ((CSGearObject*)gearObj).isUIObj
+       || [aV isKindOfClass:[UITableView class]]
+       || [aV isKindOfClass:[MKMapView class]]
+       || [aV isKindOfClass:[UIWebView class]] )
         for( UIView* sv in aV.subviews )  // 사용자 반응 중지.
             [sv setUserInteractionEnabled:NO];
 
@@ -298,7 +295,8 @@
     // 지금 추가된 객체는 에디팅 모드로 설정한다.
     [self setEditModeGearOfMagicNum:aV.tag];
 
-    AudioServicesPlaySystemSound(putSoundID);
+    if( [[NSUserDefaults standardUserDefaults] boolForKey:@"SND_SET"] )
+        AudioServicesPlaySystemSound(putSoundID);
 }
 
 // 청사진에 객체를 제거한다.
@@ -390,20 +388,32 @@
             [gO.csView addGestureRecognizer:gr];
         gO.gestureArray = nil;
 
-        // NOTE: 두 가지 경우에 대해서 처리 하지 않음.
-        if( NO == gO.isUIObj || [gO.csView isKindOfClass:[UITableView class]] )
+        // NOTE: 세 가지 경우에 대해서 처리 하지 않음.
+        if( NO == gO.isUIObj
+           || [gO.csView isKindOfClass:[UITableView class]]
+           || [gO.csView isKindOfClass:[MKMapView class]]
+           || [gO.csView isKindOfClass:[UIWebView class]] )
             for( UIView* sv in ((UIView*)(gO.csView)).subviews )  // 사용자 반응 활성화.
                 [sv setUserInteractionEnabled:YES];
 
         // Hidden Style 처리.
-        if( [gO isHiddenGear] )
+        if( [gO isHiddenGear] &&
+           [[NSUserDefaults standardUserDefaults] boolForKey:@"HIDE_SET"] )
             [gO.csView setHidden:YES];
+
+        // 예외 처리.
+        if( [gO.csView isKindOfClass:[UIWebView class]] )
+            [((UIWebView*)(gO.csView)).scrollView setScrollEnabled:YES];
+        else if( [gO.csView isKindOfClass:[MKMapView class]] )
+            [((MKMapView*)gO.csView) setScrollEnabled:YES];
+
     }
 
     // 에디트 모드로 있던 하나의 객체를 해제한다.
     [self removeModifyMode];
 
-    AudioServicesPlaySystemSound(runSoundID);
+    if( [[NSUserDefaults standardUserDefaults] boolForKey:@"SND_SET"] )
+        AudioServicesPlaySystemSound(runSoundID);
 
     // TODO: 실행한다.
     USERCONTEXT.imRunning = YES;
@@ -422,7 +432,11 @@
         [gO setTapGR:tapGR];
         [gO.csView addGestureRecognizer:tapGR];
         
-        if( NO == gO.isUIObj || [gO.csView isKindOfClass:[UITableView class]] )
+        // NOTE: 세 가지 경우에 대해서 처리 하지 않음.
+        if( NO == gO.isUIObj
+           || [gO.csView isKindOfClass:[UITableView class]]
+           || [gO.csView isKindOfClass:[MKMapView class]]
+           || [gO.csView isKindOfClass:[UIWebView class]] )
         {
             for( UIView* sv in ((UIView*)(gO.csView)).subviews )  // 사용자 반응 중지.
                 [sv setUserInteractionEnabled:NO];
@@ -431,6 +445,14 @@
         // Hidden Style 처리.
         if( [gO isHiddenGear] )
             [gO.csView setHidden:NO];
+        // 예외 처리.
+        if( [gO.csView isKindOfClass:[UIWebView class]] )
+            [((UIWebView*)(gO.csView)).scrollView setScrollEnabled:NO];
+        else if( [gO.csView isKindOfClass:[MKMapView class]] )
+            [((MKMapView*)gO.csView) setScrollEnabled:NO];
+
+        if( [gO respondsToSelector:@selector(removeAll)] )
+            [gO performSelector:@selector(removeAll)];
     }
 
     USERCONTEXT.imRunning = NO;
@@ -491,7 +513,11 @@
 
     CSGearObject *mGear = [USERCONTEXT getGearWithMagicNum:magicNum];
     UIView *targetView = mGear.csView;
-
+    if( [targetView isKindOfClass:[UIWebView class]] )
+        [((UIWebView*)targetView).scrollView setScrollEnabled:NO];
+    else if( [targetView isKindOfClass:[MKMapView class]] )
+        [((MKMapView*)targetView) setScrollEnabled:NO];
+ 
     // 이전의 뷰에서 gesture recognizer 없애기.
     [targetView removeGestureRecognizer:dragReco];
 ///         [gv.layer setShadowColor:[UIColor clearColor].CGColor];
@@ -536,7 +562,9 @@
 
 -(void) xButtonAction:(id)sender
 {
-    AudioServicesPlaySystemSound(delSoundID);
+    if( [[NSUserDefaults standardUserDefaults] boolForKey:@"SND_SET"] )
+        AudioServicesPlaySystemSound(delSoundID);
+
     [UIView animateWithDuration:0.3 animations:^(){
         UIView *v = [USERCONTEXT getGearWithMagicNum:((UIButton*)sender).tag].csView;
         [v setAlpha:0.3];
@@ -598,6 +626,19 @@
         [propButton setFrame:CGRectOffset(propButton.frame, dx, dy)];
         [sizeButton setFrame:CGRectOffset(sizeButton.frame, dx, dy)];
     }
+    if( [recognizer state] == UIGestureRecognizerStateEnded &&
+       [[NSUserDefaults standardUserDefaults] boolForKey:@"GRID_SET"] )
+    {
+        CGFloat dx = roundf( recognizer.view.frame.origin.x / 10 ) * 10;
+        CGFloat dy = roundf( recognizer.view.frame.origin.y / 10 ) * 10;
+
+        [recognizer.view setFrame:CGRectMake(dx, dy, recognizer.view.frame.size.width, recognizer.view.frame.size.height)];
+
+        [xButton setCenter:CGPointMake(dx, dy)];
+        [propButton setCenter:CGPointMake(xButton.center.x+32, dy)];
+        [sizeButton setCenter:CGPointMake(recognizer.view.frame.size.width+dx, recognizer.view.frame.size.height+dy)];
+    }
+
 }
 
 -(void) resizeGear:(UIPanGestureRecognizer*)recognizer
@@ -628,11 +669,39 @@
                                         sizeButton.frame.origin.x-modifyView.frame.origin.x+15,
                                         sizeButton.frame.origin.y-modifyView.frame.origin.y+15)];
     }
+    if( [recognizer state] == UIGestureRecognizerStateEnded &&
+        [[NSUserDefaults standardUserDefaults] boolForKey:@"GRID_SET"] )
+    {
+        CGFloat dx = roundf( sizeButton.frame.origin.x / 10 ) * 10;
+        CGFloat dy = roundf( sizeButton.frame.origin.y / 10 ) * 10;
+
+        [sizeButton setFrame:CGRectMake(dx, dy, sizeButton.frame.size.width, sizeButton.frame.size.height)];
+        [modifyView setFrame:CGRectMake(modifyView.frame.origin.x,
+                                        modifyView.frame.origin.y,
+                                        sizeButton.frame.origin.x-modifyView.frame.origin.x+15,
+                                        sizeButton.frame.origin.y-modifyView.frame.origin.y+15)];
+        startPoint = sizeButton.frame.origin;
+    }
 }
 
 -(void) changeEditGear:(UITapGestureRecognizer*)recognizer
 {
     [self setEditModeGearOfMagicNum:recognizer.view.tag];
+}
+
+#pragma mark - 
+
+-(void) alphaResetRequest:(NSNotification*)noti
+{
+    for( CSGearObject *g in USERCONTEXT.gearsArray ){
+        if( 0.0 == g.csView.alpha )
+            [g.csView setAlpha:0.5];
+    }
+
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"reset" message:@"All items alpha value 0 is changed to 0.5"
+                                                   delegate:nil cancelButtonTitle:nil
+                                          otherButtonTitles:@"Confirm", nil];
+    [alert show];
 }
 
 @end

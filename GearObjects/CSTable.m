@@ -31,7 +31,7 @@
     if( [number isKindOfClass:[NSNumber class]] )
         cellNumber = [number integerValue];
     else if( [number isKindOfClass:[NSString class]] )
-        cellNumber = [(NSString*)number length];
+        cellNumber = [(NSString*)number integerValue];
     else{
         EXCLAMATION;
         return;
@@ -48,6 +48,26 @@
 -(NSNumber*) getCellNumber
 {
     return [NSNumber numberWithInteger:cellNumber];
+}
+
+-(void) setCellHeight:(NSNumber*) number
+{
+    if( [number isKindOfClass:[NSNumber class]] )
+        cellHeight = [number floatValue];
+    else if( [number isKindOfClass:[NSString class]] )
+        cellHeight = [(NSString*)number floatValue];
+    else{
+        EXCLAMATION;
+        return;
+    }
+
+    [((UITableView*)csView) beginUpdates];
+    [((UITableView*)csView) endUpdates];
+}
+
+-(NSNumber*) getCellHeight
+{
+    return [NSNumber numberWithFloat:cellHeight];
 }
 
 -(void) setAccessIndex:(NSNumber*) number
@@ -144,7 +164,7 @@
     csCode = CS_TABLE;
     isUIObj = YES;
 
-    cellHieght = 55.0;
+    cellHeight = 55.0;
     cellNumber = 5;
     accessCellIndex = 0;
     cellArray = [[NSMutableArray alloc] initWithCapacity:40];
@@ -158,15 +178,16 @@
     DEFAULT_CENTER_D;
     NSDictionary *d0 = ALPHA_D;
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Table Cell Number", P_NUM, @selector(setCellNumber:),@selector(getCellNumber));
-    NSDictionary *d2 = MAKE_PROPERTY_D(@"Access Cell Index", P_NUM, @selector(setAccessIndex:),@selector(getAccessIndex));
-    NSDictionary *d3 = MAKE_PROPERTY_D(@"Text At Access Index", P_TXT, @selector(setTextAtAccessIndex:),@selector(getTextAtAccessIndex));
-    NSDictionary *d4 = MAKE_PROPERTY_D(@"Subtext At Access Index", P_TXT, @selector(setSubtextAtAccessIndex:),@selector(getSubtextAtAccessIndex));
-    NSDictionary *d5 = MAKE_PROPERTY_D(@"Table Cell Data", P_CELL, @selector(setCellData:index:),@selector(getCellDataIndex:));
+    NSDictionary *d2 = MAKE_PROPERTY_D(@"Table Cell Height", P_NUM, @selector(setCellHeight:),@selector(getCellHeight));
+    NSDictionary *d3 = MAKE_PROPERTY_D(@"Access Cell Index", P_NUM, @selector(setAccessIndex:),@selector(getAccessIndex));
+    NSDictionary *d4 = MAKE_PROPERTY_D(@"Text At Access Index", P_TXT, @selector(setTextAtAccessIndex:),@selector(getTextAtAccessIndex));
+    NSDictionary *d5 = MAKE_PROPERTY_D(@"Subtext At Access Index", P_TXT, @selector(setSubtextAtAccessIndex:),@selector(getSubtextAtAccessIndex));
+    NSDictionary *d6 = MAKE_PROPERTY_D(@"Table Cell Data", P_CELL, @selector(setCellData:index:),@selector(getCellDataIndex:));
 
-    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2,d3,d4,d5, nil];
+    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2,d3,d4,d5,d6, nil];
 
     NSMutableDictionary MAKE_ACTION_D(@"Selected Cell Index", A_NUM, a1);
-    NSMutableDictionary MAKE_ACTION_D(@"Selected Cell Text", A_NUM, a2);
+    NSMutableDictionary MAKE_ACTION_D(@"Selected Cell Text", A_TXT, a2);
     actionArray = [NSArray arrayWithObjects:a1, a2, nil];
 
     return self;
@@ -175,11 +196,17 @@
 -(id) initWithCoder:(NSCoder *)aDecoder
 {
     if( (self=[super initWithCoder:aDecoder]) ){
-        cellHieght = [aDecoder decodeFloatForKey:@"cellHieght"];
+        cellHeight = [aDecoder decodeFloatForKey:@"cellHeight"];
         cellNumber = [aDecoder decodeIntegerForKey:@"cellNumber"];
         accessCellIndex = [aDecoder decodeIntegerForKey:@"accessCellIndex"];
         cellArray = [aDecoder decodeObjectForKey:@"cellArray"];
 
+        // HACK. UItableView 가 다시 불러오면 delegate 설정이 전혀 안먹는다.
+        // 지우고 다시 생성한 다음 delegate 를 설정해서 사용한다.
+        CGRect rect = csView.frame;
+        [csView removeFromSuperview];
+        
+        csView = [[UITableView alloc] initWithFrame:rect];
         [((UITableView*)csView) setDelegate:self];
         [((UITableView*)csView) setDataSource:self];
     }
@@ -189,7 +216,7 @@
 -(void)encodeWithCoder:(NSCoder *)encoder
 {
     [super encodeWithCoder:encoder];
-    [encoder encodeFloat:cellHieght forKey:@"cellHieght"];
+    [encoder encodeFloat:cellHeight forKey:@"cellHeight"];
     [encoder encodeInteger:cellNumber forKey:@"cellNumber"];
     [encoder encodeInteger:accessCellIndex forKey:@"accessCellIndex"];
     [encoder encodeObject:cellArray forKey:@"cellArray"];
@@ -201,7 +228,7 @@
 
 -(float) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return cellHieght;
+    return cellHeight;
 }
 
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

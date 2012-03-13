@@ -11,7 +11,7 @@
 
 @interface CSTable : CSGearObject <UITableViewDelegate, UITableViewDataSource>
 {
-    float cellHieght;
+    float cellHeight;
     NSUInteger cellNumber, accessCellIndex;
     NSMutableArray *cellArray;
 }
@@ -20,6 +20,9 @@
 
 -(void) setCellNumber:(NSNumber*) number;
 -(NSNumber*) getCellNumber;
+
+-(void) setCellHeight:(NSNumber*) number;
+-(NSNumber*) getCellHeight;
 
 -(void) setAccessIndex:(NSNumber*) number;
 -(NSNumber*) getAccessIndex;

@@ -20,7 +20,7 @@
 -(void) setBaseValue:(NSNumber*)num
 {
     if( [num isKindOfClass:[NSString class]] )
-        base = [(NSString*)num length];
+        base = [(NSString*)num floatValue];
     else  if( [num isKindOfClass:[NSNumber class]] )
         base = [num floatValue];
     else
@@ -57,7 +57,7 @@
 -(void) setVariableValue:(NSNumber*) num
 {
     if( [num isKindOfClass:[NSString class]] )
-        var = [(NSString*)num length];
+        var = [(NSString*)num floatValue];
     else  if( [num isKindOfClass:[NSNumber class]] )
         var = [num floatValue];
     else

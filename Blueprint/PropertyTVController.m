@@ -179,7 +179,7 @@
             [aBtn.layer setBackgroundColor:[UIColor redColor].CGColor];
             [aBtn setTitle:@"✕"];
 
-            [aBtn setTag:indexPath.row];  // tag 에 액션 목록의 인덱스를 기입한다.
+            [aBtn.btn setTag:indexPath.row];  // tag 에 액션 목록의 인덱스를 기입한다.
         }
         else {
             cell.detailTextLabel.text = nil;
@@ -279,6 +279,11 @@
                   permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
             return;
         }
+        else if( [[info objectForKey:@"type"] isEqualToString:P_NO] )
+        {
+            SEL selector = [[info objectForKey:@"selector"] pointerValue];
+            objc_msgSend(theGear, selector, [NSNumber numberWithBool:YES]);
+        }
         if( nil == VC ) return;
 
         NSLog(@"p name:%@", [info objectForKey:@"name"] );
@@ -296,7 +301,8 @@
                                                           userInfo:gearInfo];
     }
 
-    AudioServicesPlaySystemSound(tockSoundID);
+    if( [[NSUserDefaults standardUserDefaults] boolForKey:@"SND_SET"] )
+        AudioServicesPlaySystemSound(tockSoundID);
 }
 
 #pragma mark - unlink button Action
@@ -314,6 +320,7 @@
                              otherButtonTitles:@"Confirm", nil];
     [alert setTag:((UIButton*)sender).tag];
     [alert show];
+    NSLog(@"alert tag:%d",alert.tag);
 }
 
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

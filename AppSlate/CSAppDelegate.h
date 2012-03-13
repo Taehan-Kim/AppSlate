@@ -7,10 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FBConnect.h"
 
 @class CSMainViewController;
 
-@interface CSAppDelegate : UIResponder <UIApplicationDelegate>
+@interface CSAppDelegate : UIResponder <UIApplicationDelegate, FBSessionDelegate>
+{
+}
 
 @property (strong, nonatomic) UIWindow *window;
 
