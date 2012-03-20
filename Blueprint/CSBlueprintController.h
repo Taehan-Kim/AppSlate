@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import <AudioToolbox/AudioToolbox.h>
+#import "CSShowLineView.h"
 #import "CSGearObject.h"
 #import "CSLabel.h"
+#import "CSNumLabel.h"
 #import "CSTextField.h"
 #import "CSBtnTextField.h"
 #import "CSSwitch.h"
@@ -56,6 +58,8 @@
 #import "CSLinkStr.h"
 #import "CSStack.h"
 #import "CSQueue.h"
+#import "CSRadDeg.h"
+#import "CSTrigonometric.h"
 
 @interface CSBlueprintController : UIViewController
 {
@@ -75,6 +79,8 @@
     // 선택된 객체가 항목에서 도면으로 떨어지는 효과를 위한 것 들.
     UIView *cView;
     CSGearObject *newObj;
+
+    CSShowLineView *iView;
 
     SystemSoundID runSoundID, putSoundID, delSoundID;
 }

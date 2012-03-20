@@ -38,6 +38,8 @@
         USERCONTEXT.facebook.expirationDate = [defaults objectForKey:@"FBExpirationDateKey"];
     }
 
+    [self loadCachedAppFile];
+
     return YES;
 }
 
@@ -53,6 +55,7 @@
      Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
      Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
      */
+    [self.mainViewController saveAppFile:YES];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -61,6 +64,7 @@
      Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
      If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
      */
+    // cache save
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -110,6 +114,24 @@
 
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"facebook" message:@"Disconnected." delegate:nil cancelButtonTitle:@"Confirm" otherButtonTitles: nil];
     [alert show];
+}
+
+#pragma mark -
+
+-(void) loadCachedAppFile
+{
+    NSString *cachePath, *tmp;
+
+#ifdef TARGET_IPHONE_SIMULATOR
+    tmp = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+#else
+    tmp = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+#endif
+    cachePath = [tmp stringByAppendingString:@"/AppSlate"];
+
+    if( [[NSFileManager defaultManager] isReadableFileAtPath:cachePath] )
+        [[NSNotificationCenter defaultCenter] postNotificationName:NOTI_FILELOAD
+                                                            object:cachePath];
 }
 
 @end

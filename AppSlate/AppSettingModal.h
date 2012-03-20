@@ -12,7 +12,7 @@
 
 @interface AppSettingModal : UATitledModalPanel <FBDialogDelegate>
 {
-    UISwitch   *sndSwitch, *hideSwitch, *gridSwitch, *fbSwitch;
+    UISwitch   *sndSwitch, *hideSwitch, *gridSwitch, *lineSwitch, *fbSwitch;
     BButton    *resetAlphaBtn;
 }
 

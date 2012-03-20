@@ -105,7 +105,10 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 2;
+    if( 1 <= [[theGear getActionList] count] )
+        return 2;
+
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -148,6 +151,7 @@
             // 연결하거나, 연결 상태를 알려줄 버튼.
             BButton *btn = [[BButton alloc] initWithFrame:CGRectMake(270,15,30,30)];
             [btn.layer setCornerRadius:9.0];
+            [cell.contentView setBackgroundColor:CS_RGB(255, 245, 240)];
             [btn.btn addTarget:self action:@selector(unlinkAction:) forControlEvents:UIControlEventTouchUpInside];
             [btn.btn addTarget:self action:@selector(lineAction:) forControlEvents:UIControlEventTouchDown];
             [btn.btn addTarget:self action:@selector(removeLineAction:) forControlEvents:UIControlEventTouchUpOutside];
@@ -155,8 +159,9 @@
         }
         NSArray *alist = [theGear getActionList];
         NSMutableDictionary *acDic = [alist objectAtIndex:indexPath.row];
-    
+
         cell.textLabel.text = [acDic objectForKey:@"name"];
+        [cell.textLabel setBackgroundColor:CS_RGB(255, 245, 240)];
         BButton *aBtn = [cell.contentView.subviews objectAtIndex:0];
 
         // 연결 정보
@@ -204,6 +209,10 @@
     }
     return nil;
 }
+
+//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+//{
+//}
 
 #pragma mark - Table view delegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -342,6 +351,10 @@
     [acDic setObject:[NSNumber numberWithInteger:0] forKey:@"mNum"];
 
     [self.tableView reloadData];
+
+    // 액션 연결선 표시를 갱신해주기 위해서 멈춤 메시지를 보낸다. 그러면 갱신되는 효과가 있다.
+    [[NSNotificationCenter defaultCenter] postNotificationName:NOTI_STOP
+                                                        object:nil];
 }
 
 -(void) lineAction:(id)sender

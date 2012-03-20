@@ -31,7 +31,22 @@
         [self setTitleBarHeight:40];
         self.headerLabel.text = @"Welcome to AppSlate";
 
-        [self embedYouTube:@"http://www.youtube.com/embed/-G8fG1bKgQo" frame:CGRectMake(10, 90, 530, 380)];
+        [self embedYouTube:@"http://www.youtube.com/embed/TegeaJsCOvc" frame:CGRectMake(10, 90, 530, 380)];
+
+        UIButton *tBtn = [[UIButton alloc] initWithFrame:CGRectMake(10, 490, 530, 25)];
+        [tBtn setBackgroundColor:CS_RGBA(0, 10, 200, 0.4)];
+        [tBtn setTitle:@"Tutorial - Making 'Tip Calculator'" forState:UIControlStateNormal];
+        [tBtn.titleLabel setFont:CS_FONT(15)];
+        [tBtn.titleLabel setTextColor:[UIColor blueColor]];
+        [tBtn addTarget:self action:@selector(gotoTutorial1:) forControlEvents:UIControlEventTouchUpInside];
+        [self.contentView addSubview:tBtn];
+
+        UITextView *txtView = [[UITextView alloc] initWithFrame:CGRectMake(30, 530, 490, 120)];
+        [txtView setBackgroundColor:CSCLEAR];
+        [txtView setFont:CS_FONT(14)];
+        [txtView setTextColor:[UIColor lightGrayColor]];
+        [txtView setText:@"facebook page : http://www.facebook.com/AppSlate\ntwitter : @chocolatesoft  @bladekim\nFind more examples on YouTube by keyword 'AppSlate'"];
+        [self.contentView addSubview:txtView];
 
         UISwitch *killSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(10, 700, 60, 30)];
         [killSwitch setOnTintColor:[UIColor grayColor]];
@@ -60,6 +75,11 @@
 
 - (void)layoutSubviews {
 	[super layoutSubviews];
+}
+
+-(void) gotoTutorial1:(UIButton*) sender
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://youtu.be/SQv_noix87I"]];
 }
 
 - (void)embedYouTube:(NSString *)urlString frame:(CGRect)frame

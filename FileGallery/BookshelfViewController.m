@@ -113,7 +113,7 @@
     }
 
     plainCell.image = [UIImage imageWithContentsOfFile:[documentsPath stringByAppendingFormat:@"/%@/Face.png",[_imageNames objectAtIndex:index]]];
-    plainCell.title = [_imageNames objectAtIndex:index];
+    plainCell.title = [[_imageNames objectAtIndex:index] substringToIndex:[[_imageNames objectAtIndex:index] length]-4];
     [plainCell showTrash: DELETING == mode ];
 
     cell = plainCell;

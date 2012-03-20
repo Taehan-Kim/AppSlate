@@ -45,7 +45,7 @@
 
 - (void)saveAction:(id)sender;
 
--(void) saveAppFile;
+-(void) saveAppFile:(BOOL) isCaching;
 -(UIImage*)resizedImage:(UIImage*)inImage inRect:(CGRect)thumbRect;
 
 -(void) setBlueprintColor:(UIColor*)color;

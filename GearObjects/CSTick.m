@@ -19,10 +19,6 @@
 
 -(void) setRun:(NSNumber*)BoolValue
 {
-    // YES 값인 경우만 반응하자.
-    if( ![BoolValue boolValue] )
-        return;
-
     run = [BoolValue boolValue];
 
     if( run ){

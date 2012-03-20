@@ -103,7 +103,7 @@
     self.info = NSLocalizedString(@"Tweet Composer", @"Tweet Composer");
 
     textStr = @"Hi!";
-    linkStr = @"http://iphoneos.co.kr";
+    linkStr = @"http://www.facebook.com/AppSlate";
     image = nil;
 
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Text", P_TXT, @selector(setText:),@selector(getText));

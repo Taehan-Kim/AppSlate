@@ -49,33 +49,42 @@
         UILabel *hideLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_L, 45+SLINE_H, 220, 30)];
         [hideLabel setBackgroundColor:CSCLEAR];
         [hideLabel setFont:CS_FONT(15)];
-        [hideLabel setTextColor:[UIColor lightGrayColor]];
+        [hideLabel setTextColor:[UIColor grayColor]];
         [hideLabel setText:NSLocalizedString(@"Hide Some Items on Run State", @"Hide Items")];
 
         gridSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(20, 45+(SLINE_H*2), 60, 30)];
         [gridSwitch addTarget:self action:@selector(gridSetting:) forControlEvents:UIControlEventValueChanged];
-        [gridSwitch setOnTintColor:[UIColor grayColor]];
+        [gridSwitch setOnTintColor:[UIColor orangeColor]];
         UILabel *gridLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_L, 45+(SLINE_H*2), 220, 30)];
         [gridLabel setBackgroundColor:CSCLEAR];
         [gridLabel setFont:CS_FONT(15)];
         [gridLabel setTextColor:[UIColor lightGrayColor]];
         [gridLabel setText:NSLocalizedString(@"Grid-Magnetic Surface (10 pixel)", @"Grid Move")];
 
-        fbSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(20, 45+(SLINE_H*3), 60, 30)];
+        lineSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(20, 45+(SLINE_H*3), 60, 30)];
+        [lineSwitch addTarget:self action:@selector(lineViewSetting:) forControlEvents:UIControlEventValueChanged];
+        [lineSwitch setOnTintColor:[UIColor yellowColor]];
+        UILabel *lLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_L, 45+(SLINE_H*3), 220, 30)];
+        [lLabel setBackgroundColor:CSCLEAR];
+        [lLabel setFont:CS_FONT(15)];
+        [lLabel setTextColor:[UIColor lightGrayColor]];
+        [lLabel setText:NSLocalizedString(@"Show Link Lines", @"Show Link Lines")];
+
+        fbSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(20, 45+(SLINE_H*4), 60, 30)];
         [fbSwitch addTarget:self action:@selector(facebookSetting:) forControlEvents:UIControlEventValueChanged];
-        [fbSwitch setOnTintColor:[UIColor grayColor]];
-        UILabel *fbLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_L, 45+(SLINE_H*3), 220, 30)];
+//        [fbSwitch setOnTintColor:[UIColor grayColor]];
+        UILabel *fbLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_L, 45+(SLINE_H*4), 220, 30)];
         [fbLabel setBackgroundColor:CSCLEAR];
         [fbLabel setFont:CS_FONT(15)];
         [fbLabel setTextColor:[UIColor lightGrayColor]];
         [fbLabel setText:NSLocalizedString(@"facebook Connect", @"facebook")];
 
-        resetAlphaBtn = [[BButton alloc] initWithFrame:CGRectMake(20, 45+(SLINE_H*4), 70, 30)];
+        resetAlphaBtn = [[BButton alloc] initWithFrame:CGRectMake(20, 45+(SLINE_H*5), 70, 30)];
         [resetAlphaBtn setTitle:@"Show"];
         [resetAlphaBtn.btn setBackgroundColor:[UIColor grayColor]];
         [resetAlphaBtn addTarget:self action:@selector(alphaReset:)];
         [resetAlphaBtn.btn.titleLabel setFont:CS_FONT(13) ];
-        UILabel *alphaLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_L, 45+(SLINE_H*4), 200, 30)];
+        UILabel *alphaLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_L, 45+(SLINE_H*5), 200, 30)];
         [alphaLabel setBackgroundColor:CSCLEAR];
         [alphaLabel setFont:CS_FONT(15)];
         [alphaLabel setTextColor:[UIColor lightGrayColor]];
@@ -87,6 +96,8 @@
         [self.contentView addSubview:hideSwitch];
         [self.contentView addSubview:gridLabel];
         [self.contentView addSubview:gridSwitch];
+        [self.contentView addSubview:lLabel];
+        [self.contentView addSubview:lineSwitch];
         [self.contentView addSubview:fbLabel];
         [self.contentView addSubview:fbSwitch];
         [self.contentView addSubview:alphaLabel];
@@ -97,6 +108,7 @@
     [sndSwitch setOn:[[NSUserDefaults standardUserDefaults] boolForKey:@"SND_SET"]];
     [hideSwitch setOn:[[NSUserDefaults standardUserDefaults] boolForKey:@"HIDE_SET"]];
     [gridSwitch setOn:[[NSUserDefaults standardUserDefaults] boolForKey:@"GRID_SET"]];
+    [lineSwitch setOn:[[NSUserDefaults standardUserDefaults] boolForKey:@"LINE_SET"]];
     [fbSwitch setOn:nil!=[[NSUserDefaults standardUserDefaults] objectForKey:@"FBAccessTokenKey"]];
 
 	return self;
@@ -132,6 +144,14 @@
 - (void) gridSetting:(UISwitch*)sw
 {
     [[NSUserDefaults standardUserDefaults] setBool:sw.isOn forKey:@"GRID_SET"];
+}
+
+- (void) lineViewSetting:(UISwitch*)sw
+{
+    [[NSUserDefaults standardUserDefaults] setBool:sw.isOn forKey:@"LINE_SET"];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:NOTI_STOP
+                                                        object:nil];
 }
 
 - (void) facebookSetting:(UISwitch*)sw

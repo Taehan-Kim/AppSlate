@@ -24,6 +24,7 @@
         NSArray  *keys = [[NSArray alloc] initWithObjects:@"name",@"desc",@"icon",@"tag", nil];
         gearList = [[NSArray alloc] initWithObjects:
                     [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Label",@"Simple Text Label", @"gi_label.png", NSNUM(CS_LABEL), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Number Label",@"Number/Currency Label", @"gi_numLabel.png", NSNUM(CS_NUMLABEL), nil] forKeys:keys],
                     [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Masked Label",@"Inverse Color Text Label", @"gi_maskedlabel.png", NSNUM(CS_MASKEDLABEL), nil] forKeys:keys],
                     [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Light Bulb",@"Small Bulb", @"gi_bulb.png", NSNUM(CS_BULB), nil] forKeys:keys],                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Flip Counter",@"Flip Animation Number Counter", @"gi_flipcount.png", NSNUM(CS_FLIPCNT), nil] forKeys:keys],
                     [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Text Field",@"User can input some text", @"gi_textfield.png", NSNUM(CS_TEXTFIELD), nil] forKeys:keys],
@@ -68,6 +69,8 @@
                     [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"INT , ABS Function", @"Convert Number Integer or Absolute val.", @"gi_abs.png", NSNUM(CS_ABS), nil] forKeys:keys],
                     [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Stack", @"First In, Last Out data pocket", @"gi_stack.png", NSNUM(CS_STACK), nil] forKeys:keys],
                     [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Queue", @"First In, First Out data pocket", @"gi_queue.png", NSNUM(CS_QUEUE), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Radian/Degree Converter", @"Convert Radian value to Degree or Deg to Rad.", @"gi_raddeg.png", NSNUM(CS_RADDEG), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Trigonometric Functions", @"Sine, Cosine, and Tangent function", @"gi_trigono.png", NSNUM(CS_TRI), nil] forKeys:keys],
                     //
                     [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Rectangular", @"Rectangular Decoration", @"gi_rect.png", NSNUM(CS_RECT), nil] forKeys:keys],
                     [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Horizontal Line", @"Horizontal Line Decoration", @"gi_hline.png", NSNUM(CS_LINE_H), nil] forKeys:keys],

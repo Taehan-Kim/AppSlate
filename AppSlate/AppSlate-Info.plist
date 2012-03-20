@@ -10,8 +10,6 @@
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFiles</key>
 	<array>
-		<string>Icon72.png</string>
-		<string>Icon144.png</string>
 		<string>Icon~ipad.png</string>
 		<string>Icon~ipad@2x.png</string>
 	</array>
@@ -21,8 +19,6 @@
 		<dict>
 			<key>CFBundleIconFiles</key>
 			<array>
-				<string>Icon72.png</string>
-				<string>Icon144.png</string>
 				<string>Icon~ipad.png</string>
 				<string>Icon~ipad@2x.png</string>
 			</array>
@@ -42,8 +38,17 @@
 	<string>1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb269841146424285</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
-	<string>1.0</string>
+	<string>314</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>
@@ -68,14 +73,5 @@
 	</array>
 	<key>UIViewGroupOpacity</key>
 	<true/>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>fb269841146424285</string>
-			</array>
-		</dict>
-	</array>
 </dict>
 </plist>

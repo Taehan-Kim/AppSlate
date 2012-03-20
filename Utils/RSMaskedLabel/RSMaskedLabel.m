@@ -146,10 +146,10 @@
     [textLayer setFrame:[self bounds]];
 }
 
-- (void)dealloc 
-{
-    CGImageRelease(invertedAlphaImage);
-}
+//- (void)dealloc 
+//{
+//    CGImageRelease(invertedAlphaImage);
+//}
 
 @end
 

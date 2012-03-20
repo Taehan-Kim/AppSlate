@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "UATitledModalPanel.h"
+#import <MessageUI/MFMailComposeViewController.h>
 
-@interface InfoModal : UATitledModalPanel
+@interface InfoModal : UATitledModalPanel <MFMailComposeViewControllerDelegate>
 {
     UILabel *turnOffLabel;
 }

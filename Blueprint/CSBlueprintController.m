@@ -11,7 +11,8 @@
 #import "CSBlueprintController.h"
 #import "PropertyTVController.h"
 #import "StringSettingViewController.h"
-
+#import "CSAppDelegate.h"
+#import "CSMainViewController.h"
 
 @implementation CSBlueprintController
 
@@ -41,7 +42,12 @@
         AudioServicesCreateSystemSoundID((__bridge CFURLRef)fileURL, &putSoundID);
         fileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"delSound" ofType:@"wav"]];
         AudioServicesCreateSystemSoundID((__bridge CFURLRef)fileURL, &delSoundID);
+
+        UISwipeGestureRecognizer *openReco = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(openMenu:)];
+        [openReco setDirection:UISwipeGestureRecognizerDirectionUp];
+        [self.view addGestureRecognizer:openReco];
     }
+
     return self;
 }
 
@@ -56,8 +62,13 @@
 #pragma mark - View lifecycle
 
 - (void)viewDidAppear:(BOOL)animated
-{    
-
+{
+    if( nil == iView && [[NSUserDefaults standardUserDefaults] boolForKey:@"LINE_SET"] )
+    {
+        iView = [[CSShowLineView alloc] initWithFrame:self.view.bounds];
+        [iView setUserInteractionEnabled:NO];
+        [self.view addSubview:iView];
+    }
 }
 
 
@@ -92,6 +103,8 @@
     {
         case CS_LABEL:
             newObj = [[CSLabel alloc] initGear];  break;
+        case CS_NUMLABEL:
+            newObj = [[CSNumLabel alloc] initGear];  break;
         case CS_MASKEDLABEL:
             newObj = [[CSMaskedLabel alloc] initGear];  break;
         case CS_TEXTFIELD:
@@ -184,7 +197,10 @@
             newObj = [[CSStack alloc] initGear];  break;
         case CS_QUEUE:
             newObj = [[CSQueue alloc] initGear];  break;
-
+        case CS_RADDEG:
+            newObj = [[CSRadDeg alloc] initGear]; break;
+        case CS_TRI:
+            newObj = [[CSTrigonometric alloc] initGear]; break;
         default:
             return;
     }
@@ -329,13 +345,15 @@
         [propButton removeFromSuperview];
         [sizeButton removeFromSuperview];
     }
+
+    if( [[NSUserDefaults standardUserDefaults] boolForKey:@"LINE_SET"] )
+        [iView setNeedsDisplay];
 }
 
 #pragma mark -
 
 -(void) deleteAllGear
 {
-
     for( CSGearObject *g in USERCONTEXT.gearsArray )
         [g.csView removeFromSuperview];
 
@@ -347,6 +365,9 @@
     [xButton removeFromSuperview]; xButton = nil;
     [propButton removeFromSuperview];
     [sizeButton removeFromSuperview];
+
+    if( [[NSUserDefaults standardUserDefaults] boolForKey:@"LINE_SET"] )
+        [iView setNeedsDisplay];
 }
 
 -(void) putAllGearsToView
@@ -421,41 +442,60 @@
 
 -(void) stopRequest:(NSNotification*)noti
 {
-    // 전체 부품들에 기본적인 Tap 제스쳐 인식자들을 붙인다.
-    for( CSGearObject *gO in USERCONTEXT.gearsArray ){
-        // 원래 제스쳐 인식자들은 다시 백업 후 제거한다.
-        gO.gestureArray = gO.csView.gestureRecognizers;
-        for( UIGestureRecognizer *gr in gO.csView.gestureRecognizers )
-            [gO.csView removeGestureRecognizer:gr];
+    if( YES == USERCONTEXT.imRunning )
+    {
+        // 전체 부품들에 기본적인 Tap 제스쳐 인식자들을 붙인다.
+        for( CSGearObject *gO in USERCONTEXT.gearsArray ){
+            // 원래 제스쳐 인식자들은 다시 백업 후 제거한다.
+            gO.gestureArray = gO.csView.gestureRecognizers;
+            for( UIGestureRecognizer *gr in gO.csView.gestureRecognizers )
+                [gO.csView removeGestureRecognizer:gr];
 
-        UITapGestureRecognizer *tapGR = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeEditGear:)];
-        [gO setTapGR:tapGR];
-        [gO.csView addGestureRecognizer:tapGR];
-        
-        // NOTE: 세 가지 경우에 대해서 처리 하지 않음.
-        if( NO == gO.isUIObj
-           || [gO.csView isKindOfClass:[UITableView class]]
-           || [gO.csView isKindOfClass:[MKMapView class]]
-           || [gO.csView isKindOfClass:[UIWebView class]] )
-        {
-            for( UIView* sv in ((UIView*)(gO.csView)).subviews )  // 사용자 반응 중지.
-                [sv setUserInteractionEnabled:NO];
+            UITapGestureRecognizer *tapGR = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeEditGear:)];
+            [gO setTapGR:tapGR];
+            [gO.csView addGestureRecognizer:tapGR];
+            
+            // NOTE: 세 가지 경우에 대해서 처리 하지 않음.
+            if( NO == gO.isUIObj
+               || [gO.csView isKindOfClass:[UITableView class]]
+               || [gO.csView isKindOfClass:[MKMapView class]]
+               || [gO.csView isKindOfClass:[UIWebView class]] )
+            {
+                for( UIView* sv in ((UIView*)(gO.csView)).subviews )  // 사용자 반응 중지.
+                    [sv setUserInteractionEnabled:NO];
+            }
+
+            // Hidden Style 처리.
+            if( [gO isHiddenGear] )
+                [gO.csView setHidden:NO];
+            // 예외 처리.
+            if( [gO.csView isKindOfClass:[UIWebView class]] )
+                [((UIWebView*)(gO.csView)).scrollView setScrollEnabled:NO];
+            else if( [gO.csView isKindOfClass:[MKMapView class]] )
+                [((MKMapView*)gO.csView) setScrollEnabled:NO];
+
+            if( [gO respondsToSelector:@selector(removeAll)] )
+                [gO performSelector:@selector(removeAll)];
         }
 
-        // Hidden Style 처리.
-        if( [gO isHiddenGear] )
-            [gO.csView setHidden:NO];
-        // 예외 처리.
-        if( [gO.csView isKindOfClass:[UIWebView class]] )
-            [((UIWebView*)(gO.csView)).scrollView setScrollEnabled:NO];
-        else if( [gO.csView isKindOfClass:[MKMapView class]] )
-            [((MKMapView*)gO.csView) setScrollEnabled:NO];
-
-        if( [gO respondsToSelector:@selector(removeAll)] )
-            [gO performSelector:@selector(removeAll)];
+        USERCONTEXT.imRunning = NO;
     }
 
-    USERCONTEXT.imRunning = NO;
+    if( [[NSUserDefaults standardUserDefaults] boolForKey:@"LINE_SET"] )
+    {
+        if( nil == iView ){
+            iView = [[CSShowLineView alloc] initWithFrame:self.view.bounds];
+            [iView setUserInteractionEnabled:NO];
+            [self.view addSubview:iView];
+        }
+        [iView setNeedsDisplay];
+    }
+    else {
+        if( nil != iView ){
+            [iView removeFromSuperview];
+            iView = nil;
+        }
+    }
 }
 
 -(void) removeModifyMode
@@ -639,6 +679,8 @@
         [sizeButton setCenter:CGPointMake(recognizer.view.frame.size.width+dx, recognizer.view.frame.size.height+dy)];
     }
 
+    if( [[NSUserDefaults standardUserDefaults] boolForKey:@"LINE_SET"] )
+        [iView setNeedsDisplay];
 }
 
 -(void) resizeGear:(UIPanGestureRecognizer*)recognizer
@@ -682,6 +724,9 @@
                                         sizeButton.frame.origin.y-modifyView.frame.origin.y+15)];
         startPoint = sizeButton.frame.origin;
     }
+
+    if( [[NSUserDefaults standardUserDefaults] boolForKey:@"LINE_SET"] )
+        [iView setNeedsDisplay];
 }
 
 -(void) changeEditGear:(UITapGestureRecognizer*)recognizer
@@ -689,7 +734,16 @@
     [self setEditModeGearOfMagicNum:recognizer.view.tag];
 }
 
-#pragma mark - 
+-(void) openMenu:(UISwipeGestureRecognizer*)recognizer
+{
+    if( [recognizer state] == UIGestureRecognizerStateEnded &&
+       recognizer.direction == UISwipeGestureRecognizerDirectionUp )
+    {
+        [[(CSAppDelegate*)([UIApplication sharedApplication].delegate) mainViewController] openMenuFolder:nil];
+    }
+}
+
+#pragma mark -
 
 -(void) alphaResetRequest:(NSNotification*)noti
 {
@@ -703,5 +757,12 @@
                                           otherButtonTitles:@"Confirm", nil];
     [alert show];
 }
+
+//-(void) drawLines
+//{
+//    UIView *iView = [[UIView alloc] initWithFrame:self.view.bounds];
+//    [iView setUserInteractionEnabled:NO];
+//    [self.view addSubview:iView];
+//}
 
 @end

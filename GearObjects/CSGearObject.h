@@ -28,6 +28,7 @@
 #define CS_PROGRESS     115
 #define CS_IMAGE        116
 #define CS_MAPVIEW      117
+#define CS_NUMLABEL     119
 
 #define CS_ALERT        150
 #define CS_TEXTALERT    151
@@ -56,6 +57,8 @@
 #define CS_STRCAT       213
 #define CS_STACK        214
 #define CS_QUEUE        215
+#define CS_TRI          216
+#define CS_RADDEG       217
 
 #define CS_RECT         300
 #define CS_LINE_H       301

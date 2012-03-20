@@ -11,6 +11,8 @@
 #import "JWFolders.h"
 #import "WelcomeMovieModal.h"
 
+#define CACHE_NAME @"AppSlateCacheBackup.pkg"
+
 enum alertTypes {
     kRenameAlert = 10,
     kNewAlert,
@@ -51,9 +53,19 @@ enum alertTypes {
     [self.view addSubview:blueprintCtrl.view];
 
     // 처음 사용자라면 안내 동영상을 보여주자.
-    // Welcome Tutorial testing.
     if( ![[NSUserDefaults standardUserDefaults] boolForKey:@"WELCOME_SWITCH"] )
     {
+        // button guide view
+        UIView *guideView = [[UIView alloc] initWithFrame:self.view.frame];
+        UITapGestureRecognizer *g_tapGR = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(removeGuide:)];
+        [guideView addGestureRecognizer:g_tapGR];
+        [guideView setBackgroundColor:CS_RGBA(0, 0, 0, 0.4)];
+        UIImageView *ii = [[UIImageView alloc] initWithFrame:CGRectMake(0, 1004-174, 768, 174)];
+        [ii setImage:[UIImage imageNamed:@"btn_guide.png"]];
+        [guideView addSubview:ii];
+        [self.view addSubview:guideView];
+
+        // Modal popup view
         WelcomeMovieModal *wmv = [[WelcomeMovieModal alloc] initWithFrame:self.view.bounds];
         
         wmv.onClosePressed = ^(UAModalPanel* panel) {
@@ -272,7 +284,7 @@ enum alertTypes {
     [hsview setContentSize:CGSizeMake([btns count]*65+50, menuFolder.view.frame.size.height)];
     NSUInteger idx = 0;
     for( UIButton *btn in btns ){
-        [btn setFrame:CGRectOffset(btn.frame, idx*65 + 30, 11)];
+        [btn setFrame:CGRectOffset(btn.frame, idx*68 + 30, 11)];
         [btn.layer setShadowColor:[UIColor blackColor].CGColor];
         [btn.layer setShadowRadius:5.0];
         [btn.layer setShadowOffset:CGSizeMake(0, 1)];
@@ -283,7 +295,7 @@ enum alertTypes {
 
     idx = 0;
     for( UILabel *btn in labs ){
-        [btn setFrame:CGRectOffset(btn.frame, idx*65 + 26, 47)];
+        [btn setFrame:CGRectOffset(btn.frame, idx*68 + 26, 47)];
 //        [btn.layer setShadowColor:[UIColor blackColor].CGColor];
         [btn setBackgroundColor:CSCLEAR];
         [btn setFont:CS_FONT(14)];
@@ -374,7 +386,10 @@ enum alertTypes {
 //    NSLog(@"%f %f", blueprintViewImage.size.width, blueprintViewImage.scale);
 	UIGraphicsEndImageContext();
 
-    UIActionSheet *ac = [[UIActionSheet alloc] initWithTitle:@"App Save" delegate:self
+    if( nil == USERCONTEXT.appName )
+        USERCONTEXT.appName = @"noname";
+
+    UIActionSheet *ac = [[UIActionSheet alloc] initWithTitle:USERCONTEXT.appName delegate:self
                                            cancelButtonTitle:@"Cancel"
                                       destructiveButtonTitle:nil
                                            otherButtonTitles:@"Save", @"Change Name and Save", nil];
@@ -482,13 +497,10 @@ enum alertTypes {
 
 -(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if( nil == USERCONTEXT.appName )
-        USERCONTEXT.appName = @"noname";
-
     switch ( buttonIndex ) {
         case 0:
             NSLog(@"Save");
-            [self saveAppFile];
+            [self saveAppFile:NO];
             break;
         case 1:
             NSLog(@"Change Name and Save");
@@ -513,7 +525,7 @@ enum alertTypes {
             NSLog(@"Do rename");
             [USERCONTEXT setAppName:[alertView textFieldAtIndex:0].text];
             
-            [self saveAppFile];
+            [self saveAppFile:NO];
             break;
         case kNewAlert:
             NSLog(@"Do New");
@@ -530,19 +542,34 @@ enum alertTypes {
 //------------------------------------------------------------------------------------------------------
 #pragma mark -
 
--(void) saveAppFile
+-(void) saveAppFile:(BOOL) isCaching
 {
+    NSString* documentsPath;
+    NSUInteger pathType;
+    if( isCaching )
+        pathType = NSCachesDirectory;
+    else {
+        pathType = NSDocumentDirectory;
+        START_WAIT_VIEW;
+    }
+
 #ifdef TARGET_IPHONE_SIMULATOR
-    NSString* documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    documentsPath = [NSSearchPathForDirectoriesInDomains(pathType, NSUserDomainMask, YES) objectAtIndex:0];
 #else
-    NSString* documentsPath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    documentsPath = [[NSSearchPathForDirectoriesInDomains(pathType, NSUserDomainMask, YES) objectAtIndex:0] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 #endif
-    NSString *pkgName = [USERCONTEXT.appName stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *pkgName;
+    if( isCaching ) {
+        pkgName = CACHE_NAME;
+        [[NSUserDefaults standardUserDefaults] setObject:USERCONTEXT.appName forKey:@"CACHENAME"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    } else {
+        pkgName = [[USERCONTEXT.appName stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] stringByAppendingString:@".pkg"];
+    }
+
     NSString *theFile = [documentsPath stringByAppendingPathComponent:pkgName];
     // TODO:Save As 인 경우 덮어쓰기 체크를 해 주자.
 //    BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:theFile];
-
-    START_WAIT_VIEW;
 
     dispatch_async(dispatch_get_main_queue(), ^(void)
     {
@@ -617,7 +644,12 @@ enum alertTypes {
         [self setBlueprintColor:[USERCONTEXT.wallpapers objectAtIndex:USERCONTEXT.wallpaperIndex]];
 
         // set Name
-        USERCONTEXT.appName = [[[noti.object componentsSeparatedByString:@"/"] lastObject] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString *chName = [[[noti.object componentsSeparatedByString:@"/"] lastObject] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
+        if( [chName isEqualToString:CACHE_NAME] )
+            USERCONTEXT.appName = [[NSUserDefaults standardUserDefaults] objectForKey:@"CACHENAME"];
+        else
+            USERCONTEXT.appName = [chName substringToIndex:[chName length]-4];
 
         STOP_WAIT_VIEW;
     });
@@ -627,6 +659,12 @@ enum alertTypes {
 -(void) setBlueprintColor:(UIColor*)color
 {
     [blueprintCtrl.view setBackgroundColor:color];
+}
+
+// Remove the button guide view
+-(void) removeGuide:(UITapGestureRecognizer*)recognizer
+{
+    [recognizer.view removeFromSuperview];
 }
 
 @end

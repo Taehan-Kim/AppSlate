@@ -163,6 +163,10 @@
 
     if( [[NSUserDefaults standardUserDefaults] boolForKey:@"SND_SET"] )
         AudioServicesPlaySystemSound(tockSoundID);
+
+    // 액션 연결선 표시를 갱신해주기 위해서 멈춤 메시지를 보낸다. 그러면 갱신되는 효과가 있다.
+    [[NSNotificationCenter defaultCenter] postNotificationName:NOTI_STOP
+                                                        object:nil];
 }
 
 @end
