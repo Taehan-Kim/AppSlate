@@ -42,9 +42,13 @@
     self = [super initWithCoder:aDecoder];
     if (self) 
     {
-        [self RS_commonInit];
+        [self setBackgroundColor:[UIColor clearColor]];
+        knockoutLabel = [aDecoder decodeObjectForKey:@"knockoutLabel"];
         [self setText:[aDecoder decodeObjectForKey:@"text"]];
         [self setFont:[aDecoder decodeObjectForKey:@"font"]];
+        CALayer *gradientLayer = [self layer];
+        [gradientLayer setBackgroundColor:[[aDecoder decodeObjectForKey:@"backColor"] CGColor]];
+        [gradientLayer setCornerRadius:10];
     }
     return self;
 }
@@ -52,8 +56,10 @@
 -(void)encodeWithCoder:(NSCoder *)encoder
 {
     [super encodeWithCoder:encoder];
+    [encoder encodeObject:knockoutLabel forKey:@"knockoutLabel"];
     [encoder encodeObject:text forKey:@"text"];
     [encoder encodeObject:[self getFont] forKey:@"font"];
+    [encoder encodeObject:[UIColor colorWithCGColor:self.layer.backgroundColor] forKey:@"backColor"];
 }
 
 + (Class)layerClass

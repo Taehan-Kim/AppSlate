@@ -46,13 +46,13 @@
 {
     if( ![super init] ) return nil;
     
-    csView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 50)];
+    csView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50, 200)];
     [csView setBackgroundColor:[UIColor clearColor]];
     [csView setUserInteractionEnabled:YES];
     [csView setClipsToBounds:YES];
-    UIView *lv = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 2)];
+    UIView *lv = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 2, 200)];
     [lv setBackgroundColor:[UIColor lightGrayColor]];
-    [lv setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
+    [lv setAutoresizingMask:UIViewAutoresizingFlexibleHeight];
     [csView addSubview:lv];
 
     csCode = CS_LINE_V;
@@ -61,7 +61,7 @@
     
     DEFAULT_CENTER_D;
     NSDictionary *d0 = ALPHA_D;
-    NSDictionary *d1 = MAKE_PROPERTY_D(@">Height", P_NUM, @selector(setWidth:),@selector(getWidth));
+    NSDictionary *d1 = MAKE_PROPERTY_D(@">Length", P_NUM, @selector(setWidth:),@selector(getWidth));
     NSDictionary *d2 = MAKE_PROPERTY_D(@"Line Color", P_COLOR, @selector(setLineColor:),@selector(getLineColor));
     pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2, nil];
     

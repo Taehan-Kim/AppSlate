@@ -161,6 +161,20 @@
     }
 }
 
+-(void) setResultSave:(NSNumber*) BoolValue
+{
+    if( [BoolValue isKindOfClass:[NSString class]] )
+        resultSave = [(NSString*)BoolValue boolValue];
+    else  if( [BoolValue isKindOfClass:[NSNumber class]] )
+        resultSave = [BoolValue boolValue];
+}
+
+-(NSNumber*) getResultSave
+{
+    return [NSNumber numberWithBool:resultSave];
+}
+
+
 //===========================================================================
 
 #pragma mark -

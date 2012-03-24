@@ -29,6 +29,8 @@
 #define CS_IMAGE        116
 #define CS_MAPVIEW      117
 #define CS_NUMLABEL     119
+#define CS_NOTE         120
+#define CS_CLOCK        121
 
 #define CS_ALERT        150
 #define CS_TEXTALERT    151
@@ -136,7 +138,7 @@
 
 -(NSArray*) getPropertiesList;
 
-@property (nonatomic)   NSUInteger csMagicNum;
+@property (nonatomic)   NSUInteger csMagicNum, csCode;
 @property (nonatomic)   BOOL isUIObj;
 @property (nonatomic, retain) UIView *csView;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGR;

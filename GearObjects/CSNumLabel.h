@@ -35,9 +35,6 @@
 -(void) setTextAlignment:(NSNumber*)alignNum;
 -(NSNumber *) getTextAlignment;
 
--(void) setLineNumber:(NSNumber*)number;
--(NSNumber*) getLineNumber;
-
 -(void) setRoundBorder:(NSNumber*)BoolValue;
 -(NSNumber*) getRoundBorder;
 

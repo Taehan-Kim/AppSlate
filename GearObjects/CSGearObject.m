@@ -11,7 +11,7 @@
 
 @implementation CSGearObject
 
-@synthesize csMagicNum, csView, tapGR, gestureArray;
+@synthesize csMagicNum, csView, tapGR, gestureArray, csCode;
 @synthesize info, isUIObj;
 
 

@@ -20,7 +20,7 @@
 -(void) setInput1Value:(NSNumber*) BoolValue
 {    
     if( [BoolValue isKindOfClass:[NSString class]] )
-        value1 = YES;
+        value1 = [(NSString*)BoolValue boolValue];
     else if( [BoolValue isKindOfClass:[NSNumber class]] )
         value1 = [BoolValue boolValue];
     else
@@ -54,7 +54,7 @@
 -(void) setInput2Value:(NSNumber*) BoolValue
 {    
     if( [BoolValue isKindOfClass:[NSString class]] )
-        value2 = YES;
+        value2 = [(NSString*)BoolValue boolValue];
     else if( [BoolValue isKindOfClass:[NSNumber class]] )
         value2 = [BoolValue boolValue];
     else

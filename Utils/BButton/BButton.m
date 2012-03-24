@@ -84,7 +84,7 @@
 -(void) setTitle:(NSString *)txt
 {
     [btn setTitle:txt forState:UIControlStateNormal];
-//    [self setTitle:txt forState:UIControlStateHighlighted];
+//    [btn setTitle:txt forState:UIControlStateHighlighted];
     [btn setTitle:txt forState:UIControlStateSelected];
 
     [self setNeedsDisplay];
@@ -93,7 +93,7 @@
 -(void) setTitleColor:(UIColor *)color
 {
     [btn setTitleColor:color forState:UIControlStateNormal];
-//    [self setTitleColor:color forState:UIControlStateHighlighted];
+    [btn setTitleColor:color forState:UIControlStateHighlighted];
     [btn setTitleColor:color forState:UIControlStateSelected];
 }
 

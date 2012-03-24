@@ -60,6 +60,8 @@
 #import "CSQueue.h"
 #import "CSRadDeg.h"
 #import "CSTrigonometric.h"
+#import "CSNote.h"
+#import "CSClock.h"
 
 @interface CSBlueprintController : UIViewController
 {

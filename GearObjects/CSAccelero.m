@@ -52,7 +52,7 @@
     self.info = NSLocalizedString(@"Accelerometer", @"ACLO");
     ac = [UIAccelerometer sharedAccelerometer];
     [ac setDelegate:self];
-    [ac setUpdateInterval:0.5];
+    [ac setUpdateInterval:0.1];
     isRun = NO;
 
 
@@ -73,7 +73,7 @@
         [(UIImageView*)csView setImage:[UIImage imageNamed:@"gi_aclo.png"]];
         ac = [UIAccelerometer sharedAccelerometer];
         [ac setDelegate:self];
-        [ac setUpdateInterval:0.5];
+        [ac setUpdateInterval:0.1];
         isRun = [decoder decodeBoolForKey:@"isRun"];
     }
     return self;

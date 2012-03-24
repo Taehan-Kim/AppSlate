@@ -53,7 +53,24 @@
 		187C6D3C15025A7E00507D73 /* CSAccelero.m in Sources */ = {isa = PBXBuildFile; fileRef = 187C6D3B15025A7E00507D73 /* CSAccelero.m */; };
 		188EFABC1515C558001A835B /* btn_guide.png in Resources */ = {isa = PBXBuildFile; fileRef = 188EFABA1515C558001A835B /* btn_guide.png */; };
 		188EFABD1515C558001A835B /* btn_guide@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 188EFABB1515C558001A835B /* btn_guide@2x.png */; };
+		1897CB2F1518C550001ADB3E /* CSNote.m in Sources */ = {isa = PBXBuildFile; fileRef = 1897CB2E1518C550001ADB3E /* CSNote.m */; };
+		1897CB5D1518DB18001ADB3E /* EDAMLimits.m in Sources */ = {isa = PBXBuildFile; fileRef = 1897CB391518DB18001ADB3E /* EDAMLimits.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		1897CB5E1518DB18001ADB3E /* Errors.m in Sources */ = {isa = PBXBuildFile; fileRef = 1897CB3B1518DB18001ADB3E /* Errors.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		1897CB5F1518DB18001ADB3E /* NoteStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 1897CB3D1518DB18001ADB3E /* NoteStore.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		1897CB601518DB18001ADB3E /* Types.m in Sources */ = {isa = PBXBuildFile; fileRef = 1897CB3F1518DB18001ADB3E /* Types.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		1897CB611518DB18001ADB3E /* UserStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 1897CB411518DB18001ADB3E /* UserStore.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		1897CB621518DB18001ADB3E /* TBinaryProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 1897CB451518DB18001ADB3E /* TBinaryProtocol.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		1897CB631518DB18001ADB3E /* TProtocolException.m in Sources */ = {isa = PBXBuildFile; fileRef = 1897CB481518DB18001ADB3E /* TProtocolException.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		1897CB641518DB18001ADB3E /* TProtocolUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 1897CB4B1518DB18001ADB3E /* TProtocolUtil.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		1897CB651518DB18001ADB3E /* TApplicationException.m in Sources */ = {isa = PBXBuildFile; fileRef = 1897CB4E1518DB18001ADB3E /* TApplicationException.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		1897CB661518DB18001ADB3E /* TException.m in Sources */ = {isa = PBXBuildFile; fileRef = 1897CB501518DB18001ADB3E /* TException.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		1897CB671518DB18001ADB3E /* THTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 1897CB551518DB18001ADB3E /* THTTPClient.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		1897CB681518DB18001ADB3E /* TMemoryBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1897CB571518DB18001ADB3E /* TMemoryBuffer.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		1897CB691518DB18001ADB3E /* TTransportException.m in Sources */ = {isa = PBXBuildFile; fileRef = 1897CB5A1518DB18001ADB3E /* TTransportException.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		1897CB6A1518DB18001ADB3E /* TSharedProcessorFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 1897CB5C1518DB18001ADB3E /* TSharedProcessorFactory.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		189CF0E814D19D9C00C1E66F /* CSSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 189CF0E714D19D9C00C1E66F /* CSSlider.m */; };
+		18A6BB85151961BA00340E40 /* gi_note.png in Resources */ = {isa = PBXBuildFile; fileRef = 18A6BB83151961BA00340E40 /* gi_note.png */; };
+		18A6BB86151961BA00340E40 /* gi_note@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18A6BB84151961BA00340E40 /* gi_note@2x.png */; };
 		18A899F4148EC47000E5EFA9 /* editbtn_size.png in Resources */ = {isa = PBXBuildFile; fileRef = 18A899F2148EC47000E5EFA9 /* editbtn_size.png */; };
 		18A899F5148EC47000E5EFA9 /* editbtn_x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18A899F3148EC47000E5EFA9 /* editbtn_x.png */; };
 		18A9B8AD14ED4CE70055FDAE /* CSAnd.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A9B8AC14ED4CE70055FDAE /* CSAnd.m */; };
@@ -307,6 +324,21 @@
 		54D4EB0614DBAF5300973536 /* plateBack.png in Resources */ = {isa = PBXBuildFile; fileRef = 54D4EB0514DBAF5300973536 /* plateBack.png */; };
 		54D4EB0814DBBCC800973536 /* i_files.png in Resources */ = {isa = PBXBuildFile; fileRef = 54D4EB0714DBBCC800973536 /* i_files.png */; };
 		54D7326614B6C8EF0092FD98 /* CMPopTipView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D7326514B6C8EF0092FD98 /* CMPopTipView.m */; };
+		54E5AD3C151B142B0017D2A7 /* CSClock.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E5AD3B151B142B0017D2A7 /* CSClock.m */; };
+		54E5AD46151B14D90017D2A7 /* clock-background-day.png in Resources */ = {isa = PBXBuildFile; fileRef = 54E5AD3D151B14D90017D2A7 /* clock-background-day.png */; };
+		54E5AD47151B14D90017D2A7 /* clock-background-night.png in Resources */ = {isa = PBXBuildFile; fileRef = 54E5AD3E151B14D90017D2A7 /* clock-background-night.png */; };
+		54E5AD48151B14D90017D2A7 /* clock-hour-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 54E5AD3F151B14D90017D2A7 /* clock-hour-bg.png */; };
+		54E5AD49151B14D90017D2A7 /* clock-hour-bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 54E5AD40151B14D90017D2A7 /* clock-hour-bg@2x.png */; };
+		54E5AD4A151B14D90017D2A7 /* clock-min-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 54E5AD41151B14D90017D2A7 /* clock-min-bg.png */; };
+		54E5AD4B151B14D90017D2A7 /* clock-min-bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 54E5AD42151B14D90017D2A7 /* clock-min-bg@2x.png */; };
+		54E5AD4C151B14D90017D2A7 /* clock-sec-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 54E5AD43151B14D90017D2A7 /* clock-sec-bg.png */; };
+		54E5AD4D151B14D90017D2A7 /* ClockView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E5AD45151B14D90017D2A7 /* ClockView.m */; };
+		54E5AD52151B32FA0017D2A7 /* clock-hour-wg.png in Resources */ = {isa = PBXBuildFile; fileRef = 54E5AD4E151B32FA0017D2A7 /* clock-hour-wg.png */; };
+		54E5AD53151B32FA0017D2A7 /* clock-hour-wg@2x .png in Resources */ = {isa = PBXBuildFile; fileRef = 54E5AD4F151B32FA0017D2A7 /* clock-hour-wg@2x .png */; };
+		54E5AD54151B32FA0017D2A7 /* clock-min-wg.png in Resources */ = {isa = PBXBuildFile; fileRef = 54E5AD50151B32FA0017D2A7 /* clock-min-wg.png */; };
+		54E5AD55151B32FA0017D2A7 /* clock-min-wg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 54E5AD51151B32FA0017D2A7 /* clock-min-wg@2x.png */; };
+		54E5AD58151B3C1E0017D2A7 /* gi_clock.png in Resources */ = {isa = PBXBuildFile; fileRef = 54E5AD56151B3C1E0017D2A7 /* gi_clock.png */; };
+		54E5AD59151B3C1E0017D2A7 /* gi_clock@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 54E5AD57151B3C1E0017D2A7 /* gi_clock@2x.png */; };
 		54E5BBE214AC05D000C84F69 /* SettingViewCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E5BBE114AC05D000C84F69 /* SettingViewCommon.m */; };
 		54EB155514E3BD9D004EB231 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54EB155414E3BD9D004EB231 /* AudioToolbox.framework */; };
 		54EB155914E3C724004EB231 /* setSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 54EB155814E3C724004EB231 /* setSound.wav */; };
@@ -394,8 +426,45 @@
 		187C6D3B15025A7E00507D73 /* CSAccelero.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CSAccelero.m; path = GearObjects/CSAccelero.m; sourceTree = "<group>"; };
 		188EFABA1515C558001A835B /* btn_guide.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_guide.png; sourceTree = "<group>"; };
 		188EFABB1515C558001A835B /* btn_guide@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_guide@2x.png"; sourceTree = "<group>"; };
+		1897CB2D1518C550001ADB3E /* CSNote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CSNote.h; path = GearObjects/CSNote.h; sourceTree = "<group>"; };
+		1897CB2E1518C550001ADB3E /* CSNote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CSNote.m; path = GearObjects/CSNote.m; sourceTree = "<group>"; };
+		1897CB381518DB18001ADB3E /* EDAMLimits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EDAMLimits.h; sourceTree = "<group>"; };
+		1897CB391518DB18001ADB3E /* EDAMLimits.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EDAMLimits.m; sourceTree = "<group>"; };
+		1897CB3A1518DB18001ADB3E /* Errors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Errors.h; sourceTree = "<group>"; };
+		1897CB3B1518DB18001ADB3E /* Errors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Errors.m; sourceTree = "<group>"; };
+		1897CB3C1518DB18001ADB3E /* NoteStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteStore.h; sourceTree = "<group>"; };
+		1897CB3D1518DB18001ADB3E /* NoteStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteStore.m; sourceTree = "<group>"; };
+		1897CB3E1518DB18001ADB3E /* Types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Types.h; sourceTree = "<group>"; };
+		1897CB3F1518DB18001ADB3E /* Types.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Types.m; sourceTree = "<group>"; };
+		1897CB401518DB18001ADB3E /* UserStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserStore.h; sourceTree = "<group>"; };
+		1897CB411518DB18001ADB3E /* UserStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserStore.m; sourceTree = "<group>"; };
+		1897CB441518DB18001ADB3E /* TBinaryProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBinaryProtocol.h; sourceTree = "<group>"; };
+		1897CB451518DB18001ADB3E /* TBinaryProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBinaryProtocol.m; sourceTree = "<group>"; };
+		1897CB461518DB18001ADB3E /* TProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TProtocol.h; sourceTree = "<group>"; };
+		1897CB471518DB18001ADB3E /* TProtocolException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TProtocolException.h; sourceTree = "<group>"; };
+		1897CB481518DB18001ADB3E /* TProtocolException.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TProtocolException.m; sourceTree = "<group>"; };
+		1897CB491518DB18001ADB3E /* TProtocolFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TProtocolFactory.h; sourceTree = "<group>"; };
+		1897CB4A1518DB18001ADB3E /* TProtocolUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TProtocolUtil.h; sourceTree = "<group>"; };
+		1897CB4B1518DB18001ADB3E /* TProtocolUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TProtocolUtil.m; sourceTree = "<group>"; };
+		1897CB4D1518DB18001ADB3E /* TApplicationException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TApplicationException.h; sourceTree = "<group>"; };
+		1897CB4E1518DB18001ADB3E /* TApplicationException.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TApplicationException.m; sourceTree = "<group>"; };
+		1897CB4F1518DB18001ADB3E /* TException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TException.h; sourceTree = "<group>"; };
+		1897CB501518DB18001ADB3E /* TException.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TException.m; sourceTree = "<group>"; };
+		1897CB511518DB18001ADB3E /* TProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TProcessor.h; sourceTree = "<group>"; };
+		1897CB521518DB18001ADB3E /* TProcessorFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TProcessorFactory.h; sourceTree = "<group>"; };
+		1897CB541518DB18001ADB3E /* THTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = THTTPClient.h; sourceTree = "<group>"; };
+		1897CB551518DB18001ADB3E /* THTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = THTTPClient.m; sourceTree = "<group>"; };
+		1897CB561518DB18001ADB3E /* TMemoryBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMemoryBuffer.h; sourceTree = "<group>"; };
+		1897CB571518DB18001ADB3E /* TMemoryBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMemoryBuffer.m; sourceTree = "<group>"; };
+		1897CB581518DB18001ADB3E /* TTransport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTransport.h; sourceTree = "<group>"; };
+		1897CB591518DB18001ADB3E /* TTransportException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTransportException.h; sourceTree = "<group>"; };
+		1897CB5A1518DB18001ADB3E /* TTransportException.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTransportException.m; sourceTree = "<group>"; };
+		1897CB5B1518DB18001ADB3E /* TSharedProcessorFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSharedProcessorFactory.h; sourceTree = "<group>"; };
+		1897CB5C1518DB18001ADB3E /* TSharedProcessorFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSharedProcessorFactory.m; sourceTree = "<group>"; };
 		189CF0E614D19D9C00C1E66F /* CSSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CSSlider.h; path = GearObjects/CSSlider.h; sourceTree = "<group>"; };
 		189CF0E714D19D9C00C1E66F /* CSSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CSSlider.m; path = GearObjects/CSSlider.m; sourceTree = "<group>"; };
+		18A6BB83151961BA00340E40 /* gi_note.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gi_note.png; sourceTree = "<group>"; };
+		18A6BB84151961BA00340E40 /* gi_note@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gi_note@2x.png"; sourceTree = "<group>"; };
 		18A899F2148EC47000E5EFA9 /* editbtn_size.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = editbtn_size.png; sourceTree = "<group>"; };
 		18A899F3148EC47000E5EFA9 /* editbtn_x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = editbtn_x.png; sourceTree = "<group>"; };
 		18A9B8AB14ED4CE70055FDAE /* CSAnd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CSAnd.h; path = GearObjects/CSAnd.h; sourceTree = "<group>"; };
@@ -753,6 +822,23 @@
 		54D4EB0714DBBCC800973536 /* i_files.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = i_files.png; sourceTree = "<group>"; };
 		54D7326414B6C8EF0092FD98 /* CMPopTipView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMPopTipView.h; sourceTree = "<group>"; };
 		54D7326514B6C8EF0092FD98 /* CMPopTipView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMPopTipView.m; sourceTree = "<group>"; };
+		54E5AD3A151B142B0017D2A7 /* CSClock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CSClock.h; path = GearObjects/CSClock/CSClock.h; sourceTree = "<group>"; };
+		54E5AD3B151B142B0017D2A7 /* CSClock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CSClock.m; path = GearObjects/CSClock/CSClock.m; sourceTree = "<group>"; };
+		54E5AD3D151B14D90017D2A7 /* clock-background-day.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "clock-background-day.png"; path = "GearObjects/CSClock/clock-background-day.png"; sourceTree = "<group>"; };
+		54E5AD3E151B14D90017D2A7 /* clock-background-night.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "clock-background-night.png"; path = "GearObjects/CSClock/clock-background-night.png"; sourceTree = "<group>"; };
+		54E5AD3F151B14D90017D2A7 /* clock-hour-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "clock-hour-bg.png"; path = "GearObjects/CSClock/clock-hour-bg.png"; sourceTree = "<group>"; };
+		54E5AD40151B14D90017D2A7 /* clock-hour-bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "clock-hour-bg@2x.png"; path = "GearObjects/CSClock/clock-hour-bg@2x.png"; sourceTree = "<group>"; };
+		54E5AD41151B14D90017D2A7 /* clock-min-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "clock-min-bg.png"; path = "GearObjects/CSClock/clock-min-bg.png"; sourceTree = "<group>"; };
+		54E5AD42151B14D90017D2A7 /* clock-min-bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "clock-min-bg@2x.png"; path = "GearObjects/CSClock/clock-min-bg@2x.png"; sourceTree = "<group>"; };
+		54E5AD43151B14D90017D2A7 /* clock-sec-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "clock-sec-bg.png"; path = "GearObjects/CSClock/clock-sec-bg.png"; sourceTree = "<group>"; };
+		54E5AD44151B14D90017D2A7 /* ClockView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClockView.h; path = GearObjects/CSClock/ClockView.h; sourceTree = "<group>"; };
+		54E5AD45151B14D90017D2A7 /* ClockView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ClockView.m; path = GearObjects/CSClock/ClockView.m; sourceTree = "<group>"; };
+		54E5AD4E151B32FA0017D2A7 /* clock-hour-wg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "clock-hour-wg.png"; path = "GearObjects/CSClock/clock-hour-wg.png"; sourceTree = "<group>"; };
+		54E5AD4F151B32FA0017D2A7 /* clock-hour-wg@2x .png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "clock-hour-wg@2x .png"; path = "GearObjects/CSClock/clock-hour-wg@2x .png"; sourceTree = "<group>"; };
+		54E5AD50151B32FA0017D2A7 /* clock-min-wg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "clock-min-wg.png"; path = "GearObjects/CSClock/clock-min-wg.png"; sourceTree = "<group>"; };
+		54E5AD51151B32FA0017D2A7 /* clock-min-wg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "clock-min-wg@2x.png"; path = "GearObjects/CSClock/clock-min-wg@2x.png"; sourceTree = "<group>"; };
+		54E5AD56151B3C1E0017D2A7 /* gi_clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gi_clock.png; sourceTree = "<group>"; };
+		54E5AD57151B3C1E0017D2A7 /* gi_clock@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gi_clock@2x.png"; sourceTree = "<group>"; };
 		54E5BBE114AC05D000C84F69 /* SettingViewCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingViewCommon.m; path = SettingControllers/SettingViewCommon.m; sourceTree = "<group>"; };
 		54EB155414E3BD9D004EB231 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		54EB155814E3C724004EB231 /* setSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = setSound.wav; sourceTree = "<group>"; };
@@ -894,6 +980,87 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		1897CB361518DB18001ADB3E /* Evernote */ = {
+			isa = PBXGroup;
+			children = (
+				1897CB371518DB18001ADB3E /* edam */,
+				1897CB421518DB18001ADB3E /* thrift */,
+			);
+			name = Evernote;
+			path = Utils/Evernote;
+			sourceTree = "<group>";
+		};
+		1897CB371518DB18001ADB3E /* edam */ = {
+			isa = PBXGroup;
+			children = (
+				1897CB381518DB18001ADB3E /* EDAMLimits.h */,
+				1897CB391518DB18001ADB3E /* EDAMLimits.m */,
+				1897CB3A1518DB18001ADB3E /* Errors.h */,
+				1897CB3B1518DB18001ADB3E /* Errors.m */,
+				1897CB3C1518DB18001ADB3E /* NoteStore.h */,
+				1897CB3D1518DB18001ADB3E /* NoteStore.m */,
+				1897CB3E1518DB18001ADB3E /* Types.h */,
+				1897CB3F1518DB18001ADB3E /* Types.m */,
+				1897CB401518DB18001ADB3E /* UserStore.h */,
+				1897CB411518DB18001ADB3E /* UserStore.m */,
+			);
+			path = edam;
+			sourceTree = "<group>";
+		};
+		1897CB421518DB18001ADB3E /* thrift */ = {
+			isa = PBXGroup;
+			children = (
+				1897CB431518DB18001ADB3E /* protocol */,
+				1897CB4C1518DB18001ADB3E /* server */,
+				1897CB4D1518DB18001ADB3E /* TApplicationException.h */,
+				1897CB4E1518DB18001ADB3E /* TApplicationException.m */,
+				1897CB4F1518DB18001ADB3E /* TException.h */,
+				1897CB501518DB18001ADB3E /* TException.m */,
+				1897CB511518DB18001ADB3E /* TProcessor.h */,
+				1897CB521518DB18001ADB3E /* TProcessorFactory.h */,
+				1897CB531518DB18001ADB3E /* transport */,
+				1897CB5B1518DB18001ADB3E /* TSharedProcessorFactory.h */,
+				1897CB5C1518DB18001ADB3E /* TSharedProcessorFactory.m */,
+			);
+			path = thrift;
+			sourceTree = "<group>";
+		};
+		1897CB431518DB18001ADB3E /* protocol */ = {
+			isa = PBXGroup;
+			children = (
+				1897CB441518DB18001ADB3E /* TBinaryProtocol.h */,
+				1897CB451518DB18001ADB3E /* TBinaryProtocol.m */,
+				1897CB461518DB18001ADB3E /* TProtocol.h */,
+				1897CB471518DB18001ADB3E /* TProtocolException.h */,
+				1897CB481518DB18001ADB3E /* TProtocolException.m */,
+				1897CB491518DB18001ADB3E /* TProtocolFactory.h */,
+				1897CB4A1518DB18001ADB3E /* TProtocolUtil.h */,
+				1897CB4B1518DB18001ADB3E /* TProtocolUtil.m */,
+			);
+			path = protocol;
+			sourceTree = "<group>";
+		};
+		1897CB4C1518DB18001ADB3E /* server */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = server;
+			sourceTree = "<group>";
+		};
+		1897CB531518DB18001ADB3E /* transport */ = {
+			isa = PBXGroup;
+			children = (
+				1897CB541518DB18001ADB3E /* THTTPClient.h */,
+				1897CB551518DB18001ADB3E /* THTTPClient.m */,
+				1897CB561518DB18001ADB3E /* TMemoryBuffer.h */,
+				1897CB571518DB18001ADB3E /* TMemoryBuffer.m */,
+				1897CB581518DB18001ADB3E /* TTransport.h */,
+				1897CB591518DB18001ADB3E /* TTransportException.h */,
+				1897CB5A1518DB18001ADB3E /* TTransportException.m */,
+			);
+			path = transport;
+			sourceTree = "<group>";
+		};
 		18A899F1148EC47000E5EFA9 /* images_ipad */ = {
 			isa = PBXGroup;
 			children = (
@@ -952,6 +1119,10 @@
 		541F74FA14D67E7300B4A517 /* GearListIcons */ = {
 			isa = PBXGroup;
 			children = (
+				54E5AD56151B3C1E0017D2A7 /* gi_clock.png */,
+				54E5AD57151B3C1E0017D2A7 /* gi_clock@2x.png */,
+				18A6BB83151961BA00340E40 /* gi_note.png */,
+				18A6BB84151961BA00340E40 /* gi_note@2x.png */,
 				5489342E1511E87E00BF276F /* gi_raddeg.png */,
 				5489342F1511E87E00BF276F /* gi_raddeg@2x.png */,
 				548934301511E87E00BF276F /* gi_trigono.png */,
@@ -1215,6 +1386,7 @@
 		5438D66D146A90A500CE9136 /* GearObjects */ = {
 			isa = PBXGroup;
 			children = (
+				54E5AD38151B140F0017D2A7 /* CSClock */,
 				54471F17150F0EDD00354AEC /* CSFBSend.h */,
 				54471F18150F0EDD00354AEC /* CSFBSend.m */,
 				549BAF8A150DC35400EDC162 /* CSQueue.h */,
@@ -1315,6 +1487,8 @@
 				54893427151193A500BF276F /* CSRadDeg.m */,
 				5489342A1511B2CA00BF276F /* CSTrigonometric.h */,
 				5489342B1511B2CA00BF276F /* CSTrigonometric.m */,
+				1897CB2D1518C550001ADB3E /* CSNote.h */,
+				1897CB2E1518C550001ADB3E /* CSNote.m */,
 			);
 			name = GearObjects;
 			sourceTree = "<group>";
@@ -1402,6 +1576,7 @@
 		5486166F14739D9F0007709E /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				1897CB361518DB18001ADB3E /* Evernote */,
 				185F6834150E4917005A5E0B /* facebook */,
 				5463E3FA150751E2008D4717 /* SDWebImage */,
 				54A8A26A1505F2B4004F4B19 /* Rss */,
@@ -1527,6 +1702,28 @@
 			);
 			name = CMPopTipView;
 			path = Utils/CMPopTipView;
+			sourceTree = "<group>";
+		};
+		54E5AD38151B140F0017D2A7 /* CSClock */ = {
+			isa = PBXGroup;
+			children = (
+				54E5AD4E151B32FA0017D2A7 /* clock-hour-wg.png */,
+				54E5AD4F151B32FA0017D2A7 /* clock-hour-wg@2x .png */,
+				54E5AD50151B32FA0017D2A7 /* clock-min-wg.png */,
+				54E5AD51151B32FA0017D2A7 /* clock-min-wg@2x.png */,
+				54E5AD3D151B14D90017D2A7 /* clock-background-day.png */,
+				54E5AD3E151B14D90017D2A7 /* clock-background-night.png */,
+				54E5AD3F151B14D90017D2A7 /* clock-hour-bg.png */,
+				54E5AD40151B14D90017D2A7 /* clock-hour-bg@2x.png */,
+				54E5AD41151B14D90017D2A7 /* clock-min-bg.png */,
+				54E5AD42151B14D90017D2A7 /* clock-min-bg@2x.png */,
+				54E5AD43151B14D90017D2A7 /* clock-sec-bg.png */,
+				54E5AD44151B14D90017D2A7 /* ClockView.h */,
+				54E5AD45151B14D90017D2A7 /* ClockView.m */,
+				54E5AD3A151B142B0017D2A7 /* CSClock.h */,
+				54E5AD3B151B142B0017D2A7 /* CSClock.m */,
+			);
+			name = CSClock;
 			sourceTree = "<group>";
 		};
 		54EB155714E3C724004EB231 /* Sound */ = {
@@ -1758,6 +1955,21 @@
 				548934351511E87E00BF276F /* gi_trigono@2x.png in Resources */,
 				188EFABC1515C558001A835B /* btn_guide.png in Resources */,
 				188EFABD1515C558001A835B /* btn_guide@2x.png in Resources */,
+				18A6BB85151961BA00340E40 /* gi_note.png in Resources */,
+				18A6BB86151961BA00340E40 /* gi_note@2x.png in Resources */,
+				54E5AD46151B14D90017D2A7 /* clock-background-day.png in Resources */,
+				54E5AD47151B14D90017D2A7 /* clock-background-night.png in Resources */,
+				54E5AD48151B14D90017D2A7 /* clock-hour-bg.png in Resources */,
+				54E5AD49151B14D90017D2A7 /* clock-hour-bg@2x.png in Resources */,
+				54E5AD4A151B14D90017D2A7 /* clock-min-bg.png in Resources */,
+				54E5AD4B151B14D90017D2A7 /* clock-min-bg@2x.png in Resources */,
+				54E5AD4C151B14D90017D2A7 /* clock-sec-bg.png in Resources */,
+				54E5AD52151B32FA0017D2A7 /* clock-hour-wg.png in Resources */,
+				54E5AD53151B32FA0017D2A7 /* clock-hour-wg@2x .png in Resources */,
+				54E5AD54151B32FA0017D2A7 /* clock-min-wg.png in Resources */,
+				54E5AD55151B32FA0017D2A7 /* clock-min-wg@2x.png in Resources */,
+				54E5AD58151B3C1E0017D2A7 /* gi_clock.png in Resources */,
+				54E5AD59151B3C1E0017D2A7 /* gi_clock@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1898,6 +2110,23 @@
 				540DD84E15108D760073E320 /* CSShowLineView.m in Sources */,
 				54893428151193A500BF276F /* CSRadDeg.m in Sources */,
 				5489342C1511B2CA00BF276F /* CSTrigonometric.m in Sources */,
+				1897CB2F1518C550001ADB3E /* CSNote.m in Sources */,
+				1897CB5D1518DB18001ADB3E /* EDAMLimits.m in Sources */,
+				1897CB5E1518DB18001ADB3E /* Errors.m in Sources */,
+				1897CB5F1518DB18001ADB3E /* NoteStore.m in Sources */,
+				1897CB601518DB18001ADB3E /* Types.m in Sources */,
+				1897CB611518DB18001ADB3E /* UserStore.m in Sources */,
+				1897CB621518DB18001ADB3E /* TBinaryProtocol.m in Sources */,
+				1897CB631518DB18001ADB3E /* TProtocolException.m in Sources */,
+				1897CB641518DB18001ADB3E /* TProtocolUtil.m in Sources */,
+				1897CB651518DB18001ADB3E /* TApplicationException.m in Sources */,
+				1897CB661518DB18001ADB3E /* TException.m in Sources */,
+				1897CB671518DB18001ADB3E /* THTTPClient.m in Sources */,
+				1897CB681518DB18001ADB3E /* TMemoryBuffer.m in Sources */,
+				1897CB691518DB18001ADB3E /* TTransportException.m in Sources */,
+				1897CB6A1518DB18001ADB3E /* TSharedProcessorFactory.m in Sources */,
+				54E5AD3C151B142B0017D2A7 /* CSClock.m in Sources */,
+				54E5AD4D151B14D90017D2A7 /* ClockView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1984,6 +2213,10 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppSlate/AppSlate-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"./Utils/Evernote/thrift/**",
+					"./Utils/Evernote/edam/**",
+				);
 				INFOPLIST_FILE = "AppSlate/AppSlate-Info.plist";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1997,6 +2230,10 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppSlate/AppSlate-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"./Utils/Evernote/edam/**",
+					"./Utils/Evernote/thrift/**",
+				);
 				INFOPLIST_FILE = "AppSlate/AppSlate-Info.plist";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";

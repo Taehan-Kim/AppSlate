@@ -124,4 +124,22 @@
     return self;
 }
 
+-(id)initWithCoder:(NSCoder *)decoder
+{
+    if( (self=[super initWithCoder:decoder]) ) {
+        [csView.layer setBorderWidth:[decoder decodeFloatForKey:@"borderWidth"]];
+        [csView.layer setBorderColor:[[decoder decodeObjectForKey:@"borderColor"] CGColor]];
+        [csView.layer setCornerRadius:[decoder decodeFloatForKey:@"cornerRadius"]];
+    }
+    return self;
+}
+
+-(void)encodeWithCoder:(NSCoder *)encoder
+{
+    [super encodeWithCoder:encoder];
+    [encoder encodeFloat:csView.layer.borderWidth forKey:@"borderWidth"];
+    [encoder encodeFloat:csView.layer.cornerRadius forKey:@"cornerRadius"];
+    [encoder encodeObject:[UIColor colorWithCGColor:csView.layer.borderColor] forKey:@"borderColor"];
+}
+
 @end

@@ -22,7 +22,7 @@
     BOOL value;
 
     if( [BoolValue isKindOfClass:[NSString class]] )
-        value = YES;
+        value = [(NSString*)BoolValue boolValue];
     else if( [BoolValue isKindOfClass:[NSNumber class]] )
         value = [BoolValue boolValue];
     else

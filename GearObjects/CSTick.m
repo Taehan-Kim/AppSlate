@@ -19,7 +19,12 @@
 
 -(void) setRun:(NSNumber*)BoolValue
 {
-    run = [BoolValue boolValue];
+    if( [BoolValue isKindOfClass:[NSString class]] )
+        run = [(NSString*)BoolValue boolValue];
+    else  if( [BoolValue isKindOfClass:[NSNumber class]] )
+        run = [BoolValue boolValue];
+    else
+        return;
 
     if( run ){
         mTimer = [NSTimer timerWithTimeInterval:interval target:self
@@ -98,7 +103,7 @@
     self.info = NSLocalizedString(@"Tick Signal Generator", @"Tick");
     
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Timer Run", P_BOOL, @selector(setRun:),@selector(getRun));
-    NSDictionary *d2 = MAKE_PROPERTY_D(@"Interval", P_NUM, @selector(setInterval:),@selector(getInterval));
+    NSDictionary *d2 = MAKE_PROPERTY_D(@"Interval seconds", P_NUM, @selector(setInterval:),@selector(getInterval));
     NSDictionary *d3 = MAKE_PROPERTY_D(@"Output Value", P_NUM, @selector(setOutputValue:),@selector(getOutputValue));
     pListArray = [NSArray arrayWithObjects:d1,d2,d3, nil];
     

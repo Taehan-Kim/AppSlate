@@ -30,4 +30,7 @@
 
 -(void) setDivValue:(NSNumber*) Value;
 
+-(void) setResultSave:(NSNumber*) boolValue;
+-(NSNumber*) getResultSave;
+
 @end

@@ -68,9 +68,11 @@
 
     self.info = NSLocalizedString(@"Light Bulb", @"Light Bulb");
 
+    DEFAULT_CENTER_D;
+    NSDictionary *d0 = ALPHA_D;
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Light Color", P_COLOR, @selector(setLightColor:),@selector(getLightColor));
     NSDictionary *d2 = MAKE_PROPERTY_D(@"On Value", P_BOOL, @selector(setOnValue:),@selector(getOnValue));
-    pListArray = [NSArray arrayWithObjects:d1,d2, nil];
+    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2, nil];
 
     return self;
 }
@@ -82,7 +84,7 @@
 //        light = [[UIView alloc] initWithFrame:CGRectMake(8, 8, 12, 12)];
         [light setClipsToBounds:YES];
         [light.layer setCornerRadius:6];
-        [light setBackgroundColor:[UIColor redColor]];
+//        [light setBackgroundColor:[UIColor redColor]];
         [csView addSubview:light];
     }
     return self;

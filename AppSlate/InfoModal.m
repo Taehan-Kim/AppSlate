@@ -107,6 +107,15 @@
         [tBtn.titleLabel setTextColor:[UIColor blueColor]];
         [tBtn addTarget:self action:@selector(gotoTutorial1:) forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:tBtn];
+
+        UIButton *t2Btn = [[UIButton alloc] initWithFrame:CGRectMake(145, 260+160, 300, 30)];
+        [t2Btn setBackgroundColor:CS_RGBA(0, 10, 200, 0.4)];
+        [t2Btn setTitle:@"Tutorial - Making 'Twitter Check App'" forState:UIControlStateNormal];
+        [t2Btn.titleLabel setFont:CS_FONT(15)];
+        [t2Btn.titleLabel setTextColor:[UIColor blueColor]];
+        [t2Btn addTarget:self action:@selector(gotoTutorial2:) forControlEvents:UIControlEventTouchUpInside];
+        [self.contentView addSubview:t2Btn];
+
     }
 
     return self;
@@ -153,6 +162,11 @@
 -(void) gotoTutorial1:(UIButton*) sender
 {
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://youtu.be/SQv_noix87I"]];
+}
+
+-(void) gotoTutorial2:(UIButton*) sender
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://youtu.be/NF3koS9KyEI"]];
 }
 
 #pragma mark - MFMailCompose delegate

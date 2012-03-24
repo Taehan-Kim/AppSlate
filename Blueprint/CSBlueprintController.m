@@ -201,6 +201,10 @@
             newObj = [[CSRadDeg alloc] initGear]; break;
         case CS_TRI:
             newObj = [[CSTrigonometric alloc] initGear]; break;
+        case CS_NOTE:
+            newObj = [[CSNote alloc] initGear]; break;
+        case CS_CLOCK:
+            newObj = [[CSClock alloc] initGear]; break;
         default:
             return;
     }
@@ -286,7 +290,8 @@
     if( NO == ((CSGearObject*)gearObj).isUIObj
        || [aV isKindOfClass:[UITableView class]]
        || [aV isKindOfClass:[MKMapView class]]
-       || [aV isKindOfClass:[UIWebView class]] )
+       || [aV isKindOfClass:[UIWebView class]]
+       || [aV isKindOfClass:[UITextView class]] )
         for( UIView* sv in aV.subviews )  // 사용자 반응 중지.
             [sv setUserInteractionEnabled:NO];
 
@@ -384,7 +389,7 @@
         [g setTapGR: [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeEditGear:)]];
         [g.csView addGestureRecognizer:g.tapGR];
 
-        if( NO == g.isUIObj || [g.csView isKindOfClass:[UITableView class]] )
+        if( NO == g.isUIObj || [g.csView isKindOfClass:[UITableView class]] || [g.csView isKindOfClass:[UITextView class]] )
         {
             for( UIView* sv in ((UIView*)(g.csView)).subviews )  // 사용자 반응 중지.
                 [sv setUserInteractionEnabled:NO];
@@ -413,7 +418,8 @@
         if( NO == gO.isUIObj
            || [gO.csView isKindOfClass:[UITableView class]]
            || [gO.csView isKindOfClass:[MKMapView class]]
-           || [gO.csView isKindOfClass:[UIWebView class]] )
+           || [gO.csView isKindOfClass:[UIWebView class]]
+           || [gO.csView isKindOfClass:[UITextView class]] )
             for( UIView* sv in ((UIView*)(gO.csView)).subviews )  // 사용자 반응 활성화.
                 [sv setUserInteractionEnabled:YES];
 
@@ -427,7 +433,10 @@
             [((UIWebView*)(gO.csView)).scrollView setScrollEnabled:YES];
         else if( [gO.csView isKindOfClass:[MKMapView class]] )
             [((MKMapView*)gO.csView) setScrollEnabled:YES];
-
+        else if( [gO.csView isKindOfClass:[UITextView class]] )
+            [((UITextView*)gO.csView) setEditable:YES];
+        else if( CS_CLOCK == gO.csCode )
+            [(CSClock*)gO turnOnClock];
     }
 
     // 에디트 모드로 있던 하나의 객체를 해제한다.
@@ -455,11 +464,12 @@
             [gO setTapGR:tapGR];
             [gO.csView addGestureRecognizer:tapGR];
             
-            // NOTE: 세 가지 경우에 대해서 처리 하지 않음.
+            // NOTE: 네 가지 경우에 대해서 처리 하지 않음.
             if( NO == gO.isUIObj
                || [gO.csView isKindOfClass:[UITableView class]]
                || [gO.csView isKindOfClass:[MKMapView class]]
-               || [gO.csView isKindOfClass:[UIWebView class]] )
+               || [gO.csView isKindOfClass:[UIWebView class]]
+               || [gO.csView isKindOfClass:[UITextView class]] )
             {
                 for( UIView* sv in ((UIView*)(gO.csView)).subviews )  // 사용자 반응 중지.
                     [sv setUserInteractionEnabled:NO];
@@ -473,6 +483,10 @@
                 [((UIWebView*)(gO.csView)).scrollView setScrollEnabled:NO];
             else if( [gO.csView isKindOfClass:[MKMapView class]] )
                 [((MKMapView*)gO.csView) setScrollEnabled:NO];
+            else if( [gO.csView isKindOfClass:[UITextView class]] )
+                [((UITextView*)gO.csView) setEditable:NO];
+            else if( CS_CLOCK == gO.csCode )
+                [(CSClock*)gO turnOffClock];
 
             if( [gO respondsToSelector:@selector(removeAll)] )
                 [gO performSelector:@selector(removeAll)];
@@ -557,6 +571,8 @@
         [((UIWebView*)targetView).scrollView setScrollEnabled:NO];
     else if( [targetView isKindOfClass:[MKMapView class]] )
         [((MKMapView*)targetView) setScrollEnabled:NO];
+    else if( [targetView isKindOfClass:[UITextView class]] )
+        [((UITextView*)targetView) setEditable:NO];
  
     // 이전의 뷰에서 gesture recognizer 없애기.
     [targetView removeGestureRecognizer:dragReco];
@@ -579,7 +595,7 @@
 
     [targetView addGestureRecognizer:dragReco];
 
-    if( NO == mGear.isUIObj && [mGear.csView isKindOfClass:[UITableView class]] )
+    if( NO == mGear.isUIObj && ( [mGear.csView isKindOfClass:[UITableView class]] || [mGear.csView isKindOfClass:[UITextView class]] ) )
     {
         for( UIView* sv in targetView.subviews )  // 사용자 반응 중지.
             [sv setUserInteractionEnabled:NO];

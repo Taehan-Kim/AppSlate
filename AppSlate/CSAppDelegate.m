@@ -79,6 +79,7 @@
     /*
      Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
      */
+    [self.mainViewController saveAppFile:YES];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -103,6 +104,13 @@
     [alert show];
 }
 
+- (void)fbDidNotLogin:(BOOL)cancelled
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"facebook" message:@"Not completed." delegate:nil cancelButtonTitle:@"Confirm" otherButtonTitles: nil];
+    [alert show];
+}
+
+
 - (void) fbDidLogout {
     // Remove saved authorization information if it exists
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -113,6 +121,12 @@
     }
 
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"facebook" message:@"Disconnected." delegate:nil cancelButtonTitle:@"Confirm" otherButtonTitles: nil];
+    [alert show];
+}
+
+- (void)fbSessionInvalidated
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"facebook" message:@"Session is invalidated." delegate:nil cancelButtonTitle:@"Confirm" otherButtonTitles: nil];
     [alert show];
 }
 

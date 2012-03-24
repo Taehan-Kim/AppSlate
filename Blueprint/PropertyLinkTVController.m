@@ -54,7 +54,7 @@
 {
     NSUInteger height;
     if( [[destGear getPropertiesList] count] > 7 ) height = 250;
-    else height = [[destGear getPropertiesList] count] * 36;
+    else height = [[destGear getPropertiesList] count] * 42;
 
     CGSize size = CGSizeMake(200, height); // size of view in popover
     self.contentSizeForViewInPopover = size;
