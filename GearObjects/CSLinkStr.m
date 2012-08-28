@@ -106,9 +106,9 @@
     SEL act;
     NSNumber *nsMagicNum;
     
-    act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:0] objectForKey:@"selector"]).pointerValue;
+    act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
     if( nil != act ){
-        nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:0]) objectForKey:@"mNum"];
+        nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
         CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
         
         if( nil != gObj ){
@@ -123,7 +123,7 @@
 
 -(NSNumber*) getStringAct
 {
-    return [NSNumber numberWithBool:NO];
+    return @NO;
 }
 
 //===========================================================================
@@ -156,10 +156,10 @@
     NSDictionary *d4 = MAKE_PROPERTY_D(@"Input String #4", P_TXT, @selector(setString4:),@selector(getString4));
     NSDictionary *d5 = MAKE_PROPERTY_D(@"Input String #5", P_TXT, @selector(setString5:),@selector(getString5));
     NSDictionary *d6 = MAKE_PROPERTY_D(@">Output Linked String", P_NUM, @selector(setStringAct:),@selector(getStringAct));
-    pListArray = [NSArray arrayWithObjects:d1,d2,d3,d4,d5,d6, nil];
-    
+    pListArray = @[d1,d2,d3,d4,d5,d6];
+
     NSMutableDictionary MAKE_ACTION_D(@"Output", A_TXT, a1);
-    actionArray = [NSArray arrayWithObjects:a1, nil];
+    actionArray = @[a1];
 
     return self;
 }

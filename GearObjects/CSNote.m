@@ -121,18 +121,18 @@ NSString * const applicationVersion = @"1.1";
 
 -(NSNumber*) getEvernote
 {
-    return [NSNumber numberWithBool:NO];
+    return @NO;
 }
 
 -(void) setSendText:(NSNumber*)BoolValue
 {
     if( NO == [BoolValue boolValue] ) return;
 
-    SEL act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:1] objectForKey:@"selector"]).pointerValue;
+    SEL act = ((NSValue*)((NSDictionary*)actionArray[1])[@"selector"]).pointerValue;
     
     if( nil == act ) return;  // do nothing
 
-    NSNumber *nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:1]) objectForKey:@"mNum"];
+    NSNumber *nsMagicNum = ((NSDictionary*)actionArray[1])[@"mNum"];
     
     CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
     
@@ -178,12 +178,12 @@ NSString * const applicationVersion = @"1.1";
     NSDictionary *d6 = MAKE_PROPERTY_D(@"Evernote ID", P_TXT, @selector(setUsername:),@selector(getUsername));
     NSDictionary *d7 = MAKE_PROPERTY_D(@"Evernote Password", P_TXT, @selector(setPassword:),@selector(getPassword));
     NSDictionary *d8 = MAKE_PROPERTY_D(@">Save to Evernote", P_BOOL, @selector(setEvernote:),@selector(getEvernote));
-    
-    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2,d3,d4,d5,d6,d7,d8, nil];
+
+    pListArray = @[xc,yc,d0,d1,d2,d3,d4,d5,d6,d7,d8];
     
     NSMutableDictionary MAKE_ACTION_D(@"End Editing", A_TXT, a1);
     NSMutableDictionary MAKE_ACTION_D(@"Send Text", A_TXT, a2);
-    actionArray = [NSArray arrayWithObjects:a1, a2, nil];
+    actionArray = @[a1, a2];
     
     return self;
 }
@@ -215,11 +215,11 @@ NSString * const applicationVersion = @"1.1";
 {
     [textView resignFirstResponder];
 
-    SEL act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:0] objectForKey:@"selector"]).pointerValue;
+    SEL act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
     
     if( nil == act ) return YES;  // do nothing
     
-    NSNumber *nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:0]) objectForKey:@"mNum"];
+    NSNumber *nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
     
     CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
     
@@ -298,7 +298,7 @@ NSString * const applicationVersion = @"1.1";
     
     // Setting initial values sent by the user
     note.title = title;
-    note.notebookGuid = [[[noteStore listNotebooks:authToken] objectAtIndex:0] guid]; 
+    note.notebookGuid = [[noteStore listNotebooks:authToken][0] guid]; 
     
     NSString * ENML = [NSString stringWithFormat: @"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n<en-note>%@</en-note>",[((UITextView*)csView).text stringByReplacingOccurrencesOfString:@"\n" withString:@"<br/>"]];
     [note setContent:ENML];

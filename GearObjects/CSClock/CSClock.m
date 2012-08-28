@@ -28,7 +28,7 @@
 
 -(NSNumber*) getAddHour
 {
-    return [NSNumber numberWithInteger:clock.addHour];
+    return @(clock.addHour);
 }
 
 -(void) setAddMin:(NSNumber*)min
@@ -41,7 +41,7 @@
 
 -(NSNumber*) getAddMin
 {
-    return [NSNumber numberWithInteger:clock.addMin];
+    return @(clock.addMin);
 }
 
 -(void) setAddSec:(NSNumber*)sec
@@ -54,7 +54,7 @@
 
 -(NSNumber*) getAddSec
 {
-    return [NSNumber numberWithInteger:clock.addSec];
+    return @(clock.addSec);
 }
 
 -(void) setOnValue:(NSNumber*)BoolValue
@@ -71,7 +71,7 @@
 
 -(NSNumber*) getOnValue
 {
-    return [NSNumber numberWithBool:bStart];
+    return @(bStart);
 }
 
 -(void) setMoveHour:(NSNumber*)hour
@@ -91,7 +91,7 @@
 
 -(NSNumber*) getMoveHour
 {
-    return [NSNumber numberWithInteger:clock.hours];
+    return @(clock.hours);
 }
 
 -(void) setMoveMin:(NSNumber*)min
@@ -111,7 +111,7 @@
 
 -(NSNumber*) getMoveMin
 {
-    return [NSNumber numberWithInteger:clock.minutes];
+    return @(clock.minutes);
 }
 
 -(void) setMoveSec:(NSNumber*)sec
@@ -131,7 +131,7 @@
 
 -(NSNumber*) getMoveSec
 {
-    return [NSNumber numberWithInteger:clock.seconds];
+    return @(clock.seconds);
 }
 
 
@@ -181,7 +181,7 @@
     NSDictionary *d5 = MAKE_PROPERTY_D(@"Move Hour hand", P_NUM, @selector(setMoveHour:),@selector(getMoveHour));
     NSDictionary *d6 = MAKE_PROPERTY_D(@"Move Min hand", P_NUM, @selector(setMoveMin:),@selector(getMoveMin));
     NSDictionary *d7 = MAKE_PROPERTY_D(@"Move Sec hand", P_NUM, @selector(setMoveSec:),@selector(getMoveSec));
-    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2,d3,d4,d5,d6,d7, nil];
+    pListArray = @[xc,yc,d0,d1,d2,d3,d4,d5,d6,d7];
 
     return self;
 }
@@ -189,7 +189,7 @@
 -(id)initWithCoder:(NSCoder *)decoder
 {
     if( (self=[super initWithCoder:decoder]) ) {
-        clock = [[csView subviews] objectAtIndex:0];
+        clock = [csView subviews][0];
         [clock setClockBackgroundImage:[UIImage imageNamed:@"clock-background-day.png"].CGImage];
         clock.addHour = [decoder decodeIntegerForKey:@"addHour"];
         clock.addMin = [decoder decodeIntegerForKey:@"addMin"];

@@ -55,7 +55,7 @@
 
 -(NSNumber*) getOutputValue
 {
-    return [NSNumber numberWithFloat:output];
+    return @(output);
 }
 
 -(void) setTextColor:(UIColor*)color
@@ -106,10 +106,10 @@
     NSDictionary *d4 = MAKE_PROPERTY_D(@"Text Color", P_COLOR, @selector(setTextColor:),@selector(getTextColor));
     NSDictionary *d5 = MAKE_PROPERTY_D(@"Text Font", P_FONT, @selector(setFont:),@selector(getFont));
 
-    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2,d3,d4,d5, nil];
+    pListArray = @[xc,yc,d0,d1,d2,d3,d4,d5];
 
     NSMutableDictionary MAKE_ACTION_D(@"Push", A_NUM, a1);
-    actionArray = [NSArray arrayWithObjects:a1, nil];
+    actionArray = @[a1];
 
     return self;
 }
@@ -137,14 +137,14 @@
     NSNumber *nsMagicNum;
 
     // 3. Did Turn Off
-    act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:0] objectForKey:@"selector"]).pointerValue;
+    act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
 
-    nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:0]) objectForKey:@"mNum"];
+    nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
     CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
     
     if( nil != gObj ){
         if( [gObj respondsToSelector:act] )
-            [gObj performSelector:act withObject:[NSNumber numberWithFloat:output]];
+            [gObj performSelector:act withObject:@(output)];
         else
             EXCLAMATION;
     }

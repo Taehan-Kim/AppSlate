@@ -7,6 +7,8 @@
 //
 
 #import "CSFBSend.h"
+#import <Social/Social.h>
+#import "CSAppDelegate.h"
 
 @implementation CSFBSend
 
@@ -70,29 +72,91 @@
     return link;
 }
 
+-(void) setImage:(UIImage*)image
+{
+    if( ![image isKindOfClass:[UIImage class]] )
+    {
+        EXCLAMATION;
+        return;
+    }
+
+    img = image;
+}
+
+-(UIImage*) getImage
+{
+    return img;
+}
+
 -(void) setShow:(NSNumber*)BoolValue
 {
     // YES 값인 경우만 반응하자.
     if( ![BoolValue boolValue] )
         return;
 
-    if( USERCONTEXT.imRunning ){
-        NSMutableDictionary *params = 
-        [NSMutableDictionary dictionaryWithObjectsAndKeys:
-            name, @"name",
-            caption, @"caption",
-            message, @"description",
-            link, @"link",
-///         @"http://fbrell.com/f8.jpg", @"picture",
-            nil];  
-        [USERCONTEXT.facebook dialog:@"feed"
-                           andParams:params andDelegate:self];
+    if( USERCONTEXT.imRunning &&
+       [SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook] )
+    {
+        SLComposeViewController *fbCntrlr = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+        if( [link length] > 5 && [link hasPrefix:@"http"] )
+            [fbCntrlr addURL:[NSURL URLWithString:link]];
+        if( [message length] > 1 )
+            [fbCntrlr setInitialText:message];
+        if( nil != img )
+            [fbCntrlr addImage:img];
+
+        [((CSAppDelegate*)([UIApplication sharedApplication].delegate)).window.rootViewController presentViewController:fbCntrlr animated:YES completion:NULL];
     }
 }
 
 -(NSNumber*) getShow
 {
-    return [NSNumber numberWithBool:NO];
+    return @NO;
+}
+
+-(void) setSendFeed:(NSNumber*)BoolValue
+{
+    if( ![BoolValue boolValue] )
+        return;
+
+    if( USERCONTEXT.imRunning )
+    {
+        // 인증 연결되어 있는지 확인해서 SSO 처리.
+//        if (![USERCONTEXT.facebook isSessionValid]) {
+//            NSArray *permissions =  [NSArray arrayWithObjects:@"read_stream", @"publish_stream", @"offline_access",nil];
+//            [USERCONTEXT.facebook authorize:permissions];
+//            return;
+//        }
+//
+//        NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+//                                       @"post", @"type",
+//                                       link, @"link",
+//                                       name, @"name",
+//                                       caption, @"caption",
+////                                       postDescription, @"description",
+//                                       message, @"message",
+////                                       propStr, @"properties",
+//                                       nil];
+//        if( nil != img ){
+//            [params setObject:img forKey:@"picture"];
+////            [params setObject:@"large" forKey:@"type"];
+//            [USERCONTEXT.facebook requestWithGraphPath:@"me/photos"
+//                                             andParams:params
+//                                         andHttpMethod:@"POST" andDelegate:self];
+//        }
+//        else
+//        {
+//            [USERCONTEXT.facebook requestWithGraphPath:@"me/feed"
+//                                             andParams:params
+//                                         andHttpMethod:@"POST" andDelegate:self];
+//        }
+//        START_WAIT_VIEW;
+    }
+}
+
+-(NSNumber*) getSendFeed
+{
+    return @NO;
 }
 
 //===========================================================================
@@ -117,14 +181,17 @@
     name = @"AppSlate";
     caption = @"Check this app.";
     message = @"";
-    link = @"https://www.facebook.com/AppSlate";
+    link = @"http://www.facebook.com/AppSlate";
+    img = nil;
     
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Feed Name", P_TXT, @selector(setName:),@selector(getName));
     NSDictionary *d2 = MAKE_PROPERTY_D(@"Feed Caption", P_TXT, @selector(setCaption:),@selector(getCaption));
     NSDictionary *d3 = MAKE_PROPERTY_D(@"Text Message", P_TXT, @selector(setText:),@selector(getText));
     NSDictionary *d4 = MAKE_PROPERTY_D(@"Link URL", P_TXT, @selector(setLink:),@selector(getLink));
-    NSDictionary *d5 = MAKE_PROPERTY_D(@">Show Action", P_BOOL, @selector(setShow:),@selector(getShow));
-    pListArray = [NSArray arrayWithObjects:d1,d2,d3,d4,d5, nil];
+    NSDictionary *d5 = MAKE_PROPERTY_D(@"Image", P_IMG, @selector(setImage:),@selector(getImage));
+    NSDictionary *d6 = MAKE_PROPERTY_D(@">Show Action", P_BOOL, @selector(setShow:),@selector(getShow));
+    NSDictionary *d7 = MAKE_PROPERTY_D(@">Send Feed Action", P_BOOL, @selector(setSendFeed:),@selector(getSendFeed));
+    pListArray = @[d1,d2,d3,d4,d5,d6,d7];
 
     return self;
 }
@@ -137,6 +204,7 @@
         name = [decoder decodeObjectForKey:@"name"];
         caption = [decoder decodeObjectForKey:@"caption"];
         link = [decoder decodeObjectForKey:@"link"];
+        img = [decoder decodeObjectForKey:@"img"];
     }
     return self;
 }
@@ -148,15 +216,30 @@
     [encoder encodeObject:name forKey:@"name"];
     [encoder encodeObject:caption forKey:@"caption"];
     [encoder encodeObject:link forKey:@"link"];
+    [encoder encodeObject:img forKey:@"img"];
 }
 
 #pragma mark - Delegate
-
-- (void)dialogDidNotComplete:(FBDialog *)dialog
-{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"error" message:@"Do not completed to feed." delegate:nil cancelButtonTitle:@"Confirm" otherButtonTitles: nil];
-    [alert show];
-}
-
+//
+//- (void)dialogDidNotComplete:(FBDialog *)dialog
+//{
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"error" message:@"Do not completed to feed." delegate:nil cancelButtonTitle:@"Confirm" otherButtonTitles: nil];
+//    [alert show];
+//}
+//
+//- (void)request:(FBRequest *)request didLoad:(id)result
+//{
+//    STOP_WAIT_VIEW;
+//    NSLog(@"F did %@",result);
+//    NSLog(@"token;%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"FBAccessTokenKey"]);
+//}
+//
+//- (void) request:(FBRequest *)request didFailWithError:(NSError *)error
+//{
+//    STOP_WAIT_VIEW;
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"error" message:@"Do not completed to feed." delegate:nil cancelButtonTitle:@"Confirm" otherButtonTitles: nil];
+//    [alert show];
+//    NSLog(@"F err %@",[error description]);
+//}
 
 @end

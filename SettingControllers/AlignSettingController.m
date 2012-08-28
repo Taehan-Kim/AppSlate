@@ -53,10 +53,10 @@
     self.contentSizeForViewInPopover = size;
     self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
 
-    alignSegment = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:NSLocalizedString(@"Left",@"L"), NSLocalizedString(@"Center",@"C"), NSLocalizedString(@"Right",@"R"), nil]];
+    alignSegment = [[UISegmentedControl alloc] initWithItems:@[NSLocalizedString(@"Left",@"L"), NSLocalizedString(@"Center",@"C"), NSLocalizedString(@"Right",@"R")]];
     [alignSegment setFrame:CGRectMake(C_GAP, C_GAP, C_WIDTH, 40.0)];
     [alignSegment setSegmentedControlStyle:UISegmentedControlStylePlain];
-    NSNumber *alignNum = objc_msgSend(theGear,[[pInfoDic objectForKey:@"getSelector"] pointerValue]);
+    NSNumber *alignNum = objc_msgSend(theGear,[pInfoDic[@"getSelector"] pointerValue]);
     [alignSegment setSelectedSegmentIndex:[alignNum integerValue]];
     [self.view addSubview:alignSegment];
 
@@ -83,7 +83,7 @@
 -(void) setTheValue:(id)sender
 {
     // 정렬 설정 값을 NSNumber 객체로 감싸서 전달함.
-    [self saveValue:[NSNumber numberWithInteger:alignSegment.selectedSegmentIndex]];
+    [self saveValue:@(alignSegment.selectedSegmentIndex)];
 }
 
 @end

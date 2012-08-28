@@ -20,12 +20,12 @@
     _title = [[UILabel alloc] initWithFrame:CGRectMake(0, frame.size.height-15, frame.size.width, 15)];
     _title.font = [UIFont boldSystemFontOfSize: 18.0];
     _title.adjustsFontSizeToFitWidth = YES;
-    _title.textAlignment = UITextAlignmentCenter;
+    _title.textAlignment = NSTextAlignmentCenter;
     _title.backgroundColor = [UIColor clearColor];
     _title.textColor = [UIColor whiteColor];
     _title.shadowColor = [UIColor darkGrayColor];
     _title.shadowOffset = CGSizeMake(0, -1);
-    _title.minimumFontSize = 10.0;
+//    _title.minimumFontSize = 10.0;
 
     self.backgroundColor = [UIColor clearColor];
     self.contentView.backgroundColor = self.backgroundColor;

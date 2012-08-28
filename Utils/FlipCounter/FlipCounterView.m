@@ -129,14 +129,14 @@
     }
     
     for (int i=numDigitsToDraw-1; i!=-1; --i) {
-        FlipCounterViewDigitSprite* sprite = [digits objectAtIndex:i];
+        FlipCounterViewDigitSprite* sprite = digits[i];
         
         CGFloat x = (FCV_FRAME_WIDTH * (numDigitsToDraw - i)) - FCV_FRAME_WIDTH;
         
-        UIImage* t = [topFrames objectAtIndex:sprite.topIndex];
+        UIImage* t = topFrames[sprite.topIndex];
         [t drawAtPoint:CGPointMake(x, 0)];
         
-        UIImage* b = [bottomFrames objectAtIndex:sprite.bottomIndex];
+        UIImage* b = bottomFrames[sprite.bottomIndex];
         [b drawAtPoint:CGPointMake(x, FCV_TOPFRAME_HEIGHT)];
     }
 }
@@ -155,7 +155,7 @@
     } else {
         rawCounterValue = value;
 
-        FlipCounterViewDigitSprite* digitIndex = [digits objectAtIndex:0];
+        FlipCounterViewDigitSprite* digitIndex = digits[0];
         
         int overhang = [digitIndex incr:newDelta];
 
@@ -173,7 +173,7 @@
     
     NSUInteger digitIndex = base + 1;
     if ([digits count] > digitIndex) {
-        sprite = [digits objectAtIndex:digitIndex];
+        sprite = digits[digitIndex];
     } else {
         sprite = [[FlipCounterViewDigitSprite alloc] initWithOldValue:0
                                                              newValue:0
@@ -204,7 +204,7 @@
     } else {
         rawCounterValue += amount;
         
-        FlipCounterViewDigitSprite* digitIndex = [digits objectAtIndex:0];
+        FlipCounterViewDigitSprite* digitIndex = digits[0];
         
         int overhang = [digitIndex incr:amount];
         
@@ -265,7 +265,7 @@
     int s=0;
     for (int i=0; i!=numAnimationFrames; ++i) {
         for (int j=s; ((j != (i+1)) && (j != numDigitsToDraw) ); ++j) {
-            FlipCounterViewDigitSprite* sprite = [sprites objectAtIndex:j];
+            FlipCounterViewDigitSprite* sprite = sprites[j];
             
             int from = sprite.oldValue;
             int to = sprite.newValue;

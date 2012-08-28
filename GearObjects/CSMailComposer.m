@@ -8,6 +8,7 @@
 
 #import "CSMailComposer.h"
 #import "CSAppDelegate.h"
+#import "NSData+Base64.h"
 
 @implementation CSMailComposer
 
@@ -46,6 +47,17 @@
     return titleStr;
 }
 
+-(void) setImage:(UIImage *)img
+{
+    if( [img isKindOfClass:[UIImage class]] )
+        mailImage = img;
+}
+
+-(UIImage*) getImage
+{
+    return mailImage;
+}
+
 -(void) setShow:(NSNumber*)BoolValue
 {
     // YES 값인 경우만 반응하자.
@@ -56,18 +68,26 @@
         MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
         picker.mailComposeDelegate = self;
         [picker setSubject:titleStr];
-        [picker setMessageBody:textStr isHTML:NO];
-        // [picker addAttachmentData:mimeType:fileName:];
+        NSMutableString *emailBody = [[NSMutableString alloc] initWithString:@"<html><body>"];
+        [emailBody appendFormat:@"<p>%@</p>", textStr];
+        if( nil != mailImage ){
+            NSData *imageData = [NSData dataWithData:UIImagePNGRepresentation(mailImage)];
+            NSString *base64String = [imageData base64EncodedString];
+            [emailBody appendFormat:@"<p><b><img src='data:image/png;base64,%@'></b></p>",base64String];
+        }
+        [emailBody appendString:@"</body></html>"];
+        [picker setMessageBody:emailBody isHTML:YES];
 
         //[self.view addSubview:picker.view];
-        [((CSAppDelegate*)([UIApplication sharedApplication].delegate)).window.rootViewController presentModalViewController:picker animated:YES];
+        [((CSAppDelegate*)([UIApplication sharedApplication].delegate)).window.rootViewController presentViewController:picker animated:YES completion:NULL];
     }
 }
 
 -(NSNumber*) getShow
 {
-    return [NSNumber numberWithBool:NO];
+    return @NO;
 }
+
 
 //===========================================================================
 
@@ -85,6 +105,7 @@
 
     csResizable = NO;
     csShow = NO;
+    mailImage = nil;
 
     self.info = NSLocalizedString(@"Mail Composer", @"Mail Composer");
     
@@ -93,11 +114,12 @@
     
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Title", P_TXT, @selector(setTitle:),@selector(getTitle));
     NSDictionary *d2 = MAKE_PROPERTY_D(@"Mail Text", P_TXT, @selector(setText:),@selector(getText));
-    NSDictionary *d3 = MAKE_PROPERTY_D(@">Show Action", P_BOOL, @selector(setShow:),@selector(getShow));
-    pListArray = [NSArray arrayWithObjects:d1,d2,d3, nil];
+    NSDictionary *d3 = MAKE_PROPERTY_D(@"Image", P_IMG, @selector(setImage:),@selector(getImage));
+    NSDictionary *d4 = MAKE_PROPERTY_D(@">Show Action", P_BOOL, @selector(setShow:),@selector(getShow));
+    pListArray = @[d1,d2,d3,d4];
 
     NSMutableDictionary MAKE_ACTION_D(@"Closed", A_NUM, a1);
-    actionArray = [NSArray arrayWithObjects:a1, nil];
+    actionArray = @[a1];
 
     return self;
 }
@@ -108,6 +130,7 @@
         [(UIImageView*)csView setImage:[UIImage imageNamed:@"gi_mail.png"]];
         titleStr = [decoder decodeObjectForKey:@"titleStr"];
         textStr = [decoder decodeObjectForKey:@"textStr"];
+        mailImage = nil;
     }
     return self;
 }
@@ -154,19 +177,19 @@
 										  otherButtonTitles: nil];
 	[alert show];	
 	
-	[controller dismissModalViewControllerAnimated:YES];
+	[controller dismissViewControllerAnimated:YES completion:NULL];
 
     SEL act;
     NSNumber *nsMagicNum;
 
-    act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:0] objectForKey:@"selector"]).pointerValue;
+    act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
     if( nil != act ){
-        nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:0]) objectForKey:@"mNum"];
+        nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
         CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
         
         if( nil != gObj ){
             if( [gObj respondsToSelector:act] )
-                [gObj performSelector:act withObject:[NSNumber numberWithInteger:goodOrBad]];
+                [gObj performSelector:act withObject:@(goodOrBad)];
             else
                 EXCLAMATION;
         }

@@ -42,6 +42,8 @@
 #define CS_ACLOMETER    157
 #define CS_ALBUM        158
 #define CS_FBSEND       159
+#define CS_PLAY         160
+#define CS_CAMERA       161
 
 #define CS_NOT          200
 #define CS_AND          201
@@ -86,7 +88,7 @@
 
 #define MAKE_PROPERTY_D(_d1,_d2,_d3,_d4) [[NSDictionary alloc]initWithObjectsAndKeys:_d1,@"name",_d2,@"type",[NSValue valueWithPointer:_d3],@"selector",[NSValue valueWithPointer:_d4],@"getSelector",nil]
 
-#define MAKE_ACTION_D(_d1,_d2,_v) *(_v)=[[NSMutableDictionary alloc] initWithCapacity:4];[_v setObject:(_d1) forKey:@"name"];[_v setObject:_d2 forKey:@"type"];[_v setObject:[NSValue valueWithPointer:nil] forKey:@"selector"];[_v setObject:[NSNumber numberWithInteger:0] forKey:@"mNum"]
+#define MAKE_ACTION_D(_d1,_d2,_v) *(_v)=[[NSMutableDictionary alloc] initWithCapacity:4];[_v setObject:(_d1) forKey:@"name"];[_v setObject:_d2 forKey:@"type"];[_v setObject:[NSValue valueWithPointer:nil] forKey:@"selector"];[_v setObject:@(0) forKey:@"mNum"]
 
 #define DEFAULT_CENTER_D  NSDictionary*xc=MAKE_PROPERTY_D(@">Center X Position",P_NUM,@selector(setCenterX:),@selector(getCenterX));NSDictionary*yc=MAKE_PROPERTY_D(@">Center Y Position",P_NUM,@selector(setCenterY:),@selector(getCenterY))
 

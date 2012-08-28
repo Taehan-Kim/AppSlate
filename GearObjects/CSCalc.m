@@ -27,7 +27,7 @@
 
 -(NSNumber*) getInput1Value
 {
-    return [NSNumber numberWithFloat:value1];
+    return @(value1);
 }
 
 -(void) setPlusValue:(NSNumber*) Value
@@ -43,14 +43,14 @@
         SEL act;
         NSNumber *nsMagicNum;
         
-        act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:0] objectForKey:@"selector"]).pointerValue;
+        act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
         if( nil != act ){
-            nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:0]) objectForKey:@"mNum"];
+            nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
             CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
             
             if( nil != gObj ){
                 if( [gObj respondsToSelector:act] ){
-                    [gObj performSelector:act withObject:[NSNumber numberWithFloat: (value1 + value2)]];
+                    [gObj performSelector:act withObject:@(value1 + value2)];
                     if( resultSave )
                         value1 = (value1 + value2);
                 }else
@@ -62,7 +62,7 @@
 
 -(NSNumber*) getInput2Value
 {
-    return [NSNumber numberWithFloat:value2];
+    return @(value2);
 }
 
 -(void) setMinusValue:(NSNumber*) Value
@@ -78,14 +78,14 @@
         SEL act;
         NSNumber *nsMagicNum;
         
-        act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:0] objectForKey:@"selector"]).pointerValue;
+        act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
         if( nil != act ){
-            nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:0]) objectForKey:@"mNum"];
+            nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
             CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
             
             if( nil != gObj ){
                 if( [gObj respondsToSelector:act] ){
-                    [gObj performSelector:act withObject:[NSNumber numberWithFloat: (value1 - value2)]];
+                    [gObj performSelector:act withObject:@(value1 - value2)];
                     if( resultSave )
                         value1 = (value1 - value2);
                 }else
@@ -108,14 +108,14 @@
         SEL act;
         NSNumber *nsMagicNum;
         
-        act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:0] objectForKey:@"selector"]).pointerValue;
+        act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
         if( nil != act ){
-            nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:0]) objectForKey:@"mNum"];
+            nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
             CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
             
             if( nil != gObj ){
                 if( [gObj respondsToSelector:act] ){
-                    [gObj performSelector:act withObject:[NSNumber numberWithFloat: (value1 * value2)]];
+                    [gObj performSelector:act withObject:@(value1 * value2)];
                     if( resultSave )
                         value1 = (value1 * value2);
                 }else
@@ -144,14 +144,14 @@
         SEL act;
         NSNumber *nsMagicNum;
         
-        act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:0] objectForKey:@"selector"]).pointerValue;
+        act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
         if( nil != act ){
-            nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:0]) objectForKey:@"mNum"];
+            nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
             CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
             
             if( nil != gObj ){
                 if( [gObj respondsToSelector:act] ){
-                    [gObj performSelector:act withObject:[NSNumber numberWithFloat: (value1 / value2)]];
+                    [gObj performSelector:act withObject:@(value1 / value2)];
                     if( resultSave )
                         value1 = (value1 / value2);
                 }else
@@ -171,7 +171,7 @@
 
 -(NSNumber*) getResultSave
 {
-    return [NSNumber numberWithBool:resultSave];
+    return @(resultSave);
 }
 
 
@@ -201,10 +201,10 @@
     NSDictionary *d4 = MAKE_PROPERTY_D(@">Input for Multiplication", P_NUM, @selector(setMultiValue:),@selector(getInput2Value));
     NSDictionary *d5 = MAKE_PROPERTY_D(@">Input for Division", P_NUM, @selector(setDivValue:),@selector(getInput2Value));
     NSDictionary *d6 = MAKE_PROPERTY_D(@"Output Value Set Input #1 Also", P_BOOL, @selector(setResultSave:),@selector(getResultSave));
-    pListArray = [NSArray arrayWithObjects:d1,d2,d3,d4,d5,d6, nil];
+    pListArray = @[d1,d2,d3,d4,d5,d6];
     
     NSMutableDictionary MAKE_ACTION_D(@"Output", A_NUM, a1);
-    actionArray = [NSArray arrayWithObjects:a1, nil];
+    actionArray = @[a1];
     
     return self;
 }

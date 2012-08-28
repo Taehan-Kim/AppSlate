@@ -30,9 +30,9 @@
         SEL act;
         NSNumber *nsMagicNum;
         
-        act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:0] objectForKey:@"selector"]).pointerValue;
+        act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
         if( nil != act ){
-            nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:0]) objectForKey:@"mNum"];
+            nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
             CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
 
             if( nil != gObj ){
@@ -41,7 +41,7 @@
                 else if( base < var ) result = 1;
 
                 if( [gObj respondsToSelector:act] )
-                    [gObj performSelector:act withObject:[NSNumber numberWithInteger:result]];
+                    [gObj performSelector:act withObject:@(result)];
                 else
                     EXCLAMATION;
             }
@@ -51,7 +51,7 @@
 
 -(NSNumber*) getBaseValue
 {
-    return [NSNumber numberWithFloat:base];
+    return @(base);
 }
 
 -(void) setVariableValue:(NSNumber*) num
@@ -67,9 +67,9 @@
         SEL act;
         NSNumber *nsMagicNum;
         
-        act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:0] objectForKey:@"selector"]).pointerValue;
+        act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
         if( nil != act ){
-            nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:0]) objectForKey:@"mNum"];
+            nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
             CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
             
             if( nil != gObj ){
@@ -78,7 +78,7 @@
                 else if( base < var ) result = 1;
                 
                 if( [gObj respondsToSelector:act] )
-                    [gObj performSelector:act withObject:[NSNumber numberWithInteger:result]];
+                    [gObj performSelector:act withObject:@(result)];
                 else
                     EXCLAMATION;
             }
@@ -88,7 +88,7 @@
 
 -(NSNumber*) getVariableValue
 {
-    return [NSNumber numberWithFloat:var];
+    return @(var);
 }
 
 //===========================================================================
@@ -114,10 +114,10 @@
     
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Base Number", P_NUM, @selector(setBaseValue:),@selector(getBaseValue));
     NSDictionary *d2 = MAKE_PROPERTY_D(@">Input Number", P_NUM, @selector(setVariableValue:),@selector(getVariableValue));
-    pListArray = [NSArray arrayWithObjects:d1,d2, nil];
+    pListArray = @[d1,d2];
 
     NSMutableDictionary MAKE_ACTION_D(@"Result", A_NUM, a1);
-    actionArray = [NSArray arrayWithObjects:a1, nil];
+    actionArray = @[a1];
 
     return self;
 }

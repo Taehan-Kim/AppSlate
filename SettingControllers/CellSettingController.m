@@ -66,20 +66,20 @@
 //    [getBtn setEnabled:YES];
     [self.view addSubview:getBtn];
 
-    NSDictionary *sDic = objc_msgSend(theGear,[[pInfoDic objectForKey:@"getSelector"] pointerValue],0);
+    NSDictionary *sDic = objc_msgSend(theGear,[pInfoDic[@"getSelector"] pointerValue],0);
 
     textField = [[UITextView alloc] initWithFrame:CGRectMake(C_GAP, 38.0+(C_GAP*3), C_WIDTH, 55.0)];
     [textField setFont:[UIFont systemFontOfSize:15.0]];
     [textField.layer setCornerRadius:5.0];
     [textField setClipsToBounds:YES];
-    [textField setText:[sDic objectForKey:@"Text"]];
+    [textField setText:sDic[@"Text"]];
     [self.view addSubview:textField];
 
     subTextField = [[UITextView alloc] initWithFrame:CGRectMake(C_GAP, 88.0+(C_GAP*6), C_WIDTH, 55.0)];
     [subTextField setFont:[UIFont systemFontOfSize:15.0]];
     [subTextField.layer setCornerRadius:5.0];
     [subTextField setClipsToBounds:YES];
-    [subTextField setText:[sDic objectForKey:@"Sub"]];
+    [subTextField setText:sDic[@"Sub"]];
     [self.view addSubview:subTextField];
 
     saveBtn = [[BButton alloc] initWithFrame:CGRectMake(C_GAP, 143.0+(C_GAP*10), C_WIDTH, 40)];
@@ -105,19 +105,19 @@
 -(void) getCellValue:(id)sender
 {
     NSUInteger idx = [indexField.text integerValue];
-    NSDictionary *sDic = objc_msgSend(theGear,[[pInfoDic objectForKey:@"getSelector"] pointerValue],idx);
+    NSDictionary *sDic = objc_msgSend(theGear,[pInfoDic[@"getSelector"] pointerValue],idx);
 
     if( nil == sDic ) return; // 잘못된 인덱스 값.
 
-    [textField setText:[sDic objectForKey:@"Text"]];
-    [subTextField setText:[sDic objectForKey:@"Sub"]];
+    [textField setText:sDic[@"Text"]];
+    [subTextField setText:sDic[@"Sub"]];
 }
 
 -(void) setTheValue:(id)sender
 {
-    SEL selector = [[pInfoDic objectForKey:@"selector"] pointerValue];
+    SEL selector = [pInfoDic[@"selector"] pointerValue];
 
-    NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:textField.text,@"Text",subTextField.text,@"Sub", nil];
+    NSDictionary *dic = @{textField.text:@"Text", subTextField.text:@"Sub"};
     objc_msgSend(theGear, selector, dic, [indexField.text integerValue] );
 
     [self doSound];

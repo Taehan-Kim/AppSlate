@@ -56,9 +56,10 @@
 
         UIBarButtonItem *closeBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(closeMe)];
         UIBarButtonItem *flexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+//        UIBarButtonItem *sendBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionMode)];
         UIBarButtonItem *deleteBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(delMode)];
 
-        [toolbar setItems:[NSArray arrayWithObjects:closeBtn,flexible,deleteBtn,nil]];
+        [toolbar setItems:@[closeBtn,flexible,deleteBtn]];
         [self.view addSubview:toolbar];
     }
 
@@ -84,14 +85,15 @@
 
         UIBarButtonItem *closeBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(closeMe)];
         UIBarButtonItem *flexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+//        UIBarButtonItem *sendBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionMode)];
         UIBarButtonItem *deleteBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(delMode)];
         
-        [toolbar setItems:[NSArray arrayWithObjects:closeBtn,flexible,deleteBtn,nil] animated:YES];
+        [toolbar setItems:@[closeBtn,flexible,deleteBtn] animated:YES];
 
         return;
     }
 
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 - (void) delMode
@@ -102,7 +104,18 @@
     UIBarButtonItem *flexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     UIBarButtonItem *closeBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeMe)];
     
-    [toolbar setItems:[NSArray arrayWithObjects:flexible,closeBtn,nil] animated:YES];
+    [toolbar setItems:@[flexible,closeBtn] animated:YES];
+}
+
+- (void) actionMode
+{
+    mode = SENDING;
+    [bookshelfVC setMode:mode];
+    
+    UIBarButtonItem *flexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem *closeBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeMe)];
+    
+    [toolbar setItems:@[flexible,closeBtn] animated:YES];
 }
 
 @end

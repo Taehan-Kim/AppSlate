@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "CSGearObject.h"
+#import "AFPhotoEditorController.h"
 
-@interface CSImage : CSGearObject
+@interface CSImage : CSGearObject <AFPhotoEditorControllerDelegate>
 
 -(id) initGear;
 

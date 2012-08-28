@@ -61,7 +61,7 @@
 
 -(NSNumber*) getMinimumValue
 {
-    return [NSNumber numberWithFloat:((UISlider*)csView).minimumValue];
+    return @( ((UISlider*)csView).minimumValue );
 }
 
 -(void) setMaximumValue:(NSNumber*)number
@@ -74,7 +74,7 @@
 
 -(NSNumber*) getMaximumValue
 {
-    return [NSNumber numberWithFloat:((UISlider*)csView).maximumValue];
+    return @( ((UISlider*)csView).maximumValue );
 }
 
 -(void) setThumbValue:(NSNumber*)number
@@ -100,7 +100,7 @@
 
 -(NSNumber*) getThumbValue
 {
-    return [NSNumber numberWithInteger:((UISlider*)csView).value];
+    return @( ((UISlider*)csView).value );
 }
 
 -(void) setContinuosChange:(NSNumber*)boolVal
@@ -111,7 +111,7 @@
 
 -(NSNumber*) getContinuosChange
 {
-    return[NSNumber numberWithBool:((UISlider*)csView).continuous];
+    return@( ((UISlider*)csView).continuous );
 }
 
 #pragma mark -
@@ -148,12 +148,12 @@
     NSDictionary *d6 = MAKE_PROPERTY_D(@"Thumb Color", P_COLOR, @selector(setThumbColor:),@selector(getThumbColor));
     NSDictionary *d7 = MAKE_PROPERTY_D(@"Continuos Change", P_BOOL, @selector(setContinuosChange:),@selector(getContinuosChange));
 
-    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2,d3,d4,d5,d6,d7, nil];
+    pListArray = @[xc,yc,d0,d1,d2,d3,d4,d5,d6,d7];
 
     NSMutableDictionary MAKE_ACTION_D(@"Changed Value", A_NUM, a1);
     NSMutableDictionary MAKE_ACTION_D(@"Minimum Value", A_NUM, a2);
     NSMutableDictionary MAKE_ACTION_D(@"Maximum Value", A_NUM, a3);
-    actionArray = [NSArray arrayWithObjects:a1, a2, a3, nil];
+    actionArray = @[a1, a2, a3];
 
     return self;
 }
@@ -175,44 +175,44 @@
     CGFloat myValue = ((UISlider*)sender).value;
 
     // 1. value changed
-    act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:0] objectForKey:@"selector"]).pointerValue;
+    act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
     if( nil != act ){
-        nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:0]) objectForKey:@"mNum"];
+        nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
         CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
         
         if( nil != gObj ){
             if( [gObj respondsToSelector:act] )
-                [gObj performSelector:act withObject:[NSNumber numberWithFloat:myValue]];
+                [gObj performSelector:act withObject:@(myValue)];
             else
                 EXCLAMATION;
         }
     }
 
     // 2. did min value
-    act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:1] objectForKey:@"selector"]).pointerValue;
+    act = ((NSValue*)((NSDictionary*)actionArray[1])[@"selector"]).pointerValue;
     if( nil != act && myValue == ((UISlider*)sender).minimumValue )
     {
-        nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:1]) objectForKey:@"mNum"];
+        nsMagicNum = ((NSDictionary*)actionArray[1])[@"mNum"];
         CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
         
         if( nil != gObj ){
             if( [gObj respondsToSelector:act] )
-                [gObj performSelector:act withObject:[NSNumber numberWithFloat:myValue]];
+                [gObj performSelector:act withObject:@(myValue)];
             else
                 EXCLAMATION;
         }
     }
 
     // 3. did max value
-    act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:2] objectForKey:@"selector"]).pointerValue;
+    act = ((NSValue*)((NSDictionary*)actionArray[2])[@"selector"]).pointerValue;
     if( nil != act && myValue == (NSUInteger)((UISlider*)sender).maximumValue )
     {
-        nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:2]) objectForKey:@"mNum"];
+        nsMagicNum = ((NSDictionary*)actionArray[2])[@"mNum"];
         CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
         
         if( nil != gObj ){
             if( [gObj respondsToSelector:act] )
-                [gObj performSelector:act withObject:[NSNumber numberWithInteger:myValue]];
+                [gObj performSelector:act withObject:@(myValue)];
             else
                 EXCLAMATION;
         }

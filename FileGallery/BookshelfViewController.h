@@ -7,13 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MessageUI/MFMailComposeViewController.h>
 #import "AQGridView.h"
 
 #define SELECTION 0
 #define DELETING  1
-#define RENAME    2  // not yet.
+#define SENDING   2
 
-@interface BookshelfViewController : UIViewController <AQGridViewDelegate, AQGridViewDataSource>
+@interface BookshelfViewController : UIViewController <AQGridViewDelegate, AQGridViewDataSource, MFMailComposeViewControllerDelegate>
 {
     NSMutableArray * _imageNames;
     AQGridView * _gridView;

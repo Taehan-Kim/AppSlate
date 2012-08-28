@@ -37,7 +37,7 @@
         CGPoint sp = gO.csView.center;
         
         for( NSDictionary *destDic in [gO getActionList] ){
-            CSGearObject *dg = [USERCONTEXT getGearWithMagicNum:[[destDic objectForKey:@"mNum"] integerValue]];
+            CSGearObject *dg = [USERCONTEXT getGearWithMagicNum:[destDic[@"mNum"] integerValue]];
             if( nil != dg ){
                 CGPoint dp = dg.csView.center;
                 CGContextMoveToPoint(context, sp.x + 0.5, sp.y + 0.5);

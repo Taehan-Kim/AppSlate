@@ -30,14 +30,14 @@
         SEL act;
         NSNumber *nsMagicNum;
         
-        act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:0] objectForKey:@"selector"]).pointerValue;
+        act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
         if( nil != act ){
-            nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:0]) objectForKey:@"mNum"];
+            nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
             CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
             
             if( nil != gObj ){
                 if( [gObj respondsToSelector:act] )
-                    [gObj performSelector:act withObject:[NSNumber numberWithBool: !(value1 & value2)]];
+                    [gObj performSelector:act withObject:@( !(value1 & value2) )];
                 else
                     EXCLAMATION;
             }
@@ -48,7 +48,7 @@
 
 -(NSNumber*) getInput1Value
 {
-    return [NSNumber numberWithBool:value1];
+    return @(value1);
 }
 
 -(void) setInput2Value:(NSNumber*) BoolValue
@@ -64,14 +64,14 @@
         SEL act;
         NSNumber *nsMagicNum;
         
-        act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:0] objectForKey:@"selector"]).pointerValue;
+        act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
         if( nil != act ){
-            nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:0]) objectForKey:@"mNum"];
+            nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
             CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
             
             if( nil != gObj ){
                 if( [gObj respondsToSelector:act] )
-                    [gObj performSelector:act withObject:[NSNumber numberWithBool: !(value1 & value2)]];
+                    [gObj performSelector:act withObject:@( !(value1 & value2) )];
                 else
                     EXCLAMATION;
             }
@@ -82,7 +82,7 @@
 
 -(NSNumber*) getInput2Value
 {
-    return [NSNumber numberWithBool:value2];
+    return @(value2);
 }
 
 //===========================================================================
@@ -106,10 +106,10 @@
 
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Input #1", P_NUM, @selector(setInput1Value:),@selector(getInput1Value));
     NSDictionary *d2 = MAKE_PROPERTY_D(@">Input #2", P_NUM, @selector(setInput2Value:),@selector(getInput2Value));
-    pListArray = [NSArray arrayWithObjects:d1,d2, nil];
+    pListArray = @[d1,d2];
 
     NSMutableDictionary MAKE_ACTION_D(@"Output", A_NUM, a1);
-    actionArray = [NSArray arrayWithObjects:a1, nil];
+    actionArray = @[a1];
 
     return self;
 }

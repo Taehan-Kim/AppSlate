@@ -38,8 +38,8 @@
     panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(actionLinkDragGesture:)];
     [self addGestureRecognizer:panGestureRecognizer];
     
-    actionGear = [userInfo objectForKey:@"theGear"];
-    actionIndex = ((NSNumber*)[userInfo objectForKey:@"theActionIndex"]).integerValue;
+    actionGear = userInfo[@"theGear"];
+    actionIndex = ((NSNumber*)userInfo[@"theActionIndex"]).integerValue;
 
     // handle 을 보여주자.
     actionHandle = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];

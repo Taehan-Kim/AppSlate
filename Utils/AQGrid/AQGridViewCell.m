@@ -127,7 +127,7 @@
         _contentView.autoresizesSubviews = YES;
         self.autoresizesSubviews = YES;
         _contentView.backgroundColor = [UIColor whiteColor];
-		[_contentView.layer setValue: [NSNumber numberWithBool: YES] forKey: @"KoboHackInterestingLayer"];
+		[_contentView.layer setValue:@YES forKey: @"KoboHackInterestingLayer"];
         [self addSubview: _contentView];
     }
 	return ( _contentView );
@@ -206,7 +206,7 @@
 			id value = view.backgroundColor;
 			if ( value == nil )
 				value = [NSNull null];
-			[info setObject: value forKey: @"backgroundColor"];
+			info[@"backgroundColor"] = value;
 			
 			view.opaque = NO;
 			view.backgroundColor = color;
@@ -223,7 +223,7 @@
 		NSMutableDictionary * info = (NSMutableDictionary *) objc_unretainedObject(CFDictionaryGetValue( _selectionColorInfo, objc_unretainedPointer(view) ));
 		if ( info != nil )
 		{
-			id value = [info objectForKey: @"backgroundColor"];
+			id value = info[@"backgroundColor"];
 			if ( value == nil )
 				continue;
 			
@@ -254,15 +254,15 @@
 			
 			// don't overwrite any prior cache of a view's original highlighted state.
 			// this is because 'highlighted' will be set, then 'selected', which can perform 'highlight' again before the animation completes
-			if ( [info objectForKey: @"highlighted"] == nil )
+			if ( info[@"highlighted"] == nil )
 			{
 				id value = [view valueForKey: @"highlighted"];
 				if ( value == nil )
-					value = [NSNumber numberWithBool: NO];
-				[info setObject: value forKey: @"highlighted"];
+					value = @NO;
+				info[@"highlighted"] = value;
 			}
 			
-			[view setValue: [NSNumber numberWithBool: YES]
+			[view setValue:@YES
 					forKey: @"highlighted"];
 		}
 		
@@ -278,7 +278,7 @@
 			NSMutableDictionary * info = (NSMutableDictionary *) objc_unretainedObject(CFDictionaryGetValue( _selectionColorInfo, objc_unretainedPointer(view) ));
 			if ( info != nil )
 			{
-				id value = [info objectForKey: @"highlighted"];
+				id value = info[@"highlighted"];
 				[view setValue: value forKey: @"highlighted"];
 			}
 		}
@@ -388,7 +388,7 @@
 											  interval: 0.1
 												target: self
 											  selector: @selector(flipHighlightTimerFired:)
-											  userInfo: [NSNumber numberWithBool: highlightOn]
+											  userInfo: @( highlightOn)
 											   repeats: NO];
 		[[NSRunLoop currentRunLoop] addTimer: _fadeTimer forMode: NSDefaultRunLoopMode];
 	}

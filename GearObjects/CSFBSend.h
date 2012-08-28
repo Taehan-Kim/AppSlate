@@ -7,11 +7,11 @@
 //
 
 #import "CSGearObject.h"
-#import "FBConnect.h"
 
-@interface CSFBSend : CSGearObject <FBDialogDelegate>
+@interface CSFBSend : CSGearObject
 {
     NSString *name, *caption, *message, *link;
+    UIImage *img;
 }
 
 -(id) initGear;
@@ -27,6 +27,9 @@
 
 -(void) setLink:(NSString*)txt;
 -(NSString*) getLink;
+
+-(void) setImage:(UIImage*)image;
+-(UIImage*) getImage;
 
 -(void) setShow:(NSNumber*)BoolValue;
 -(NSNumber*) getShow;

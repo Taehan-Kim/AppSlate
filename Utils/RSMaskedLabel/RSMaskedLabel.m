@@ -45,7 +45,7 @@
         [self setBackgroundColor:[UIColor clearColor]];
         knockoutLabel = [aDecoder decodeObjectForKey:@"knockoutLabel"];
         [self setText:[aDecoder decodeObjectForKey:@"text"]];
-        [self setFont:[aDecoder decodeObjectForKey:@"font"]];
+        [self setFont:[aDecoder decodeObjectForKey:@"font"]];  // TODO:Crash debug
         CALayer *gradientLayer = [self layer];
         [gradientLayer setBackgroundColor:[[aDecoder decodeObjectForKey:@"backColor"] CGColor]];
         [gradientLayer setCornerRadius:10];
@@ -73,26 +73,12 @@
      
     // create the UILabel for the text
     knockoutLabel = [[UILabel alloc] initWithFrame:[self frame]];
-    [knockoutLabel setTextAlignment:UITextAlignmentCenter];
+    [knockoutLabel setTextAlignment:NSTextAlignmentCenter];
     [knockoutLabel setFont:[UIFont boldSystemFontOfSize:30.0]];
     [knockoutLabel setNumberOfLines:1];
     [knockoutLabel setBackgroundColor:[UIColor clearColor]];
     [knockoutLabel setTextColor:[UIColor whiteColor]];
-    
-    // create our filled area (in this case a gradient)
-//    NSArray *colors = [NSArray arrayWithObjects:
-//                        (id)[[UIColor colorWithRed:0.349 green:0.365 blue:0.376 alpha:1.000] CGColor],
-//                        (id)[[UIColor colorWithRed:0.455 green:0.490 blue:0.518 alpha:1.000] CGColor],
-//                        (id)[[UIColor colorWithRed:0.412 green:0.427 blue:0.439 alpha:1.000] CGColor],
-//                        (id)[[UIColor colorWithRed:0.208 green:0.224 blue:0.235 alpha:1.000] CGColor],
-//                        nil];
-//    
-//    NSArray *gradientLocations = [NSArray arrayWithObjects:
-//                                  [NSNumber numberWithFloat:0.0],
-//                                  [NSNumber numberWithFloat:0.54],
-//                                  [NSNumber numberWithFloat:0.55],
-//                                  [NSNumber numberWithFloat:1], nil];
-    
+
     // create a nice gradient layer to use as our fill
 //    CAGradientLayer *gradientLayer = (CAGradientLayer *)[self layer];
     CALayer *gradientLayer = [self layer];
@@ -139,8 +125,8 @@
     textLayer = [CALayer layer];
     
     // stick the image in the layer
-    [textLayer setContents:(__bridge id)invertedAlphaImage];
-    
+    [textLayer setContents:(__bridge id)invertedAlphaImage]; // TODO:Crash debug
+
     [[self layer] setMask:textLayer];
     
     [self setNeedsLayout];

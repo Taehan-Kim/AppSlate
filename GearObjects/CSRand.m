@@ -30,15 +30,15 @@
         SEL act;
         NSNumber *nsMagicNum;
 
-        act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:0] objectForKey:@"selector"]).pointerValue;
+        act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
         if( nil != act ){
-            nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:0]) objectForKey:@"mNum"];
+            nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
             CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
 
             NSInteger output = RANDOMNUM(minValue,maxValue);
             if( nil != gObj ){
                 if( [gObj respondsToSelector:act] )
-                    [gObj performSelector:act withObject:[NSNumber numberWithInteger:output]];
+                    [gObj performSelector:act withObject:@(output)];
                 else
                     EXCLAMATION;
             }
@@ -48,7 +48,7 @@
 
 -(NSNumber*) getRequest
 {
-    return [NSNumber numberWithBool:NO];
+    return @NO;
 }
 
 -(void) setMinValue:(NSNumber*)val
@@ -61,7 +61,7 @@
 
 -(NSNumber*) getMinValue
 {
-    return [NSNumber numberWithInteger:minValue];
+    return @(minValue);
 }
 
 -(void) setMaxValue:(NSNumber*)val
@@ -74,7 +74,7 @@
 
 -(NSNumber*) getMaxValue
 {
-    return [NSNumber numberWithInteger:maxValue];
+    return @(maxValue);
 }
 
 //===========================================================================
@@ -102,10 +102,10 @@
     NSDictionary *d1 = MAKE_PROPERTY_D(@">Output Request", P_BOOL, @selector(setRequest:),@selector(getRequest));
     NSDictionary *d2 = MAKE_PROPERTY_D(@"Minimum Int. Value", P_NUM, @selector(setMinValue:),@selector(getMinValue));
     NSDictionary *d3 = MAKE_PROPERTY_D(@"Maximum Int. Value", P_NUM, @selector(setMaxValue:),@selector(getMaxValue));
-    pListArray = [NSArray arrayWithObjects:d1,d2,d3, nil];
+    pListArray = @[d1,d2,d3];
     
     NSMutableDictionary MAKE_ACTION_D(@"Output", A_NUM, a1);
-    actionArray = [NSArray arrayWithObjects:a1, nil];
+    actionArray = @[a1];
     
     return self;
 }

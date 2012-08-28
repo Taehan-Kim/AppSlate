@@ -80,7 +80,7 @@
     NSDictionary *d3 = MAKE_PROPERTY_D(@"Text Font", P_FONT, @selector(setFont:),@selector(getFont));
 //    NSDictionary *d5 = MAKE_PROPERTY_D(@"L/R Alignment", P_ALIGN, @selector(setTextAlignment:),@selector(getTextAlignment));
 
-    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2,d3, nil];
+    pListArray = @[xc,yc,d0,d1,d2,d3];
 
     return self;
 }

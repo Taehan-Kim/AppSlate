@@ -25,17 +25,14 @@
 #define DEGREES_TO_RADIANS(angle) (angle / 180.0 * 3.1415926)
 
 // 폰트
-#define CS_BOLD_FONT(s) [UIFont fontWithName:@"Helvetica-Bold" size:s]
-#define CS_FONT(s) [UIFont fontWithName:@"Helvetica" size:s]
+#define CS_BOLD_FONT(s) [UIFont fontWithName:@"Helvetica-Bold"size:s]
+#define CS_FONT(s)      [UIFont fontWithName:@"Helvetica"size:s]
 
 // 칼라
 #define CS_RGB(r, g, b) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:1]
 // 알파가 있는 칼라
 #define CS_RGBA(r, g, b, a) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
 #define CSCLEAR [UIColor clearColor]
-
-// num for object
-#define NSNUM(_n_)          [NSNumber numberWithInteger:_n_]
 
 // Waiting View
 #define STOP_WAIT_VIEW  	[[UserContext sharedUserContext] stopWaitView]

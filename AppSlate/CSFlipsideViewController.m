@@ -12,8 +12,6 @@
 
 @implementation CSFlipsideViewController
 
-@synthesize delegate = _delegate;
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -21,64 +19,66 @@
         self.contentSizeForViewInPopover = CGSizeMake(320.0, 400.0);
 
         // 목록에 나타날 부품 항목을 구성한다. 각 항목 하나는 Dictionary 로 되어 있음.
-        NSArray  *keys = [[NSArray alloc] initWithObjects:@"name",@"desc",@"icon",@"tag", nil];
-        gearList = [[NSArray alloc] initWithObjects:
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Label",@"Simple Text Label", @"gi_label.png", NSNUM(CS_LABEL), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Number Label",@"Number/Currency Label", @"gi_numLabel.png", NSNUM(CS_NUMLABEL), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Masked Label",@"Inverse Color Text Label", @"gi_maskedlabel.png", NSNUM(CS_MASKEDLABEL), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Note",@"Text Note - with Evernote backup feature", @"gi_note.png", NSNUM(CS_NOTE), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Light Bulb",@"Small bulb which changeable color", @"gi_bulb.png", NSNUM(CS_BULB), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Flip Counter",@"Flip animation integer number", @"gi_flipcount.png", NSNUM(CS_FLIPCNT), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Text Field",@"User can input some text", @"gi_textfield.png", NSNUM(CS_TEXTFIELD), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Button Text Field",@"Input text filed with button", @"gi_textfieldbtn.png", NSNUM(CS_BTNTEXTFIELD), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Basic Switch",@"On/Off switch", @"gi_switch.png", NSNUM(CS_SWITCH), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Button", @"Basic button", @"gi_button.png", NSNUM(CS_BUTTON), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Toggle Button", @"Toggle push button", @"gi_togglebtn.png", NSNUM(CS_TOGGLEBTN), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Touch Button", @"On value only when touch status", @"gi_touchbtn.png", NSNUM(CS_TOUCHBTN), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Slider", @"Horizontal Bar Slider", @"gi_slider.png", NSNUM(CS_SLIDER), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Progress Bar", @"Horizontal Progress Bar", @"gi_progress.png", NSNUM(CS_PROGRESS), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Table", @"Basic table view", @"gi_table.png", NSNUM(CS_TABLE), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"RSS Table", @"RSS Feed table view", @"gi_rsstable.png", NSNUM(CS_RSSTABLE), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Twitter Table", @"Twitter Timeline table view", @"gi_twtable.png", NSNUM(CS_TWTABLE), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Image", @"Image view", @"gi_image.png", NSNUM(CS_IMAGE), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Web View", @"Internet Web view", @"gi_webview.png", NSNUM(CS_WEBVIEW), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Map View", @"Google Map view", @"gi_mapview.png", NSNUM(CS_MAPVIEW), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Analog Clock", @"Now time clock, and time editable", @"gi_clock.png", NSNUM(CS_CLOCK), nil] forKeys:keys],
+        NSArray  *keys = @[@"name",@"desc",@"icon",@"tag"];
+        gearList = @[
+                    [[NSDictionary alloc] initWithObjects: @[@"Label",@"Simple Text Label", @"gi_label.png", @(CS_LABEL)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Number Label",@"Number/Currency Label", @"gi_numLabel.png", @(CS_NUMLABEL)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Masked Label",@"Inverse Color Text Label", @"gi_maskedlabel.png", @(CS_MASKEDLABEL)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Note",@"Text Note - with Evernote backup feature", @"gi_note.png", @(CS_NOTE)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Light Bulb",@"Small bulb which changeable color", @"gi_bulb.png", @(CS_BULB)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Flip Counter",@"Flip animation integer number", @"gi_flipcount.png", @(CS_FLIPCNT)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Text Field",@"User can input some text", @"gi_textfield.png", @(CS_TEXTFIELD)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Button Text Field",@"Input text filed with button", @"gi_textfieldbtn.png", @(CS_BTNTEXTFIELD)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Basic Switch",@"On/Off switch", @"gi_switch.png", @(CS_SWITCH)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Button", @"Basic button", @"gi_button.png", @(CS_BUTTON)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Toggle Button", @"Toggle push button", @"gi_togglebtn.png", @(CS_TOGGLEBTN)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Touch Button", @"On value only when touch status", @"gi_touchbtn.png", @(CS_TOUCHBTN)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Slider", @"Horizontal Bar Slider", @"gi_slider.png", @(CS_SLIDER)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Progress Bar", @"Horizontal Progress Bar", @"gi_progress.png", @(CS_PROGRESS)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Table", @"Basic table view", @"gi_table.png", @(CS_TABLE)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"RSS Table", @"RSS Feed table view", @"gi_rsstable.png", @(CS_RSSTABLE)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Twitter Table", @"Twitter Timeline table view", @"gi_twtable.png", @(CS_TWTABLE)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Image", @"Image view & editor", @"gi_image.png", @(CS_IMAGE)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Web View", @"Internet Web view", @"gi_webview.png", @(CS_WEBVIEW)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Map View", @"Google Map view", @"gi_mapview.png", @(CS_MAPVIEW)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Analog Clock", @"Now time clock, and time editable", @"gi_clock.png", @(CS_CLOCK)] forKeys:keys],
                     //  -- -- -- -- -- -- -- -- -- -- -- -- --
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Alert", @"Popup Alert View", @"gi_alert.png", NSNUM(CS_ALERT), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Text Input Alert", @"Popup Alert has Text Field", @"gi_textalert.png", NSNUM(CS_TEXTALERT), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"E-Mail Composer", @"E-mail Composer View", @"gi_mail.png", NSNUM(CS_MAIL), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Tweet Composer", @"Tweet Composer for Twitter", @"gi_tweet.png", NSNUM(CS_TWITSEND), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Facebook Feed", @"Facebook Feed Dialog", @"gi_fbook.png", NSNUM(CS_FBSEND), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Photo Album", @"iPad Photo Library", @"gi_album.png", NSNUM(CS_ALBUM), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Tick Generator", @"Tick Signal Generator", @"gi_tick.png", NSNUM(CS_TICK), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Now", @"Now Date & Time Value", @"gi_date.png", NSNUM(CS_NOW), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Random Number Generator", @"Random number generator", @"gi_rand.png", NSNUM(CS_RAND), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Accelerometer", @"Hardware Accelerometer", @"gi_aclo.png", NSNUM(CS_ACLOMETER), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Alert", @"Popup Alert View", @"gi_alert.png", @(CS_ALERT)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Text Input Alert", @"Popup Alert has Text Field", @"gi_textalert.png", @(CS_TEXTALERT)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"E-Mail Composer", @"E-mail Composer View", @"gi_mail.png", @(CS_MAIL)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Tweet Composer", @"Tweet Composer for Twitter", @"gi_tweet.png", @(CS_TWITSEND)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Facebook Feed", @"Facebook Feed Dialog", @"gi_fbook.png", @(CS_FBSEND)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Photo Album", @"iPad Photo Library", @"gi_album.png", @(CS_ALBUM)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Camera", @"iPad Camera for take a photo", @"gi_cam.png", @(CS_CAMERA)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Tick Generator", @"Tick Signal Generator", @"gi_tick.png", @(CS_TICK)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Now", @"Now Date & Time Value", @"gi_date.png", @(CS_NOW)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Random Number Generator", @"Random number generator", @"gi_rand.png", @(CS_RAND)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Accelerometer", @"Hardware Accelerometer", @"gi_aclo.png", @(CS_ACLOMETER)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Music Player", @"iTunes Music Player", @"gi_play.png", @(CS_PLAY)] forKeys:keys],
                     //  -- -- -- -- -- -- -- -- -- -- -- -- --
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"NOT", @"Logical NOT Gate", @"gi_not.png", NSNUM(CS_NOT), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"AND", @"Logical AND Gate", @"gi_and.png", NSNUM(CS_AND), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"OR", @"Logical OR Gate", @"gi_or.png", NSNUM(CS_OR), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"XOR", @"Logical Exclusive OR Gate", @"gi_xor.png", NSNUM(CS_XOR), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"NAND", @"Logical NAND Gate", @"gi_nand.png", NSNUM(CS_NAND), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"NOR", @"Logical NOR Gate", @"gi_nor.png", NSNUM(CS_NOR), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"XNOR", @"Logical Exclusive NOR Gate", @"gi_xnor.png", NSNUM(CS_XNOR), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Tee", @"Split input value", @"gi_tee.png", NSNUM(CS_TEE), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Number Compare", @"Number Compare and output result", @"gi_numcomp.png", NSNUM(CS_NUMCOMP), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"String Compare", @"String Compare and output result", @"gi_strcomp.png", NSNUM(CS_STRCOMP), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Calculator", @"Number Calculator", @"gi_calc.png", NSNUM(CS_CALC), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"String-Number Converter", @"Convert String to Number", @"gi_atof.png", NSNUM(CS_ATOF), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"String Concatenator", @"Link String to String", @"gi_strcat.png", NSNUM(CS_STRCAT), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"INT , ABS Function", @"Convert Number Integer or Absolute val.", @"gi_abs.png", NSNUM(CS_ABS), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Stack", @"First In, Last Out data pocket", @"gi_stack.png", NSNUM(CS_STACK), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Queue", @"First In, First Out data pocket", @"gi_queue.png", NSNUM(CS_QUEUE), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Radian/Degree Converter", @"Convert Radian value to Degree or Deg to Rad.", @"gi_raddeg.png", NSNUM(CS_RADDEG), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Trigonometric Functions", @"Sine, Cosine, and Tangent function", @"gi_trigono.png", NSNUM(CS_TRI), nil] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"NOT", @"Logical NOT Gate", @"gi_not.png", @(CS_NOT)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"AND", @"Logical AND Gate", @"gi_and.png", @(CS_AND)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"OR", @"Logical OR Gate", @"gi_or.png", @(CS_OR)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"XOR", @"Logical Exclusive OR Gate", @"gi_xor.png", @(CS_XOR)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"NAND", @"Logical NAND Gate", @"gi_nand.png", @(CS_NAND)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"NOR", @"Logical NOR Gate", @"gi_nor.png", @(CS_NOR)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"XNOR", @"Logical Exclusive NOR Gate", @"gi_xnor.png", @(CS_XNOR)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Tee", @"Split input value", @"gi_tee.png", @(CS_TEE)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Number Compare", @"Number Compare and output result", @"gi_numcomp.png", @(CS_NUMCOMP)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"String Compare", @"String Compare and output result", @"gi_strcomp.png", @(CS_STRCOMP)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Calculator", @"Number Calculator", @"gi_calc.png", @(CS_CALC)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"String-Number Converter", @"Convert String to Number", @"gi_atof.png", @(CS_ATOF)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"String Concatenator", @"Link String to String", @"gi_strcat.png", @(CS_STRCAT)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"INT , ABS Function", @"Convert Number Integer or Absolute val.", @"gi_abs.png", @(CS_ABS)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Stack", @"First In, Last Out data pocket", @"gi_stack.png", @(CS_STACK)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Queue", @"First In, First Out data pocket", @"gi_queue.png", @(CS_QUEUE)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Radian/Degree Converter", @"Convert Radian value to Degree or Deg to Rad.", @"gi_raddeg.png", @(CS_RADDEG)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Trigonometric Functions", @"Sine, Cosine, and Tangent function", @"gi_trigono.png", @(CS_TRI)] forKeys:keys],
                     //
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Rectangular", @"Rectangular Decoration", @"gi_rect.png", NSNUM(CS_RECT), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Horizontal Line", @"Horizontal Line Decoration", @"gi_hline.png", NSNUM(CS_LINE_H), nil] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Vertical Line", @"Vertical Line Decoration", @"gi_vline.png", NSNUM(CS_LINE_V), nil] forKeys:keys],
-                    nil];
+                    [[NSDictionary alloc] initWithObjects:@[@"Rectangular", @"Rectangular Decoration", @"gi_rect.png", @(CS_RECT)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Horizontal Line", @"Horizontal Line Decoration", @"gi_hline.png", @(CS_LINE_H)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects: @[@"Vertical Line", @"Vertical Line Decoration", @"gi_vline.png", @(CS_LINE_V)] forKeys:keys]
+        ];
         
     }
     return self;
@@ -96,6 +96,8 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+
+    [tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"listCell"];
 }
 
 - (void)viewDidUnload
@@ -138,7 +140,7 @@
 
 - (IBAction)done:(id)sender
 {
-    [self.delegate flipsideViewControllerDidFinish:self];
+    [_delegate flipsideViewControllerDidFinish:self];
 }
 
 //=====================================================================================
@@ -156,11 +158,11 @@
     [theCell setSelected:NO animated:NO];
 
     // 이 화면은 닫자.
-    [self.delegate flipsideViewControllerDidFinish:self];
+    [_delegate flipsideViewControllerDidFinish:self];
 
     // BluePrint 화면에 선택한 놈을 놓자.
-    NSMutableDictionary *gearInfo = [NSMutableDictionary dictionaryWithDictionary:[gearList objectAtIndex:indexPath.row]];
-    [gearInfo setObject:theCell forKey:@"cell"];
+    NSMutableDictionary *gearInfo = [NSMutableDictionary dictionaryWithDictionary:gearList[indexPath.row]];
+    gearInfo[@"cell"] = theCell;
     [[NSNotificationCenter defaultCenter] postNotificationName:NOTI_PUT_GEAR
                                                         object:self
                                                       userInfo:gearInfo
@@ -172,15 +174,13 @@
 -(UITableViewCell*) tableView:(UITableView *)tView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell;
-    cell = [tView dequeueReusableCellWithIdentifier:@"listCell"];
-    if( nil == cell ){
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"listCell"];
-    }
+    cell = [tView dequeueReusableCellWithIdentifier:@"listCell"
+                                       forIndexPath:indexPath];
 
-    NSDictionary *cellDic = [gearList objectAtIndex:indexPath.row];
-    [cell.textLabel setText:[cellDic objectForKey:@"name"]];
-    [cell.detailTextLabel setText:[cellDic objectForKey:@"desc"]];
-    [cell.imageView setImage:[UIImage imageNamed:[cellDic objectForKey:@"icon"]]];
+    NSDictionary *cellDic = gearList[indexPath.row];
+    [cell.textLabel setText:cellDic[@"name"]];
+    [cell.detailTextLabel setText:cellDic[@"desc"]];
+    [cell.imageView setImage:[UIImage imageNamed:cellDic[@"icon"]]];
 
     return cell;
 }

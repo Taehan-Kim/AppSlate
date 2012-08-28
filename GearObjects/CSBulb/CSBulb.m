@@ -40,7 +40,7 @@
 
 -(NSNumber*) getOnValue
 {    
-    return [NSNumber numberWithBool:onValue];
+    return @(onValue);
 }
 
 //===========================================================================
@@ -72,7 +72,7 @@
     NSDictionary *d0 = ALPHA_D;
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Light Color", P_COLOR, @selector(setLightColor:),@selector(getLightColor));
     NSDictionary *d2 = MAKE_PROPERTY_D(@"On Value", P_BOOL, @selector(setOnValue:),@selector(getOnValue));
-    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2, nil];
+    pListArray = @[xc,yc,d0,d1,d2];
 
     return self;
 }
@@ -80,7 +80,7 @@
 -(id)initWithCoder:(NSCoder *)decoder
 {
     if( (self=[super initWithCoder:decoder]) ) {
-        light = [[csView subviews] objectAtIndex:0];
+        light = [csView subviews][0];
 //        light = [[UIView alloc] initWithFrame:CGRectMake(8, 8, 12, 12)];
         [light setClipsToBounds:YES];
         [light.layer setCornerRadius:6];

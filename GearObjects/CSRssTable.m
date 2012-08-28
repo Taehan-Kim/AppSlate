@@ -36,7 +36,7 @@
 
 -(NSNumber*) getCellHeight
 {
-    return [NSNumber numberWithFloat:cellHeight];
+    return @(cellHeight);
 }
 
 -(void) setAddress:(NSString*) txt
@@ -68,7 +68,7 @@
 
 -(NSNumber*) getReloadTable
 {
-    return [NSNumber numberWithBool:NO];
+    return @NO;
 }
 
 #pragma mark -
@@ -99,12 +99,12 @@
     NSDictionary *d1 = MAKE_PROPERTY_D(@"RSS URL", P_TXT, @selector(setAddress:),@selector(getAddress));
     NSDictionary *d2 = MAKE_PROPERTY_D(@"Table Cell Height", P_NUM, @selector(setCellHeight:),@selector(getCellHeight));
     NSDictionary *d3 = MAKE_PROPERTY_D(@">Reload", P_BOOL, @selector(setReloadTable:),@selector(getReloadTable));    
-    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2,d3, nil];
+    pListArray = @[xc,yc,d0,d1,d2,d3];
     
     NSMutableDictionary MAKE_ACTION_D(@"Selected Cell Index", A_NUM, a1);
     NSMutableDictionary MAKE_ACTION_D(@"Selected Title", A_TXT, a2);
     NSMutableDictionary MAKE_ACTION_D(@"Selected URL", A_TXT, a3);
-    actionArray = [NSArray arrayWithObjects:a1, a2, a3, nil];
+    actionArray = @[a1, a2, a3];
     
     return self;
 }
@@ -162,7 +162,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"RssCell"];
     }
 
-    BlogRss *rssItem = (BlogRss*)[[rssParser rssItems] objectAtIndex:indexPath.row];
+    BlogRss *rssItem = (BlogRss*)[rssParser rssItems][indexPath.row];
     cell.textLabel.text = [rssItem title];
     cell.detailTextLabel.text = [rssItem description];
 
@@ -176,25 +176,25 @@
     // 선택 사항에 대해서 정해진 액션 동작으로 선택 정보를 알린다.
     SEL act;
     NSNumber *nsMagicNum;
-    BlogRss *rssItem = (BlogRss*)[[rssParser rssItems] objectAtIndex:indexPath.row];
+    BlogRss *rssItem = (BlogRss*)[rssParser rssItems][indexPath.row];
 
     // 1. Selected Index
-    act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:0] objectForKey:@"selector"]).pointerValue;
+    act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
     if( nil != act ){
-        nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:0]) objectForKey:@"mNum"];
+        nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
         CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
         
         if( nil != gObj ){
             if( [gObj respondsToSelector:act] )
-                [gObj performSelector:act withObject:[NSNumber numberWithInteger:indexPath.row]];
+                [gObj performSelector:act withObject:@(indexPath.row)];
             else
                 EXCLAMATION;
         }
     }
     // 2. Selected Cell's String
-    act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:1] objectForKey:@"selector"]).pointerValue;
+    act = ((NSValue*)((NSDictionary*)actionArray[1])[@"selector"]).pointerValue;
     if( nil != act ){
-        nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:1]) objectForKey:@"mNum"];
+        nsMagicNum = ((NSDictionary*)actionArray[1])[@"mNum"];
         CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
         
         if( nil != gObj ){
@@ -205,9 +205,9 @@
         }
     }
     // 2. Selected Cell's URL
-    act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:2] objectForKey:@"selector"]).pointerValue;
+    act = ((NSValue*)((NSDictionary*)actionArray[2])[@"selector"]).pointerValue;
     if( nil != act ){
-        nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:2]) objectForKey:@"mNum"];
+        nsMagicNum = ((NSDictionary*)actionArray[2])[@"mNum"];
         CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
 
         if( nil != gObj ){

@@ -136,7 +136,7 @@
         }
         NSArray *plist = [theGear getPropertiesList];
         // Configure the cell...
-        cell.textLabel.text = [[plist objectAtIndex:indexPath.row] objectForKey:@"name"];
+        cell.textLabel.text = (plist[indexPath.row])[@"name"];
 
         if( [cell.textLabel.text hasPrefix:@">"] ) // This is Action Property
             [cell.textLabel setTextColor:[UIColor grayColor]];
@@ -158,17 +158,17 @@
             [cell.contentView addSubview:btn];
         }
         NSArray *alist = [theGear getActionList];
-        NSMutableDictionary *acDic = [alist objectAtIndex:indexPath.row];
+        NSMutableDictionary *acDic = alist[indexPath.row];
 
-        cell.textLabel.text = [acDic objectForKey:@"name"];
+        cell.textLabel.text = acDic[@"name"];
         [cell.textLabel setBackgroundColor:CS_RGB(255, 245, 240)];
-        BButton *aBtn = [cell.contentView.subviews objectAtIndex:0];
+        BButton *aBtn = (cell.contentView.subviews)[0];
 
         // 연결 정보
-        if( nil != ((NSValue*)[acDic objectForKey:@"selector"]).pointerValue )
+        if( nil != ((NSValue*)acDic[@"selector"]).pointerValue )
         {
             NSString *className, *propertyName;
-            NSNumber *nsMagicNum = [acDic objectForKey:@"mNum"];
+            NSNumber *nsMagicNum = acDic[@"mNum"];
             for( CSGearObject *g in USERCONTEXT.gearsArray )
             {
                 if( g.csMagicNum == nsMagicNum.integerValue ){
@@ -178,8 +178,9 @@
             }
 
             // selector 이름 앞의 3글자 - 즉 'set' 은 빼고 이름을 정보로 표시해줌.
-            propertyName = [NSStringFromSelector(((NSValue*)[acDic objectForKey:@"selector"]).pointerValue) substringFromIndex:3];
+            propertyName = [NSStringFromSelector(((NSValue*)acDic[@"selector"]).pointerValue) substringFromIndex:3];
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ :: %@",className, propertyName];
+            [cell.detailTextLabel setBackgroundColor:CS_RGB(255, 245, 240)];
 
             [aBtn.layer setBackgroundColor:[UIColor redColor].CGColor];
             [aBtn setTitle:@"✕"];
@@ -232,9 +233,9 @@
 
     if( 0 == indexPath.section ) // ----------------------------------------------------------------
     {
-        NSDictionary *info = [[theGear getPropertiesList] objectAtIndex:indexPath.row];
+        NSDictionary *info = [theGear getPropertiesList][indexPath.row];
 
-        if( [[info objectForKey:@"name"] hasPrefix:@">"] ) // This is Action Property
+        if( [info[@"name"] hasPrefix:@">"] ) // This is Action Property
         {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"You can access to Action properties only on running state. " delegate:nil cancelButtonTitle:@"Confirm" otherButtonTitles: nil];
             [alert show];
@@ -242,37 +243,37 @@
         }
 
         // Navigation logic may go here. Create and push another view controller.
-        if( [[info objectForKey:@"type"] isEqualToString:P_TXT] )
+        if( [info[@"type"] isEqualToString:P_TXT] )
         {
             VC = [[StringSettingViewController alloc] initWithGear:theGear propertyInfo:info];
         }
-        else if( [[info objectForKey:@"type"] isEqualToString:P_COLOR] )
+        else if( [info[@"type"] isEqualToString:P_COLOR] )
         {
-            UIColor *myColor = objc_msgSend(theGear, [[info objectForKey:@"getSelector"] pointerValue]);
+            UIColor *myColor = objc_msgSend(theGear, [info[@"getSelector"] pointerValue]);
             VC = [HRColorPickerViewController cancelableColorPickerViewControllerWithColor:myColor];
             [(SettingViewCommon*)VC setGearValue:theGear propertyInfo:info];
         }
-        else if( [[info objectForKey:@"type"] isEqualToString:P_FONT] )
+        else if( [info[@"type"] isEqualToString:P_FONT] )
         {
             VC = [[FontSettingController alloc] initWithGear:theGear propertyInfo:info];
         }
-        else if( [[info objectForKey:@"type"] isEqualToString:P_ALIGN] )
+        else if( [info[@"type"] isEqualToString:P_ALIGN] )
         {
             VC = [[AlignSettingController alloc] initWithGear:theGear propertyInfo:info];
         }
-        else if( [[info objectForKey:@"type"] isEqualToString:P_BOOL] )
+        else if( [info[@"type"] isEqualToString:P_BOOL] )
         {
             VC = [[BoolSettingController alloc] initWithGear:theGear propertyInfo:info];
         }
-        else if( [[info objectForKey:@"type"] isEqualToString:P_NUM] )
+        else if( [info[@"type"] isEqualToString:P_NUM] )
         {
             VC = [[NumberSettingViewController alloc] initWithGear:theGear propertyInfo:info];
         }
-        else if( [[info objectForKey:@"type"] isEqualToString:P_CELL] )
+        else if( [info[@"type"] isEqualToString:P_CELL] )
         {
             VC = [[CellSettingController alloc] initWithGear:theGear propertyInfo:info];
         }
-        else if( [[info objectForKey:@"type"] isEqualToString:P_IMG] )
+        else if( [info[@"type"] isEqualToString:P_IMG] )
         {
             VC = [[UIImagePickerController alloc] init];
             [(UIImagePickerController*)VC setDelegate:self];
@@ -288,14 +289,14 @@
                   permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
             return;
         }
-        else if( [[info objectForKey:@"type"] isEqualToString:P_NO] )
+        else if( [info[@"type"] isEqualToString:P_NO] )
         {
-            SEL selector = [[info objectForKey:@"selector"] pointerValue];
-            objc_msgSend(theGear, selector, [NSNumber numberWithBool:YES]);
+            SEL selector = [info[@"selector"] pointerValue];
+            objc_msgSend(theGear, selector, @YES);
         }
         if( nil == VC ) return;
 
-        NSLog(@"p name:%@", [info objectForKey:@"name"] );
+        NSLog(@"p name:%@", info[@"name"] );
 
         [self.navigationController pushViewController:VC animated:YES];
     }
@@ -303,8 +304,8 @@
     {
         // Blueprint 로 링크 시작에 필요한 정보를 주고, 연결 동작을 시작시키자.
         NSMutableDictionary *gearInfo = [[NSMutableDictionary alloc] initWithCapacity:2];
-        [gearInfo setObject:theGear forKey:@"theGear"];
-        [gearInfo setObject:[NSNumber numberWithInteger:indexPath.row] forKey:@"theActionIndex"];
+        gearInfo[@"theGear"] = theGear;
+        gearInfo[@"theActionIndex"] = @(indexPath.row);
         [[NSNotificationCenter defaultCenter] postNotificationName:NOTI_ACTION_LINK
                                                             object:self
                                                           userInfo:gearInfo];
@@ -336,9 +337,9 @@
 {
     // unlink the action
     NSArray *alist = [theGear getActionList];
-    NSMutableDictionary *acDic = [alist objectAtIndex:alertView.tag];
+    NSMutableDictionary *acDic = alist[alertView.tag];
 
-    NSNumber *nsMagicNum = [acDic objectForKey:@"mNum"];
+    NSNumber *nsMagicNum = acDic[@"mNum"];
     CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
 
     if( nil != gObj ){
@@ -347,8 +348,8 @@
 
     if( 0 == buttonIndex ) return;  // cancel
 
-    [acDic setObject:[NSValue valueWithPointer:nil] forKey:@"selector"];
-    [acDic setObject:[NSNumber numberWithInteger:0] forKey:@"mNum"];
+    acDic[@"selector"] = [NSValue valueWithPointer:nil];
+    acDic[@"mNum"] = @(0);
 
     [self.tableView reloadData];
 
@@ -363,9 +364,9 @@
     if( NSIntegerMax == ((UIButton*)sender).tag ) return;
 
     NSArray *alist = [theGear getActionList];
-    NSMutableDictionary *acDic = [alist objectAtIndex:((UIButton*)sender).tag];
+    NSMutableDictionary *acDic = alist[((UIButton*)sender).tag];
 
-    NSNumber *nsMagicNum = [acDic objectForKey:@"mNum"];
+    NSNumber *nsMagicNum = acDic[@"mNum"];
     CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
 
     if( nil != gObj ){
@@ -383,9 +384,9 @@
     if( NSIntegerMax == ((UIButton*)sender).tag ) return;
 
     NSArray *alist = [theGear getActionList];
-    NSMutableDictionary *acDic = [alist objectAtIndex:((UIButton*)sender).tag];
+    NSMutableDictionary *acDic = alist[((UIButton*)sender).tag];
     
-    NSNumber *nsMagicNum = [acDic objectForKey:@"mNum"];
+    NSNumber *nsMagicNum = acDic[@"mNum"];
     CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
     
     if( nil != gObj ){
@@ -402,7 +403,7 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)Info
 {
-    SEL act = [[tempInfo objectForKey:@"selector"] pointerValue];
+    SEL act = [tempInfo[@"selector"] pointerValue];
     [theGear performSelector:act withObject:image];
 
 	[libpop dismissPopoverAnimated:YES];

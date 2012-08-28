@@ -71,14 +71,14 @@
     if( [alignNum isKindOfClass:[NSNumber class]] )
         align = [alignNum integerValue];
     else
-        align = UITextAlignmentLeft;
+        align = NSTextAlignmentLeft;
 
     [txtField setTextAlignment:align];
 }
 
 -(NSNumber*) getTextAlignment
 {
-    return [NSNumber numberWithInteger:txtField.textAlignment];
+    return @(txtField.textAlignment);
 }
 
 -(void) setButtonBackgroundColor:(UIColor*)color
@@ -153,12 +153,12 @@
     NSDictionary *d6 = MAKE_PROPERTY_D(@"Button Text", P_TXT, @selector(setButtonText:),@selector(getButtonText));
     NSDictionary *d7 = MAKE_PROPERTY_D(@"Button Background Color", P_COLOR, @selector(setButtonBackgroundColor:),@selector(getButtonBackgroundColor));
 
-    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2,d3,d4,d5,d6,d7, nil];
+    pListArray = @[xc,yc,d0,d1,d2,d3,d4,d5,d6,d7];
 
     NSMutableDictionary MAKE_ACTION_D(@"Enter Text", A_TXT, a1);
     NSMutableDictionary MAKE_ACTION_D(@"Close Keyboard", A_TXT, a2);
     NSMutableDictionary MAKE_ACTION_D(@"Confirm Button", A_TXT, a3);
-    actionArray = [NSArray arrayWithObjects:a1, a2, a3, nil];
+    actionArray = @[a1, a2, a3];
 
     return self;
 }
@@ -188,11 +188,11 @@
 {    
     [textField resignFirstResponder];
 
-    SEL act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:0] objectForKey:@"selector"]).pointerValue;
+    SEL act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
     
     if( nil == act ) return YES;  // do nothing
     
-    NSNumber *nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:0]) objectForKey:@"mNum"];
+    NSNumber *nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
     
     CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
 
@@ -209,11 +209,11 @@
 // End Text Editing 동작.
 -(void) textFieldDidEndEditing:(UITextField *)textField
 {
-    SEL act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:1] objectForKey:@"selector"]).pointerValue;
+    SEL act = ((NSValue*)((NSDictionary*)actionArray[1])[@"selector"]).pointerValue;
     
     if( nil == act ) return;  // do nothing
     
-    NSNumber *nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:1]) objectForKey:@"mNum"];
+    NSNumber *nsMagicNum = ((NSDictionary*)actionArray[1])[@"mNum"];
     
     CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
 
@@ -230,11 +230,11 @@
 {
     [txtField resignFirstResponder];
     
-    SEL act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:2] objectForKey:@"selector"]).pointerValue;
+    SEL act = ((NSValue*)((NSDictionary*)actionArray[2])[@"selector"]).pointerValue;
     
     if( nil == act ) return;  // do nothing
     
-    NSNumber *nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:2]) objectForKey:@"mNum"];
+    NSNumber *nsMagicNum = ((NSDictionary*)actionArray[2])[@"mNum"];
     
     CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
     

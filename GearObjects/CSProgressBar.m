@@ -52,7 +52,7 @@
 
 -(NSNumber*) getBarValue
 {
-    return [NSNumber numberWithFloat:((UIProgressView*)csView).progress];
+    return @( ((UIProgressView*)csView).progress );
 }
 
 #pragma mark -
@@ -81,7 +81,7 @@
     NSDictionary *d2 = MAKE_PROPERTY_D(@"Track Color", P_COLOR, @selector(setTrackColor:),@selector(getTrackColor));
     NSDictionary *d3 = MAKE_PROPERTY_D(@"Value", P_NUM, @selector(setBarValue:),@selector(getBarValue));
 
-    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2,d3, nil];
+    pListArray = @[xc,yc,d0,d1,d2,d3];
 
     return self;
 }

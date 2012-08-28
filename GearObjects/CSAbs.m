@@ -37,27 +37,27 @@
         SEL act;
         NSNumber *nsMagicNum;
 
-        act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:0] objectForKey:@"selector"]).pointerValue;
+        act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
         if( nil != act ){
-            nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:0]) objectForKey:@"mNum"];
+            nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
             CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
             
             if( nil != gObj ){
                 if( [gObj respondsToSelector:act] )
-                    [gObj performSelector:act withObject:[NSNumber numberWithInteger:roundf(value)]];
+                    [gObj performSelector:act withObject:@(roundf(value))];
                 else
                     EXCLAMATION;
             }
         }
-        act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:1] objectForKey:@"selector"]).pointerValue;
+        act = ((NSValue*)((NSDictionary*)actionArray[1])[@"selector"]).pointerValue;
         if( nil != act ){
-            nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:1]) objectForKey:@"mNum"];
+            nsMagicNum = ((NSDictionary*)actionArray[1])[@"mNum"];
             CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
             
             if( nil != gObj ){
                 CGFloat val = abs([num floatValue]);
                 if( [gObj respondsToSelector:act] )
-                    [gObj performSelector:act withObject:[NSNumber numberWithFloat:val]];
+                    [gObj performSelector:act withObject:@(val)];
                 else
                     EXCLAMATION;
             }
@@ -67,7 +67,7 @@
 
 -(NSNumber*) getInputValue
 {
-    return [NSNumber numberWithBool:NO];
+    return @NO;
 }
 
 //===========================================================================
@@ -90,11 +90,11 @@
     self.info = NSLocalizedString(@"ABS and INT function", @"ABS");
     
     NSDictionary *d1 = MAKE_PROPERTY_D(@">Input Value", P_NUM, @selector(setInputValue:),@selector(getInputValue));
-    pListArray = [NSArray arrayWithObjects:d1, nil];
+    pListArray = @[d1];
     
     NSMutableDictionary MAKE_ACTION_D(@"INT Output Number", A_NUM, a1);
     NSMutableDictionary MAKE_ACTION_D(@"ABS Output Number", A_NUM, a2);
-    actionArray = [NSArray arrayWithObjects:a1,a2, nil];
+    actionArray = @[a1,a2];
     
     return self;
 }

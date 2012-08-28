@@ -89,7 +89,7 @@
 
 -(NSNumber*) getShow
 {
-    return [NSNumber numberWithBool:NO];
+    return @NO;
 }
 
 //===========================================================================
@@ -119,10 +119,10 @@
     NSDictionary *d2 = MAKE_PROPERTY_D(@"Cancel Button Text", P_TXT, @selector(setCancelButtonText:),@selector(getCancelButtonText));
     NSDictionary *d3 = MAKE_PROPERTY_D(@"OK Button Text", P_TXT, @selector(setOkButtonText:),@selector(getOkButtonText));
     NSDictionary *d4 = MAKE_PROPERTY_D(@">Show Action", P_BOOL, @selector(setShow:),@selector(getShow));
-    pListArray = [NSArray arrayWithObjects:d1,d2,d3,d4, nil];
+    pListArray = @[d1,d2,d3,d4];
     
     NSMutableDictionary MAKE_ACTION_D(@"Commit Text", A_TXT, a1);
-    actionArray = [NSArray arrayWithObjects:a1, nil];
+    actionArray = @[a1];
     
     return self;
 }
@@ -161,9 +161,9 @@
     
     if( 1 != buttonIndex ) return;
 
-    act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:0] objectForKey:@"selector"]).pointerValue;
+    act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
     if( nil != act ){
-        nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:0]) objectForKey:@"mNum"];
+        nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
         CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
         
         if( nil != gObj ){

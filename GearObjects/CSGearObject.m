@@ -88,14 +88,14 @@
 
     for( NSDictionary *dic in list )
     {
-        const char *sel_name_c = sel_getName([((NSValue*)[dic objectForKey:@"selector"]) pointerValue]);
-        const char *getSel_name_c = sel_getName([((NSValue*)[dic objectForKey:@"getSelector"]) pointerValue]);
+        const char *sel_name_c = sel_getName([((NSValue*)dic[@"selector"]) pointerValue]);
+        const char *getSel_name_c = sel_getName([((NSValue*)dic[@"getSelector"]) pointerValue]);
 
-        NSDictionary *newDic = [NSDictionary dictionaryWithObjectsAndKeys:
-         [dic objectForKey:@"name"], @"name",
-         [dic objectForKey:@"type"], @"type",
-         [NSString stringWithCString:sel_name_c encoding:NSUTF8StringEncoding], @"selector",
-         [NSString stringWithCString:getSel_name_c encoding:NSUTF8StringEncoding], @"getSelector", nil];
+        NSDictionary *newDic = @{
+        dic[@"name"]:@"name",
+        dic[@"type"]:@"type",
+        @(sel_name_c):@"selector",
+        @(getSel_name_c):@"getSelector" };
 
         [theArray addObject:newDic];
     }
@@ -109,12 +109,12 @@
     
     for( NSDictionary *dic in list )
     {
-        const char *sel_name_c = [(NSString*)[dic objectForKey:@"selector"] cStringUsingEncoding:NSUTF8StringEncoding];
-        const char *getSel_name_c = [(NSString*)[dic objectForKey:@"getSelector"] cStringUsingEncoding:NSUTF8StringEncoding];
+        const char *sel_name_c = [(NSString*)dic[@"selector"] cStringUsingEncoding:NSUTF8StringEncoding];
+        const char *getSel_name_c = [(NSString*)dic[@"getSelector"] cStringUsingEncoding:NSUTF8StringEncoding];
         
         NSMutableDictionary *newDic = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                [dic objectForKey:@"name"], @"name",
-                                [dic objectForKey:@"type"], @"type",
+                                dic[@"name"], @"name",
+                                dic[@"type"], @"type",
                                 [NSValue valueWithPointer:sel_registerName(sel_name_c)], @"selector",
                                 [NSValue valueWithPointer:sel_registerName(getSel_name_c)], @"getSelector", nil];
 
@@ -133,17 +133,17 @@
     for( NSDictionary *dic in list )
     {
         const char *sel_name_c;
-        if( NULL == [((NSValue*)[dic objectForKey:@"selector"]) pointerValue] )
+        if( NULL == [((NSValue*)dic[@"selector"]) pointerValue] )
             sel_name_c = "%";
         else
-            sel_name_c = sel_getName([((NSValue*)[dic objectForKey:@"selector"]) pointerValue]);
+            sel_name_c = sel_getName([((NSValue*)dic[@"selector"]) pointerValue]);
 
-        NSDictionary *newDic = [NSDictionary dictionaryWithObjectsAndKeys:
-                                [dic objectForKey:@"name"], @"name",
-                                [dic objectForKey:@"type"], @"type",
-                                [NSString stringWithCString:sel_name_c encoding:NSUTF8StringEncoding], @"selector",
-                                [dic objectForKey:@"mNum"], @"mNum", nil];
-        
+        NSDictionary *newDic = @{
+        dic[@"name"]:@"name",
+        dic[@"type"]:@"type",
+        @(sel_name_c):@"selector",
+        dic[@"mNum"]:@"mNum" };
+
         [theArray addObject:newDic];
     }
     
@@ -158,17 +158,17 @@
     for( NSDictionary *dic in list )
     {
         NSValue *selValue;
-        const char *sel_name_c = [(NSString*)[dic objectForKey:@"selector"] cStringUsingEncoding:NSUTF8StringEncoding];
+        const char *sel_name_c = [(NSString*)dic[@"selector"] cStringUsingEncoding:NSUTF8StringEncoding];
         if( '%' == *sel_name_c )
             selValue = [NSValue valueWithPointer:NULL];
         else
             selValue = [NSValue valueWithPointer:sel_registerName(sel_name_c)];
         
         NSMutableDictionary *newDic = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                [dic objectForKey:@"name"], @"name",
-                                [dic objectForKey:@"type"], @"type",
+                                dic[@"name"], @"name",
+                                dic[@"type"], @"type",
                                 selValue, @"selector",
-                                [dic objectForKey:@"mNum"], @"mNum", nil];
+                                dic[@"mNum"], @"mNum", nil];
         
         [theArray addObject:newDic];
     }
@@ -202,9 +202,9 @@
 {
     if( idx >= [actionArray count] ) return NO;
 
-    NSMutableDictionary *item = [actionArray objectAtIndex:idx];
+    NSMutableDictionary *item = actionArray[idx];
 
-    [item setValue:NSNUM(magicNum) forKey:@"mNum"];
+    [item setValue:@(magicNum) forKey:@"mNum"];
     [item setValue:[NSValue valueWithPointer:selectorName] forKey:@"selector"];
 
     return YES;
@@ -215,9 +215,9 @@
 {
     if( idx >= [actionArray count] ) return NO;
     
-    NSMutableDictionary *item = [actionArray objectAtIndex:idx];
+    NSMutableDictionary *item = actionArray[idx];
 
-    [item setValue:NSNUM(0) forKey:@"mNum"];
+    [item setValue:@(0) forKey:@"mNum"];
     [item setValue:nil forKey:@"selector"];
 
     return YES;
@@ -229,8 +229,8 @@
 {
     for( NSDictionary *item in actionArray )
     {
-        if( [[item objectForKey:@"mNum"] isEqualToNumber:mCode] ){
-            [item setValue:[NSNumber numberWithInteger:0] forKey:@"mNum"];
+        if( [item[@"mNum"] isEqualToNumber:mCode] ){
+            [item setValue:@(0) forKey:@"mNum"];
             [item setValue:nil forKey:@"selector"];
         }
     }
@@ -241,7 +241,7 @@
 
 -(NSNumber*) getCenterX
 {
-    return [NSNumber numberWithFloat:csView.center.x];
+    return @(csView.center.x);
 }
 
 -(void) setCenterX:(NSNumber*) xpos
@@ -259,7 +259,7 @@
 
 -(NSNumber*) getCenterY
 {
-    return [NSNumber numberWithFloat:csView.center.y];
+    return @(csView.center.y);
 }
 
 -(void) setCenterY:(NSNumber*) ypos
@@ -277,7 +277,7 @@
 
 -(NSNumber*) getAlpha
 {
-    return [NSNumber numberWithFloat:csView.alpha];
+    return @(csView.alpha);
 }
 
 -(void) setAlpha:(NSNumber*) alphaValue

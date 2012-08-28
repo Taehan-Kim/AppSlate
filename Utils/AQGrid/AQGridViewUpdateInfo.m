@@ -562,8 +562,8 @@
 	
 	CGSize cellSize = cell.frame.size;
     
-    [itemsToSetBeforeAnimation setObject: [NSNumber numberWithFloat: 0.0] forKey: @"alpha"];
-    [itemsToAnimate setObject: [NSNumber numberWithFloat: 1.0] forKey: @"alpha"];
+    itemsToSetBeforeAnimation[@"alpha"] = @(0.0);
+    itemsToAnimate[@"alpha"] = @(1.0);
 	
 	switch ( animation )
 	{
@@ -576,36 +576,36 @@
 		case AQGridViewItemAnimationRight:
 		{
 			CGPoint center = cell.center;
-			[itemsToAnimate setObject: [NSValue valueWithCGPoint: center] forKey: @"center"];
+			itemsToAnimate[@"center"] = [NSValue valueWithCGPoint: center];
 			center.x += cellSize.width;
-			[itemsToSetBeforeAnimation setObject: [NSValue valueWithCGPoint: center] forKey: @"center"];
+			itemsToSetBeforeAnimation[@"center"] = [NSValue valueWithCGPoint: center];
 			break;
 		}
 			
 		case AQGridViewItemAnimationLeft:
 		{
 			CGPoint center = cell.center;
-			[itemsToAnimate setObject: [NSValue valueWithCGPoint: center] forKey: @"center"];
+			itemsToAnimate[@"center"] = [NSValue valueWithCGPoint: center];
 			center.x -= cellSize.width;
-			[itemsToSetBeforeAnimation setObject: [NSValue valueWithCGPoint: center] forKey: @"center"];
+			itemsToSetBeforeAnimation[@"center"] = [NSValue valueWithCGPoint: center];
 			break;
 		}
 			
 		case AQGridViewItemAnimationTop:
 		{
 			CGPoint center = cell.center;
-			[itemsToAnimate setObject: [NSValue valueWithCGPoint: center] forKey: @"center"];
+			itemsToAnimate[@"center"] = [NSValue valueWithCGPoint: center];
 			center.y -= cellSize.height;
-			[itemsToSetBeforeAnimation setObject: [NSValue valueWithCGPoint: center] forKey: @"center"];
+			itemsToSetBeforeAnimation[@"center"] = [NSValue valueWithCGPoint: center];
 			break;
 		}
 			
 		case AQGridViewItemAnimationBottom:
 		{
 			CGPoint center = cell.center;
-			[itemsToAnimate setObject: [NSValue valueWithCGPoint: center] forKey: @"center"];
+			itemsToAnimate[@"center"] = [NSValue valueWithCGPoint: center];
 			center.y += cellSize.height;
-			[itemsToSetBeforeAnimation setObject: [NSValue valueWithCGPoint: center] forKey: @"center"];
+			itemsToSetBeforeAnimation[@"center"] = [NSValue valueWithCGPoint: center];
 			break;
 		}
 			
@@ -616,13 +616,13 @@
 	[UIView setAnimationsEnabled: NO];
 	for ( NSString * keyPath in itemsToSetBeforeAnimation )
 	{
-		[cell setValue: [itemsToSetBeforeAnimation objectForKey: keyPath] forKey: keyPath];
+		[cell setValue: itemsToSetBeforeAnimation[keyPath] forKey: keyPath];
 	}
 	[UIView setAnimationsEnabled: YES];
 	
 	for ( NSString * keyPath in itemsToAnimate )
 	{
-		[cell setValue: [itemsToAnimate objectForKey: keyPath] forKey: keyPath];
+		[cell setValue: itemsToAnimate[keyPath] forKey: keyPath];
 	}
     
 }

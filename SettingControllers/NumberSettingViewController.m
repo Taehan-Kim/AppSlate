@@ -53,7 +53,7 @@
     [textField setClipsToBounds:YES];
     [textField setDelegate:self];
     [textField setKeyboardType:UIKeyboardTypeNumberPad];
-    NSNumber *sNum = objc_msgSend(theGear,[[pInfoDic objectForKey:@"getSelector"] pointerValue]);
+    NSNumber *sNum = objc_msgSend(theGear,[pInfoDic[@"getSelector"] pointerValue]);
     [textField setText: sNum.stringValue];
     [self.view addSubview:textField];
 //    NSLog(@"%@", textField);
@@ -82,7 +82,7 @@
 
 -(void) setTheValue:(id)sender
 {
-    [self saveValue:[NSNumber numberWithFloat: [textField.text floatValue]]];
+    [self saveValue:@( [textField.text floatValue] )];
 }
 
 #pragma mark - TextField Delegate

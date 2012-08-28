@@ -54,7 +54,7 @@
     [textField.layer setCornerRadius:5.0];
     [textField setClipsToBounds:YES];
 //    [textField setText:[[theGear object] text]];
-    NSString *sText = objc_msgSend(theGear,[[pInfoDic objectForKey:@"getSelector"] pointerValue]);
+    NSString *sText = objc_msgSend(theGear,[pInfoDic[@"getSelector"] pointerValue]);
     [textField setText:sText];
     [self.view addSubview:textField];
     NSLog(@"%@", textField);

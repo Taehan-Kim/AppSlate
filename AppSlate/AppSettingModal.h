@@ -10,9 +10,9 @@
 #import "UATitledModalPanel.h"
 #import "BButton.h"
 
-@interface AppSettingModal : UATitledModalPanel <FBDialogDelegate>
+@interface AppSettingModal : UATitledModalPanel
 {
-    UISwitch   *sndSwitch, *hideSwitch, *gridSwitch, *lineSwitch, *fbSwitch;
+    UISwitch   *sndSwitch, *hideSwitch, *gridSwitch, *lineSwitch;
     BButton    *resetAlphaBtn;
 }
 

@@ -47,7 +47,7 @@
 
 -(NSNumber*) getCellNumber
 {
-    return [NSNumber numberWithInteger:cellNumber];
+    return @(cellNumber);
 }
 
 -(void) setCellHeight:(NSNumber*) number
@@ -67,7 +67,7 @@
 
 -(NSNumber*) getCellHeight
 {
-    return [NSNumber numberWithFloat:cellHeight];
+    return @(cellHeight);
 }
 
 -(void) setAccessIndex:(NSNumber*) number
@@ -89,13 +89,13 @@
 
 -(NSNumber*) getAccessIndex
 {
-    return [NSNumber numberWithInteger:accessCellIndex];
+    return @(accessCellIndex);
 }
 
 // 설정되어 있는 집근 인데스에 있는 셀의 텍스트를 설정한다.
 -(void) setTextAtAccessIndex:(NSString*)txt
 {
-    NSMutableDictionary *cellDic = [cellArray objectAtIndex:accessCellIndex];
+    NSMutableDictionary *cellDic = cellArray[accessCellIndex];
 
     if( [txt isKindOfClass:[NSString class]] )
         [cellDic setValue:txt forKey:@"Text"];
@@ -118,7 +118,7 @@
 
 -(void) setSubtextAtAccessIndex:(NSString*)txt
 {
-    NSMutableDictionary *cellDic = [cellArray objectAtIndex:accessCellIndex];
+    NSMutableDictionary *cellDic = cellArray[accessCellIndex];
     
     if( [txt isKindOfClass:[NSString class]] )
         [cellDic setValue:txt forKey:@"Sub"];
@@ -142,14 +142,14 @@
 {
     if( idx >= cellNumber ) return;
 
-    [cellArray replaceObjectAtIndex:idx withObject:dic];
+    cellArray[idx] = dic;
     [((UITableView*)csView) reloadData];
 }
 
 -(id) getCellDataIndex:(NSUInteger)idx
 {
     if( idx >= cellNumber ) return nil;
-    return [cellArray objectAtIndex:idx];
+    return cellArray[idx];
 }
 
 #pragma mark -
@@ -184,11 +184,11 @@
     NSDictionary *d5 = MAKE_PROPERTY_D(@"Subtext At Access Index", P_TXT, @selector(setSubtextAtAccessIndex:),@selector(getSubtextAtAccessIndex));
     NSDictionary *d6 = MAKE_PROPERTY_D(@"Table Cell Data", P_CELL, @selector(setCellData:index:),@selector(getCellDataIndex:));
 
-    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2,d3,d4,d5,d6, nil];
+    pListArray = @[xc,yc,d0,d1,d2,d3,d4,d5,d6];
 
     NSMutableDictionary MAKE_ACTION_D(@"Selected Cell Index", A_NUM, a1);
     NSMutableDictionary MAKE_ACTION_D(@"Selected Cell Text", A_TXT, a2);
-    actionArray = [NSArray arrayWithObjects:a1, a2, nil];
+    actionArray = @[a1, a2];
 
     return self;
 }
@@ -243,10 +243,16 @@
     cell = [tableView dequeueReusableCellWithIdentifier:@"SimpleCell"];
     if( nil == cell ){
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"SimpleCell"];
+        UIImageView *bgv = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cell_bg.png"]];
+        [bgv setFrame:cell.contentView.bounds];
+        [bgv setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
+        [cell.contentView addSubview:bgv];
+        [cell.textLabel setBackgroundColor:CSCLEAR];
+        [cell.detailTextLabel setBackgroundColor:CSCLEAR];
     }
 
-    cell.textLabel.text = [((NSDictionary*)[cellArray objectAtIndex:indexPath.row]) objectForKey:@"Text"];
-    cell.detailTextLabel.text = [((NSDictionary*)[cellArray objectAtIndex:indexPath.row]) objectForKey:@"Sub"];
+    cell.textLabel.text = ((NSDictionary*)cellArray[indexPath.row])[@"Text"];
+    cell.detailTextLabel.text = ((NSDictionary*)cellArray[indexPath.row])[@"Sub"];
 
     return cell;
 }
@@ -260,27 +266,27 @@
     NSNumber *nsMagicNum;
     
     // 1. Selected Index
-    act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:0] objectForKey:@"selector"]).pointerValue;
+    act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
     if( nil != act ){
-        nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:0]) objectForKey:@"mNum"];
+        nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
         CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
         
         if( nil != gObj ){
             if( [gObj respondsToSelector:act] )
-                [gObj performSelector:act withObject:[NSNumber numberWithInteger:indexPath.row]];
+                [gObj performSelector:act withObject:@(indexPath.row)];
             else
                 EXCLAMATION;
         }
     }
     // 2. Selected Cell's String
-    act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:1] objectForKey:@"selector"]).pointerValue;
+    act = ((NSValue*)((NSDictionary*)actionArray[1])[@"selector"]).pointerValue;
     if( nil != act ){
-        nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:1]) objectForKey:@"mNum"];
+        nsMagicNum = ((NSDictionary*)actionArray[1])[@"mNum"];
         CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
         
         if( nil != gObj ){
             if( [gObj respondsToSelector:act] )
-                [gObj performSelector:act withObject:[((NSDictionary*)[cellArray objectAtIndex:indexPath.row]) objectForKey:@"Text"] ];
+                [gObj performSelector:act withObject:((NSDictionary*)cellArray[indexPath.row])[@"Text"] ];
             else
                 EXCLAMATION;
         }

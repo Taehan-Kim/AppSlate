@@ -119,12 +119,8 @@
 	
 	[self updateFontColourSelections];
 	
-	self.tableLayout = [NSArray arrayWithObjects:
-						[NSArray arrayWithObjects:
-						 self.sizeCell,
-						 self.fontCell,
-						 nil],
-						nil];
+	self.tableLayout = @[@[self.sizeCell,
+						 self.fontCell]];
 	
 	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
 		// iPhone UI
@@ -147,14 +143,14 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return [[tableLayout objectAtIndex:section] count];
+    return [tableLayout[section] count];
 }
 
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {    
-    UITableViewCell *cell = [[tableLayout objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    UITableViewCell *cell = tableLayout[indexPath.section][indexPath.row];
     return cell;
 }
 
@@ -162,13 +158,13 @@
 #pragma mark UITableViewDelegate methods
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	UITableViewCell *cell = [[tableLayout objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	UITableViewCell *cell = tableLayout[indexPath.section][indexPath.row];
 	return cell.bounds.size.height;
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSIndexPath *selectedIndexPath = indexPath;
-	UITableViewCell *cell = [[tableLayout objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	UITableViewCell *cell = tableLayout[indexPath.section][indexPath.row];
 	
 	if (cell == self.sizeCell || cell == self.defaultSettingsCell) {
 		// Disable selection of cell
@@ -179,7 +175,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	UITableViewCell *cell = [[tableLayout objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	UITableViewCell *cell = tableLayout[indexPath.section][indexPath.row];
 	
 	if (cell == self.fontCell) {
 		CMFontSelectTableViewController *fontSelectTableViewController = [[CMFontSelectTableViewController alloc] initWithNibName:@"CMFontSelectTableViewController" bundle:nil];

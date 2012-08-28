@@ -14,6 +14,7 @@
 @interface CSMailComposer : CSGearObject <MFMailComposeViewControllerDelegate>
 {
     NSString *titleStr, *textStr;
+    UIImage *mailImage;
 }
 
 -(id) initGear;

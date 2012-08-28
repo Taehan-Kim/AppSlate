@@ -21,7 +21,7 @@
 -(void) setURL:(NSString*) _urlStr
 {
     if( [_urlStr isKindOfClass:[NSString class]] ){
-        urlStr = _urlStr;
+        urlStr = [_urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
         [((UIWebView*)csView) loadRequest:request];
     } else {
@@ -51,7 +51,7 @@
 
 -(NSNumber*) getScaleFit
 {
-    return[NSNumber numberWithBool:((UIWebView*)csView).scalesPageToFit];
+    return@( ((UIWebView*)csView).scalesPageToFit );
 }
 
 -(void) setReloadAction:(NSNumber*)act
@@ -63,7 +63,7 @@
 
 -(NSNumber*) getReloadAction
 {
-    return [NSNumber numberWithBool:NO];
+    return @NO;
 }
 
 -(void) setBackAction:(NSNumber*)act
@@ -75,7 +75,7 @@
 
 -(NSNumber*) getBackAction
 {
-    return [NSNumber numberWithBool:NO];
+    return @NO;
 }
 
 -(void) setForwardAction:(NSNumber*)act
@@ -87,7 +87,7 @@
 
 -(NSNumber*) getForwardAction
 {
-    return [NSNumber numberWithBool:NO];
+    return @NO;
 }
 
 -(void) setStopAction:(NSNumber*)BoolValue
@@ -99,7 +99,7 @@
 
 -(NSNumber*) getStopAction
 {
-    return [NSNumber numberWithBool:NO];
+    return @NO;
 }
 
 
@@ -129,7 +129,7 @@
     NSDictionary *d4 = MAKE_PROPERTY_D(@">Go Back", P_BOOL, @selector(setBackAction:),@selector(getBackAction));
     NSDictionary *d5 = MAKE_PROPERTY_D(@">Go Forward", P_BOOL, @selector(setForwardAction:),@selector(getForwardAction));
     NSDictionary *d6 = MAKE_PROPERTY_D(@">Stop", P_BOOL, @selector(setStopAction:),@selector(getStopAction));
-    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2,d3,d4,d5,d6, nil];
+    pListArray = @[xc,yc,d0,d1,d2,d3,d4,d5,d6];
     
     return self;
 }

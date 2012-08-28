@@ -54,15 +54,15 @@
     self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
 
     switchBtn = [[UISwitch alloc] initWithFrame:CGRectMake(320 - C_GAP - 90, C_GAP+6, 60, 40.0)];
-    NSNumber *alignNum = objc_msgSend(theGear,[[pInfoDic objectForKey:@"getSelector"] pointerValue]);
+    NSNumber *alignNum = objc_msgSend(theGear,[pInfoDic[@"getSelector"] pointerValue]);
     [switchBtn setOn:[alignNum boolValue]];
     [self.view addSubview:switchBtn];
 
     nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(C_GAP, C_GAP, C_WIDTH - 90, 40.0)];
-    [nameLabel setText:[pInfoDic objectForKey:@"name"]];
+    [nameLabel setText:pInfoDic[@"name"]];
     [nameLabel setBackgroundColor:[UIColor clearColor]];
     [nameLabel setFont:CS_FONT(15)];
-    [nameLabel setMinimumFontSize:12.0];
+//    [nameLabel setMinimumFontSize:12.0];
     [nameLabel setTextColor:[UIColor whiteColor]];
     [nameLabel setShadowColor:[UIColor blackColor]];
     [nameLabel setShadowOffset:CGSizeMake(1, 1)];
@@ -91,7 +91,7 @@
 -(void) setTheValue:(id)sender
 {
     // 정렬 설정 값을 NSNumber 객체로 감싸서 전달함.
-    [self saveValue:[NSNumber numberWithBool:switchBtn.on]];
+    [self saveValue:@(switchBtn.on)];
 }
 
 @end

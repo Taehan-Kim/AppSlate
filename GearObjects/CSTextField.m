@@ -72,14 +72,14 @@
     if( [alignNum isKindOfClass:[NSNumber class]] )
         align = [alignNum integerValue];
     else
-        align = UITextAlignmentLeft;
+        align = NSTextAlignmentLeft;
 
     [((UITextField*)csView) setTextAlignment:align];
 }
 
 -(NSNumber*) getTextAlignment
 {
-    return [NSNumber numberWithInteger:((UITextField*)csView).textAlignment];
+    return @( ((UITextField*)csView).textAlignment );
 }
 
 #pragma mark -
@@ -113,11 +113,11 @@
     NSDictionary *d4 = MAKE_PROPERTY_D(@"Text Font", P_FONT, @selector(setFont:),@selector(getFont));
     NSDictionary *d5 = MAKE_PROPERTY_D(@"L/R Alignment", P_ALIGN, @selector(setTextAlignment:),@selector(getTextAlignment));
     
-    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2,d3,d4,d5, nil];
+    pListArray = @[xc,yc,d0,d1,d2,d3,d4,d5];
 
     NSMutableDictionary MAKE_ACTION_D(@"Enter Text", A_TXT, a1);
     NSMutableDictionary MAKE_ACTION_D(@"Close Keyboard", A_TXT, a2);
-    actionArray = [NSArray arrayWithObjects:a1, a2, nil];
+    actionArray = @[a1, a2];
 
     return self;
 }
@@ -137,11 +137,11 @@
 {    
     [textField resignFirstResponder];
 
-    SEL act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:0] objectForKey:@"selector"]).pointerValue;
+    SEL act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
     
     if( nil == act ) return YES;  // do nothing
     
-    NSNumber *nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:0]) objectForKey:@"mNum"];
+    NSNumber *nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
     
     CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
 
@@ -158,11 +158,11 @@
 // End Text Editing 동작.
 -(void) textFieldDidEndEditing:(UITextField *)textField
 {
-    SEL act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:1] objectForKey:@"selector"]).pointerValue;
+    SEL act = ((NSValue*)((NSDictionary*)actionArray[1])[@"selector"]).pointerValue;
     
     if( nil == act ) return;  // do nothing
     
-    NSNumber *nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:1]) objectForKey:@"mNum"];
+    NSNumber *nsMagicNum = ((NSDictionary*)actionArray[1])[@"mNum"];
     
     CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
 

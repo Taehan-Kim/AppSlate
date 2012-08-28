@@ -36,9 +36,9 @@
         SEL act;
         NSNumber *nsMagicNum;
         
-        act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:0] objectForKey:@"selector"]).pointerValue;
+        act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
         if( nil != act ){
-            nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:0]) objectForKey:@"mNum"];
+            nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
             CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
             
             if( nil != gObj ){
@@ -51,82 +51,82 @@
             }
         }
 
-        act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:1] objectForKey:@"selector"]).pointerValue;
+        act = ((NSValue*)((NSDictionary*)actionArray[1])[@"selector"]).pointerValue;
         if( nil != act ){
-            nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:1]) objectForKey:@"mNum"];
+            nsMagicNum = ((NSDictionary*)actionArray[1])[@"mNum"];
             CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
             
             if( nil != gObj ){
                 [df setDateFormat:@"yyyy"];
                 if( [gObj respondsToSelector:act] )
-                    [gObj performSelector:act withObject:[NSNumber numberWithInteger:[[df stringFromDate:now] integerValue]]];
+                    [gObj performSelector:act withObject:@([[df stringFromDate:now] integerValue])];
                 else
                     EXCLAMATION;
             }
         }
 
-        act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:2] objectForKey:@"selector"]).pointerValue;
+        act = ((NSValue*)((NSDictionary*)actionArray[2])[@"selector"]).pointerValue;
         if( nil != act ){
-            nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:2]) objectForKey:@"mNum"];
+            nsMagicNum = ((NSDictionary*)actionArray[2])[@"mNum"];
             CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
             
             if( nil != gObj ){
                 [df setDateFormat:@"MM"];
                 if( [gObj respondsToSelector:act] )
-                    [gObj performSelector:act withObject:[NSNumber numberWithInteger:[[df stringFromDate:now] integerValue]]];
+                    [gObj performSelector:act withObject:@([[df stringFromDate:now] integerValue])];
                 else
                     EXCLAMATION;
             }
         }
 
-        act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:3] objectForKey:@"selector"]).pointerValue;
+        act = ((NSValue*)((NSDictionary*)actionArray[3])[@"selector"]).pointerValue;
         if( nil != act ){
-            nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:3]) objectForKey:@"mNum"];
+            nsMagicNum = ((NSDictionary*)actionArray[3])[@"mNum"];
             CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
             
             if( nil != gObj ){
                 [df setDateFormat:@"dd"];
                 if( [gObj respondsToSelector:act] )
-                    [gObj performSelector:act withObject:[NSNumber numberWithInteger:[[df stringFromDate:now] integerValue]]];
+                    [gObj performSelector:act withObject:@([[df stringFromDate:now] integerValue])];
                 else
                     EXCLAMATION;
             }
         }
-        act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:4] objectForKey:@"selector"]).pointerValue;
+        act = ((NSValue*)((NSDictionary*)actionArray[4])[@"selector"]).pointerValue;
         if( nil != act ){
-            nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:4]) objectForKey:@"mNum"];
+            nsMagicNum = ((NSDictionary*)actionArray[4])[@"mNum"];
             CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
             
             if( nil != gObj ){
                 [df setDateFormat:@"HH"];
                 if( [gObj respondsToSelector:act] )
-                    [gObj performSelector:act withObject:[NSNumber numberWithInteger:[[df stringFromDate:now] integerValue]]];
+                    [gObj performSelector:act withObject:@([[df stringFromDate:now] integerValue])];
                 else
                     EXCLAMATION;
             }
         }
-        act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:5] objectForKey:@"selector"]).pointerValue;
+        act = ((NSValue*)((NSDictionary*)actionArray[5])[@"selector"]).pointerValue;
         if( nil != act ){
-            nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:5]) objectForKey:@"mNum"];
+            nsMagicNum = ((NSDictionary*)actionArray[5])[@"mNum"];
             CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
             
             if( nil != gObj ){
                 [df setDateFormat:@"mm"];
                 if( [gObj respondsToSelector:act] )
-                    [gObj performSelector:act withObject:[NSNumber numberWithInteger:[[df stringFromDate:now] integerValue]]];
+                    [gObj performSelector:act withObject:@([[df stringFromDate:now] integerValue])];
                 else
                     EXCLAMATION;
             }
         }
-        act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:6] objectForKey:@"selector"]).pointerValue;
+        act = ((NSValue*)((NSDictionary*)actionArray[6])[@"selector"]).pointerValue;
         if( nil != act ){
-            nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:6]) objectForKey:@"mNum"];
+            nsMagicNum = ((NSDictionary*)actionArray[6])[@"mNum"];
             CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
             
             if( nil != gObj ){
                 [df setDateFormat:@"ss"];
                 if( [gObj respondsToSelector:act] )
-                    [gObj performSelector:act withObject:[NSNumber numberWithInteger:[[df stringFromDate:now] integerValue]]];
+                    [gObj performSelector:act withObject:@([[df stringFromDate:now] integerValue])];
                 else
                     EXCLAMATION;
             }
@@ -137,7 +137,7 @@
 
 -(NSNumber*) getNowAction
 {
-    return [NSNumber numberWithBool:NO];
+    return @NO;
 }
 
 //===========================================================================
@@ -160,7 +160,7 @@
     self.info = NSLocalizedString(@"Now Date & Time", @"Date");
 
     NSDictionary *d1 = MAKE_PROPERTY_D(@">Now Date & Time", P_NUM, @selector(setNowAction:),@selector(getNowAction));
-    pListArray = [NSArray arrayWithObjects:d1, nil];
+    pListArray = @[d1];
 
     NSMutableDictionary MAKE_ACTION_D(@"Date String", A_TXT, a1);
     NSMutableDictionary MAKE_ACTION_D(@"Year", A_NUM, a2);
@@ -169,7 +169,7 @@
     NSMutableDictionary MAKE_ACTION_D(@"Hour", A_NUM, a5);
     NSMutableDictionary MAKE_ACTION_D(@"Minute", A_NUM, a6);
     NSMutableDictionary MAKE_ACTION_D(@"Second", A_NUM, a7);
-    actionArray = [NSArray arrayWithObjects:a1,a2,a3,a4,a5,a6,a7, nil];
+    actionArray = @[a1,a2,a3,a4,a5,a6,a7];
     
     return self;
 }

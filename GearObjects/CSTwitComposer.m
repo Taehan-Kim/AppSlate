@@ -7,7 +7,7 @@
 //
 
 #import "CSTwitComposer.h"
-#import <Twitter/TWTweetComposeViewController.h>
+#import <Social/Social.h>
 #import "CSAppDelegate.h"
 
 @implementation CSTwitComposer
@@ -64,9 +64,10 @@
     if( ![BoolValue boolValue] )
         return;
     
-    if( USERCONTEXT.imRunning && [TWTweetComposeViewController canSendTweet] )
+    if( USERCONTEXT.imRunning &&
+       [SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter] )
     {
-        TWTweetComposeViewController *twtCntrlr = [[TWTweetComposeViewController alloc] init];
+        SLComposeViewController *twtCntrlr = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
         if( [linkStr length] > 5 && [linkStr hasPrefix:@"http"] )
             [twtCntrlr addURL:[NSURL URLWithString:linkStr]];
         if( [textStr length] > 1 )
@@ -74,13 +75,13 @@
         if( nil != image )
             [twtCntrlr addImage:image];
 
-        [((CSAppDelegate*)([UIApplication sharedApplication].delegate)).window.rootViewController presentModalViewController:twtCntrlr animated:YES];
+        [((CSAppDelegate*)([UIApplication sharedApplication].delegate)).window.rootViewController presentViewController:twtCntrlr animated:YES completion:NULL];
     }
 }
 
 -(NSNumber*) getShow
 {
-    return [NSNumber numberWithBool:NO];
+    return @NO;
 }
 
 //===========================================================================
@@ -110,7 +111,7 @@
     NSDictionary *d2 = MAKE_PROPERTY_D(@"URL", P_TXT, @selector(setLink:),@selector(getLink));
     NSDictionary *d3 = MAKE_PROPERTY_D(@"Image", P_IMG, @selector(setImage:),@selector(getImage));
     NSDictionary *d4 = MAKE_PROPERTY_D(@">Show Action", P_BOOL, @selector(setShow:),@selector(getShow));
-    pListArray = [NSArray arrayWithObjects:d1,d2,d3,d4, nil];
+    pListArray = @[d1,d2,d3,d4];
 
     return self;
 }

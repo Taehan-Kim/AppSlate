@@ -44,7 +44,7 @@
 {
     BOOL isOn = ((UISwitch*)csView).isOn;
 
-    return [NSNumber numberWithBool:isOn];
+    return @(isOn);
 }
 
 //===========================================================================
@@ -72,12 +72,12 @@
     NSDictionary *d1 = MAKE_PROPERTY_D(@"On Tint Color", P_COLOR, @selector(setTintColor:),@selector(getTintColor));
     NSDictionary *d2 = MAKE_PROPERTY_D(@"On Value", P_BOOL, @selector(setOnValue:),@selector(getOnValue));
 
-    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2, nil];
+    pListArray = @[xc,yc,d0,d1,d2];
 
     NSMutableDictionary MAKE_ACTION_D(@"Changed Value", A_NUM, a1);
     NSMutableDictionary MAKE_ACTION_D(@"Turn On", A_NUM, a2);
     NSMutableDictionary MAKE_ACTION_D(@"Turn Off", A_NUM, a3);
-    actionArray = [NSArray arrayWithObjects:a1, a2, a3, nil];
+    actionArray = @[a1, a2, a3];
 
     return self;
 }
@@ -100,42 +100,42 @@
     BOOL myBoolValue = ((UISwitch*)csView).on;
 
     // 1. value changed
-    act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:0] objectForKey:@"selector"]).pointerValue;
+    act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
     if( nil != act ){
-        nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:0]) objectForKey:@"mNum"];
+        nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
         CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
         
         if( nil != gObj ){
             if( [gObj respondsToSelector:act] )
-                [gObj performSelector:act withObject:[NSNumber numberWithBool:myBoolValue]];
+                [gObj performSelector:act withObject:@(myBoolValue)];
             else
                 EXCLAMATION;
         }
     }
 
     // 2. Did Turn On
-    act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:1] objectForKey:@"selector"]).pointerValue;
+    act = ((NSValue*)((NSDictionary*)actionArray[1])[@"selector"]).pointerValue;
     if( nil != act && myBoolValue ){
-        nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:1]) objectForKey:@"mNum"];
+        nsMagicNum = ((NSDictionary*)actionArray[1])[@"mNum"];
         CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
         
         if( nil != gObj ){
             if( [gObj respondsToSelector:act] )
-                [gObj performSelector:act withObject:[NSNumber numberWithBool:YES]];
+                [gObj performSelector:act withObject:@YES];
             else
                 EXCLAMATION;
         }
     }
 
     // 3. Did Turn Off
-    act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:2] objectForKey:@"selector"]).pointerValue;
+    act = ((NSValue*)((NSDictionary*)actionArray[2])[@"selector"]).pointerValue;
     if( nil != act && NO == myBoolValue ){
-        nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:2]) objectForKey:@"mNum"];
+        nsMagicNum = ((NSDictionary*)actionArray[2])[@"mNum"];
         CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
         
         if( nil != gObj ){
             if( [gObj respondsToSelector:act] )
-                [gObj performSelector:act withObject:[NSNumber numberWithBool:NO]];
+                [gObj performSelector:act withObject:@NO];
             else
                 EXCLAMATION;
         }

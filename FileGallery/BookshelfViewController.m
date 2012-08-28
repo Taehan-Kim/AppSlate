@@ -8,6 +8,7 @@
 
 #import "BookshelfViewController.h"
 #import "FileCell.h"
+#import "CSAppDelegate.h"
 
 @interface BookshelfViewController ()
 
@@ -33,7 +34,7 @@
     _imageNames = [[NSMutableArray alloc] initWithCapacity:6];
 
 #ifdef TARGET_IPHONE_SIMULATOR
-    documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    documentsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
 #else
     documentsPath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 #endif
@@ -42,7 +43,7 @@
     NSString *file;
     while (file = [dirEnum nextObject]) {
         NSDictionary *attr = [dirEnum fileAttributes];
-        if( [[attr objectForKey:@"NSFileType"] isEqualToString:NSFileTypeDirectory] ){
+        if( [attr[@"NSFileType"] isEqualToString:NSFileTypeDirectory] ){
             NSLog(@"%@",file);
             [_imageNames addObject:file]; // add name.
         }
@@ -112,8 +113,8 @@
         plainCell.selectionGlowColor = [UIColor lightGrayColor];
     }
 
-    plainCell.image = [UIImage imageWithContentsOfFile:[documentsPath stringByAppendingFormat:@"/%@/Face.png",[_imageNames objectAtIndex:index]]];
-    plainCell.title = [[_imageNames objectAtIndex:index] substringToIndex:[[_imageNames objectAtIndex:index] length]-4];
+    plainCell.image = [UIImage imageWithContentsOfFile:[documentsPath stringByAppendingFormat:@"/%@/Face.png",_imageNames[index]]];
+    plainCell.title = [_imageNames[index] substringToIndex:[_imageNames[index] length]-4];
     [plainCell showTrash: DELETING == mode ];
 
     cell = plainCell;
@@ -142,12 +143,12 @@
     switch ( mode ) {
         case SELECTION:
             [[NSNotificationCenter defaultCenter] postNotificationName:NOTI_FILELOAD
-                                                                object:[documentsPath stringByAppendingFormat:@"/%@",[_imageNames objectAtIndex:index]]];
+                                                                object:[documentsPath stringByAppendingFormat:@"/%@",_imageNames[index]]];
             [pObj dismissModalViewControllerAnimated:YES];
             break;
 
         case DELETING:
-            fs = [documentsPath stringByAppendingFormat:@"/%@",[_imageNames objectAtIndex:index]];
+            fs = [documentsPath stringByAppendingFormat:@"/%@",_imageNames[index]];
             if( [[NSFileManager defaultManager] removeItemAtPath:fs error:&error] )
             {
                 NSDirectoryEnumerator *dirEnum = [[NSFileManager defaultManager] enumeratorAtPath:documentsPath];
@@ -155,7 +156,7 @@
                 NSString *file;
                 while (file = [dirEnum nextObject]) {
                     NSDictionary *attr = [dirEnum fileAttributes];
-                    if( [[attr objectForKey:@"NSFileType"] isEqualToString:NSFileTypeDirectory] ){
+                    if( [attr[@"NSFileType"] isEqualToString:NSFileTypeDirectory] ){
                         NSLog(@"%@",file);
                         [_imageNames addObject:file]; // add name.
                     }
@@ -168,9 +169,57 @@
             }
             break;
 
-        default:
+        case SENDING:
+            fs = [documentsPath stringByAppendingFormat:@"/%@",_imageNames[index]];
+
+            MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+            picker.mailComposeDelegate = self;
+            [picker setSubject:@"AppSlate"];
+            [picker setMessageBody:@"AppSlate - http://www.facebook.com/AppSlate\n" isHTML:NO];
+            NSData *attachData = [[NSData alloc] initWithContentsOfFile:fs];
+            [picker addAttachmentData:attachData mimeType:@"application/octet-stream" fileName:_imageNames[index]];
+            
+            [self presentViewController:picker animated:YES completion:NULL];
             break;
     }
+}
+
+#pragma mark -
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error 
+{
+    NSString *message;
+//    BOOL goodOrBad = NO;
+    
+	// Notifies users about errors associated with the interface
+	switch (result)
+	{
+		case MFMailComposeResultCancelled:
+			message = NSLocalizedString(@"Your E-mail has canceled.",@"mail cancel");// @"메일 전송이 취소되었습니다.";
+			break;
+		case MFMailComposeResultSaved:
+			message = NSLocalizedString(@"Your E-mail has saved.",@"mal save");// @"메일이 저장되었습니다.";
+//            goodOrBad = YES;
+			break;
+		case MFMailComposeResultSent:
+			message = NSLocalizedString(@"Your E-mail has sent",@"mail sent"); //@"메일이 전송되었습니다.";
+//            goodOrBad = YES;
+			break;
+		case MFMailComposeResultFailed:
+			message = NSLocalizedString(@"Fail to send the mail.",@"mail fail"); //@"메일 전송이 실패하였습니다.";
+			break;
+		default:
+			message = NSLocalizedString(@"I Can not send the mail now.",@"mail cant"); //@"메일 전송이 되지 않습니다.";
+			break;
+	}
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"E-Mail"
+													message:message
+												   delegate:nil cancelButtonTitle:@"Confirm"
+										  otherButtonTitles: nil];
+	[alert show];	
+	
+	[controller dismissModalViewControllerAnimated:YES];
+    
 }
 
 @end

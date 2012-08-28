@@ -25,7 +25,7 @@
 
 -(NSNumber*) getNumber
 {
-    return [NSNumber numberWithInteger:[(FlipCounterView*)csView counterValue]];
+    return @([(FlipCounterView*)csView counterValue]);
 }
 
 -(void) setAddNumber:(NSNumber*)number
@@ -42,7 +42,7 @@
 
 -(NSNumber*) getAddNumber
 {
-    return [NSNumber numberWithInt:0];
+    return @(0);
 }
 
 -(void) setSubtractNumber:(NSNumber*)number
@@ -59,7 +59,7 @@
 
 -(NSNumber*) getSubtractNumber
 {
-    return [NSNumber numberWithInt:0];
+    return @(0);
 }
 
 //===========================================================================
@@ -87,11 +87,11 @@
     NSDictionary *d2 = MAKE_PROPERTY_D(@"Add Number Action", P_NUM, @selector(setAddNumber:),@selector(getAddNumber));
     NSDictionary *d3 = MAKE_PROPERTY_D(@"Subtract Number Action", P_NUM, @selector(setSubtractNumber:),@selector(getSubtractNumber));
 
-    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2,d3, nil];
+    pListArray = @[xc,yc,d0,d1,d2,d3];
     
     NSMutableDictionary MAKE_ACTION_D(@"Changed Value", A_NUM, a1);
     NSMutableDictionary MAKE_ACTION_D(@"Number is Zero", A_NUM, a2);
-    actionArray = [NSArray arrayWithObjects:a1, a2, nil];
+    actionArray = @[a1, a2];
     
     return self;
 }
@@ -145,14 +145,14 @@
     NSUInteger myValue = ((FlipCounterView*)csView).counterValue;
 
     // 1. value changed
-    act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:0] objectForKey:@"selector"]).pointerValue;
+    act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
     if( nil != act ){
-        nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:0]) objectForKey:@"mNum"];
+        nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
         CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
         
         if( nil != gObj ){
             if( [gObj respondsToSelector:act] )
-                [gObj performSelector:act withObject:[NSNumber numberWithInteger:myValue]];
+                [gObj performSelector:act withObject:@(myValue)];
             else
                 EXCLAMATION;
         }
@@ -169,14 +169,14 @@
     NSNumber *nsMagicNum;
     
     // 1. value set to 0.
-    act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:1] objectForKey:@"selector"]).pointerValue;
+    act = ((NSValue*)((NSDictionary*)actionArray[1])[@"selector"]).pointerValue;
     if( nil != act ){
-        nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:1]) objectForKey:@"mNum"];
+        nsMagicNum = ((NSDictionary*)actionArray[1])[@"mNum"];
         CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
         
         if( nil != gObj ){
             if( [gObj respondsToSelector:act] )
-                [gObj performSelector:act withObject:[NSNumber numberWithInteger:0]];
+                [gObj performSelector:act withObject:@(0)];
             else
                 EXCLAMATION;
         }

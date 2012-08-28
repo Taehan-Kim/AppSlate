@@ -353,8 +353,8 @@
 	CGPoint valuePoint = CGPointMake(10.0, (bounds.size.height-valueSize.height)/2);
 	CGPoint unitsPoint = CGPointMake(valuePoint.x+valueSize.width+3.0, (valuePoint.y+valueSize.height)-unitsSize.height-5.0);
 	
-	[valueStr drawAtPoint:valuePoint forWidth:valueSize.width withFont:valueFont minFontSize:valueFont.pointSize actualFontSize:NULL lineBreakMode:UILineBreakModeClip baselineAdjustment:UIBaselineAdjustmentAlignBaselines];
-	[units drawAtPoint:unitsPoint forWidth:unitsSize.width withFont:unitsFont minFontSize:unitsFont.pointSize actualFontSize:NULL lineBreakMode:UILineBreakModeClip baselineAdjustment:UIBaselineAdjustmentAlignBaselines];
+	[valueStr drawAtPoint:valuePoint forWidth:valueSize.width withFont:valueFont minFontSize:valueFont.pointSize actualFontSize:NULL lineBreakMode:NSLineBreakByClipping baselineAdjustment:UIBaselineAdjustmentAlignBaselines];
+	[units drawAtPoint:unitsPoint forWidth:unitsSize.width withFont:unitsFont minFontSize:unitsFont.pointSize actualFontSize:NULL lineBreakMode:NSLineBreakByClipping baselineAdjustment:UIBaselineAdjustmentAlignBaselines];
 }
 
 

@@ -122,7 +122,7 @@
     
     // Configure the cell...
     NSArray *plist = [destGear getPropertiesList];
-    NSString *name = [[plist objectAtIndex:indexPath.row] objectForKey:@"name"];
+    NSString *name = (plist[indexPath.row])[@"name"];
 
     if( [name hasPrefix:@">"] )
         cell.textLabel.text = [name substringFromIndex:1];
@@ -144,15 +144,15 @@
     // 선택된 프로퍼티에 지정한 액션을 연결하도록 한다.
 
     // Action's info
-    NSMutableDictionary *action_d = [[actionGear getActionList] objectAtIndex:actionIdx];
+    NSMutableDictionary *action_d = [actionGear getActionList][actionIdx];
 
     // destination property's setter
     NSArray *plist = [destGear getPropertiesList];
-    NSValue *selectorValue = [[plist objectAtIndex:indexPath.row] objectForKey:@"selector"];
+    NSValue *selectorValue = (plist[indexPath.row])[@"selector"];
 
     // setting
-    [action_d setObject:selectorValue forKey:@"selector"];
-    [action_d setObject:NSNUM(destGear.csMagicNum) forKey:@"mNum"];
+    action_d[@"selector"] = selectorValue;
+    action_d[@"mNum"] = @(destGear.csMagicNum);
 
     [UIView animateWithDuration:0.5 animations:^(void){
         // 선택 표시는 다시 풀자.

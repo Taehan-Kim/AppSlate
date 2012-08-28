@@ -24,7 +24,7 @@
     if (self) {
         // Custom initialization
         self.view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 300)];
-        SEL selector = [[pInfoDic objectForKey:@"getSelector"] pointerValue];
+        SEL selector = [pInfoDic[@"getSelector"] pointerValue];
         UIFont *fnt = [theGear performSelector:selector];
         cmtController = [CMTextStylePickerViewController textStylePickerViewController];
         [cmtController fontSelectTableViewController:nil didSelectFont:fnt];

@@ -37,39 +37,39 @@
         SEL act;
         NSNumber *nsMagicNum;
 
-        act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:0] objectForKey:@"selector"]).pointerValue;
+        act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
         if( nil != act ){
-            nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:0]) objectForKey:@"mNum"];
+            nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
             CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
             
             if( nil != gObj ){
                 if( [gObj respondsToSelector:act] )
-                    [gObj performSelector:act withObject:[NSNumber numberWithFloat:sinf(value)]];
+                    [gObj performSelector:act withObject:@(sinf(value))];
                 else
                     EXCLAMATION;
             }
         }
 
-        act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:1] objectForKey:@"selector"]).pointerValue;
+        act = ((NSValue*)((NSDictionary*)actionArray[1])[@"selector"]).pointerValue;
         if( nil != act ){
-            nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:1]) objectForKey:@"mNum"];
+            nsMagicNum = ((NSDictionary*)actionArray[1])[@"mNum"];
             CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
             
             if( nil != gObj ){
                 if( [gObj respondsToSelector:act] )
-                    [gObj performSelector:act withObject:[NSNumber numberWithFloat:cosf(value)]];
+                    [gObj performSelector:act withObject:@(cosf(value))];
                 else
                     EXCLAMATION;
             }
         }
-        act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:2] objectForKey:@"selector"]).pointerValue;
+        act = ((NSValue*)((NSDictionary*)actionArray[2])[@"selector"]).pointerValue;
         if( nil != act ){
-            nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:2]) objectForKey:@"mNum"];
+            nsMagicNum = ((NSDictionary*)actionArray[2])[@"mNum"];
             CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
             
             if( nil != gObj ){
                 if( [gObj respondsToSelector:act] )
-                    [gObj performSelector:act withObject:[NSNumber numberWithFloat:tanf(value)]];
+                    [gObj performSelector:act withObject:@(tanf(value))];
                 else
                     EXCLAMATION;
             }
@@ -79,7 +79,7 @@
 
 -(NSNumber*) getRadianValue
 {
-    return [NSNumber numberWithBool:NO];
+    return @NO;
 }
 
 //===========================================================================
@@ -102,12 +102,12 @@
     self.info = NSLocalizedString(@"Trigonometric Functions", @"Trigonometric");
     
     NSDictionary *d1 = MAKE_PROPERTY_D(@">Radian Value", P_NUM, @selector(setRadianValue:),@selector(getRadianValue));
-    pListArray = [NSArray arrayWithObjects:d1, nil];
+    pListArray = @[d1];
     
     NSMutableDictionary MAKE_ACTION_D(@"Sine Output", A_NUM, a1);
     NSMutableDictionary MAKE_ACTION_D(@"Cosine Output", A_NUM, a2);
     NSMutableDictionary MAKE_ACTION_D(@"Tangent Output", A_NUM, a3);
-    actionArray = [NSArray arrayWithObjects:a1,a2,a3, nil];
+    actionArray = @[a1,a2,a3];
     
     return self;
 }

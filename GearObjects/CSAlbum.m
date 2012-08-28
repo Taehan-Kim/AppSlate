@@ -38,7 +38,7 @@
 
 -(NSNumber*) getShow
 {
-    return [NSNumber numberWithBool:NO];
+    return @NO;
 }
 
 //===========================================================================
@@ -63,10 +63,10 @@
     imgPicker = nil;
 
     NSDictionary *d1 = MAKE_PROPERTY_D(@">Show Action", P_BOOL, @selector(setShow:),@selector(getShow));
-    pListArray = [NSArray arrayWithObjects:d1, nil];
+    pListArray = @[d1];
 
-    NSMutableDictionary MAKE_ACTION_D(@"Image Select", A_NUM, a1);
-    actionArray = [NSArray arrayWithObjects:a1, nil];
+    NSMutableDictionary MAKE_ACTION_D(@"Selected Image", A_IMG, a1);
+    actionArray = @[a1];
 
     return self;
 }
@@ -92,10 +92,10 @@
 {
     SEL act;
     NSNumber *nsMagicNum;
-    
-    act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:0] objectForKey:@"selector"]).pointerValue;
+
+    act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
     if( nil != act ){
-        nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:0]) objectForKey:@"mNum"];
+        nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
         CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
         
         if( nil != gObj ){

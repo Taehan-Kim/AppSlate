@@ -43,7 +43,7 @@
 		self.headerLabel.textColor = [UIColor whiteColor];
 		self.headerLabel.shadowColor = [UIColor blackColor];
 		self.headerLabel.shadowOffset = CGSizeMake(0, -1);
-		self.headerLabel.textAlignment = UITextAlignmentCenter;
+		self.headerLabel.textAlignment = NSTextAlignmentCenter;
 		[self.titleBar addSubview:self.headerLabel];
 
 		

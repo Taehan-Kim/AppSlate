@@ -90,8 +90,8 @@
 
 -(void) getAddRequest:(NSNotification*)noti
 {
-    NSUInteger getCode = [[[noti userInfo] objectForKey:@"tag"] integerValue];
-    cView = ((UIView*)[[noti userInfo] objectForKey:@"cell"]);
+    NSUInteger getCode = [[noti userInfo][@"tag"] integerValue];
+    cView = ((UIView*)[noti userInfo][@"cell"]);
     [cView setClipsToBounds:YES];
     CGRect startFrame = [cView convertRect:cView.bounds toView:self.view];
 
@@ -205,6 +205,10 @@
             newObj = [[CSNote alloc] initGear]; break;
         case CS_CLOCK:
             newObj = [[CSClock alloc] initGear]; break;
+        case CS_PLAY:
+            newObj = [[CSPlay alloc] initGear]; break;
+        case CS_CAMERA:
+            newObj = [[CSCamera alloc] initGear]; break;
         default:
             return;
     }
@@ -256,7 +260,7 @@
     [group setValue:@"_drop" forKey:@"name"];
     group.fillMode = kCAFillModeForwards;
     group.removedOnCompletion = NO;
-    [group setAnimations:[NSArray arrayWithObjects: pathAnimation, resizeAnimation,nil]];
+    [group setAnimations:@[pathAnimation, resizeAnimation]];
     group.duration = 0.6f;
     group.delegate = self;
     [group setValue:cView forKey:@"imageViewBeingAnimated"];
@@ -323,7 +327,7 @@
 // 청사진에 객체를 제거한다.
 -(void) deleteGear:(NSUInteger)magicNum
 {
-    NSNumber *nsMagicNum = NSNUM(magicNum);
+    NSNumber *nsMagicNum = @(magicNum);
 
     for( CSGearObject *g in USERCONTEXT.gearsArray )
     {
@@ -382,7 +386,7 @@
     // 순서를 지키기 위해서 의도적으로 index 를 사용.
     for( idx = 0; idx < [USERCONTEXT.gearsArray count]; idx++ )
     {
-        CSGearObject *g = [USERCONTEXT.gearsArray objectAtIndex:idx];
+        CSGearObject *g = (USERCONTEXT.gearsArray)[idx];
         [self.view addSubview:g.csView];
         // 기어 뷰 를 설계도에 놓는다.
         [g.csView setTag:g.csMagicNum];
@@ -633,29 +637,56 @@
 
 -(void) propButtonAction:(id)sender
 {
-    //
-    if (!propertyPopoverController) {
-        PropertyTVController *controller = [[PropertyTVController alloc] initWithStyle:UITableViewStylePlain];
+    // iPad ==================
+    if( UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM() )
+    {
+        if (!propertyPopoverController) {
+            PropertyTVController *controller = [[PropertyTVController alloc] initWithStyle:UITableViewStylePlain];
 
-        UINavigationController *naviCtrl = [[UINavigationController alloc] initWithRootViewController:controller];
-        propertyPopoverController = [[UIPopoverController alloc] initWithContentViewController:naviCtrl];
-        [propertyPopoverController setPopoverContentSize:CGSizeMake(320, 480)];
+            UINavigationController *naviCtrl = [[UINavigationController alloc] initWithRootViewController:controller];
+
+            propertyPopoverController = [[UIPopoverController alloc] initWithContentViewController:naviCtrl];
+            [propertyPopoverController setPopoverContentSize:CGSizeMake(320, 480)];
+        }
+
+        // Root 로 이동한다.
+        [((UINavigationController*)(propertyPopoverController.contentViewController)) popToRootViewControllerAnimated:NO];
+
+        PropertyTVController *tview = (PropertyTVController*)((UINavigationController*)(propertyPopoverController.contentViewController)).topViewController;
+
+        // 해당 객체를 선택해주고, 목록에 내용이 표시될 수 있도록 준비해줌.
+        CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:((UIButton*)sender).tag];
+        if( nil != gObj ){
+            [tview setSelectedGear:gObj];
+            [propertyPopoverController presentPopoverFromRect:((UIView*)sender).frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        }
+        // 만일 여기로 온다면, 매직 넘버를 찾지 못했다는 것. 문제가 있는 경우다.
+        // TODO: Error Handling
     }
+    else // iPhone ============= TODO:Working....
+    {
+        if( !tsProPopoverController ) {
+            PropertyTVController *controller = [[PropertyTVController alloc] initWithStyle:UITableViewStylePlain];
 
-    // Root 로 이동한다.
-    [((UINavigationController*)(propertyPopoverController.contentViewController)) popToRootViewControllerAnimated:NO];
+            UINavigationController *naviCtrl = [[UINavigationController alloc] initWithRootViewController:controller];
 
-    PropertyTVController *tview = (PropertyTVController*)((UINavigationController*)(propertyPopoverController.contentViewController)).topViewController;
+            tsProPopoverController = [[TSPopoverController alloc] initWithContentViewController:naviCtrl];
+            [tsProPopoverController setContentSizeForViewInPopover:CGSizeMake(300, 420)];
+        }
+        // Root 로 이동한다.
+        [((UINavigationController*)(tsProPopoverController.contentViewController)) popToRootViewControllerAnimated:NO];
 
-    // 해당 객체를 선택해주고, 목록에 내용이 표시될 수 있도록 준비해줌.
-    CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:((UIButton*)sender).tag];
-    if( nil != gObj ){
-        [tview setSelectedGear:gObj];
-        [propertyPopoverController presentPopoverFromRect:((UIView*)sender).frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        PropertyTVController *tview = (PropertyTVController*)((UINavigationController*)(tsProPopoverController.contentViewController)).topViewController;
+
+        // 해당 객체를 선택해주고, 목록에 내용이 표시될 수 있도록 준비해줌.
+        CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:((UIButton*)sender).tag];
+        if( nil != gObj ){
+            [tview setSelectedGear:gObj];
+            [tsProPopoverController showPopoverWithRect:((UIView*)sender).frame];
+        }
+        // 만일 여기로 온다면, 매직 넘버를 찾지 못했다는 것. 문제가 있는 경우다.
+        // TODO: Error Handling
     }
-
-    // 만일 여기로 온다면, 매직 넘버를 찾지 못했다는 것. 문제가 있는 경우다.
-    // TODO: Error Handling
 }
 
 -(void) moveGear:(UIPanGestureRecognizer*)recognizer
@@ -753,7 +784,8 @@
 -(void) openMenu:(UISwipeGestureRecognizer*)recognizer
 {
     if( [recognizer state] == UIGestureRecognizerStateEnded &&
-       recognizer.direction == UISwipeGestureRecognizerDirectionUp )
+       recognizer.direction == UISwipeGestureRecognizerDirectionUp &&
+       !USERCONTEXT.imRunning )
     {
         [[(CSAppDelegate*)([UIApplication sharedApplication].delegate) mainViewController] openMenuFolder:nil];
     }

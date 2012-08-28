@@ -3,7 +3,7 @@
 //  ImIn 프로젝트에서 기본 형식만 가져옴.
 //
 //  Created by choipd on 10. 4. 13..
-//  Copyright 2010 kth. All rights reserved.
+//  Copyright 2010 ChocolateSoft. All rights reserved.
 //
 
 #import "UserContext.h"
@@ -14,9 +14,6 @@
 // singleton stuff
 //
 static UserContext *_sharedUserContext = nil;
-
-@synthesize gearsArray, appName, pop, wallpapers, wallpaperIndex;
-@synthesize imRunning, facebook;
 
 + (UserContext *)sharedUserContext
 {
@@ -39,7 +36,7 @@ static UserContext *_sharedUserContext = nil;
 		_sharedUserContext = [super alloc];
         _sharedUserContext.gearsArray = [[NSMutableArray alloc] initWithCapacity:50];
         _sharedUserContext.wallpapers = \
-            [[NSArray alloc] initWithObjects:[UIColor whiteColor],
+            @[[UIColor whiteColor],
               [UIColor colorWithPatternImage:[UIImage imageNamed:@"bluePaper.png"]],
               [UIColor lightGrayColor],
               [UIColor grayColor],
@@ -55,8 +52,8 @@ static UserContext *_sharedUserContext = nil;
               [UIColor scrollViewTexturedBackgroundColor],
               [UIColor underPageBackgroundColor],
               [UIColor colorWithPatternImage:[UIImage imageNamed:@"woodPaper.png"]],
-              [UIColor colorWithPatternImage:[UIImage imageNamed:@"darkWoodPaper.png"]],
-                                         nil];
+              [UIColor colorWithPatternImage:[UIImage imageNamed:@"darkWoodPaper.png"]]
+            ];
         _sharedUserContext.imRunning = NO;
 
 		return _sharedUserContext;
@@ -121,7 +118,7 @@ static UserContext *_sharedUserContext = nil;
     [signView setBackgroundColor:[UIColor redColor]];
     [signView.layer setCornerRadius:20.0];
     UILabel *exclamation = [[UILabel alloc] initWithFrame:signView.frame];
-    [exclamation setTextAlignment:UITextAlignmentCenter];
+    [exclamation setTextAlignment:NSTextAlignmentCenter];
     [exclamation setFont:CS_FONT(17)];
     [exclamation setBackgroundColor:[UIColor clearColor]];
     [exclamation setTextColor:[UIColor yellowColor]];
@@ -149,7 +146,7 @@ static UserContext *_sharedUserContext = nil;
 
 -(CSGearObject*) getGearWithMagicNum:(NSUInteger) magicNum
 {
-    for( CSGearObject *g in gearsArray )
+    for( CSGearObject *g in _gearsArray )
     {
         if( g.csMagicNum == magicNum ){
             return g;

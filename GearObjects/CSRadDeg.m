@@ -37,15 +37,15 @@
         SEL act;
         NSNumber *nsMagicNum;
         
-        act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:0] objectForKey:@"selector"]).pointerValue;
+        act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
         if( nil != act ){
-            nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:0]) objectForKey:@"mNum"];
+            nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
             CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
             CGFloat rad = value * M_PI / 180.0;
             
             if( nil != gObj ){
                 if( [gObj respondsToSelector:act] )
-                    [gObj performSelector:act withObject:[NSNumber numberWithFloat:rad]];
+                    [gObj performSelector:act withObject:@(rad)];
                 else
                     EXCLAMATION;
             }
@@ -55,7 +55,7 @@
 
 -(NSNumber*) getDegreeValue
 {
-    return [NSNumber numberWithBool:NO];
+    return @NO;
 }
 
 -(void) setRadianValue:(NSNumber*) num
@@ -78,15 +78,15 @@
         SEL act;
         NSNumber *nsMagicNum;
 
-        act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:1] objectForKey:@"selector"]).pointerValue;
+        act = ((NSValue*)((NSDictionary*)actionArray[1])[@"selector"]).pointerValue;
         if( nil != act ){
-            nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:1]) objectForKey:@"mNum"];
+            nsMagicNum = ((NSDictionary*)actionArray[1])[@"mNum"];
             CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
             CGFloat deg = value * 180.0 / M_PI;
             
             if( nil != gObj ){
                 if( [gObj respondsToSelector:act] )
-                    [gObj performSelector:act withObject:[NSNumber numberWithFloat:deg]];
+                    [gObj performSelector:act withObject:@(deg)];
                 else
                     EXCLAMATION;
             }
@@ -96,7 +96,7 @@
 
 -(NSNumber*) getRadianValue
 {
-    return [NSNumber numberWithBool:NO];
+    return @NO;
 }
 
 //===========================================================================
@@ -120,11 +120,11 @@
     
     NSDictionary *d1 = MAKE_PROPERTY_D(@">Degree Value", P_NUM, @selector(setDegreeValue:),@selector(getDegreeValue));
     NSDictionary *d2 = MAKE_PROPERTY_D(@">Radian Value", P_NUM, @selector(setRadianValue:),@selector(getRadianValue));
-    pListArray = [NSArray arrayWithObjects:d1,d2, nil];
+    pListArray = @[d1,d2];
     
     NSMutableDictionary MAKE_ACTION_D(@"Degree Output", A_NUM, a1);
     NSMutableDictionary MAKE_ACTION_D(@"Radian Output", A_NUM, a2);
-    actionArray = [NSArray arrayWithObjects:a1,a2, nil];
+    actionArray = @[a1,a2];
 
     return self;
 }

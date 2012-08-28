@@ -12,42 +12,37 @@
 
 @implementation CSAppDelegate
 
-@synthesize window = _window;
-@synthesize mainViewController = _mainViewController;
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        self.mainViewController = [[CSMainViewController alloc] initWithNibName:@"CSMainViewController_iPhone" bundle:nil];
-    } else {
-        self.mainViewController = [[CSMainViewController alloc] initWithNibName:@"CSMainViewController_iPad" bundle:nil];
-    }
+    self.mainViewController = [[CSMainViewController alloc] init];
 
-    USERCONTEXT.facebook = [[Facebook alloc] initWithAppId:@"269841146424285" andDelegate:self];
+//    USERCONTEXT.facebook = [[Facebook alloc] initWithAppId:@"269841146424285" andDelegate:self];
 
     self.window.rootViewController = self.mainViewController;
     [self.window makeKeyAndVisible];
 
     // facebook SSO
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if ([defaults objectForKey:@"FBAccessTokenKey"] 
-        && [defaults objectForKey:@"FBExpirationDateKey"]) {
-        USERCONTEXT.facebook.accessToken = [defaults objectForKey:@"FBAccessTokenKey"];
-        USERCONTEXT.facebook.expirationDate = [defaults objectForKey:@"FBExpirationDateKey"];
-    }
+//    if ([defaults objectForKey:@"FBAccessTokenKey"] 
+//        && [defaults objectForKey:@"FBExpirationDateKey"]) {
+//        USERCONTEXT.facebook.accessToken = [defaults objectForKey:@"FBAccessTokenKey"];
+//        USERCONTEXT.facebook.expirationDate = [defaults objectForKey:@"FBExpirationDateKey"];
+//    }
 
     [self loadCachedAppFile];
+
+    USERCONTEXT.inviteCheckEnabled = [defaults boolForKey:@"AppUsageCheck"];
 
     return YES;
 }
 
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
-{
-    return [USERCONTEXT.facebook handleOpenURL:url]; 
-}
+//- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+//  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+//{
+//    NSLog(@"%@",url.scheme);
+//    return [USERCONTEXT.facebook handleOpenURL:url];
+//}
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
@@ -80,54 +75,130 @@
      Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
      */
     [self.mainViewController saveAppFile:YES];
+
+    // Check the flag for enabling any prompts. If that flag is on
+    // check the app active counter
+//    if( !USERCONTEXT.inviteCheckEnabled && [USERCONTEXT.facebook isSessionValid] &&
+//       [self checkAppUsageTrigger] )
+//    {
+//        // If the user should be prompter to invite friends, show
+//        // an alert with the choices.
+//        UIAlertView *alert = [[UIAlertView alloc]
+//                              initWithTitle:@"Invite Friends"
+//                              message:@"If you enjoy using this app, would you mind taking a moment to invite a few friends that you think will also like it?"
+//                              delegate:self
+//                              cancelButtonTitle:@"No Thanks"
+//                              otherButtonTitles:@"Tell Friends!", @"Remind Me Later", nil];
+//        [alert show];
+//    }
+}
+
+/*
+ * When the alert is dismissed check which button was clicked so
+ * you can take appropriate action, such as displaying the request
+ * dialog, or setting a flag not to prompt the user again.
+ */
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+        // User has clicked on the No Thanks button, do not ask again
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setBool:YES forKey:@"AppUsageCheck"];
+        [defaults synchronize];
+        USERCONTEXT.inviteCheckEnabled = YES;
+    } else if (buttonIndex == 1) {
+        // User has clicked on the Tell Friends button
+        [self performSelector:@selector(fbookFeed) withObject:nil afterDelay:1.0];
+    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    /*
-     Called when the application is about to terminate.
-     Save data if appropriate.
-     See also applicationDidEnterBackground:.
-     */
 }
 
 #pragma mark -
 
-- (void)fbDidLogin
-{
+//- (void)fbDidLogin
+//{
+//    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+//    [defaults setObject:[USERCONTEXT.facebook accessToken] forKey:@"FBAccessTokenKey"];
+//    [defaults setObject:[USERCONTEXT.facebook expirationDate] forKey:@"FBExpirationDateKey"];
+//    [defaults synchronize];
+//
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"facebook" message:@"Connected." delegate:nil cancelButtonTitle:@"Confirm" otherButtonTitles: nil];
+//    [alert show];
+//
+//    [self performSelector:@selector(fbookFeed) withObject:nil afterDelay:1.0];
+//}
+//
+//- (void)fbDidNotLogin:(BOOL)cancelled
+//{
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"facebook" message:@"Not completed." delegate:nil cancelButtonTitle:@"Confirm" otherButtonTitles: nil];
+//    [alert show];
+//}
+//
+//
+//- (void) fbDidLogout {
+//    // Remove saved authorization information if it exists
+//    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+//    if ([defaults objectForKey:@"FBAccessTokenKey"]) {
+//        [defaults removeObjectForKey:@"FBAccessTokenKey"];
+//        [defaults removeObjectForKey:@"FBExpirationDateKey"];
+//        [defaults synchronize];
+//    }
+//
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"facebook" message:@"Disconnected." delegate:nil cancelButtonTitle:@"Confirm" otherButtonTitles: nil];
+//    [alert show];
+//}
+//
+//- (void)fbSessionInvalidated
+//{
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"facebook" message:@"Session is invalidated." delegate:nil cancelButtonTitle:@"Confirm" otherButtonTitles: nil];
+//    [alert show];
+//}
+
+//- (void)request:(FBRequest *)request didLoad:(id)result
+//{
+//    NSLog(@"F did %@",result);
+//}
+//
+//- (void) request:(FBRequest *)request didFailWithError:(NSError *)error
+//{
+//    NSLog(@"F err %@",[error description]);
+//}
+
+//-(void) fbookFeed
+//{
+//    NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithCapacity:3];
+//    [params setObject:@"link" forKey:@"type"];
+//    [params setObject:@"http://itunes.com/apps/TaehanKim/AppSlate" forKey:@"link"];
+//    [params setObject:@"I'm using this awesome iPad app. - AppSlate !" forKey:@"description"];
+//    [USERCONTEXT.facebook requestWithGraphPath:@"me/feed"
+//                                     andParams:params andHttpMethod:@"POST" andDelegate:self];
+//}
+
+- (BOOL) checkAppUsageTrigger {
+    // Initialize the app active count
+    NSInteger appActiveCount = 0;
+    // Read the stored value of the counter, if it exists
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:[USERCONTEXT.facebook accessToken] forKey:@"FBAccessTokenKey"];
-    [defaults setObject:[USERCONTEXT.facebook expirationDate] forKey:@"FBExpirationDateKey"];
-    [defaults synchronize];
-
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"facebook" message:@"Connected." delegate:nil cancelButtonTitle:@"Confirm" otherButtonTitles: nil];
-    [alert show];
-}
-
-- (void)fbDidNotLogin:(BOOL)cancelled
-{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"facebook" message:@"Not completed." delegate:nil cancelButtonTitle:@"Confirm" otherButtonTitles: nil];
-    [alert show];
-}
-
-
-- (void) fbDidLogout {
-    // Remove saved authorization information if it exists
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if ([defaults objectForKey:@"FBAccessTokenKey"]) {
-        [defaults removeObjectForKey:@"FBAccessTokenKey"];
-        [defaults removeObjectForKey:@"FBExpirationDateKey"];
-        [defaults synchronize];
+    if ([defaults objectForKey:@"AppUsedCounter"]) {
+        appActiveCount = [defaults integerForKey:@"AppUsedCounter"];
     }
-
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"facebook" message:@"Disconnected." delegate:nil cancelButtonTitle:@"Confirm" otherButtonTitles: nil];
-    [alert show];
-}
-
-- (void)fbSessionInvalidated
-{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"facebook" message:@"Session is invalidated." delegate:nil cancelButtonTitle:@"Confirm" otherButtonTitles: nil];
-    [alert show];
+    
+    // Increment the counter
+    appActiveCount++;
+    BOOL trigger = NO;
+    // Only trigger the prompt if the facebook session is valid and
+    // the counter is greater than a certain value, 3 in this sample
+    if( 5 == appActiveCount ) {
+        trigger = YES;
+        appActiveCount = 0;
+    }
+    // Save the updated counter
+    [defaults setInteger:appActiveCount forKey:@"AppUsedCounter"];
+    [defaults synchronize];
+    return trigger;
 }
 
 #pragma mark -
@@ -137,7 +208,7 @@
     NSString *cachePath, *tmp;
 
 #ifdef TARGET_IPHONE_SIMULATOR
-    tmp = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    tmp = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
 #else
     tmp = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 #endif

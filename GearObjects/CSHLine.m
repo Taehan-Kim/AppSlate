@@ -26,18 +26,18 @@
 
 -(NSNumber*) getWidth
 {
-    return [NSNumber numberWithFloat:csView.frame.size.width];
+    return @(csView.frame.size.width);
 }
 
 -(void) setLineColor:(UIColor*)color
 {
     if( [color isKindOfClass:[UIColor class]] )
-        [(UIView*)[[csView subviews] objectAtIndex:0] setBackgroundColor:color];
+        [(UIView*)[csView subviews][0] setBackgroundColor:color];
 }
 
 -(UIColor*) getLineColor
 {
-    return [(UIView*)[[csView subviews] objectAtIndex:0] backgroundColor];
+    return [(UIView*)[csView subviews][0] backgroundColor];
 }
 
 #pragma mark -
@@ -63,8 +63,8 @@
     NSDictionary *d0 = ALPHA_D;
     NSDictionary *d1 = MAKE_PROPERTY_D(@">Length", P_NUM, @selector(setWidth:),@selector(getWidth));
     NSDictionary *d2 = MAKE_PROPERTY_D(@"Line Color", P_COLOR, @selector(setLineColor:),@selector(getLineColor));
-    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2, nil];
-    
+    pListArray = @[xc,yc,d0,d1,d2];
+
     return self;
 }
 

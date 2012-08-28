@@ -574,7 +574,7 @@ NSString * const AQGridViewSelectionDidChangeNotification = @"AQGridViewSelectio
 
 - (AQGridViewCell *) dequeueReusableCellWithIdentifier: (NSString *) reuseIdentifier
 {
-	NSMutableSet * cells = [_reusableGridCells objectForKey: reuseIdentifier];
+	NSMutableSet * cells = _reusableGridCells[reuseIdentifier];
 	AQGridViewCell * cell = [cells anyObject];
 	if ( cell == nil )
 		return ( nil );
@@ -589,11 +589,11 @@ NSString * const AQGridViewSelectionDidChangeNotification = @"AQGridViewSelectio
 {
 	for ( AQGridViewCell * cell in reusableCells )
 	{
-		NSMutableSet * reuseSet = [_reusableGridCells objectForKey: cell.reuseIdentifier];
+		NSMutableSet * reuseSet = _reusableGridCells[cell.reuseIdentifier];
 		if ( reuseSet == nil )
 		{
 			reuseSet = [[NSMutableSet alloc] initWithCapacity: 32];
-			[_reusableGridCells setObject: reuseSet forKey: cell.reuseIdentifier];
+			_reusableGridCells[cell.reuseIdentifier] = reuseSet;
 		}
 		else if ( [reuseSet member: cell] == cell )
 		{
@@ -724,7 +724,7 @@ NSString * const AQGridViewSelectionDidChangeNotification = @"AQGridViewSelectio
 {
 	// simple case -- there's a cell already, we can just ask for its frame
 	if ( NSLocationInRange(index, _visibleIndices) )
-		return ( [[_visibleCells objectAtIndex: [self visibleCellListIndexForItemIndex: index]] frame] );
+		return ( [_visibleCells[[self visibleCellListIndexForItemIndex: index]] frame] );
 
 	// complex case-- compute the frame manually
 	return ( [self fixCellFrame: CGRectZero forGridRect: [_gridData cellRectAtIndex: index]] );
@@ -738,7 +738,7 @@ NSString * const AQGridViewSelectionDidChangeNotification = @"AQGridViewSelectio
 	// we don't clip to visible range-- when animating edits the visible cell list can contain extra items
 	NSUInteger visibleCellListIndex = [self visibleCellListIndexForItemIndex: index];
 	if ( visibleCellListIndex < [_visibleCells count] )
-		return ( [_visibleCells objectAtIndex: visibleCellListIndex] );
+		return ( _visibleCells[visibleCellListIndex] );
 	return ( nil );
 }
 
@@ -1340,7 +1340,7 @@ NSString * const AQGridViewSelectionDidChangeNotification = @"AQGridViewSelectio
 					// NB: In UITableView:
 					// if ( [self usesGestureRecognizers] && [self isDragging] ) skip next line
 					[self performSelector: @selector(_gridViewDeferredTouchesBegan:)
-							   withObject: [NSNumber numberWithUnsignedInteger: index]
+							   withObject: @(index)
 							   afterDelay: 0.0];
 				}
 			}
@@ -1654,7 +1654,7 @@ NSArray * __sortDescriptors;
                     NSUInteger i, count = [_visibleCells count];
                     for ( i = 0; i < count; i++ )
                     {
-                        AQGridViewCell * cell = [_visibleCells objectAtIndex: i];
+                        AQGridViewCell * cell = _visibleCells[i];
                         if ( [newVisibleIndices containsIndex: cell.displayIndex] == NO &&
                             [animatingDestinationIndices containsIndex: cell.displayIndex] == NO )
                         {

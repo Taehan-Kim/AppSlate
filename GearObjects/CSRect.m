@@ -32,7 +32,7 @@
 
 -(NSNumber*) getWidth
 {
-    return [NSNumber numberWithFloat:csView.frame.size.width];
+    return @(csView.frame.size.width);
 }
 
 -(void) setHeight:(NSNumber*)num
@@ -49,7 +49,7 @@
 
 -(NSNumber*) getHeight
 {
-    return [NSNumber numberWithFloat:csView.frame.size.height];
+    return @(csView.frame.size.height);
 }
 
 -(void) setRectColor:(UIColor*)color
@@ -82,7 +82,7 @@
 
 -(NSNumber*) getBorderWidth
 {
-    return [NSNumber numberWithFloat:csView.layer.borderWidth];
+    return @(csView.layer.borderWidth);
 }
 
 -(void) setCornerRadius:(NSNumber*)num
@@ -93,7 +93,7 @@
 
 -(NSNumber*) getCornerRadius
 {
-    return [NSNumber numberWithFloat:csView.layer.cornerRadius];
+    return @(csView.layer.cornerRadius);
 }
 
 #pragma mark -
@@ -119,7 +119,7 @@
     NSDictionary *d4 = MAKE_PROPERTY_D(@"Border Color", P_COLOR, @selector(setBorderColor:),@selector(getBorderColor));
     NSDictionary *d5 = MAKE_PROPERTY_D(@"Border Width", P_NUM, @selector(setBorderWidth:),@selector(getBorderWidth));
     NSDictionary *d6 = MAKE_PROPERTY_D(@"Corner Radius", P_NUM, @selector(setCornerRadius:),@selector(getCornerRadius));
-    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2,d3,d4,d5,d6, nil];
+    pListArray = @[xc,yc,d0,d1,d2,d3,d4,d5,d6];
 
     return self;
 }

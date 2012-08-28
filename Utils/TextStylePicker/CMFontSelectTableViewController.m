@@ -119,7 +119,7 @@
     }
     
     // Configure the cell...
-	NSString *fontFamilyName = [self.fontFamilyNames objectAtIndex:indexPath.row];
+	NSString *fontFamilyName = (self.fontFamilyNames)[indexPath.row];
 	
 	UILabel *fontNameLabel = (UILabel *)[cell viewWithTag:kFontNameLabelTag];
 	
@@ -191,14 +191,14 @@
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
 	CMFontStyleSelectTableViewController *fontStyleSelectTableViewController = [[CMFontStyleSelectTableViewController alloc] initWithNibName:@"CMFontStyleSelectTableViewController" bundle:nil];
-	fontStyleSelectTableViewController.fontFamilyName = [self.fontFamilyNames objectAtIndex:indexPath.row];
+	fontStyleSelectTableViewController.fontFamilyName = (self.fontFamilyNames)[indexPath.row];
 	fontStyleSelectTableViewController.selectedFont = self.selectedFont;
 	fontStyleSelectTableViewController.delegate = self;
 	[self.navigationController pushViewController:fontStyleSelectTableViewController animated:YES];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSString *fontName = [self.fontFamilyNames objectAtIndex:indexPath.row];
+	NSString *fontName = (self.fontFamilyNames)[indexPath.row];
 	self.selectedFont = [UIFont fontWithName:fontName size:self.selectedFont.pointSize];
 	
 	[delegate fontSelectTableViewController:self didSelectFont:self.selectedFont];

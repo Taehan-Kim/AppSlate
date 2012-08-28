@@ -72,14 +72,14 @@
     if( [alignNum isKindOfClass:[NSNumber class]] )
         align = [alignNum integerValue];
     else
-        align = UITextAlignmentLeft;
+        align = NSTextAlignmentLeft;
 
     [((UILabel*)csView) setTextAlignment:align];
 }
 
 -(NSNumber *) getTextAlignment
 {
-    return [NSNumber numberWithInteger:((UILabel*)csView).textAlignment];
+    return @( ((UILabel*)csView).textAlignment );
 }
 
 -(void) setLineNumber:(NSNumber*)number
@@ -92,7 +92,7 @@
 
 -(NSNumber*) getLineNumber
 {
-    return [NSNumber numberWithInt:((UILabel*)csView).numberOfLines];
+    return @( ((UILabel*)csView).numberOfLines );
 }
 
 
@@ -117,7 +117,7 @@
 {
     BOOL isRound = (((UILabel*)csView).layer.cornerRadius > 0.0) ? YES : NO;
 
-    return [NSNumber numberWithBool:isRound];
+    return @( isRound );
 }
 
 //===========================================================================
@@ -151,7 +151,7 @@
     NSDictionary *d6 = MAKE_PROPERTY_D(@"Line Number", P_NUM, @selector(setLineNumber:),@selector(getLineNumber));
     NSDictionary *d7 = MAKE_PROPERTY_D(@"Rounded Border", P_BOOL, @selector(setRoundBorder:),@selector(getRoundBorder));
 
-    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2,d3,d4,d5,d6,d7, nil];
+    pListArray = @[xc,yc,d0,d1,d2,d3,d4,d5,d6,d7];
 
     return self;
 }

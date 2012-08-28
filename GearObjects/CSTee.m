@@ -17,42 +17,42 @@
 
 //===========================================================================
 
--(void) setInputValue:(NSNumber*) BoolValue
+-(void) setInputValue:(id)inValue
 {
-    CGFloat value;
+//    CGFloat value;
 
-    if( [BoolValue isKindOfClass:[NSString class]] )
-        value = [(NSString*)BoolValue floatValue];
-    else  if( [BoolValue isKindOfClass:[NSNumber class]] )
-        value = [BoolValue floatValue];
-    else
-        return;
+//    if( [inValue isKindOfClass:[NSString class]] )
+//        value = [(NSString*)BoolValue floatValue];
+//    else  if( [BoolValue isKindOfClass:[NSNumber class]] )
+//        value = [BoolValue floatValue];
+//    else
+//        return;
 
     if( USERCONTEXT.imRunning ){
         SEL act;
         NSNumber *nsMagicNum;
 
-        act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:0] objectForKey:@"selector"]).pointerValue;
+        act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
         if( nil != act ){
-            nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:0]) objectForKey:@"mNum"];
+            nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
             CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
             
             if( nil != gObj ){
                 if( [gObj respondsToSelector:act] )
-                    [gObj performSelector:act withObject:[NSNumber numberWithFloat: value ]];
+                    [gObj performSelector:act withObject:inValue];
                 else
                     EXCLAMATION;
             }
         }
 
-        act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:1] objectForKey:@"selector"]).pointerValue;
+        act = ((NSValue*)((NSDictionary*)actionArray[1])[@"selector"]).pointerValue;
         if( nil != act ){
-            nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:1]) objectForKey:@"mNum"];
+            nsMagicNum = ((NSDictionary*)actionArray[1])[@"mNum"];
             CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
             
             if( nil != gObj ){
                 if( [gObj respondsToSelector:act] )
-                    [gObj performSelector:act withObject:[NSNumber numberWithFloat: value ]];
+                    [gObj performSelector:act withObject:inValue];
                 else
                     EXCLAMATION;
             }
@@ -63,7 +63,7 @@
 
 -(NSNumber*) getInputValue
 {
-    return [NSNumber numberWithBool:NO];
+    return @NO;
 }
 
 //===========================================================================
@@ -86,11 +86,11 @@
     self.info = NSLocalizedString(@"Split input value", @"Tee");
 
     NSDictionary *d1 = MAKE_PROPERTY_D(@">Input", P_NUM, @selector(setInputValue:),@selector(getInputValue));
-    pListArray = [NSArray arrayWithObjects:d1, nil];
+    pListArray = @[d1];
     
     NSMutableDictionary MAKE_ACTION_D(@"Output #1", A_NUM, a1);
     NSMutableDictionary MAKE_ACTION_D(@"Output #2", A_NUM, a2);
-    actionArray = [NSArray arrayWithObjects:a1,a2, nil];
+    actionArray = @[a1,a2];
 
     return self;
 }

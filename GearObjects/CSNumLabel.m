@@ -42,7 +42,7 @@
     if( showComma ) {
         NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
         [numberFormatter setNumberStyle: NSNumberFormatterCurrencyStyle];
-        [((UILabel*)csView) setText:[numberFormatter stringFromNumber:[NSNumber numberWithFloat:number]] ];
+        [((UILabel*)csView) setText:[numberFormatter stringFromNumber:@(number)] ];
     }
     else 
         [((UILabel*)csView) setText:[NSString stringWithFormat:@"%f",number]];
@@ -50,7 +50,7 @@
 
 -(NSNumber*) getNumber
 {
-    return [NSNumber numberWithFloat:number];
+    return @(number);
 }
 
 -(void) setShowComma:(NSNumber*)BoolValue
@@ -65,7 +65,7 @@
     if( showComma ) {
         NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
         [numberFormatter setNumberStyle: NSNumberFormatterCurrencyStyle];
-        [((UILabel*)csView) setText:[numberFormatter stringFromNumber:[NSNumber numberWithFloat:number]] ];
+        [((UILabel*)csView) setText:[numberFormatter stringFromNumber:@(number)] ];
     }
     else 
         [((UILabel*)csView) setText:[NSString stringWithFormat:@"%f",number]];
@@ -73,7 +73,7 @@
 
 -(NSNumber*) getShowComma
 {
-    return [NSNumber numberWithBool:showComma];
+    return @(showComma);
 }
 
 -(void) setTextColor:(UIColor*)color
@@ -116,14 +116,14 @@
     if( [alignNum isKindOfClass:[NSNumber class]] )
         align = [alignNum integerValue];
     else
-        align = UITextAlignmentLeft;
+        align = NSTextAlignmentLeft;
     
     [((UILabel*)csView) setTextAlignment:align];
 }
 
 -(NSNumber *) getTextAlignment
 {
-    return [NSNumber numberWithInteger:((UILabel*)csView).textAlignment];
+    return @( ((UILabel*)csView).textAlignment );
 }
 
 -(void) setRoundBorder:(NSNumber*)BoolValue
@@ -147,7 +147,7 @@
 {
     BOOL isRound = (((UILabel*)csView).layer.cornerRadius > 0.0) ? YES : NO;
     
-    return [NSNumber numberWithBool:isRound];
+    return @(isRound);
 }
 
 //===========================================================================
@@ -183,7 +183,7 @@
     NSDictionary *d6 = MAKE_PROPERTY_D(@"L/R Alignment", P_ALIGN, @selector(setTextAlignment:),@selector(getTextAlignment));
     NSDictionary *d7 = MAKE_PROPERTY_D(@"Rounded Border", P_BOOL, @selector(setRoundBorder:),@selector(getRoundBorder));
     
-    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2,d3,d4,d5,d6,d7, nil];
+    pListArray = @[xc,yc,d0,d1,d2,d3,d4,d5,d6,d7];
     
     return self;
 }

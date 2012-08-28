@@ -29,7 +29,7 @@
 
 -(NSNumber*) getActivate
 {
-    return [NSNumber numberWithBool:isRun];
+    return @(isRun);
 }
 
 //===========================================================================
@@ -57,12 +57,12 @@
 
 
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Activate", P_BOOL, @selector(setActivate:),@selector(getActivate));
-    pListArray = [NSArray arrayWithObjects:d1, nil];
+    pListArray = @[d1];
     
     NSMutableDictionary MAKE_ACTION_D(@"Output X", A_NUM, a1);
     NSMutableDictionary MAKE_ACTION_D(@"Output Y", A_NUM, a2);
     NSMutableDictionary MAKE_ACTION_D(@"Output Z", A_NUM, a3);
-    actionArray = [NSArray arrayWithObjects:a1,a2,a3, nil];
+    actionArray = @[a1,a2,a3];
     
     return self;
 }
@@ -99,34 +99,34 @@
         SEL act;
         NSNumber *nsMagicNum;
 
-        act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:0] objectForKey:@"selector"]).pointerValue;
+        act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
         if( nil != act ){
-            nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:0]) objectForKey:@"mNum"];
+            nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
             CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
             
             if( nil != gObj ){
                 if( [gObj respondsToSelector:act] )
-                    [gObj performSelector:act withObject:[NSNumber numberWithDouble:acceleration.x]];
+                    [gObj performSelector:act withObject:@(acceleration.x)];
             }
         }
-        act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:1] objectForKey:@"selector"]).pointerValue;
+        act = ((NSValue*)((NSDictionary*)actionArray[1])[@"selector"]).pointerValue;
         if( nil != act ){
-            nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:1]) objectForKey:@"mNum"];
+            nsMagicNum = ((NSDictionary*)actionArray[1])[@"mNum"];
             CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
             
             if( nil != gObj ){
                 if( [gObj respondsToSelector:act] )
-                    [gObj performSelector:act withObject:[NSNumber numberWithDouble:acceleration.y]];
+                    [gObj performSelector:act withObject:@(acceleration.y)];
             }
         }
-        act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:2] objectForKey:@"selector"]).pointerValue;
+        act = ((NSValue*)((NSDictionary*)actionArray[2])[@"selector"]).pointerValue;
         if( nil != act ){
-            nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:2]) objectForKey:@"mNum"];
+            nsMagicNum = ((NSDictionary*)actionArray[2])[@"mNum"];
             CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
             
             if( nil != gObj ){
                 if( [gObj respondsToSelector:act] )
-                    [gObj performSelector:act withObject:[NSNumber numberWithDouble:acceleration.z]];
+                    [gObj performSelector:act withObject:@(acceleration.z)];
             }
         }
 

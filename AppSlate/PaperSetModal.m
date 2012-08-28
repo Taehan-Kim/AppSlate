@@ -104,7 +104,7 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
 
-    [cell.contentView setBackgroundColor:[USERCONTEXT.wallpapers objectAtIndex:indexPath.row]];
+    [cell.contentView setBackgroundColor:(USERCONTEXT.wallpapers)[indexPath.row]];
 
     return cell;
 }
@@ -128,7 +128,7 @@
     }];
 
     // Wallpaper 반영
-    [((CSMainViewController*)delegate) setBlueprintColor:[USERCONTEXT.wallpapers objectAtIndex:indexPath.row]];
+    [((CSMainViewController*)delegate) setBlueprintColor:(USERCONTEXT.wallpapers)[indexPath.row]];
 
     // index 저장.
     USERCONTEXT.wallpaperIndex = indexPath.row;

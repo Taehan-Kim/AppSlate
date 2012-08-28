@@ -35,10 +35,10 @@
 	
 	CAGradientLayer *gradientLayer = (CAGradientLayer *)self.layer;
 	gradientLayer.colors =
-	[NSArray arrayWithObjects:
+	@[
 	 (id)[UIColor colorWithRed:colorComponents[0] green:colorComponents[1] blue:colorComponents[2] alpha:colorComponents[3]].CGColor,
-	 (id)[UIColor colorWithRed:colorComponents[4] green:colorComponents[5] blue:colorComponents[6] alpha:colorComponents[7]].CGColor,
-	 nil];
+	 (id)[UIColor colorWithRed:colorComponents[4] green:colorComponents[5] blue:colorComponents[6] alpha:colorComponents[7]].CGColor
+    ];
 	
 }
 

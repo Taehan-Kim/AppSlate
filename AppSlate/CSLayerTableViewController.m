@@ -18,6 +18,11 @@
         // Custom initialization
         self.view = self.tableView;
         self.title = @"Order";
+
+        UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
+                                                                   style:UIBarButtonItemStyleBordered target:self
+                                                                  action:@selector(done:)];
+        self.navigationItem.leftBarButtonItem = cancel;
     }
     return self;
 }
@@ -103,7 +108,7 @@
     }
 
     // Configure the cell...
-    CSGearObject *tg = [USERCONTEXT.gearsArray objectAtIndex:[USERCONTEXT.gearsArray count]-indexPath.row-1];
+    CSGearObject *tg = (USERCONTEXT.gearsArray)[[USERCONTEXT.gearsArray count]-indexPath.row-1];
 
     cell.textLabel.text = tg.info;
 
@@ -121,10 +126,10 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        [((CSBlueprintController*)bluePaperCtrl) deleteGear:((CSGearObject*)[USERCONTEXT.gearsArray objectAtIndex:[USERCONTEXT.gearsArray count]-indexPath.row-1]).csMagicNum];
+        [((CSBlueprintController*)bluePaperCtrl) deleteGear:((CSGearObject*)(USERCONTEXT.gearsArray)[[USERCONTEXT.gearsArray count]-indexPath.row-1]).csMagicNum];
 
         // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
 }
 
@@ -136,8 +141,8 @@
 
     if( toIndex == fromIndex ) return;
 
-    CSGearObject *fromObj = [USERCONTEXT.gearsArray objectAtIndex:fromIndex];
-    UIView *fromView = [[bluePaperCtrl.view subviews] objectAtIndex:fromIndex];
+    CSGearObject *fromObj = (USERCONTEXT.gearsArray)[fromIndex];
+    UIView *fromView = [bluePaperCtrl.view subviews][fromIndex];
 
     if( fromIndex < toIndex )
     {
@@ -172,7 +177,7 @@
     // 선택 표시는 다시 풀자.
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    CSGearObject *gObj = [USERCONTEXT.gearsArray objectAtIndex:indexPath.row];
+    CSGearObject *gObj = (USERCONTEXT.gearsArray)[indexPath.row];
     
     if( nil != gObj ){
         // do not ues this code.
@@ -183,6 +188,15 @@
 //        }];
     }
 
+}
+
+#pragma mark - Actions
+
+- (IBAction)done:(id)sender
+{
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+        [self dismissViewControllerAnimated:YES completion:NULL];
+    }
 }
 
 @end

@@ -9,7 +9,7 @@
 #import <AudioToolbox/AudioToolbox.h>
 
 #import "CSFlipsideViewController.h"
-#import "CSLayerTableViewController.h"
+#import "CSLayerViewController.h"
 #import "CSBlueprintController.h"
 #import "PaperSetModal.h"
 #import "AppSettingModal.h"
@@ -18,15 +18,15 @@
 @interface CSMainViewController : UIViewController <CSFlipsideViewControllerDelegate, UIActionSheetDelegate, UIAlertViewDelegate, UAModalPanelDelegate>
 {
     CSBlueprintController   *blueprintCtrl;
-    IBOutlet    UIToolbar   *toolBar;
+    UIToolbar   *toolBar;
     BOOL    runButton;
     UIViewController *menuFolder;
     SystemSoundID drawerOpenSoundID, drawerCloseSoundID;
 
-    __weak IBOutlet UIBarButtonItem *playButton;
-    __weak IBOutlet UIBarButtonItem *gearListButton;
-    __weak IBOutlet UIBarButtonItem *menuButton;
-    __weak IBOutlet UIBarButtonItem *layerButton;
+    UIBarButtonItem *gearListButton;
+    UIBarButtonItem *playButton;
+    UIBarButtonItem *menuButton;
+    UIBarButtonItem *layerButton;
 
     UIImage *blueprintViewImage;
     UIView  *runIndicator;

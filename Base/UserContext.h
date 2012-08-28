@@ -3,11 +3,10 @@
 //  PuddingSNS
 //
 //  Created by choipd on 10. 4. 13..
-//  Copyright 2010 kth. All rights reserved.
+//  Copyright 2010 ChocolateSoft. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
-#import "FBConnect.h"
 #import "WaitView.h"
 #import "CSGearObject.h"
 
@@ -18,17 +17,6 @@
 @interface UserContext: NSObject 
 {	
 	WaitView	*waitV;
-    UIPopoverController *pop;
-    NSArray     *wallpapers;
-
-    // 청사진에 등록된 객체들을 관리하는 저장소.
-    NSString        *appName;
-    NSMutableArray  *gearsArray;
-    NSUInteger      wallpaperIndex;
-
-    Facebook   *facebook;
-
-    BOOL            imRunning;
 }
 
 @property (nonatomic, strong)   NSString        *appName;
@@ -37,8 +25,8 @@
 @property (nonatomic, strong)   NSArray         *wallpapers;
 @property (nonatomic)           NSUInteger      wallpaperIndex;
 @property (nonatomic)           BOOL            imRunning;
-@property (nonatomic, strong)   Facebook *facebook;
-
+@property (nonatomic)           BOOL            inviteCheckEnabled;
+@property (nonatomic)           BOOL            showPopover;
 
 + (UserContext *)sharedUserContext;
 

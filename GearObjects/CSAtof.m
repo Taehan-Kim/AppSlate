@@ -33,14 +33,14 @@
         SEL act;
         NSNumber *nsMagicNum;
         
-        act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:0] objectForKey:@"selector"]).pointerValue;
+        act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
         if( nil != act ){
-            nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:0]) objectForKey:@"mNum"];
+            nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
             CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
             
             if( nil != gObj ){
                 if( [gObj respondsToSelector:act] )
-                    [gObj performSelector:act withObject:[NSNumber numberWithFloat:value]];
+                    [gObj performSelector:act withObject:@(value)];
                 else
                     EXCLAMATION;
             }
@@ -73,10 +73,10 @@
     self.info = NSLocalizedString(@"Convert string to number", @"ATOF");
 
     NSDictionary *d1 = MAKE_PROPERTY_D(@">Input Text", P_TXT, @selector(setInputString:),@selector(getInputString));
-    pListArray = [NSArray arrayWithObjects:d1, nil];
+    pListArray = @[d1];
 
     NSMutableDictionary MAKE_ACTION_D(@"Output Number", A_NUM, a1);
-    actionArray = [NSArray arrayWithObjects:a1, nil];
+    actionArray = @[a1];
 
     return self;
 }

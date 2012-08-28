@@ -42,7 +42,7 @@
 
 -(void) saveValue:(id)value
 {
-    SEL selector = [[pInfoDic objectForKey:@"selector"] pointerValue];
+    SEL selector = [pInfoDic[@"selector"] pointerValue];
 
     if( [theGear respondsToSelector:selector] )
 //        [theGear performSelector:selector withObject:value]; 이것과 아래 코드는 같다.

@@ -37,7 +37,7 @@
 
 -(NSNumber*) getStandardMap
 {
-    return [NSNumber numberWithBool:(((MKMapView*)csView).mapType == MKMapTypeStandard)];
+    return @( (((MKMapView*)csView).mapType == MKMapTypeStandard) );
 }
 
 -(void) setShowUser:(NSNumber*)BoolValue
@@ -56,7 +56,7 @@
 
 -(NSNumber*) getShowUser
 {
-    return [NSNumber numberWithBool:((MKMapView*)csView).showsUserLocation];
+    return @( ((MKMapView*)csView).showsUserLocation );
 }
 
 -(void) setLatitude:(NSNumber*)degree
@@ -76,7 +76,7 @@
 
 -(NSNumber*) getLatitude
 {
-    return [NSNumber numberWithDouble:latitude];
+    return @( latitude );
 }
 
 -(void) setLongitude:(NSNumber*)degree
@@ -96,7 +96,7 @@
 
 -(NSNumber*) getLongitude
 {
-    return [NSNumber numberWithDouble:longitude];
+    return @( longitude );
 }
 
 #pragma mark -
@@ -126,7 +126,7 @@
     NSDictionary *d2 = MAKE_PROPERTY_D(@"Show User Location", P_BOOL, @selector(setShowUser:),@selector(getShowUser));
     NSDictionary *d3 = MAKE_PROPERTY_D(@"Latitude", P_NUM, @selector(setLatitude:),@selector(getLatitude));
     NSDictionary *d4 = MAKE_PROPERTY_D(@"Longitude", P_NUM, @selector(setLongitude:),@selector(getLongitude));
-    pListArray = [NSArray arrayWithObjects:xc,yc,d0,d1,d2,d3,d4, nil];
+    pListArray = @[xc,yc,d0,d1,d2,d3,d4];
 
     return self;
 }

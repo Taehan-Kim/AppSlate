@@ -21,9 +21,6 @@ enum alertTypes {
 
 @implementation CSMainViewController
 
-@synthesize flipsidePopoverController = _flipsidePopoverController;
-@synthesize layerPopoverController;
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -37,6 +34,33 @@ enum alertTypes {
     [super viewDidLoad];
     runButton = YES;
 
+    //
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+        toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 460-44, 320, 44)];
+    } else {
+        toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 1004-44, 768, 44)];
+    }
+    menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"i_menu.png"] style:UIBarButtonItemStyleBordered
+                                                     target:self
+                                                     action:@selector(openMenuFolder:)];
+    playButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"run_.png"] style:UIBarButtonItemStyleBordered
+                                                     target:self
+                                                     action:@selector(playAction:)];
+    [playButton setTintColor:[UIColor redColor]];
+    UIBarButtonItem *stItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    layerButton = [[UIBarButtonItem alloc] initWithTitle:@"L" style:UIBarButtonItemStyleBordered
+                                                  target:self action:@selector(showLayerList:)];
+    gearListButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                   target:self action:@selector(showGearList:)];
+    [gearListButton setStyle:UIBarButtonItemStyleBordered];
+
+    NSArray *ary = [[NSArray alloc] initWithObjects: menuButton, stItem, playButton, stItem, layerButton, gearListButton, nil];
+    [toolBar setItems:ary];
+    [toolBar setTintColor:[UIColor darkGrayColor]];
+
+    [self.view addSubview:toolBar];
+
+    //----------------
     NSURL *fileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"drawerOpen" ofType:@"wav"]];
     AudioServicesCreateSystemSoundID((__bridge CFURLRef)fileURL, &drawerOpenSoundID);
     fileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"drawerClose" ofType:@"wav"]];
@@ -56,12 +80,19 @@ enum alertTypes {
     if( ![[NSUserDefaults standardUserDefaults] boolForKey:@"WELCOME_SWITCH"] )
     {
         // button guide view
-        UIView *guideView = [[UIView alloc] initWithFrame:self.view.frame];
+        UIView *guideView = [[UIView alloc] initWithFrame:self.view.bounds];
         UITapGestureRecognizer *g_tapGR = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(removeGuide:)];
         [guideView addGestureRecognizer:g_tapGR];
         [guideView setBackgroundColor:CS_RGBA(0, 0, 0, 0.4)];
-        UIImageView *ii = [[UIImageView alloc] initWithFrame:CGRectMake(0, 1004-174, 768, 174)];
-        [ii setImage:[UIImage imageNamed:@"btn_guide.png"]];
+
+        UIImageView *ii;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            ii = [[UIImageView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height-20-73, 320, 73)];
+            [ii setImage:[UIImage imageNamed:@"btn_guide_p.png"]];
+        } else {
+            ii = [[UIImageView alloc] initWithFrame:CGRectMake(0, 1000-174, 768, 174)];
+            [ii setImage:[UIImage imageNamed:@"btn_guide.png"]];
+        }
         [guideView addSubview:ii];
         [self.view addSubview:guideView];
 
@@ -138,7 +169,11 @@ enum alertTypes {
 
 -(void) makeRunIndicatorView
 {
-    runIndicator = [[UIView alloc] initWithFrame:CGRectMake(354.5, 1004-40, 59, 38)];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+        runIndicator = [[UIView alloc] initWithFrame:CGRectMake(130.5, self.view.bounds.size.height-40, 59, 38)];
+    else
+        runIndicator = [[UIView alloc] initWithFrame:CGRectMake(354.5, 1004-40, 59, 38)];
+
     [runIndicator setUserInteractionEnabled:NO];
 
     CALayer*alphaLayer = [CALayer layer];
@@ -170,7 +205,7 @@ enum alertTypes {
 - (void)flipsideViewControllerDidFinish:(CSFlipsideViewController *)controller
 {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        [self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:NULL];
     } else {
         [self.flipsidePopoverController dismissPopoverAnimated:YES];
     }
@@ -182,7 +217,7 @@ enum alertTypes {
     [self folderWillClose:nil];
 
     [fvc setModalPresentationStyle:UIModalPresentationFullScreen];
-    [self presentModalViewController:fvc animated:YES];
+    [self presentViewController:fvc animated:YES completion:NULL];
 }
 
 - (IBAction)showGearList:(id)sender
@@ -191,7 +226,7 @@ enum alertTypes {
         CSFlipsideViewController *controller = [[CSFlipsideViewController alloc] initWithNibName:@"CSFlipsideViewController" bundle:nil];
         controller.delegate = self;
         controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-        [self presentModalViewController:controller animated:YES];
+        [self presentViewController:controller animated:YES completion:NULL];
     } else {
         if (!self.flipsidePopoverController) {
             CSFlipsideViewController *controller = [[CSFlipsideViewController alloc] initWithNibName:@"CSFlipsideViewController" bundle:nil];
@@ -279,8 +314,8 @@ enum alertTypes {
     [hsview setShowsHorizontalScrollIndicator:NO];
     [hsview setShowsVerticalScrollIndicator:NO];
 
-    NSArray *btns = [NSArray arrayWithObjects:b0,b1,b2,b3,b4,b5, nil];
-    NSArray *labs = [NSArray arrayWithObjects:l0,l1,l2,l3,l4,l5, nil];
+    NSArray *btns = @[b0,b1,b2,b3,b4,b5];
+    NSArray *labs = @[l0,l1,l2,l3,l4,l5];
     [hsview setContentSize:CGSizeMake([btns count]*65+50, menuFolder.view.frame.size.height)];
     NSUInteger idx = 0;
     for( UIButton *btn in btns ){
@@ -300,7 +335,7 @@ enum alertTypes {
         [btn setBackgroundColor:CSCLEAR];
         [btn setFont:CS_FONT(14)];
         [btn setTextColor:[UIColor lightGrayColor]];
-        [btn setTextAlignment:UITextAlignmentCenter];
+        [btn setTextAlignment:NSTextAlignmentCenter];
         [btn setShadowColor:[UIColor blackColor]];
         [btn setShadowOffset:CGSizeMake(1, 1)];
 //        [btn.layer setShadowRadius:5.0];
@@ -328,23 +363,26 @@ enum alertTypes {
     [blueprintCtrl removeModifyMode];
 
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-            CSLayerTableViewController *controller = [[CSLayerTableViewController alloc] initWithStyle:UITableViewStylePlain];
+//        CSLayerViewController *controller = [[CSLayerViewController alloc] init];
+        CSLayerTableViewController *controller = [[CSLayerTableViewController alloc] initWithStyle:UITableViewStylePlain];
         controller.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        [self presentModalViewController:controller animated:YES];
+        UINavigationController *naviCtrl = [[UINavigationController alloc] initWithRootViewController:controller];
+        [controller setBlueprintViewController:blueprintCtrl];
+        [self presentViewController:naviCtrl animated:YES completion:NULL];
     } else {
-        if (!self.layerPopoverController) {
-            CSLayerTableViewController *controller = [[CSLayerTableViewController alloc] initWithStyle:UITableViewStylePlain];
+        if (!_layerPopoverController) {
+            CSLayerViewController *controller = [[CSLayerViewController alloc] init];
             [controller setBlueprintViewController:blueprintCtrl];
 
-            self.layerPopoverController = [[UIPopoverController alloc] initWithContentViewController:controller];
+            _layerPopoverController = [[UIPopoverController alloc] initWithContentViewController:controller];
         }
         if( ([USERCONTEXT.gearsArray count] * 45) < 700 )
-            self.layerPopoverController.popoverContentSize = CGSizeMake(320, ([USERCONTEXT.gearsArray count] * 45) );
+            _layerPopoverController.popoverContentSize = CGSizeMake(320, ([USERCONTEXT.gearsArray count] * 45) );
         
-        if( [self.layerPopoverController isPopoverVisible] )
-            [self.layerPopoverController dismissPopoverAnimated:YES];
+        if( [_layerPopoverController isPopoverVisible] )
+            [_layerPopoverController dismissPopoverAnimated:YES];
         else
-            [self.layerPopoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            [_layerPopoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     }
 }
 
@@ -461,7 +499,7 @@ enum alertTypes {
 -(void)settingAction:(id)sender
 {
     AppSettingModal *modalPanel = [[AppSettingModal alloc] initWithFrame:blueprintCtrl.view.bounds
-                                                               title:@"Sstting"];
+                                                               title:@"Settings"];
     modalPanel.delegate = self;
     modalPanel.onClosePressed = ^(UAModalPanel* panel) {
         // [panel hide];
@@ -554,7 +592,7 @@ enum alertTypes {
     }
 
 #ifdef TARGET_IPHONE_SIMULATOR
-    documentsPath = [NSSearchPathForDirectoriesInDomains(pathType, NSUserDomainMask, YES) objectAtIndex:0];
+    documentsPath = NSSearchPathForDirectoriesInDomains(pathType, NSUserDomainMask, YES)[0];
 #else
     documentsPath = [[NSSearchPathForDirectoriesInDomains(pathType, NSUserDomainMask, YES) objectAtIndex:0] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 #endif
@@ -599,7 +637,7 @@ enum alertTypes {
         }
 
         // saving wallpaper
-        if( ![NSKeyedArchiver archiveRootObject:[NSNumber numberWithInteger:USERCONTEXT.wallpaperIndex]
+        if( ![NSKeyedArchiver archiveRootObject:@(USERCONTEXT.wallpaperIndex)
                                          toFile:[theFile stringByAppendingPathComponent:@"PaperSet.obj"]] )
         {
             NSLog(@"File error");
@@ -641,7 +679,7 @@ enum alertTypes {
         fileData = [[NSFileManager defaultManager] contentsAtPath:[noti.object stringByAppendingPathComponent:@"PaperSet.obj"]];
         NSNumber *colorIndex = [NSKeyedUnarchiver unarchiveObjectWithData:fileData];
         USERCONTEXT.wallpaperIndex = [colorIndex integerValue];
-        [self setBlueprintColor:[USERCONTEXT.wallpapers objectAtIndex:USERCONTEXT.wallpaperIndex]];
+        [self setBlueprintColor:(USERCONTEXT.wallpapers)[USERCONTEXT.wallpaperIndex]];
 
         // set Name
         NSString *chName = [[[noti.object componentsSeparatedByString:@"/"] lastObject] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];

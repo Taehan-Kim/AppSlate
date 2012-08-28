@@ -39,7 +39,7 @@
 
 -(NSNumber*) getRun
 {
-    return [NSNumber numberWithBool:run];
+    return @(run);
 }
 
 -(void) setInterval:(NSNumber*)time
@@ -60,7 +60,7 @@
 
 -(NSNumber*) getInterval
 {
-    return [NSNumber numberWithFloat:interval];
+    return @(interval);
 }
 
 -(void) setOutputValue:(NSNumber*)output
@@ -77,7 +77,7 @@
 
 -(NSNumber*) getOutputValue
 {
-    return [NSNumber numberWithFloat:outputNum];
+    return @(outputNum);
 }
 
 //===========================================================================
@@ -105,10 +105,10 @@
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Timer Run", P_BOOL, @selector(setRun:),@selector(getRun));
     NSDictionary *d2 = MAKE_PROPERTY_D(@"Interval seconds", P_NUM, @selector(setInterval:),@selector(getInterval));
     NSDictionary *d3 = MAKE_PROPERTY_D(@"Output Value", P_NUM, @selector(setOutputValue:),@selector(getOutputValue));
-    pListArray = [NSArray arrayWithObjects:d1,d2,d3, nil];
+    pListArray = @[d1,d2,d3];
     
     NSMutableDictionary MAKE_ACTION_D(@"Output", A_NUM, a1);
-    actionArray = [NSArray arrayWithObjects:a1, nil];
+    actionArray = @[a1];
     
     return self;
 }
@@ -145,14 +145,14 @@
         SEL act;
         NSNumber *nsMagicNum;
         
-        act = ((NSValue*)[(NSDictionary*)[actionArray objectAtIndex:0] objectForKey:@"selector"]).pointerValue;
+        act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
         if( nil != act ){
-            nsMagicNum = [((NSDictionary*)[actionArray objectAtIndex:0]) objectForKey:@"mNum"];
+            nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
             CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
             
             if( nil != gObj ){
                 if( [gObj respondsToSelector:act] )
-                    [gObj performSelector:act withObject:[NSNumber numberWithFloat:outputNum]];
+                    [gObj performSelector:act withObject:@(outputNum)];
                 else
                     EXCLAMATION;
             }
