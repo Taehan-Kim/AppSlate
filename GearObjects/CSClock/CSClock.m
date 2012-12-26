@@ -2,7 +2,7 @@
 //  CSClock.m
 //  AppSlate
 //
-//  Created by 김 태한 on 12. 3. 22..
+//  Created by Taehan Kim 태한 김 on 12. 3. 22..
 //  Copyright (c) 2012년 ChocolateSoft. All rights reserved.
 //
 

@@ -2,7 +2,7 @@
 //  CSBlueprintController.h
 //  AppSlate
 //
-//  Created by 태한 김 on 11. 11. 18..
+//  Created by Taehan Kim 태한 김 on 11. 11. 18..
 //  Copyright (c) 2011년 ChocolateSoft. All rights reserved.
 //
 
@@ -64,6 +64,7 @@
 #import "CSClock.h"
 #import "CSPlay.h"
 #import "CSCamera.h"
+#import "CSBToothPeer.h"
 #import "TSPopoverController.h"
 
 @interface CSBlueprintController : UIViewController
@@ -80,7 +81,7 @@
     UIPanGestureRecognizer *sizeReco;
 
     UIPopoverController *propertyPopoverController;
-    TSPopoverController *tsProPopoverController;
+    UINavigationController *propertyNaviController;
 
     // 선택된 객체가 항목에서 도면으로 떨어지는 효과를 위한 것 들.
     UIView *cView;

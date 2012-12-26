@@ -2,7 +2,7 @@
 //  CSLayerTableViewController.m
 //  AppSlate
 //
-//  Created by 김 태한 on 12. 2. 7..
+//  Created by Taehan Kim 태한 김 on 12. 2. 7..
 //  Copyright (c) 2012년 ChocolateSoft. All rights reserved.
 //
 
@@ -157,7 +157,7 @@
     [bluePaperCtrl.view insertSubview:fromView atIndex:toIndex];
 
     NSLog(@"from %d to %d",fromIndex,toIndex);
-    // 껴 들어가는 것이 앞쪽이라면, 인덱스가 하나 증가했을 것이다.
+    // if it inserted at front, the index must +1
     if( fromIndex > toIndex )
         fromIndex ++;
 

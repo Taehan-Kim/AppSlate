@@ -2,7 +2,7 @@
 //  SettingViewCommon.h
 //  AppSlate
 //
-//  Created by 태한 김 on 11. 12. 20..
+//  Created by Taehan Kim 태한 김 on 11. 12. 20..
 //  Copyright (c) 2011년 ChocolateSoft. All rights reserved.
 //
 

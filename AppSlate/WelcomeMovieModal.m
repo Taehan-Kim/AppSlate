@@ -2,7 +2,7 @@
 //  WelcomeMovieModal.m
 //  AppSlate
 //
-//  Created by 김 태한 on 12. 2. 17..
+//  Created by Taehan Kim 태한 김 on 12. 2. 17..
 //  Copyright (c) 2012년 ChocolateSoft. All rights reserved.
 //
 
@@ -93,14 +93,17 @@
 
         ZipArchive *z = [[ZipArchive alloc] init];
         [z setDelegate:self];
-        NSString *src = [[[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"SampleFiles.zip"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString *src;
+        if( UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM() )
+            src = [[[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"SampleFiles.zip"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        else
+            src = [[[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"SampleFilesPhone.zip"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         NSString *documentsPath;
 //#ifdef TARGET_IPHONE_SIMULATOR
 //        documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
 //#else
         documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 //#endif
-//    NSLog(@"dp:%@",documentsPath);
         [z UnzipOpenFile:src];
         [z UnzipFileTo:documentsPath overWrite:YES];
         [z UnzipCloseFile];

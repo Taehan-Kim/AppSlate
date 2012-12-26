@@ -21,7 +21,7 @@
 
 @property (nonatomic, strong)   NSString        *appName;
 @property (nonatomic, strong)   NSMutableArray  *gearsArray;
-@property (nonatomic, strong)   UIPopoverController *pop;
+@property (nonatomic, strong)   id pop;
 @property (nonatomic, strong)   NSArray         *wallpapers;
 @property (nonatomic)           NSUInteger      wallpaperIndex;
 @property (nonatomic)           BOOL            imRunning;

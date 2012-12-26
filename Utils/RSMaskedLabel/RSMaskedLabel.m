@@ -125,7 +125,7 @@
     textLayer = [CALayer layer];
     
     // stick the image in the layer
-    [textLayer setContents:(__bridge id)invertedAlphaImage]; // TODO:Crash debug
+    [textLayer setContents:(id)invertedAlphaImage]; // TODO:Crash debug
 
     [[self layer] setMask:textLayer];
     
@@ -138,10 +138,13 @@
     [textLayer setFrame:[self bounds]];
 }
 
-//- (void)dealloc 
-//{
-//    CGImageRelease(invertedAlphaImage);
-//}
+- (void)dealloc 
+{
+    CGImageRelease(invertedAlphaImage);
+    [knockoutLabel release];
+    [textLayer     release];
+    [super         dealloc];
+}
 
 @end
 

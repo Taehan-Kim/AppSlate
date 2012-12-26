@@ -104,6 +104,7 @@
 		UILabel *selectedLabel = [[UILabel alloc] initWithFrame:frame];
 		selectedLabel.tag = kSelectedLabelTag;
 		selectedLabel.font = [UIFont systemFontOfSize:24.0];
+        [cell.contentView setBackgroundColor:[UIColor whiteColor]];
 		[cell.contentView addSubview:selectedLabel];
 		
 		frame = CGRectMake(35.0, 5.0, cell.frame.size.width-70.0, cell.frame.size.height-5.0);

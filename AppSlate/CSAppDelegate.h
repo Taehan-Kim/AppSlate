@@ -9,7 +9,7 @@
 
 @class CSMainViewController;
 
-@interface CSAppDelegate : UIResponder <UIApplicationDelegate> //, FBSessionDelegate, FBRequestDelegate>
+@interface CSAppDelegate : UIResponder <UIApplicationDelegate>
 {
 }
 

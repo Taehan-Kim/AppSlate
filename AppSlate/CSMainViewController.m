@@ -2,7 +2,7 @@
 //  CSMainViewController.m
 //  AppSlate
 //
-//  Created by 태한 김 on 11. 11. 9..
+//  Created by Taehan Kim 태한 김 on 11. 11. 9..
 //  Copyright (c) 2011년 ChocolateSoft. All rights reserved.
 //
 
@@ -36,7 +36,8 @@ enum alertTypes {
 
     //
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 460-44, 320, 44)];
+        CGFloat h = [[UIScreen mainScreen] bounds].size.height;
+        toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, h-44-20, 320, 44)];
     } else {
         toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 1004-44, 768, 44)];
     }
@@ -117,18 +118,7 @@ enum alertTypes {
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SND_SET"];
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HIDE_SET"];
     }
-}
-
-- (void)viewDidUnload
-{
-    playButton = nil;
-    gearListButton = nil;
-    menuButton = nil;
-    menuButton = nil;
-    layerButton = nil;
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+    _layerPopoverController = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -222,7 +212,7 @@ enum alertTypes {
 
 - (IBAction)showGearList:(id)sender
 {
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+    if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         CSFlipsideViewController *controller = [[CSFlipsideViewController alloc] initWithNibName:@"CSFlipsideViewController" bundle:nil];
         controller.delegate = self;
         controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
@@ -362,7 +352,7 @@ enum alertTypes {
     // 컨트롤 버튼 3개는 화면에서 없어야 한다. View 의 Layer 순서 처리에 방해가 된다.
     [blueprintCtrl removeModifyMode];
 
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+    if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
 //        CSLayerViewController *controller = [[CSLayerViewController alloc] init];
         CSLayerTableViewController *controller = [[CSLayerTableViewController alloc] initWithStyle:UITableViewStylePlain];
         controller.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
@@ -371,7 +361,7 @@ enum alertTypes {
         [self presentViewController:naviCtrl animated:YES completion:NULL];
     } else {
         if (!_layerPopoverController) {
-            CSLayerViewController *controller = [[CSLayerViewController alloc] init];
+            CSLayerTableViewController *controller = [[CSLayerTableViewController alloc] initWithStyle:UITableViewStylePlain];
             [controller setBlueprintViewController:blueprintCtrl];
 
             _layerPopoverController = [[UIPopoverController alloc] initWithContentViewController:controller];
@@ -693,7 +683,7 @@ enum alertTypes {
     });
 }
 
-// 배경이 되는 청사진 화면의 색을 설정한다.
+// set the background paper's color
 -(void) setBlueprintColor:(UIColor*)color
 {
     [blueprintCtrl.view setBackgroundColor:color];

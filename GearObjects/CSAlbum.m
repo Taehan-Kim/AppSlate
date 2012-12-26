@@ -2,12 +2,13 @@
 //  CSAlbum.m
 //  AppSlate
 //
-//  Created by 김 태한 on 12. 2. 21..
+//  Created by Taehan Kim 태한 김 on 12. 2. 21..
 //  Copyright (c) 2012년 ChocolateSoft. All rights reserved.
 //
 
 #import "CSAlbum.h"
 #import "CSAppDelegate.h"
+#import "CSMainViewController.h"
 
 @implementation CSAlbum
 
@@ -29,10 +30,19 @@
             [imgPicker setDelegate:self];
             [imgPicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
         }
-        if( nil == albumPop )
-            albumPop = [[UIPopoverController alloc] initWithContentViewController:imgPicker];
 
-        [albumPop presentPopoverFromRect:csView.frame inView:((CSAppDelegate*)([UIApplication sharedApplication].delegate)).window.rootViewController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
+        {
+            if( nil == albumPop )
+                albumPop = [[UIPopoverController alloc] initWithContentViewController:imgPicker];
+
+            [albumPop presentPopoverFromRect:csView.frame inView:((CSAppDelegate*)([UIApplication sharedApplication].delegate)).window.rootViewController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        }
+        else
+        {
+            imgPicker.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+            [[(CSAppDelegate*)([UIApplication sharedApplication].delegate) mainViewController] presentViewController:imgPicker animated:YES completion:NULL];
+        }
     }
 }
 
@@ -85,7 +95,11 @@
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
-	[albumPop dismissPopoverAnimated:YES];
+    if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [[(CSAppDelegate*)([UIApplication sharedApplication].delegate) mainViewController] dismissViewControllerAnimated:YES completion:NULL];
+    } else {
+        [albumPop dismissPopoverAnimated:YES];
+    }
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)Info
@@ -106,7 +120,11 @@
         }
     }
 	
-	[albumPop dismissPopoverAnimated:YES];
+    if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [[(CSAppDelegate*)([UIApplication sharedApplication].delegate) mainViewController] dismissViewControllerAnimated:YES completion:NULL];
+    } else {
+        [albumPop dismissPopoverAnimated:YES];
+    }
 }
 
 @end

@@ -2,7 +2,7 @@
 //  CSAccelero.h
 //  AppSlate
 //
-//  Created by 김태한 on 12. 3. 3..
+//  Created by Taehan Kim on 12. 3. 3..
 //  Copyright (c) 2012년 ChocolateSoft. All rights reserved.
 //
 

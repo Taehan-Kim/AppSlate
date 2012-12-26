@@ -2,7 +2,7 @@
 //  CSBlueprintController.m
 //  AppSlate
 //
-//  Created by 태한 김 on 11. 11. 18..
+//  Created by Taehan Kim 태한 김 on 11. 11. 18..
 //  Copyright (c) 2011년 ChocolateSoft. All rights reserved.
 //
 
@@ -35,6 +35,7 @@
         xButton = nil;
         modifyView = nil;
         propertyPopoverController = nil;
+        propertyNaviController = nil;
 
         NSURL *fileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"run" ofType:@"wav"]];
         AudioServicesCreateSystemSoundID((__bridge CFURLRef)fileURL, &runSoundID);
@@ -90,12 +91,16 @@
 
 -(void) getAddRequest:(NSNotification*)noti
 {
+    UIWindow *win = ((CSAppDelegate*)[UIApplication sharedApplication].delegate).window;
+
     NSUInteger getCode = [[noti userInfo][@"tag"] integerValue];
     cView = ((UIView*)[noti userInfo][@"cell"]);
     [cView setClipsToBounds:YES];
-    CGRect startFrame = [cView convertRect:cView.bounds toView:self.view];
+    CGRect startFrame = [cView convertRect:cView.bounds toView:win];
 
-    [self.view addSubview:cView];
+//    [self.view addSubview:cView];
+    [win addSubview:cView];
+
     [cView setFrame:startFrame];
     NSLog(@"start frame:%f,%f",startFrame.origin.x,startFrame.origin.y);
 
@@ -209,8 +214,20 @@
             newObj = [[CSPlay alloc] initGear]; break;
         case CS_CAMERA:
             newObj = [[CSCamera alloc] initGear]; break;
+        case CS_BTOOTH:
+            newObj = [[CSBToothPeer alloc] initGear]; break;
         default:
             return;
+    }
+
+    // 새 객체의 크기가, 아이폰에서 너무 큰 경우라면 크기를 줄여 준다. 적당히...
+    if( UIUserInterfaceIdiomPhone == UI_USER_INTERFACE_IDIOM() && newObj.isResizable )
+    {
+        CGFloat width = newObj.csView.frame.size.width;
+        CGFloat height = newObj.csView.frame.size.height;
+        if( width > 200 ) width /= 2.0;
+        if( height > 200 ) height /= 2.0;
+        [newObj.csView setFrame:CGRectMake(0, 0, width, height)];
     }
 
     // 새로 추가된 녀석을 화면에 보이게 하고, 수정 모드로 놓자.
@@ -449,7 +466,7 @@
     if( [[NSUserDefaults standardUserDefaults] boolForKey:@"SND_SET"] )
         AudioServicesPlaySystemSound(runSoundID);
 
-    // TODO: 실행한다.
+    // 실행한다.
     USERCONTEXT.imRunning = YES;
 }
 
@@ -534,7 +551,10 @@
 -(void) actionLinkRequest:(NSNotification*)noti
 {
     // 프로퍼티 팝오버 창을 닫자.
-    [propertyPopoverController dismissPopoverAnimated:YES];
+    if( UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM() )
+        [propertyPopoverController dismissPopoverAnimated:YES];
+    else
+        [propertyNaviController dismissViewControllerAnimated:YES completion:nil];
 
     // 제스쳐 인식자를 사용해서 선 긋기를 시작하자.
     [((CSBlueprintView*)self.view) startActionLink:noti.userInfo];
@@ -660,33 +680,32 @@
             [tview setSelectedGear:gObj];
             [propertyPopoverController presentPopoverFromRect:((UIView*)sender).frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         }
-        // 만일 여기로 온다면, 매직 넘버를 찾지 못했다는 것. 문제가 있는 경우다.
-        // TODO: Error Handling
     }
-    else // iPhone ============= TODO:Working....
+    else // iPhone =============
     {
-        if( !tsProPopoverController ) {
-            PropertyTVController *controller = [[PropertyTVController alloc] initWithStyle:UITableViewStylePlain];
+        PropertyTVController *controller = [[PropertyTVController alloc] initWithStyle:UITableViewStylePlain];
+        UIBarButtonItem *rightBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeiPhonePopover:)];
+        [rightBtn setTintColor:[UIColor darkGrayColor]];
+        controller.navigationItem.rightBarButtonItem = rightBtn;
 
-            UINavigationController *naviCtrl = [[UINavigationController alloc] initWithRootViewController:controller];
-
-            tsProPopoverController = [[TSPopoverController alloc] initWithContentViewController:naviCtrl];
-            [tsProPopoverController setContentSizeForViewInPopover:CGSizeMake(300, 420)];
-        }
-        // Root 로 이동한다.
-        [((UINavigationController*)(tsProPopoverController.contentViewController)) popToRootViewControllerAnimated:NO];
-
-        PropertyTVController *tview = (PropertyTVController*)((UINavigationController*)(tsProPopoverController.contentViewController)).topViewController;
+        propertyNaviController = [[UINavigationController alloc] initWithRootViewController:controller];
+        [propertyNaviController.navigationBar setTintColor:[UIColor blackColor]];
 
         // 해당 객체를 선택해주고, 목록에 내용이 표시될 수 있도록 준비해줌.
         CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:((UIButton*)sender).tag];
         if( nil != gObj ){
-            [tview setSelectedGear:gObj];
-            [tsProPopoverController showPopoverWithRect:((UIView*)sender).frame];
+            UIViewController *win = ((CSAppDelegate*)[UIApplication sharedApplication].delegate).mainViewController;
+
+            [controller setSelectedGear:gObj];
+            propertyNaviController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+            [win presentViewController:propertyNaviController animated:YES completion:NULL];
         }
-        // 만일 여기로 온다면, 매직 넘버를 찾지 못했다는 것. 문제가 있는 경우다.
-        // TODO: Error Handling
     }
+}
+
+- (void) closeiPhonePopover:(UIBarButtonItem*)btn
+{
+    [propertyNaviController dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void) moveGear:(UIPanGestureRecognizer*)recognizer

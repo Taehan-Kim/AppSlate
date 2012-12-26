@@ -2,7 +2,7 @@
 //  PropertyLinkTVController.h
 //  AppSlate
 //
-//  Created by 김태한 on 12. 1. 7..
+//  Created by Taehan Kim on 12. 1. 7..
 //  Copyright (c) 2012년 ChocolateSoft. All rights reserved.
 //
 

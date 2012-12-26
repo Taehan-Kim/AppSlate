@@ -2,7 +2,7 @@
 //  SettingViewCommon.m
 //  AppSlate
 //
-//  Created by 김 태한 on 11. 12. 29..
+//  Created by Taehan Kim 태한 김 on 11. 12. 29..
 //  Copyright (c) 2011년 ChocolateSoft. All rights reserved.
 //
 
@@ -45,12 +45,16 @@
     SEL selector = [pInfoDic[@"selector"] pointerValue];
 
     if( [theGear respondsToSelector:selector] )
-//        [theGear performSelector:selector withObject:value]; 이것과 아래 코드는 같다.
+//        [theGear performSelector:selector withObject:value]; same code with below line
         objc_msgSend(theGear, selector, value);
     else {
         // TODO: Error Handling
+        return;
     }
     [self doSound];
+
+    if( UIUserInterfaceIdiomPhone == UI_USER_INTERFACE_IDIOM() )
+        [self.navigationController popViewControllerAnimated:YES];
 }
 
 -(void) doSound

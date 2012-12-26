@@ -2,7 +2,7 @@
 //  PaperSetModal.m
 //  AppSlate
 //
-//  Created by 김태한 on 12. 2. 4..
+//  Created by Taehan Kim on 12. 2. 4..
 //  Copyright (c) 2012년 ChocolateSoft. All rights reserved.
 //
 
@@ -127,10 +127,10 @@
         [checkView removeFromSuperview];
     }];
 
-    // Wallpaper 반영
+    // Wallpaper apply
     [((CSMainViewController*)delegate) setBlueprintColor:(USERCONTEXT.wallpapers)[indexPath.row]];
 
-    // index 저장.
+    // save the index.
     USERCONTEXT.wallpaperIndex = indexPath.row;
 }
 

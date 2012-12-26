@@ -2,7 +2,7 @@
 //  CSTrigonometric.h
 //  AppSlate
 //
-//  Created by 김 태한 on 12. 3. 15..
+//  Created by Taehan Kim 태한 김 on 12. 3. 15..
 //  Copyright (c) 2012년 ChocolateSoft. All rights reserved.
 //
 

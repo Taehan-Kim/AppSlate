@@ -2,7 +2,7 @@
 //  CellSettingController.m
 //  AppSlate
 //
-//  Created by 태한 김 on 12. 1. 27..
+//  Created by Taehan Kim 태한 김 on 12. 1. 27..
 //  Copyright (c) 2012년 ChocolateSoft. All rights reserved.
 //
 
@@ -107,7 +107,7 @@
     NSUInteger idx = [indexField.text integerValue];
     NSDictionary *sDic = objc_msgSend(theGear,[pInfoDic[@"getSelector"] pointerValue],idx);
 
-    if( nil == sDic ) return; // 잘못된 인덱스 값.
+    if( nil == sDic ) return; // wrong index value.
 
     [textField setText:sDic[@"Text"]];
     [subTextField setText:sDic[@"Sub"]];
@@ -121,6 +121,9 @@
     objc_msgSend(theGear, selector, dic, [indexField.text integerValue] );
 
     [self doSound];
+
+    if( UIUserInterfaceIdiomPhone == UI_USER_INTERFACE_IDIOM() )
+        [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - TextField Delegate

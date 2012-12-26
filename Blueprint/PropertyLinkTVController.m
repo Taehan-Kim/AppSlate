@@ -2,12 +2,13 @@
 //  PropertyLinkTVController.m
 //  AppSlate
 //
-//  Created by 김태한 on 12. 1. 7..
+//  Created by Taehan Kim on 12. 1. 7..
 //  Copyright (c) 2012년 ChocolateSoft. All rights reserved.
 //
 
 #import <objc/message.h>
 #import "PropertyLinkTVController.h"
+#import "TSPopoverController.h"
 
 
 @implementation PropertyLinkTVController
@@ -124,10 +125,14 @@
     NSArray *plist = [destGear getPropertiesList];
     NSString *name = (plist[indexPath.row])[@"name"];
 
-    if( [name hasPrefix:@">"] )
+    if( [name hasPrefix:@">"] ) // This is Action Property
+    {
         cell.textLabel.text = [name substringFromIndex:1];
-    else
+        cell.imageView.image = [UIImage imageNamed:@"action_icon.png"];
+    } else {
         cell.textLabel.text = name;
+        cell.imageView.image = nil;
+    }
 
     return cell;
 }
@@ -158,7 +163,11 @@
         // 선택 표시는 다시 풀자.
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     } completion:^(BOOL finished){
-        [USERCONTEXT.pop dismissPopoverAnimated:YES];
+        if( UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM() )
+            [(UIPopoverController*)USERCONTEXT.pop dismissPopoverAnimated:YES];
+        else
+            [(TSPopoverController*)USERCONTEXT.pop dismissPopoverAnimatd:YES];
+
     }];
 
     if( [[NSUserDefaults standardUserDefaults] boolForKey:@"SND_SET"] )

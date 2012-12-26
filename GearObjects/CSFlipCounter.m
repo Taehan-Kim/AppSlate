@@ -2,7 +2,7 @@
 //  CSFlipCounter.m
 //  AppSlate
 //
-//  Created by 김 태한 on 12. 1. 26..
+//  Created by Taehan Kim 태한 김 on 12. 1. 26..
 //  Copyright (c) 2012년 ChocolateSoft. All rights reserved.
 //
 
@@ -116,7 +116,7 @@
 
 -(void)flipCounterView:(FlipCounterView *)flipCounterView didExpand:(CGSize)newSize
 {
-    // 가로 크기를 숫자 자릿수에 맞춰 재설정한다.
+    // re-calc the object's width
     [csView setFrame:CGRectMake(csView.frame.origin.x, csView.frame.origin.y, newSize.width, H_SIZE)];
 }
 
@@ -126,7 +126,7 @@
 -(void) _checkAndRun
 {
 
-//TODO: edit 모드에서는 아래 부분은 실행하지 않는 것이 좋다.    if( !csView. ) return;
+//TODO: on edit mode   if( !csView. ) return;
 
     if( checkNumber != ((FlipCounterView*)csView).counterValue )
         [self valueChanged];
@@ -137,7 +137,7 @@
     checkNumber = ((FlipCounterView*)csView).counterValue;
 }
 
-// 값이 변경되는 모든 경우 설정된 액션을 수행한다.
+// if number is changed, do the linked action
 -(void) valueChanged
 {
     SEL act;
@@ -162,7 +162,7 @@
     [csView setFrame:CGRectMake(csView.frame.origin.x, csView.frame.origin.y, Se.width, H_SIZE)];
 }
 
-// 숫자가 0이 되는 경우 실행되도록 설정된 액션을 수행한다.
+// it number is be 0, do the linked action
 -(void) iAmZero
 {
     SEL act;

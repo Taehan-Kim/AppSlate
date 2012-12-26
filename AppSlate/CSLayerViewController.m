@@ -2,15 +2,12 @@
 //  CSLayerViewController.m
 //  AppSlate
 //
-//  Created by 태한 김 on 12. 6. 21..
+//  Created by Taehan Kim 태한 김 on 12. 6. 21..
 //  Copyright (c) 2012년 ChocolateSoft. All rights reserved.
 //
 
 #import "CSLayerViewController.h"
 
-@interface CSLayerViewController ()
-
-@end
 
 @implementation CSLayerViewController
 
@@ -26,7 +23,7 @@
         [self.view addSubview:navCtrl.view];
 
         if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-            UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
+            UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithTitle:@"Done"
                                                                        style:UIBarButtonItemStyleBordered target:self
                                                                       action:@selector(done:)];
             tvc.navigationItem.leftBarButtonItem = cancel;

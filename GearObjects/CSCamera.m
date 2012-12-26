@@ -2,7 +2,7 @@
 //  CSCamera.m
 //  AppSlate
 //
-//  Created by 김 태한 on 12. 5. 10..
+//  Created by Taehan Kim 태한 김 on 12. 5. 10..
 //  Copyright (c) 2012년 ChocolateSoft. All rights reserved.
 //
 

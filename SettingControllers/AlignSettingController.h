@@ -2,7 +2,7 @@
 //  AlignSettingController.h
 //  AppSlate
 //
-//  Created by 김 태한 on 11. 12. 30..
+//  Created by Taehan Kim 태한 김 on 11. 12. 30..
 //  Copyright (c) 2011년 ChocolateSoft. All rights reserved.
 //
 

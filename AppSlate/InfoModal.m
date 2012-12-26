@@ -2,7 +2,7 @@
 //  InfoModal.m
 //  AppSlate
 //
-//  Created by 김 태한 on 12. 2. 17..
+//  Created by Taehan Kim 태한 김 on 12. 2. 17..
 //  Copyright (c) 2012년 ChocolateSoft. All rights reserved.
 //
 
@@ -212,19 +212,19 @@
 	switch (result)
 	{
 		case MFMailComposeResultCancelled:
-			message = NSLocalizedString(@"Your E-mail has canceled.",@"mail cancel");// @"메일 전송이 취소되었습니다.";
+			message = NSLocalizedString(@"Your E-mail has canceled.",@"mail cancel");
 			break;
 		case MFMailComposeResultSaved:
-			message = NSLocalizedString(@"Your E-mail has saved.",@"mal save");// @"메일이 저장되었습니다.";
+			message = NSLocalizedString(@"Your E-mail has saved.",@"mal save");
 			break;
 		case MFMailComposeResultSent:
-			message = NSLocalizedString(@"Your E-mail has sent",@"mail sent"); //@"메일이 전송되었습니다.";
+			message = NSLocalizedString(@"Your E-mail has sent",@"mail sent");
 			break;
 		case MFMailComposeResultFailed:
-			message = NSLocalizedString(@"Fail to send the mail.",@"mail fail"); //@"메일 전송이 실패하였습니다.";
+			message = NSLocalizedString(@"Fail to send the mail.",@"mail fail");
 			break;
 		default:
-			message = NSLocalizedString(@"I Can not send the mail now.",@"mail cant"); //@"메일 전송이 되지 않습니다.";
+			message = NSLocalizedString(@"I Can not send the mail now.",@"mail cant");
 			break;
 	}
 	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"E-Mail to Developer"

@@ -2,7 +2,7 @@
 //  BookshelfViewController.m
 //  AppSlate
 //
-//  Created by 김 태한 on 12. 1. 18..
+//  Created by Taehan Kim 태한 김 on 12. 1. 18..
 //  Copyright (c) 2012년 ChocolateSoft. All rights reserved.
 //
 
@@ -86,7 +86,7 @@
             (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) );
 }
 
-// 일반적 선택 모드, 삭제 모드, 혹은 다른 동작 모드로 설정.
+// normal mode, delete mode, or another modes...
 -(void) setMode:(NSUInteger)md
 {
     mode = md;
@@ -108,7 +108,12 @@
     FileCell *plainCell = (FileCell*)[aGridView dequeueReusableCellWithIdentifier:@"PlainCell"];
     if ( plainCell == nil )
     {
-        plainCell = [[FileCell alloc] initWithFrame: CGRectMake(0.0, 0.0, 200.0, 150.0)
+        CGFloat widthF = 200.0;
+
+        if( UIUserInterfaceIdiomPhone == UI_USER_INTERFACE_IDIOM() )
+            widthF = 158.0;
+            
+        plainCell = [[FileCell alloc] initWithFrame: CGRectMake(0.0, 0.0, widthF, 150.0)
                                                  reuseIdentifier:@"PlainCell"];
         plainCell.selectionGlowColor = [UIColor lightGrayColor];
     }
@@ -124,6 +129,10 @@
 
 - (CGSize) portraitGridCellSizeForGridView: (AQGridView *) aGridView
 {
+    if( UIUserInterfaceIdiomPhone == UI_USER_INTERFACE_IDIOM() )
+        return ( CGSizeMake(158.0, 160.0) );
+
+    // else, iPad.
     return ( CGSizeMake(224.0, 168.0) );
 }
 
@@ -195,21 +204,21 @@
 	switch (result)
 	{
 		case MFMailComposeResultCancelled:
-			message = NSLocalizedString(@"Your E-mail has canceled.",@"mail cancel");// @"메일 전송이 취소되었습니다.";
+			message = NSLocalizedString(@"Your E-mail has canceled.",@"mail cancel");
 			break;
 		case MFMailComposeResultSaved:
-			message = NSLocalizedString(@"Your E-mail has saved.",@"mal save");// @"메일이 저장되었습니다.";
+			message = NSLocalizedString(@"Your E-mail has saved.",@"mal save");
 //            goodOrBad = YES;
 			break;
 		case MFMailComposeResultSent:
-			message = NSLocalizedString(@"Your E-mail has sent",@"mail sent"); //@"메일이 전송되었습니다.";
+			message = NSLocalizedString(@"Your E-mail has sent",@"mail sent");
 //            goodOrBad = YES;
 			break;
 		case MFMailComposeResultFailed:
-			message = NSLocalizedString(@"Fail to send the mail.",@"mail fail"); //@"메일 전송이 실패하였습니다.";
+			message = NSLocalizedString(@"Fail to send the mail.",@"mail fail");
 			break;
 		default:
-			message = NSLocalizedString(@"I Can not send the mail now.",@"mail cant"); //@"메일 전송이 되지 않습니다.";
+			message = NSLocalizedString(@"I Can not send the mail now.",@"mail cant");
 			break;
 	}
 	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"E-Mail"
@@ -218,8 +227,9 @@
 										  otherButtonTitles: nil];
 	[alert show];	
 	
-	[controller dismissModalViewControllerAnimated:YES];
-    
+	[controller dismissViewControllerAnimated:YES completion:^{
+        ;
+    }];
 }
 
 @end

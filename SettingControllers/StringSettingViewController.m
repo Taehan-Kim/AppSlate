@@ -2,7 +2,7 @@
 //  StringSettingViewController.m
 //  AppSlate
 //
-//  Created by 태한 김 on 11. 12. 20..
+//  Created by Taehan Kim 태한 김 on 11. 12. 20..
 //  Copyright (c) 2011년 ChocolateSoft. All rights reserved.
 //
 
@@ -68,7 +68,7 @@
     [super viewWillAppear:animated];
 }
 
-// UIPopover Controller 의 크기를 조정해주기 위해서 사용하는 팁 같은 코드.
+// for UIPopover Controller
 -(void) viewDidAppear:(BOOL)animated
 {
     CGSize currentSetSizeForPopover = self.contentSizeForViewInPopover;
@@ -84,6 +84,9 @@
 -(void) setTheValue:(id)sender
 {
     [self saveValue:textField.text];
+
+    if( UIUserInterfaceIdiomPhone == UI_USER_INTERFACE_IDIOM() )
+        [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

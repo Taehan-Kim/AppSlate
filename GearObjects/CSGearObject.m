@@ -2,7 +2,7 @@
 //  CSGearObject.m
 //  AppSlate
 //
-//  Created by 태한 김 on 11. 11. 9..
+//  Created by Taehan Kim 태한 김 on 11. 11. 9..
 //  Copyright (c) 2011년 ChocolateSoft. All rights reserved.
 //
 
@@ -91,11 +91,14 @@
         const char *sel_name_c = sel_getName([((NSValue*)dic[@"selector"]) pointerValue]);
         const char *getSel_name_c = sel_getName([((NSValue*)dic[@"getSelector"]) pointerValue]);
 
-        NSDictionary *newDic = @{
-        dic[@"name"]:@"name",
-        dic[@"type"]:@"type",
-        @(sel_name_c):@"selector",
-        @(getSel_name_c):@"getSelector" };
+        NSDictionary *newDic = [NSDictionary dictionaryWithObjectsAndKeys:dic[@"name"],@"name",
+                                dic[@"type"],@"type", @(sel_name_c),@"selector",
+                                @(getSel_name_c),@"getSelector", nil];
+//        @{
+//            @"name":dic[@"name"],
+//            @"type":dic[@"type"],
+//            @"selector":@(sel_name_c),
+//            @"getSelector":@(getSel_name_c) };
 
         [theArray addObject:newDic];
     }
@@ -139,10 +142,10 @@
             sel_name_c = sel_getName([((NSValue*)dic[@"selector"]) pointerValue]);
 
         NSDictionary *newDic = @{
-        dic[@"name"]:@"name",
-        dic[@"type"]:@"type",
-        @(sel_name_c):@"selector",
-        dic[@"mNum"]:@"mNum" };
+            @"name":dic[@"name"],
+            @"type":dic[@"type"],
+            @"selector":@(sel_name_c),
+            @"mNum":dic[@"mNum"] };
 
         [theArray addObject:newDic];
     }
@@ -176,7 +179,7 @@
     return theArray;
 }
 
-// 설정될 수 있는 속성 목록.
+// property list can be modifyed
 -(NSArray*) getPropertiesList
 {
     return pListArray;
@@ -197,7 +200,7 @@
     return !csShow;
 }
 
-// 연결 설정
+// action connect
 -(BOOL) setActionIndex:(NSUInteger)idx to:(NSUInteger)magicNum selector:(SEL)selectorName
 {
     if( idx >= [actionArray count] ) return NO;
@@ -210,7 +213,7 @@
     return YES;
 }
 
-// 연결 해제
+// cancel connect
 -(BOOL) unlinkActionIndex:(NSUInteger)idx
 {
     if( idx >= [actionArray count] ) return NO;
@@ -223,8 +226,8 @@
     return YES;
 }
 
-// 연결 해제
-// magic num 에 해당하는 연결을 모두 삭제하므로, 객체를 제거하는 경우 관련 연결을 지울 때 필요하다.
+// cancel connect
+// if some object removed from screen, use this method with the object's magic number.
 -(BOOL) unlinkActionMCode:(NSNumber*) mCode
 {
     for( NSDictionary *item in actionArray )

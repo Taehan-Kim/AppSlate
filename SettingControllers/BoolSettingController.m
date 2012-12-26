@@ -2,7 +2,7 @@
 //  BoolSettingController.m
 //  AppSlate
 //
-//  Created by 김 태한 on 11. 12. 30..
+//  Created by Taehan Kim 태한 김 on 11. 12. 30..
 //  Copyright (c) 2011년 ChocolateSoft. All rights reserved.
 //
 
@@ -77,7 +77,7 @@
     [super viewWillAppear:animated];
 }
 
-// UIPopover Controller 의 크기를 조정해주기 위해서 사용하는 팁 같은 코드.
+// the size of UIPopover Controller
 -(void) viewDidAppear:(BOOL)animated
 {
     CGSize currentSetSizeForPopover = self.contentSizeForViewInPopover;
@@ -90,8 +90,11 @@
 
 -(void) setTheValue:(id)sender
 {
-    // 정렬 설정 값을 NSNumber 객체로 감싸서 전달함.
+    // Wrap up the Arrange setting value with NSNumber
     [self saveValue:@(switchBtn.on)];
+
+    if( UIUserInterfaceIdiomPhone == UI_USER_INTERFACE_IDIOM() )
+        [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

@@ -2,7 +2,7 @@
 //  CSFlipsideViewController.m
 //  AppSlate
 //
-//  Created by 태한 김 on 11. 11. 9..
+//  Created by Taehan Kim 태한 김 on 11. 11. 9..
 //  Copyright (c) 2011년 ChocolateSoft. All rights reserved.
 //
 //  부품 목록을 테이블로 보여주고, 선택할 수 있게 해주자.
@@ -18,12 +18,11 @@
     if (self) {
         self.contentSizeForViewInPopover = CGSizeMake(320.0, 400.0);
 
-        // 목록에 나타날 부품 항목을 구성한다. 각 항목 하나는 Dictionary 로 되어 있음.
+        // make up the parts list. one dictionary for one item.
         NSArray  *keys = @[@"name",@"desc",@"icon",@"tag"];
         gearList = @[
                     [[NSDictionary alloc] initWithObjects: @[@"Label",@"Simple Text Label", @"gi_label.png", @(CS_LABEL)] forKeys:keys],
                     [[NSDictionary alloc] initWithObjects:@[@"Number Label",@"Number/Currency Label", @"gi_numLabel.png", @(CS_NUMLABEL)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Masked Label",@"Inverse Color Text Label", @"gi_maskedlabel.png", @(CS_MASKEDLABEL)] forKeys:keys],
                     [[NSDictionary alloc] initWithObjects:@[@"Note",@"Text Note - with Evernote backup feature", @"gi_note.png", @(CS_NOTE)] forKeys:keys],
                     [[NSDictionary alloc] initWithObjects:@[@"Light Bulb",@"Small bulb which changeable color", @"gi_bulb.png", @(CS_BULB)] forKeys:keys],
                     [[NSDictionary alloc] initWithObjects:@[@"Flip Counter",@"Flip animation integer number", @"gi_flipcount.png", @(CS_FLIPCNT)] forKeys:keys],
@@ -48,14 +47,15 @@
                     [[NSDictionary alloc] initWithObjects:@[@"E-Mail Composer", @"E-mail Composer View", @"gi_mail.png", @(CS_MAIL)] forKeys:keys],
                     [[NSDictionary alloc] initWithObjects:@[@"Tweet Composer", @"Tweet Composer for Twitter", @"gi_tweet.png", @(CS_TWITSEND)] forKeys:keys],
                     [[NSDictionary alloc] initWithObjects:@[@"Facebook Feed", @"Facebook Feed Dialog", @"gi_fbook.png", @(CS_FBSEND)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Photo Album", @"iPad Photo Library", @"gi_album.png", @(CS_ALBUM)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Camera", @"iPad Camera for take a photo", @"gi_cam.png", @(CS_CAMERA)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Photo Album", @"iOS Photo Library", @"gi_album.png", @(CS_ALBUM)] forKeys:keys],
+                    [[NSDictionary alloc] initWithObjects:@[@"Camera", @"iOS Camera for take a photo", @"gi_cam.png", @(CS_CAMERA)] forKeys:keys],
                     [[NSDictionary alloc] initWithObjects:@[@"Tick Generator", @"Tick Signal Generator", @"gi_tick.png", @(CS_TICK)] forKeys:keys],
                     [[NSDictionary alloc] initWithObjects:@[@"Now", @"Now Date & Time Value", @"gi_date.png", @(CS_NOW)] forKeys:keys],
                     [[NSDictionary alloc] initWithObjects:@[@"Random Number Generator", @"Random number generator", @"gi_rand.png", @(CS_RAND)] forKeys:keys],
                     [[NSDictionary alloc] initWithObjects:@[@"Accelerometer", @"Hardware Accelerometer", @"gi_aclo.png", @(CS_ACLOMETER)] forKeys:keys],
                     [[NSDictionary alloc] initWithObjects:@[@"Music Player", @"iTunes Music Player", @"gi_play.png", @(CS_PLAY)] forKeys:keys],
-                    //  -- -- -- -- -- -- -- -- -- -- -- -- --
+                    [[NSDictionary alloc] initWithObjects:@[@"Bluetooth P2P", @"Peer to peer  data communicate", @"gi_bluetooth.png", @(CS_BTOOTH)] forKeys:keys],
+                //  -- -- -- -- -- -- -- -- -- -- -- -- --
                     [[NSDictionary alloc] initWithObjects:@[@"NOT", @"Logical NOT Gate", @"gi_not.png", @(CS_NOT)] forKeys:keys],
                     [[NSDictionary alloc] initWithObjects:@[@"AND", @"Logical AND Gate", @"gi_and.png", @(CS_AND)] forKeys:keys],
                     [[NSDictionary alloc] initWithObjects:@[@"OR", @"Logical OR Gate", @"gi_or.png", @(CS_OR)] forKeys:keys],
@@ -96,8 +96,6 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-
-    [tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"listCell"];
 }
 
 - (void)viewDidUnload
@@ -148,7 +146,7 @@
 #pragma mark - TableView Delegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 60.0;
+    return 62.0;
 }
 
 - (void)tableView:(UITableView *)tView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -174,8 +172,10 @@
 -(UITableViewCell*) tableView:(UITableView *)tView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell;
-    cell = [tView dequeueReusableCellWithIdentifier:@"listCell"
-                                       forIndexPath:indexPath];
+    cell = [tView dequeueReusableCellWithIdentifier:@"listCell"];
+    if( nil == cell ){
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"listCell"];
+    }
 
     NSDictionary *cellDic = gearList[indexPath.row];
     [cell.textLabel setText:cellDic[@"name"]];

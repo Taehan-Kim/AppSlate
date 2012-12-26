@@ -2,7 +2,7 @@
 //  CSNote.m
 //  AppSlate
 //
-//  Created by 김태한 on 12. 3. 20..
+//  Created by Taehan Kim on 12. 3. 20..
 //  Copyright (c) 2012년 ChocolateSoft. All rights reserved.
 //
 

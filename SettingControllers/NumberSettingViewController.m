@@ -2,7 +2,7 @@
 //  NumberSettingViewController.m
 //  AppSlate
 //
-//  Created by 태한 김 on 12. 01. 26..
+//  Created by Taehan Kim 태한 김 on 12. 01. 26..
 //  Copyright (c) 2012년 ChocolateSoft. All rights reserved.
 //
 
@@ -52,7 +52,10 @@
     [textField.layer setCornerRadius:5.0];
     [textField setClipsToBounds:YES];
     [textField setDelegate:self];
-    [textField setKeyboardType:UIKeyboardTypeNumberPad];
+    if( UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM() )
+        [textField setKeyboardType:UIKeyboardTypeNumbersAndPunctuation];
+    else
+        [textField setKeyboardType:UIKeyboardTypeDecimalPad];
     NSNumber *sNum = objc_msgSend(theGear,[pInfoDic[@"getSelector"] pointerValue]);
     [textField setText: sNum.stringValue];
     [self.view addSubview:textField];
@@ -67,7 +70,7 @@
     [super viewWillAppear:animated];
 }
 
-// UIPopover Controller 의 크기를 조정해주기 위해서 사용하는 팁 같은 코드.
+// for UIPopover Controller
 -(void) viewDidAppear:(BOOL)animated
 {
     CGSize currentSetSizeForPopover = self.contentSizeForViewInPopover;
@@ -83,6 +86,9 @@
 -(void) setTheValue:(id)sender
 {
     [self saveValue:@( [textField.text floatValue] )];
+
+    if( UIUserInterfaceIdiomPhone == UI_USER_INTERFACE_IDIOM() )
+        [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - TextField Delegate

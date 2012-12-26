@@ -2,7 +2,7 @@
 //  FileCell.m
 //  AppSlate
 //
-//  Created by 김 태한 on 12. 1. 18..
+//  Created by Taehan Kim 태한 김 on 12. 1. 18..
 //  Copyright (c) 2012년 ChocolateSoft. All rights reserved.
 //
 
@@ -17,6 +17,9 @@
         return ( nil );
     
     _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(50, 0, 100, 130)];
+    if( UIUserInterfaceIdiomPhone == UI_USER_INTERFACE_IDIOM() )
+        [_imageView setFrame:CGRectMake(28,0,100,130)];
+
     _title = [[UILabel alloc] initWithFrame:CGRectMake(0, frame.size.height-15, frame.size.width, 15)];
     _title.font = [UIFont boldSystemFontOfSize: 18.0];
     _title.adjustsFontSizeToFitWidth = YES;

@@ -30,10 +30,12 @@
 
     UIImage *blueprintViewImage;
     UIView  *runIndicator;
+
+    UIPopoverController *_layerPopoverController;
 }
 
 @property (strong, nonatomic) UIPopoverController *flipsidePopoverController;
-@property (strong, nonatomic) UIPopoverController *layerPopoverController;
+//@property (strong, nonatomic) UIPopoverController *layerPopoverController;
 
 - (void)OpenFileGallery:(id)sender;
 - (void)folderWillClose:(id)sender;

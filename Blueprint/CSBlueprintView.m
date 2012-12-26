@@ -2,12 +2,13 @@
 //  CSBlueprintView.m
 //  AppSlate
 //
-//  Created by 김 태한 on 12. 1. 5..
+//  Created by Taehan Kim 태한 김 on 12. 1. 5..
 //  Copyright (c) 2012년 ChocolateSoft. All rights reserved.
 //
 
 #import "CSBlueprintView.h"
 #import "PropertyLinkTVController.h"
+#import "TSPopoverController.h"
 
 @implementation CSBlueprintView
 
@@ -131,11 +132,19 @@
         PropertyLinkTVController *plc = [[PropertyLinkTVController alloc] initWithStyle:UITableViewStylePlain];
         [plc setDestinationGear:pointedObj
                      actionGear:actionGear actionIndex:actionIndex];
-        USERCONTEXT.pop = [[UIPopoverController alloc] initWithContentViewController:plc];
-        [USERCONTEXT.pop setPopoverContentSize:CGSizeMake(200, 220)];
-        [USERCONTEXT.pop presentPopoverFromRect:pointedObj.csView.frame
-                             inView:self
-           permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+
+        if( UIUserInterfaceIdiomPhone == UI_USER_INTERFACE_IDIOM() )
+        {
+            USERCONTEXT.pop = [[TSPopoverController alloc] initWithContentViewController:plc];
+            [(TSPopoverController*)USERCONTEXT.pop setContentSizeForViewInPopover:CGSizeMake(200, 220)];
+            [(TSPopoverController*)USERCONTEXT.pop showPopoverWithRect:pointedObj.csView.frame];
+        } else {
+            USERCONTEXT.pop = [[UIPopoverController alloc] initWithContentViewController:plc];
+            [(UIPopoverController*)USERCONTEXT.pop setPopoverContentSize:CGSizeMake(200, 220)];
+            [(UIPopoverController*)USERCONTEXT.pop presentPopoverFromRect:pointedObj.csView.frame
+                                 inView:self
+               permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        }
     }
 }
 

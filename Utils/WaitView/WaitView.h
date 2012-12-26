@@ -1,9 +1,9 @@
 //
 //  WaitView.h
-//  ImInHotspot
+//  AppSlate
 //
-//  Created by 태한 김 on 11. 1. 13..
-//  Copyright 2011 kth. All rights reserved.
+//  Created by Taehan Kim 태한 김 on 11. 1. 13..
+//  Copyright 2011 Chocolate Soft. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

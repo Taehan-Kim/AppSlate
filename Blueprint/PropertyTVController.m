@@ -2,7 +2,7 @@
 //  PropertyTVController.m
 //  AppSlate
 //
-//  Created by 김태한 on 11. 12. 11..
+//  Created by Taehan Kim on 11. 12. 11..
 //  Copyright (c) 2011년 ChocolateSoft. All rights reserved.
 //
 #import <objc/message.h>
@@ -60,11 +60,13 @@
 {
     CGFloat hs = ([[theGear getPropertiesList] count]*46) + ([[theGear getActionList] count]*60) + 40.0;
 
-    if( hs > 500 ) hs = 500;
+    if( UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM() )
+    {
+        if( hs > 500 ) hs = 500;
 
-    CGSize size = CGSizeMake(320, hs); // size of view in popover
-    self.contentSizeForViewInPopover = size;
-
+        CGSize size = CGSizeMake(320, hs); // size of view in popover
+        self.contentSizeForViewInPopover = size;
+    }
     // HACK: Gear 가 바뀌어도 이전 정보가 남아있지 못하도록 테이블 셀 뷰를 지운다.
 //    NSMutableDictionary *cells = (NSMutableDictionary*)[self.tableView valueForKey:@"_reusableTableCells"];
 //    [cells removeAllObjects];
@@ -77,10 +79,13 @@
 // UIPopover Controller 의 크기를 조정해주기 위해서 사용하는 팁 같은 코드.
 -(void) viewDidAppear:(BOOL)animated
 {
-    CGSize currentSetSizeForPopover = self.contentSizeForViewInPopover;
-    CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
-    self.contentSizeForViewInPopover = fakeMomentarySize;
-    self.contentSizeForViewInPopover = currentSetSizeForPopover;
+    if( UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM() )
+    {
+        CGSize currentSetSizeForPopover = self.contentSizeForViewInPopover;
+        CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
+        self.contentSizeForViewInPopover = fakeMomentarySize;
+        self.contentSizeForViewInPopover = currentSetSizeForPopover;
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -135,13 +140,18 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
         }
         NSArray *plist = [theGear getPropertiesList];
-        // Configure the cell...
-        cell.textLabel.text = (plist[indexPath.row])[@"name"];
 
-        if( [cell.textLabel.text hasPrefix:@">"] ) // This is Action Property
+        // Configure the cell...
+        if( [(plist[indexPath.row])[@"name"] hasPrefix:@">"] ) // This is Action Property
+        {
             [cell.textLabel setTextColor:[UIColor grayColor]];
-        else
+            cell.textLabel.text = [(plist[indexPath.row])[@"name"] substringFromIndex:1];
+            cell.imageView.image = [UIImage imageNamed:@"action_icon.png"];
+        } else {
             [cell.textLabel setTextColor:[UIColor blackColor]];
+            cell.textLabel.text = (plist[indexPath.row])[@"name"];
+            cell.imageView.image = nil;
+        }
     }
     // 2. action list
     if( 1 == indexPath.section ){
@@ -186,6 +196,7 @@
             [aBtn setTitle:@"✕"];
 
             [aBtn.btn setTag:indexPath.row];  // tag 에 액션 목록의 인덱스를 기입한다.
+            [aBtn setUserInteractionEnabled:YES];
         }
         else {
             cell.detailTextLabel.text = nil;
@@ -193,6 +204,7 @@
             [aBtn setTitle:@""];
 
             [aBtn setTag:NSIntegerMax]; // NSIntegerMax 를 없는 숫자로 사용하자.
+            [aBtn setUserInteractionEnabled:NO];
         }
     }
     return cell;
@@ -280,13 +292,21 @@
             [(UIImagePickerController*)VC setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
             tempInfo = info;
 
-            if( nil == libpop )
-                libpop = [[UIPopoverController alloc] initWithContentViewController:VC];
-            UITableViewCell *tc = [tableView cellForRowAtIndexPath:indexPath];
-            UIView *theView = ((CSAppDelegate*)([UIApplication sharedApplication].delegate)).window.rootViewController.view;
-            [libpop presentPopoverFromRect:[tc convertRect:tc.bounds toView:theView]
-                                    inView:theView
-                  permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
+            {
+                if( nil == libpop )
+                    libpop = [[UIPopoverController alloc] initWithContentViewController:VC];
+                UITableViewCell *tc = [tableView cellForRowAtIndexPath:indexPath];
+                UIView *theView = ((CSAppDelegate*)([UIApplication sharedApplication].delegate)).window.rootViewController.view;
+                [libpop presentPopoverFromRect:[tc convertRect:tc.bounds toView:theView]
+                                        inView:theView
+                      permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            } else {
+                UIViewController *mainVC = ((CSAppDelegate*)([UIApplication sharedApplication].delegate)).window.rootViewController;
+                [self dismissViewControllerAnimated:YES completion:^{
+                    [mainVC presentViewController:VC animated:YES completion:NULL];
+                }];
+            }
             return;
         }
         else if( [info[@"type"] isEqualToString:P_NO] )
@@ -398,7 +418,10 @@
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
-	[libpop dismissPopoverAnimated:YES];
+    if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
+        [libpop dismissPopoverAnimated:YES];
+    else
+        [picker dismissViewControllerAnimated:YES completion:NULL];
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)Info
@@ -406,7 +429,10 @@
     SEL act = [tempInfo[@"selector"] pointerValue];
     [theGear performSelector:act withObject:image];
 
-	[libpop dismissPopoverAnimated:YES];
+    if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
+        [libpop dismissPopoverAnimated:YES];
+    else
+        [picker dismissViewControllerAnimated:YES completion:NULL];
 }
 
 @end

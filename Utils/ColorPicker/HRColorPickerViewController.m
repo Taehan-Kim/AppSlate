@@ -79,16 +79,27 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    CGSize size = CGSizeMake(320, 470); // size of view in popover
-    self.contentSizeForViewInPopover = size;
+    if( UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM() )
+    {
+        CGSize size = CGSizeMake(320, 470); // size of view in popover
+        self.contentSizeForViewInPopover = size;
 
-    saveBtn = [[BButton alloc] initWithFrame:CGRectMake(C_GAP, colorPickerView.frame.size.height+C_GAP, C_WIDTH, 40)];
+        saveBtn = [[BButton alloc] initWithFrame:CGRectMake(C_GAP, colorPickerView.frame.size.height+C_GAP, C_WIDTH, 40)];
+        clearBtn = [[BButton alloc] initWithFrame:CGRectMake(C_GAP, colorPickerView.frame.size.height+C_GAP+48, C_WIDTH, 36)];
+    }
+    else
+    {
+        saveBtn = [[BButton alloc] initWithFrame:CGRectMake(C_GAP+(C_WIDTH/2), colorPickerView.frame.size.height, C_WIDTH/2-C_GAP, 36)];
+        clearBtn = [[BButton alloc] initWithFrame:CGRectMake(C_GAP, colorPickerView.frame.size.height, C_WIDTH/2-C_GAP, 36)];
+    }
     [saveBtn setTitle:NSLocalizedString(@"APPLY",@"APPLY")];
     [saveBtn addTarget:self action:@selector(save:)];
     [self.view addSubview:saveBtn];
 
-    clearBtn = [[BButton alloc] initWithFrame:CGRectMake(C_GAP, colorPickerView.frame.size.height+C_GAP+48, C_WIDTH, 36)];
-    [clearBtn setTitle:NSLocalizedString(@"TRANSPARENT APPLY",@"CLEAR APPLY")];
+    if( UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM() )
+        [clearBtn setTitle:NSLocalizedString(@"TRANSPARENT APPLY",@"CLEAR APPLY")];
+    else
+        [clearBtn setTitle:NSLocalizedString(@"TRANSPARENT",@"TRANSPARENT")];
     [clearBtn addTarget:self action:@selector(clearSave:)];
     [clearBtn setBackgroundColor:[UIColor grayColor]];
     [clearBtn setTitleColor:[UIColor blackColor]];
@@ -166,6 +177,9 @@
     HRRGBColor rgbColor = [colorPickerView RGBColor];
     // blade
     [self saveValue:[UIColor colorWithRed:rgbColor.r green:rgbColor.g blue:rgbColor.b alpha:1.0f]];
+
+    if( UIUserInterfaceIdiomPhone == UI_USER_INTERFACE_IDIOM() )
+        [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)clearSave:(id)sender

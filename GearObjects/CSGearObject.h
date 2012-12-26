@@ -2,7 +2,7 @@
 //  CSGearObject.h
 //  AppSlate
 //
-//  Created by 태한 김 on 11. 11. 9..
+//  Created by Taehan Kim 태한 김 on 11. 11. 9..
 //  Copyright (c) 2011년 Chocolatesoft. All rights reserved.
 //
 
@@ -44,6 +44,7 @@
 #define CS_FBSEND       159
 #define CS_PLAY         160
 #define CS_CAMERA       161
+#define CS_BTOOTH       162
 
 #define CS_NOT          200
 #define CS_AND          201
@@ -106,29 +107,26 @@
     // Information
     NSString    *info;
 
-    // 보이는 실체.
+    // visible thing.
     UIView  *csView;
 
-    // 보이는가 아닌가?
+    // is hidden or not?
     BOOL    csShow;
 
-    // 크기 조절이 가능한가?
+    // is resizable object?
     BOOL    csResizable;
 
-    // 설계 화면에 보여질 형태 이미지
-    //UIImage *csFaceImage;
-
-    // 배경색
+    // background color
     UIColor *csBackColor;
 
-    // 속성 목록
+    // property list
     NSArray *pListArray, *pListTemp;
-    // 액션 목록
+    // action list
     NSArray *actionArray, *actionTemp;
 
     UITapGestureRecognizer  *tapGR;
 
-    // iOS API 의 컴포넌트를 그대로 사용하는가에 대한 표식.
+    // is iOS UI object or not
     BOOL    isUIObj;
 }
 
@@ -152,9 +150,9 @@
 +(NSArray*) makeAListForSave:(NSArray*)list;
 +(NSArray*) makeAListForUse:(NSArray*)list;
 
-// 연결 설정
+// set up action connection
 -(BOOL) setActionIndex:(NSUInteger)idx to:(NSUInteger)magicNum selector:(SEL)selectorName;
-// 연결 해제
+// cancel action connection
 -(BOOL) unlinkActionIndex:(NSUInteger)idx;
 -(BOOL) unlinkActionMCode:(NSNumber*) mCode;
 

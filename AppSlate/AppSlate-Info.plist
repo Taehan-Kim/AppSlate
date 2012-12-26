@@ -36,11 +36,15 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>615</string>
+	<string>911</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.productivity</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSHumanReadableCopyright</key>
+	<string>2012 ChocolateSoft Group all rights reserved.</string>
+	<key>UIApplicationExitsOnSuspend</key>
+	<false/>
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UIPrerenderedIcon</key>
@@ -49,6 +53,29 @@
 	<array>
 		<string>armv7</string>
 	</array>
+	<key>UIStatusBarHidden</key>
+	<false/>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleDefault</string>
+	<key>UIStatusBarTintParameters</key>
+	<dict>
+		<key>UINavigationBar</key>
+		<dict>
+			<key>Style</key>
+			<string>UIBarStyleDefault</string>
+			<key>TintColor</key>
+			<dict>
+				<key>Blue</key>
+				<real>0.20000000298023224</real>
+				<key>Green</key>
+				<real>0.20000000298023224</real>
+				<key>Red</key>
+				<real>0.20000000298023224</real>
+			</dict>
+			<key>Translucent</key>
+			<false/>
+		</dict>
+	</dict>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
