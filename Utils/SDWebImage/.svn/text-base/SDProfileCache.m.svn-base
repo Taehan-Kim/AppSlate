@@ -1,0 +1,229 @@
+/*
+ * This file is part of the SDWebImage package.
+ * (c) Olivier Poitrey <rs@dailymotion.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+#import "SDProfileCache.h"
+#import <CommonCrypto/CommonDigest.h>
+
+static NSInteger cacheMaxCacheAge = 60*60*24*31; // 1 month
+#define MAX_CACHE_NUM   100
+#define PROFILEDICTIONARY @"profileDictionary"
+#define PROFILEDATAKEY @"profileCacheKey"
+
+static SDProfileCache *instance;
+
+@implementation SDProfileCache
+
+#pragma mark NSObject
+
+- (id)init
+{
+    if ((self = [super init]))
+    {
+        // Init the memory cache
+        memCache = [[NSMutableDictionary alloc] init];
+
+        // Init the disk cache
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+        diskCachePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"ProfileCache"];
+
+        if (![[NSFileManager defaultManager] fileExistsAtPath:diskCachePath])
+        {
+            [[NSFileManager defaultManager] createDirectoryAtPath:diskCachePath
+                                      withIntermediateDirectories:YES
+                                                       attributes:nil
+                                                            error:NULL];
+        }
+
+        // Init the operation queue
+        cacheInQueue = [[NSOperationQueue alloc] init];
+        cacheInQueue.maxConcurrentOperationCount = 1;
+        cacheOutQueue = [[NSOperationQueue alloc] init];
+        cacheOutQueue.maxConcurrentOperationCount = 1;
+
+        // Subscribe to app events
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(clearMemory)
+                                                     name:UIApplicationDidReceiveMemoryWarningNotification
+                                                   object:nil];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(cleanDisk)
+                                                     name:UIApplicationWillTerminateNotification
+                                                   object:nil];
+
+        #ifdef __IPHONE_4_0
+        UIDevice *device = [UIDevice currentDevice];
+        if ([device respondsToSelector:@selector(isMultitaskingSupported)] && device.multitaskingSupported)
+        {
+            // When in background, clean memory in order to have less chance to be killed
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(clearMemory)
+                                                         name:UIApplicationDidEnterBackgroundNotification
+                                                       object:nil];
+        }
+        #endif
+    }
+
+    return self;
+}
+
+- (void)dealloc
+{
+//    [memCache release], memCache = nil;
+//    [diskCachePath release], diskCachePath = nil;
+//    [cacheInQueue release], cacheInQueue = nil;
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
+//    [super dealloc];
+}
+
+#pragma mark SDImageCache (class methods)
+
++ (SDProfileCache *)sharedProfileCache
+{
+    if (instance == nil)
+    {
+        instance = [[SDProfileCache alloc] init];
+    }
+
+    return instance;
+}
+
+#pragma mark SDImageCache (private)
+
+- (NSString *)cachePathForKey:(NSString *)key
+{
+    const char *str = [key UTF8String];
+    unsigned char r[CC_MD5_DIGEST_LENGTH];
+    CC_MD5(str, strlen(str), r);
+    NSString *filename = [NSString stringWithFormat:@"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
+                          r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7], r[8], r[9], r[10], r[11], r[12], r[13], r[14], r[15]];
+
+    return [diskCachePath stringByAppendingPathComponent:filename];
+}
+
+- (void)storeKeyWithDataToDisk:(NSArray *)keyAndData
+{
+    NSString *key = [keyAndData objectAtIndex:0];
+    NSDictionary *dicdata = [keyAndData count] > 1 ? [keyAndData objectAtIndex:1] : nil;
+
+    if (dicdata)
+    {
+        NSMutableData *data = [[NSMutableData alloc]init];
+        NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
+        [archiver encodeObject:dicdata forKey:key];
+        [archiver finishEncoding];
+        [data writeToFile:[self cachePathForKey:key] atomically:YES];
+    }
+}
+
+#pragma mark ImageCache
+
+- (void)storeData:(NSDictionary *)profileData forKey:(NSString *)key toDisk:(BOOL)toDisk
+{
+    if (!profileData || !key)
+    {
+        return;
+    }
+
+    [memCache setObject:profileData forKey:key];
+
+    if (toDisk)
+    {
+        NSArray *keyWithData;
+        if (profileData)
+        {
+            keyWithData = [NSArray arrayWithObjects:key, profileData, nil];
+        }
+        
+        [cacheInQueue addOperation:[[NSInvocationOperation alloc] initWithTarget:self
+                                                                         selector:@selector(storeKeyWithDataToDisk:)
+                                                                           object:keyWithData]];
+    }
+}
+
+- (void)storeData:(NSDictionary *)profileData forKey:(NSString *)key
+{
+    [self storeData:profileData forKey:key toDisk:YES];
+}
+
+- (NSDictionary *)dataFromKey:(NSString *)key
+{
+    return [self dataFromKey:key fromDisk:YES];
+}
+
+- (NSDictionary *)dataFromKey:(NSString *)key fromDisk:(BOOL)fromDisk
+{
+    if (key == nil)
+    {
+        return nil;
+    }
+
+    NSDictionary *dicdata = [memCache objectForKey:key];
+    if (!dicdata) {
+        NSData *data = [[NSMutableData alloc] initWithContentsOfFile:[self cachePathForKey:key]];
+        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
+        dicdata = [unarchiver decodeObjectForKey:key];
+        [unarchiver finishDecoding];
+    }
+
+    return dicdata;
+}
+
+
+- (void)removeDataForKey:(NSString *)key
+{
+    if (key == nil)
+    {
+        return;
+    }
+
+    [memCache removeObjectForKey:key];
+    [[NSFileManager defaultManager] removeItemAtPath:[self cachePathForKey:key] error:nil];
+}
+
+- (void)clearMemory
+{
+    [cacheInQueue cancelAllOperations]; // won't be able to complete
+    [memCache removeAllObjects];
+}
+
+- (void)clearDisk
+{
+    [cacheInQueue cancelAllOperations];
+    [[NSFileManager defaultManager] removeItemAtPath:diskCachePath error:nil];
+    [[NSFileManager defaultManager] createDirectoryAtPath:diskCachePath
+                              withIntermediateDirectories:YES
+                                               attributes:nil
+                                                    error:NULL];
+}
+
+- (void)cleanDisk
+{
+    NSDate *expirationDate = [NSDate dateWithTimeIntervalSinceNow:-cacheMaxCacheAge];
+    NSDirectoryEnumerator *fileEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:diskCachePath];
+
+    // blade.
+    if( MAX_CACHE_NUM > [[fileEnumerator allObjects] count] )
+    {
+        return;
+    }
+
+    for (NSString *fileName in fileEnumerator)
+    {
+        NSString *filePath = [diskCachePath stringByAppendingPathComponent:fileName];
+        NSDictionary *attrs = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:nil];
+        if ([[[attrs fileModificationDate] laterDate:expirationDate] isEqualToDate:expirationDate])
+        {
+            [[NSFileManager defaultManager] removeItemAtPath:filePath error:nil];
+        }
+    }
+}
+
+@end

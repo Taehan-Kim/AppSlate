@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/pudding/!svn/ver/10474/trunk/sns_iphone/puddingsns/Utils/SDWebImage
+END
+SDProfileCache.h
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/pudding/!svn/ver/8309/trunk/sns_iphone/puddingsns/Utils/SDWebImage/SDProfileCache.h
+END
+SDWebImageDownloader.m
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/pudding/!svn/ver/2899/trunk/sns_iphone/puddingsns/Utils/SDWebImage/SDWebImageDownloader.m
+END
+SDImageCache.h
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/pudding/!svn/ver/2692/trunk/sns_iphone/puddingsns/Utils/SDWebImage/SDImageCache.h
+END
+SDWebImageManagerDelegate.h
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/pudding/!svn/ver/4912/trunk/sns_iphone/puddingsns/Utils/SDWebImage/SDWebImageManagerDelegate.h
+END
+UIImageView+WebCache.m
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/pudding/!svn/ver/5839/trunk/sns_iphone/puddingsns/Utils/SDWebImage/UIImageView+WebCache.m
+END
+SDProfileCache.m
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/pudding/!svn/ver/10474/trunk/sns_iphone/puddingsns/Utils/SDWebImage/SDProfileCache.m
+END
+SDWebImageDownloaderDelegate.h
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/pudding/!svn/ver/2692/trunk/sns_iphone/puddingsns/Utils/SDWebImage/SDWebImageDownloaderDelegate.h
+END
+SDImageCache.m
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/pudding/!svn/ver/9196/trunk/sns_iphone/puddingsns/Utils/SDWebImage/SDImageCache.m
+END
+SDWebImageManager.h
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/pudding/!svn/ver/7345/trunk/sns_iphone/puddingsns/Utils/SDWebImage/SDWebImageManager.h
+END
+SDWebImageDownloader.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/pudding/!svn/ver/2692/trunk/sns_iphone/puddingsns/Utils/SDWebImage/SDWebImageDownloader.h
+END
+SDWebImageManager.m
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/pudding/!svn/ver/7345/trunk/sns_iphone/puddingsns/Utils/SDWebImage/SDWebImageManager.m
+END
+SDImageCacheDelegate.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/pudding/!svn/ver/2692/trunk/sns_iphone/puddingsns/Utils/SDWebImage/SDImageCacheDelegate.h
+END
+UIImageView+WebCache.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/pudding/!svn/ver/2692/trunk/sns_iphone/puddingsns/Utils/SDWebImage/UIImageView+WebCache.h
+END
