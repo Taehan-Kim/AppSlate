@@ -163,7 +163,6 @@ NSString * const applicationVersion = @"1.1";
     [(UITextView*)csView setDelegate:self];
     [(UITextView*)csView setUserInteractionEnabled:YES];
 
-    self.info = NSLocalizedString(@"Note", @"Note");
     userid = @"";
     passwd = @"";
     title = @"My Memo";

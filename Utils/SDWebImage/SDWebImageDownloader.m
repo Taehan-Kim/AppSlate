@@ -7,6 +7,7 @@
  */
 
 #import "SDWebImageDownloader.h"
+#import "SDNetworkActivityIndicator.h"
 
 NSString *const SDWebImageDownloadStartNotification = @"SDWebImageDownloadStartNotification";
 NSString *const SDWebImageDownloadStopNotification = @"SDWebImageDownloadStopNotification";

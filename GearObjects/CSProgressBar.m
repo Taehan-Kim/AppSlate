@@ -73,8 +73,6 @@
     [((UIProgressView*)csView) setProgressViewStyle:UIProgressViewStyleDefault];
     [((UIProgressView*)csView) setProgress:0.5];
     
-    self.info = NSLocalizedString(@"Progress Bar", @"Progress Bar");
-
     DEFAULT_CENTER_D;
     NSDictionary *d0 = ALPHA_D;
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Bar Color", P_COLOR, @selector(setBarColor:),@selector(getBarColor));

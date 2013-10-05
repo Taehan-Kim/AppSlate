@@ -15,6 +15,7 @@
 #import "AlignSettingController.h"
 #import "BoolSettingController.h"
 #import "CellSettingController.h"
+#import "UIBAlertView.h"
 
 @implementation PropertyTVController
 
@@ -23,7 +24,7 @@
     self = [super initWithStyle:style];
     if (self) {
         // Custom initialization
-        self.title = NSLocalizedString(@"Property", @"Prop list");
+        self.title = NSLocalizedString(@"Property", @"Property");
     }
     return self;
 }
@@ -65,15 +66,12 @@
         if( hs > 500 ) hs = 500;
 
         CGSize size = CGSizeMake(320, hs); // size of view in popover
-        self.contentSizeForViewInPopover = size;
+        self.preferredContentSize = size;
     }
-    // HACK: Gear 가 바뀌어도 이전 정보가 남아있지 못하도록 테이블 셀 뷰를 지운다.
-//    NSMutableDictionary *cells = (NSMutableDictionary*)[self.tableView valueForKey:@"_reusableTableCells"];
-//    [cells removeAllObjects];
 
     [self.tableView reloadData];
-//    [self.tableView beginUpdates];
-//    [self.tableView endUpdates];
+
+    [super viewWillAppear:animated];
 }
 
 // UIPopover Controller 의 크기를 조정해주기 위해서 사용하는 팁 같은 코드.
@@ -81,11 +79,14 @@
 {
     if( UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM() )
     {
-        CGSize currentSetSizeForPopover = self.contentSizeForViewInPopover;
+        CGSize currentSetSizeForPopover = self.preferredContentSize;
         CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
-        self.contentSizeForViewInPopover = fakeMomentarySize;
-        self.contentSizeForViewInPopover = currentSetSizeForPopover;
+        self.preferredContentSize = fakeMomentarySize;
+        self.tableView.backgroundColor = [UIColor clearColor];
+    } else {
+        self.tableView.backgroundColor = [UIColor whiteColor];
     }
+    [super viewDidAppear:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -138,6 +139,8 @@
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+            cell.backgroundColor = [UIColor clearColor];
+            [cell.contentView setBackgroundColor:[UIColor clearColor]];
         }
         NSArray *plist = [theGear getPropertiesList];
 
@@ -161,7 +164,7 @@
             // 연결하거나, 연결 상태를 알려줄 버튼.
             BButton *btn = [[BButton alloc] initWithFrame:CGRectMake(270,15,30,30)];
             [btn.layer setCornerRadius:9.0];
-            [cell.contentView setBackgroundColor:CS_RGB(255, 245, 240)];
+            [cell.contentView setBackgroundColor:[UIColor clearColor]];//CS_RGB(255, 245, 240)];
             [btn.btn addTarget:self action:@selector(unlinkAction:) forControlEvents:UIControlEventTouchUpInside];
             [btn.btn addTarget:self action:@selector(lineAction:) forControlEvents:UIControlEventTouchDown];
             [btn.btn addTarget:self action:@selector(removeLineAction:) forControlEvents:UIControlEventTouchUpOutside];
@@ -171,7 +174,7 @@
         NSMutableDictionary *acDic = alist[indexPath.row];
 
         cell.textLabel.text = acDic[@"name"];
-        [cell.textLabel setBackgroundColor:CS_RGB(255, 245, 240)];
+        [cell.textLabel setBackgroundColor:[UIColor clearColor]];
         BButton *aBtn = (cell.contentView.subviews)[0];
 
         // 연결 정보
@@ -190,7 +193,7 @@
             // selector 이름 앞의 3글자 - 즉 'set' 은 빼고 이름을 정보로 표시해줌.
             propertyName = [NSStringFromSelector(((NSValue*)acDic[@"selector"]).pointerValue) substringFromIndex:3];
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ :: %@",className, propertyName];
-            [cell.detailTextLabel setBackgroundColor:CS_RGB(255, 245, 240)];
+            [cell.detailTextLabel setBackgroundColor:[UIColor clearColor]];
 
             [aBtn.layer setBackgroundColor:[UIColor redColor].CGColor];
             [aBtn setTitle:@"✕"];
@@ -339,43 +342,35 @@
 
 -(void) unlinkAction:(id)sender
 {
-    UIAlertView *alert;
-
     // 연결되지 않은 액션 항목이다. 버튼은 동작하지 않는다.
     if( NSIntegerMax == ((UIButton*)sender).tag ) return;
 
-    alert = [[UIAlertView alloc] initWithTitle:@""
-                                       message:@"Unlink the Action" delegate:self
-                             cancelButtonTitle:@"Cancel"
-                             otherButtonTitles:@"Confirm", nil];
-    [alert setTag:((UIButton*)sender).tag];
-    [alert show];
-    NSLog(@"alert tag:%d",alert.tag);
-}
 
--(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    // unlink the action
-    NSArray *alist = [theGear getActionList];
-    NSMutableDictionary *acDic = alist[alertView.tag];
+    UIBAlertView *alert = [[UIBAlertView alloc] initWithTitle:@"" message:@"Unlink the Action" cancelButtonTitle:@"Cancel" otherButtonTitles:@"Confirm",nil];
+    [alert showWithDismissHandler:^(NSInteger selectedIndex, BOOL didCancel)
+    {
+        // unlink the action
+        NSArray *alist = [theGear getActionList];
+        NSMutableDictionary *acDic = alist[((UIButton*)sender).tag];
 
-    NSNumber *nsMagicNum = acDic[@"mNum"];
-    CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
-
-    if( nil != gObj ){
-        [[gObj.csView.subviews lastObject] removeFromSuperview];
-    }
-
-    if( 0 == buttonIndex ) return;  // cancel
-
-    acDic[@"selector"] = [NSValue valueWithPointer:nil];
-    acDic[@"mNum"] = @(0);
-
-    [self.tableView reloadData];
-
-    // 액션 연결선 표시를 갱신해주기 위해서 멈춤 메시지를 보낸다. 그러면 갱신되는 효과가 있다.
-    [[NSNotificationCenter defaultCenter] postNotificationName:NOTI_STOP
-                                                        object:nil];
+        NSNumber *nsMagicNum = acDic[@"mNum"];
+        CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+        
+        if( nil != gObj ){
+            [[gObj.csView.subviews lastObject] removeFromSuperview];
+        }
+        
+        if (didCancel) return; // ---------------------------------
+        
+        acDic[@"selector"] = [NSValue valueWithPointer:nil];
+        acDic[@"mNum"] = @(0);
+        
+        [self.tableView reloadData];
+        
+        // 액션 연결선 표시를 갱신해주기 위해서 멈춤 메시지를 보낸다. 그러면 갱신되는 효과가 있다.
+        [[NSNotificationCenter defaultCenter] postNotificationName:NOTI_STOP
+                                                            object:nil];
+    }];
 }
 
 -(void) lineAction:(id)sender

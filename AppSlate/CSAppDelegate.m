@@ -7,8 +7,9 @@
 //
 
 #import "CSAppDelegate.h"
-
+#import <Parse/Parse.h>
 #import "CSMainViewController.h"
+#import <FacebookSDK/FacebookSDK.h>
 
 @implementation CSAppDelegate
 
@@ -25,6 +26,11 @@
     [self loadCachedAppFile];
 
     USERCONTEXT.inviteCheckEnabled = [defaults boolForKey:@"AppUsageCheck"];
+
+    [Parse setApplicationId:@"your_id"
+                  clientKey:@"your_key"];
+
+////[PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
 
     return YES;
 }
@@ -59,7 +65,8 @@
     /*
      Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
      */
-    [self.mainViewController saveAppFile:YES];
+
+    [FBAppEvents activateApp];
 
     // Check the flag for enabling any prompts. If that flag is on
     // check the app active counter
@@ -83,19 +90,19 @@
  * you can take appropriate action, such as displaying the request
  * dialog, or setting a flag not to prompt the user again.
  */
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 0) {
-        // User has clicked on the No Thanks button, do not ask again
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setBool:YES forKey:@"AppUsageCheck"];
-        [defaults synchronize];
-        USERCONTEXT.inviteCheckEnabled = YES;
-    } else if (buttonIndex == 1) {
-        // User has clicked on the Tell Friends button
-        [self performSelector:@selector(fbookFeed) withObject:nil afterDelay:1.0];
-    }
-}
+//- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+//{
+//    if (buttonIndex == 0) {
+//        // User has clicked on the No Thanks button, do not ask again
+//        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+//        [defaults setBool:YES forKey:@"AppUsageCheck"];
+//        [defaults synchronize];
+//        USERCONTEXT.inviteCheckEnabled = YES;
+//    } else if (buttonIndex == 1) {
+//        // User has clicked on the Tell Friends button
+//        [self performSelector:@selector(fbookFeed) withObject:nil afterDelay:1.0];
+//    }
+//}
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {

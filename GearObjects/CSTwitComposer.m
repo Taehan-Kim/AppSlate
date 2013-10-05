@@ -101,8 +101,6 @@
     csResizable = NO;
     csShow = NO;
 
-    self.info = NSLocalizedString(@"Tweet Composer", @"Tweet Composer");
-
     textStr = @"Hi!";
     linkStr = @"http://www.facebook.com/AppSlate";
     image = nil;

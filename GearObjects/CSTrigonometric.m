@@ -99,8 +99,6 @@
     csResizable = NO;
     csShow = NO;
     
-    self.info = NSLocalizedString(@"Trigonometric Functions", @"Trigonometric");
-    
     NSDictionary *d1 = MAKE_PROPERTY_D(@">Radian Value", P_NUM, @selector(setRadianValue:),@selector(getRadianValue));
     pListArray = @[d1];
     

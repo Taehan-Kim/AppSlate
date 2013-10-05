@@ -27,7 +27,7 @@
     if(self){
         self.backgroundColor = [UIColor clearColor];
         self.baseColor = [UIColor blackColor];
-        self.isGradient = YES;
+        self.isGradient = NO;
     }
     return self;
 }

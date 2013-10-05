@@ -80,8 +80,6 @@
     csShow = NO;
     queue = [[NSMutableArray alloc] initWithCapacity:10];
 
-    self.info = NSLocalizedString(@"Queue Data Structure", @"Queue");
-
     NSDictionary *d1 = MAKE_PROPERTY_D(@">Push", P_NUM, @selector(setPushValue:),@selector(getPushValue));
     NSDictionary *d2 = MAKE_PROPERTY_D(@">Get", P_NUM, @selector(setPop:),@selector(getPop));
     pListArray = @[d1,d2];

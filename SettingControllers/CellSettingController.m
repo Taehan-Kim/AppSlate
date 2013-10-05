@@ -40,14 +40,14 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    CGSize size = CGSizeMake(320, 270); // size of view in popover
-    self.contentSizeForViewInPopover = size;
-    self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
+    CGSize size = CGSizeMake(320, 270 + 60); // size of view in popover
+    self.preferredContentSize = size;
+    self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
 
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(C_GAP, C_GAP*2, 50, 33)];
     [label setBackgroundColor:[UIColor clearColor]];
     [label setFont:CS_FONT(16)];
-    [label setTextColor:[UIColor whiteColor]];
+    [label setTextColor:[UIColor darkGrayColor]];
     [label setText:@"Index :"];
     [self.view addSubview:label];
 
@@ -94,10 +94,8 @@
 // UIPopover Controller 의 크기를 조정해주기 위해서 사용하는 팁 같은 코드.
 -(void) viewDidAppear:(BOOL)animated
 {
-    CGSize currentSetSizeForPopover = self.contentSizeForViewInPopover;
-    CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
-    self.contentSizeForViewInPopover = fakeMomentarySize;
-    self.contentSizeForViewInPopover = currentSetSizeForPopover;
+    if( UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM() )
+        [[NSNotificationCenter defaultCenter] postNotificationName:NOTI_CHANGE_POPOVER object:nil];
 }
 
 #pragma mark - Setting Button Action
@@ -117,7 +115,7 @@
 {
     SEL selector = [pInfoDic[@"selector"] pointerValue];
 
-    NSDictionary *dic = @{textField.text:@"Text", subTextField.text:@"Sub"};
+    NSDictionary *dic = @{@"Text":textField.text, @"Sub":subTextField.text};
     objc_msgSend(theGear, selector, dic, [indexField.text integerValue] );
 
     [self doSound];

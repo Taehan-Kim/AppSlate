@@ -10,7 +10,7 @@
 #import "TSPopoverController.h"
 #import "UIBarButtonItem+WEPopover.h"
 
-#define CORNER_RADIUS 5
+#define CORNER_RADIUS 4
 #define BORDER 5
 #define TITLE_SHADOW_OFFSET   CGSizeMake(0, -1)
 #define BUTTON_HEIGHT 35
@@ -35,7 +35,7 @@
         buttonsMutableArray = [[NSMutableArray alloc] init];
         self.cornerRadius = CORNER_RADIUS;
         self.buttonGradient = YES;
-        self.titleShadow = YES;
+        self.titleShadow = NO;
         self.titleColor = [UIColor whiteColor];
         self.titleShadowOffset = TITLE_SHADOW_OFFSET;
         self.titleShadowColor = [UIColor blackColor];

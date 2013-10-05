@@ -150,7 +150,6 @@
 
     [((BButton*)csView) setTitle:onText];
     [(BButton*)csView addTarget:self action:@selector(pushAction:)];
-    self.info = NSLocalizedString(@"Toggle Button", @"Toggle Button");
 
     DEFAULT_CENTER_D;
     NSDictionary *d0 = ALPHA_D;

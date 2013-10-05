@@ -8,87 +8,85 @@
 #import "AFPhotoEditorControllerOptions.h"
 #import "AFPhotoEditorSession.h"
 #import "AFPhotoEditorContext.h"
-#import "AFPhotoEditorStyle.h"
+#import "AFOpenGLManager.h"
 
 @class AFPhotoEditorController;
 
 /**
-    Implement this protocol to be notified when the user is done using the editor.
-    You are responsible for dismissing the editor when you (and/or your user) are
-    finished with it.
+ Implement this protocol to be notified when the user is done using the editor.
+ You are responsible for dismissing the editor when you (and/or your user) are
+ finished with it.
  */
 @protocol AFPhotoEditorControllerDelegate <NSObject>
 @optional
 
 /**
-    Implement this method to be notified when the user presses the "Done" button.
-    The edited image is passed via the `image` parameter.
+ Implement this method to be notified when the user presses the "Done" button.
+ 
+ The edited image is passed via the `image` parameter. The size of this image may 
+ not be equivalent to the size of the input image, if the input image is larger 
+ than the maximum image size supported by the SDK. Currently (as of 9/19/12), the 
+ maximum size is {1024.0, 1024.0} pixels on all devices.
 
-    @param editor The photo editor controller.
-    @param image The edited image.
+ @param editor The photo editor controller.
+ @param image The edited image.
 
-    @note The size of this image may not be equivalent to the size of the input
-    image, if the input image is larger than the maximum image size supported by the
-    SDK. Currently (as of 1/17/12), the maximum size is {960.0, 960.0} pixels on all
-    devices.
+
  */
 - (void)photoEditor:(AFPhotoEditorController *)editor finishedWithImage:(UIImage *)image;
 
 /**
-    Implement this method to be notified when the user presses the "Cancel" button.
+ Implement this method to be notified when the user presses the "Cancel" button.
 
-    @param editor The photo editor controller.
+ @param editor The photo editor controller.
  */
 - (void)photoEditorCanceled:(AFPhotoEditorController *)editor;
 
 @end
 
+/**
+ This class encapsulates the Aviary SDK's photo editor. Present this view controller to provide the user with a fast
+ and powerful image editor. Be sure that you don't forget to set the delegate property 
+ to an object that conforms to the AFPhotoEditorControllerDelegate protocol.
+ */
 @interface AFPhotoEditorController : UIViewController
 
-@property (nonatomic, assign) id<AFPhotoEditorControllerDelegate> delegate;
+/**
+ The photo editor's delegate. 
+ */
+@property (nonatomic, weak) id<AFPhotoEditorControllerDelegate> delegate;
 
 /**
-    Returns a session object that can be used for later processing.
- 
-    @see AFPhotoEditorSession.h
+ An AFPhotoEditorSession instance that tracks user actions within the photo editor. This can be used for high-resolution
+ processing.
  */
 @property (nonatomic, strong, readonly) AFPhotoEditorSession *session;
 
 /**
-    Returns an object that can be used to control various visual aspects of the
-    photo editor, including colors.
+ Deprecated
  
-    @see AFPhotoEditorStyle.h
+ This method was previously used initialize the photo editor controller with an image along
+ with configuration options. Now, please initialize with initWithImage: and use 
+ AFPhotoEditorCustomization to configure the options.
+
+ @param image The image to edit.
+ @param options (optional) Additional configuration options. See
+ AFPhotoEditorControllerOptions for more information.
+
  */
-@property (nonatomic, strong, readonly) AFPhotoEditorStyle *style;
+- (id)initWithImage:(UIImage *)image options:(NSDictionary *)options DEPRECATED_ATTRIBUTE;
 
 /**
-    Initialize the photo editor controller with an image and configuration options.
-    This is the designated initializer for this class.
+ Initialize the photo editor controller with an image.
 
-    @param image The image to edit.
-    @param options (optional) Additional configuration options. See
-    AFPhotoEditorControllerOptions.h for more information.
-
-    @note As mentioned above, the dimensions of the edited image may be smaller than
-    the input image.
-    @see AFPhotoEditorControllerOptions.h
-    @see photoEditor:finishedWithImage:
- */
-- (id)initWithImage:(UIImage *)image options:(NSDictionary *)options;
-
-/**
-    Initialize the photo editor controller with an image and the default options.
-
-    @param image The image to edit.
- 
-    @see initWithImage:options:
+ @param image The image to edit.
  */
 - (id)initWithImage:(UIImage *)image;
 
 /**
- Returns the SDK version number.
+ @return The SDK version number.
  */
 + (NSString *)versionString;
+
 
 @end

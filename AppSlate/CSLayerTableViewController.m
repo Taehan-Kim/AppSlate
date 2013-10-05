@@ -124,26 +124,48 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSLog(@"index %d", indexPath.row);
+
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        [((CSBlueprintController*)bluePaperCtrl) deleteGear:((CSGearObject*)(USERCONTEXT.gearsArray)[[USERCONTEXT.gearsArray count]-indexPath.row-1]).csMagicNum];
+        NSUInteger magicNumber = ((CSGearObject*)(USERCONTEXT.gearsArray)[[USERCONTEXT.gearsArray count]-indexPath.row-1]).csMagicNum;
+        
+        [UIView animateWithDuration:0.3 animations:^(){
+            UIView *v = [USERCONTEXT getGearWithMagicNum:magicNumber].csView;
+            [v setAlpha:0.3];
+            [v setCenter:v.frame.origin];
+            [v setTransform:CGAffineTransformMakeScale(0.0001, 0.0001)];
+            [v removeFromSuperview];
+        } completion:^(BOOL finished) {
+            [((CSBlueprintController*)bluePaperCtrl) deleteGear:((CSGearObject*)(USERCONTEXT.gearsArray)[[USERCONTEXT.gearsArray count]-indexPath.row-1]).csMagicNum];
 
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            // Delete the row from the data source
+            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        }];
     }
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath
       toIndexPath:(NSIndexPath *)toIndexPath
 {
+    BOOL tempLineHide = NO;
     NSUInteger fromIndex = [USERCONTEXT.gearsArray count] - fromIndexPath.row -1;
     NSUInteger toIndex = [USERCONTEXT.gearsArray count] - toIndexPath.row -1;
 
     if( toIndex == fromIndex ) return;
 
+    // Line view hide
+    if( [[NSUserDefaults standardUserDefaults] boolForKey:@"LINE_SET"] ){
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"LINE_SET"];
+        [[NSNotificationCenter defaultCenter] postNotificationName:NOTI_STOP
+                                                        object:nil];
+        tempLineHide = YES;
+    }
+
     CSGearObject *fromObj = (USERCONTEXT.gearsArray)[fromIndex];
     UIView *fromView = [bluePaperCtrl.view subviews][fromIndex];
 
+    NSLog(@"1%@\n%@", USERCONTEXT.gearsArray, bluePaperCtrl.view.subviews);
     if( fromIndex < toIndex )
     {
         [USERCONTEXT.gearsArray insertObject:fromObj
@@ -156,12 +178,19 @@
     }
     [bluePaperCtrl.view insertSubview:fromView atIndex:toIndex];
 
-    NSLog(@"from %d to %d",fromIndex,toIndex);
     // if it inserted at front, the index must +1
     if( fromIndex > toIndex )
         fromIndex ++;
 
     [USERCONTEXT.gearsArray removeObjectAtIndex:fromIndex];
+
+    NSLog(@"3%@\n%@", USERCONTEXT.gearsArray,  bluePaperCtrl.view.subviews);
+
+    if( tempLineHide ){
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"LINE_SET"];
+        [[NSNotificationCenter defaultCenter] postNotificationName:NOTI_STOP
+                                                            object:nil];
+    }
 }
 
 // Override to support conditional rearranging of the table view.
@@ -187,7 +216,6 @@
 //            [gObj.csView.layer setBorderWidth:0.0];
 //        }];
     }
-
 }
 
 #pragma mark - Actions

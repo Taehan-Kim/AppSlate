@@ -116,7 +116,6 @@
     csCode = CS_MAPVIEW;
     isUIObj = YES;
 
-    self.info = NSLocalizedString(@"Map View", @"Map View");
     latitude = 0.0;
     longitude = 0.0;
 

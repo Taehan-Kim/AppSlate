@@ -56,12 +56,10 @@
     [csView addSubview:lv];
 
     csCode = CS_LINE_V;
-
-    self.info = NSLocalizedString(@"Vertical Line", @"V Line");
     
     DEFAULT_CENTER_D;
     NSDictionary *d0 = ALPHA_D;
-    NSDictionary *d1 = MAKE_PROPERTY_D(@">Length", P_NUM, @selector(setWidth:),@selector(getWidth));
+    NSDictionary *d1 = MAKE_PROPERTY_D(@">Length", P_NUM, @selector(setHeight:),@selector(getHeight));
     NSDictionary *d2 = MAKE_PROPERTY_D(@"Line Color", P_COLOR, @selector(setLineColor:),@selector(getLineColor));
     pListArray = @[xc,yc,d0,d1,d2];
     

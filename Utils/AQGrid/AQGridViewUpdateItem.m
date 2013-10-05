@@ -79,29 +79,29 @@
 		default:
 			break;
 	}
-	
+
 	NSString * animationDesc = @"<Unknown>";
 	switch ( _animation )
 	{
-		case UITableViewRowAnimationFade:
+		case AQGridViewItemAnimationFade:
 			animationDesc = @"Fade";
 			break;
-		case UITableViewRowAnimationRight:
+		case AQGridViewItemAnimationRight:
 			animationDesc = @"Right";
 			break;
-		case UITableViewRowAnimationLeft:
+		case AQGridViewItemAnimationLeft:
 			animationDesc = @"Left";
 			break;
-		case UITableViewRowAnimationTop:
+		case AQGridViewItemAnimationTop:
 			animationDesc = @"Top";
 			break;
-		case UITableViewRowAnimationBottom:
+		case AQGridViewItemAnimationBottom:
 			animationDesc = @"Bottom";
 			break;
-		case UITableViewRowAnimationNone:
+		case AQGridViewItemAnimationNone:
 			animationDesc = @"None";
 			break;
-		case UITableViewRowAnimationMiddle:
+		case AQGridViewItemAnimationMiddle:
 			animationDesc = @"Middle";
 			break;
 		default:

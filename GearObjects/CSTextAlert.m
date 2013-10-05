@@ -109,8 +109,6 @@
     csResizable = NO;
     csShow = NO;
     
-    self.info = NSLocalizedString(@"Text Input Alert", @"Text Input Alert");
-    
     message = @"Default Message";
     btn1 = @"Cancel";
     btn2 = @"OK";

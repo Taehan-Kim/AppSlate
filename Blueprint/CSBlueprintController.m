@@ -29,6 +29,8 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopRequest:) name:NOTI_STOP object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(actionLinkRequest:) name:NOTI_ACTION_LINK object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(alphaResetRequest:) name:NOTI_RESET_ALPHA object:nil];
+        if( UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM() )
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resizingPopoverView) name:NOTI_CHANGE_POPOVER object:nil];
         [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bluePaper.png"]]];
         USERCONTEXT.wallpaperIndex = 1; // default paper
 
@@ -110,8 +112,8 @@
             newObj = [[CSLabel alloc] initGear];  break;
         case CS_NUMLABEL:
             newObj = [[CSNumLabel alloc] initGear];  break;
-        case CS_MASKEDLABEL:
-            newObj = [[CSMaskedLabel alloc] initGear];  break;
+//        case CS_MASKEDLABEL:
+//            newObj = [[CSMaskedLabel alloc] initGear];  break;
         case CS_TEXTFIELD:
             newObj = [[CSTextField alloc] initGear];     break;
         case CS_BTNTEXTFIELD:
@@ -159,25 +161,27 @@
         case CS_TEE:
             newObj = [[CSTee alloc] initGear];          break;
         case CS_MAIL:
-            newObj = [[CSMailComposer alloc] initGear];  break;
+            newObj = [[CSMailComposer alloc] initGear]; break;
         case CS_TWITSEND:
-            newObj = [[CSTwitComposer alloc] initGear];  break;
+            newObj = [[CSTwitComposer alloc] initGear]; break;
         case CS_FBSEND:
-            newObj = [[CSFBSend alloc] initGear];  break;
+            newObj = [[CSFBSend alloc] initGear]; break;
+        case CS_WEIBOSEND:
+            newObj = [[CSWeiboComposer alloc] initGear]; break;
         case CS_ALBUM:
-            newObj = [[CSAlbum alloc] initGear];         break;
+            newObj = [[CSAlbum alloc] initGear]; break;
         case CS_NUMCOMP:
-            newObj = [[CSNumComp alloc] initGear];         break;
+            newObj = [[CSNumComp alloc] initGear]; break;
         case CS_STRCOMP:
-            newObj = [[CSStrComp alloc] initGear];         break;
+            newObj = [[CSStrComp alloc] initGear]; break;
         case CS_CALC:
-            newObj = [[CSCalc alloc] initGear];         break;
+            newObj = [[CSCalc alloc] initGear]; break;
         case CS_ATOF:
-            newObj = [[CSAtof alloc] initGear];         break;
+            newObj = [[CSAtof alloc] initGear];  break;
         case CS_IMAGE:
-            newObj = [[CSImage alloc] initGear];  break;
+            newObj = [[CSImage alloc] initGear]; break;
         case CS_WEBVIEW:
-            newObj = [[CSWeb alloc] initGear];  break;
+            newObj = [[CSWeb alloc] initGear]; break;
         case CS_MAPVIEW:
             newObj = [[CSMapView alloc] initGear];  break;
         case CS_LINE_H:
@@ -189,19 +193,19 @@
         case CS_RAND:
             newObj = [[CSRand alloc] initGear];  break;
         case CS_ABS:
-            newObj = [[CSAbs alloc] initGear];  break;
+            newObj = [[CSAbs alloc] initGear]; break;
         case CS_NOW:
-            newObj = [[CSTime alloc] initGear];  break;
+            newObj = [[CSTime alloc] initGear]; break;
         case CS_ACLOMETER:
-            newObj = [[CSAccelero alloc] initGear];  break;
+            newObj = [[CSAccelero alloc] initGear]; break;
         case CS_STRCAT:
-            newObj = [[CSLinkStr alloc] initGear];  break;
+            newObj = [[CSLinkStr alloc] initGear]; break;
         case CS_TWTABLE:
-            newObj = [[CSTwitTable alloc] initGear];  break;
+            newObj = [[CSTwitTable alloc] initGear]; break;
         case CS_STACK:
-            newObj = [[CSStack alloc] initGear];  break;
+            newObj = [[CSStack alloc] initGear]; break;
         case CS_QUEUE:
-            newObj = [[CSQueue alloc] initGear];  break;
+            newObj = [[CSQueue alloc] initGear]; break;
         case CS_RADDEG:
             newObj = [[CSRadDeg alloc] initGear]; break;
         case CS_TRI:
@@ -216,9 +220,13 @@
             newObj = [[CSCamera alloc] initGear]; break;
         case CS_BTOOTH:
             newObj = [[CSBToothPeer alloc] initGear]; break;
+        case CS_STOREVIEW:
+            newObj = [[CSStoreView alloc] initGear]; break;
         default:
             return;
     }
+
+    [newObj setInfo:[noti userInfo][@"name"]];
 
     // 새 객체의 크기가, 아이폰에서 너무 큰 경우라면 크기를 줄여 준다. 적당히...
     if( UIUserInterfaceIdiomPhone == UI_USER_INTERFACE_IDIOM() && newObj.isResizable )
@@ -404,7 +412,7 @@
     for( idx = 0; idx < [USERCONTEXT.gearsArray count]; idx++ )
     {
         CSGearObject *g = (USERCONTEXT.gearsArray)[idx];
-        [self.view addSubview:g.csView];
+        [self.view insertSubview:g.csView atIndex:idx];
         // 기어 뷰 를 설계도에 놓는다.
         [g.csView setTag:g.csMagicNum];
         [g setTapGR: [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeEditGear:)]];
@@ -447,7 +455,7 @@
         // Hidden Style 처리.
         if( [gO isHiddenGear] &&
            [[NSUserDefaults standardUserDefaults] boolForKey:@"HIDE_SET"] )
-            [gO.csView setHidden:YES];
+            [gO.csView setAlpha:0.47];
 
         // 예외 처리.
         if( [gO.csView isKindOfClass:[UIWebView class]] )
@@ -498,7 +506,7 @@
 
             // Hidden Style 처리.
             if( [gO isHiddenGear] )
-                [gO.csView setHidden:NO];
+                [gO.csView setAlpha:1.0];
             // 예외 처리.
             if( [gO.csView isKindOfClass:[UIWebView class]] )
                 [((UIWebView*)(gO.csView)).scrollView setScrollEnabled:NO];
@@ -589,6 +597,16 @@
         [self.view addSubview:sizeButton];
     }
 
+    // Animation Effect
+    [xButton setTransform:CGAffineTransformMakeScale(0, 0)];
+    [propButton setTransform:CGAffineTransformMakeScale(0, 0)];
+    [sizeButton setTransform:CGAffineTransformMakeScale(0, 0)];
+    [UIView animateWithDuration:0.3 animations:^{
+        [xButton setTransform:CGAffineTransformMakeScale(1, 1)];
+        [propButton setTransform:CGAffineTransformMakeScale(1, 1)];
+        [sizeButton setTransform:CGAffineTransformMakeScale(1, 1)];
+    }];
+
     CSGearObject *mGear = [USERCONTEXT getGearWithMagicNum:magicNum];
     UIView *targetView = mGear.csView;
     if( [targetView isKindOfClass:[UIWebView class]] )
@@ -650,6 +668,7 @@
         [v setAlpha:0.3];
         [v setCenter:v.frame.origin];
         [v setTransform:CGAffineTransformMakeScale(0.0001, 0.0001)];
+        [v removeFromSuperview];
     } completion:^(BOOL finished) {
         [self deleteGear:((UIButton*)sender).tag];
     }];
@@ -685,11 +704,11 @@
     {
         PropertyTVController *controller = [[PropertyTVController alloc] initWithStyle:UITableViewStylePlain];
         UIBarButtonItem *rightBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeiPhonePopover:)];
-        [rightBtn setTintColor:[UIColor darkGrayColor]];
+//        [rightBtn setTintColor:[UIColor darkGrayColor]];
         controller.navigationItem.rightBarButtonItem = rightBtn;
 
         propertyNaviController = [[UINavigationController alloc] initWithRootViewController:controller];
-        [propertyNaviController.navigationBar setTintColor:[UIColor blackColor]];
+        [propertyNaviController.navigationBar setTranslucent:NO];
 
         // 해당 객체를 선택해주고, 목록에 내용이 표시될 수 있도록 준비해줌.
         CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:((UIButton*)sender).tag];
@@ -698,7 +717,7 @@
 
             [controller setSelectedGear:gObj];
             propertyNaviController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-            [win presentViewController:propertyNaviController animated:YES completion:NULL];
+            [win presentViewController:propertyNaviController animated:YES completion:nil];
         }
     }
 }
@@ -706,6 +725,12 @@
 - (void) closeiPhonePopover:(UIBarButtonItem*)btn
 {
     [propertyNaviController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void) resizingPopoverView
+{
+    UIViewController *tv = ((UINavigationController*)(propertyPopoverController.contentViewController)).presentingViewController;
+    [propertyPopoverController setPopoverContentSize:tv.preferredContentSize animated:YES];
 }
 
 -(void) moveGear:(UIPanGestureRecognizer*)recognizer

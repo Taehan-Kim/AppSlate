@@ -70,8 +70,6 @@
     csResizable = NO;
     csShow = NO;
 
-    self.info = NSLocalizedString(@"Logical NOT", @"Not");
-
     NSDictionary *d1 = MAKE_PROPERTY_D(@">Input", P_NUM, @selector(setInputValue:),@selector(getInputValue));
     pListArray = @[d1];
     

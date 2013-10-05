@@ -26,7 +26,7 @@
 
 -(UIColor*) getTintColor
 {
-    return ((UISwitch*)csView).onTintColor;
+    return [((UISwitch*)csView) onTintColor];
 }
 
 -(void) setOnValue:(NSNumber*)BoolValue
@@ -64,8 +64,7 @@
 
     [(UISwitch*)csView setOn:YES];
     [(UISwitch*)csView addTarget:self action:@selector(valueChanged) forControlEvents:UIControlEventValueChanged];
-
-    self.info = NSLocalizedString(@"Basic Switch", @"Basic Switch");
+    [((UISwitch*)csView) setOnTintColor:[UIColor blueColor]];
 
     DEFAULT_CENTER_D;
     NSDictionary *d0 = ALPHA_D;

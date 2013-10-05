@@ -91,7 +91,6 @@
     [((UITableView*)csView) setDelegate:self];
     [((UITableView*)csView) setDataSource:self];
 
-    self.info = NSLocalizedString(@"RSS Table", @"RSS Table");
     url = @"http://";
 
     DEFAULT_CENTER_D;

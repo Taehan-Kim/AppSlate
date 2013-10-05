@@ -68,7 +68,6 @@
     csResizable = NO;
     csShow = NO;
 
-    self.info = NSLocalizedString(@"Photo Album", @"Photo Album");
     albumPop = nil;
     imgPicker = nil;
 

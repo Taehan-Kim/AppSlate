@@ -74,6 +74,7 @@
     NSURL *fileURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"setSound" ofType:@"wav"]];
     AudioServicesCreateSystemSoundID((__bridge CFURLRef)fileURL, &myID);
 
+    [self.view setBackgroundColor:[UIColor groupTableViewBackgroundColor]];
     return self;
 }
 
@@ -81,23 +82,23 @@
 {
     if( UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM() )
     {
-        CGSize size = CGSizeMake(320, 470); // size of view in popover
-        self.contentSizeForViewInPopover = size;
+        CGSize size = CGSizeMake(320, 530); // size of view in popover
+        self.preferredContentSize = size;
 
-        saveBtn = [[BButton alloc] initWithFrame:CGRectMake(C_GAP, colorPickerView.frame.size.height+C_GAP, C_WIDTH, 40)];
-        clearBtn = [[BButton alloc] initWithFrame:CGRectMake(C_GAP, colorPickerView.frame.size.height+C_GAP+48, C_WIDTH, 36)];
+        saveBtn = [[BButton alloc] initWithFrame:CGRectMake(C_GAP, colorPickerView.frame.size.height+4, C_WIDTH, 40)];
+        clearBtn = [[BButton alloc] initWithFrame:CGRectMake(C_GAP, colorPickerView.frame.size.height+48, C_WIDTH, 36)];
     }
     else
     {
         saveBtn = [[BButton alloc] initWithFrame:CGRectMake(C_GAP+(C_WIDTH/2), colorPickerView.frame.size.height, C_WIDTH/2-C_GAP, 36)];
         clearBtn = [[BButton alloc] initWithFrame:CGRectMake(C_GAP, colorPickerView.frame.size.height, C_WIDTH/2-C_GAP, 36)];
     }
-    [saveBtn setTitle:NSLocalizedString(@"APPLY",@"APPLY")];
+    [saveBtn setTitle:NSLocalizedString(@"APPLY",@"btn")];
     [saveBtn addTarget:self action:@selector(save:)];
     [self.view addSubview:saveBtn];
 
     if( UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM() )
-        [clearBtn setTitle:NSLocalizedString(@"TRANSPARENT APPLY",@"CLEAR APPLY")];
+        [clearBtn setTitle:NSLocalizedString(@"TRANSPARENT APPLY",@"btn")];
     else
         [clearBtn setTitle:NSLocalizedString(@"TRANSPARENT",@"TRANSPARENT")];
     [clearBtn addTarget:self action:@selector(clearSave:)];
@@ -109,10 +110,8 @@
 // UIPopover Controller 의 크기를 조정해주기 위해서 사용하는 팁 같은 코드.
 -(void) viewDidAppear:(BOOL)animated
 {
-    CGSize currentSetSizeForPopover = self.contentSizeForViewInPopover;
-    CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
-    self.contentSizeForViewInPopover = fakeMomentarySize;
-    self.contentSizeForViewInPopover = currentSetSizeForPopover;
+    if( UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM() )
+        [[NSNotificationCenter defaultCenter] postNotificationName:NOTI_CHANGE_POPOVER object:nil];
 }
 
 - (void)viewDidLoad

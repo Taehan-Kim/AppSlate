@@ -7,18 +7,27 @@
 //
 
 #import "CSMainViewController.h"
-#import "FileGalleryController.h"
+#import "ParseGalleryViewController.h"
+#import "BookshelfViewController.h"
 #import "JWFolders.h"
 #import "WelcomeMovieModal.h"
+#import "SaveModal.h"
+#import "UIBAlertView.h"
 
 #define CACHE_NAME @"AppSlateCacheBackup.pkg"
 
 enum alertTypes {
     kRenameAlert = 10,
-    kNewAlert,
     kNone
 };
 
+@interface  CSMainViewController()
+{
+    SaveModal *modalPanel;
+}
+
+
+@end
 @implementation CSMainViewController
 
 - (void)didReceiveMemoryWarning
@@ -34,13 +43,10 @@ enum alertTypes {
     [super viewDidLoad];
     runButton = YES;
 
-    //
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        CGFloat h = [[UIScreen mainScreen] bounds].size.height;
-        toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, h-44-20, 320, 44)];
-    } else {
-        toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 1004-44, 768, 44)];
-    }
+    CGFloat h = [[UIScreen mainScreen] bounds].size.height;// - 20.0;
+
+    toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, h-44, [[UIScreen mainScreen] bounds].size.width, 44)];
+
     menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"i_menu.png"] style:UIBarButtonItemStyleBordered
                                                      target:self
                                                      action:@selector(openMenuFolder:)];
@@ -48,6 +54,13 @@ enum alertTypes {
                                                      target:self
                                                      action:@selector(playAction:)];
     [playButton setTintColor:[UIColor redColor]];
+
+    resetButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind
+                                                                target:self action:@selector(resetAction:)];
+    [resetButton setEnabled:NO];
+    UIBarButtonItem *notUsed = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFastForward target:Nil action:nil];
+    [notUsed setEnabled:NO]; [notUsed setTintColor:[UIColor clearColor]];
+
     UIBarButtonItem *stItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     layerButton = [[UIBarButtonItem alloc] initWithTitle:@"L" style:UIBarButtonItemStyleBordered
                                                   target:self action:@selector(showLayerList:)];
@@ -55,7 +68,7 @@ enum alertTypes {
                                                                    target:self action:@selector(showGearList:)];
     [gearListButton setStyle:UIBarButtonItemStyleBordered];
 
-    NSArray *ary = [[NSArray alloc] initWithObjects: menuButton, stItem, playButton, stItem, layerButton, gearListButton, nil];
+    NSArray *ary = @[menuButton, stItem, resetButton, playButton, notUsed, stItem, layerButton, gearListButton];
     [toolBar setItems:ary];
     [toolBar setTintColor:[UIColor darkGrayColor]];
 
@@ -75,6 +88,9 @@ enum alertTypes {
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(loadAppFile:)
                                                  name:NOTI_FILELOAD object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(loadAppParse:)
+                                                 name:NOTI_PARSELOAD object:nil];
     [self.view addSubview:blueprintCtrl.view];
 
     // 처음 사용자라면 안내 동영상을 보여주자.
@@ -88,10 +104,10 @@ enum alertTypes {
 
         UIImageView *ii;
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-            ii = [[UIImageView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height-20-73, 320, 73)];
+            ii = [[UIImageView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height-93, 320, 73)];
             [ii setImage:[UIImage imageNamed:@"btn_guide_p.png"]];
         } else {
-            ii = [[UIImageView alloc] initWithFrame:CGRectMake(0, 1000-174, 768, 174)];
+            ii = [[UIImageView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height-174, 768, 174)];
             [ii setImage:[UIImage imageNamed:@"btn_guide.png"]];
         }
         [guideView addSubview:ii];
@@ -160,9 +176,9 @@ enum alertTypes {
 -(void) makeRunIndicatorView
 {
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-        runIndicator = [[UIView alloc] initWithFrame:CGRectMake(130.5, self.view.bounds.size.height-40, 59, 38)];
+        runIndicator = [[UIView alloc] initWithFrame:CGRectMake(138.5, self.view.bounds.size.height-41, 41, 37)];
     else
-        runIndicator = [[UIView alloc] initWithFrame:CGRectMake(354.5, 1004-40, 59, 38)];
+        runIndicator = [[UIView alloc] initWithFrame:CGRectMake(362.5, self.view.bounds.size.height-42, 41, 37)];
 
     [runIndicator setUserInteractionEnabled:NO];
 
@@ -174,7 +190,7 @@ enum alertTypes {
     [runIndicator.layer setMasksToBounds:YES];
 
     UIImageView *runImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"runningLight.png"]];
-    [runImg setFrame:CGRectMake(0, -10, 60, 60)];
+    [runImg setFrame:CGRectMake(-7, -7, 60, 60)];
     [runIndicator addSubview:runImg];    
 
     [runIndicator setBackgroundColor:CSCLEAR];
@@ -203,11 +219,40 @@ enum alertTypes {
 
 - (void)OpenFileGallery:(id)sender
 {
-    FileGalleryController *fvc = [[FileGalleryController alloc] init];
     [self folderWillClose:nil];
+    BookshelfViewController *fvc = [[BookshelfViewController alloc] init];
+    UINavigationController *fnv = [[UINavigationController alloc] initWithRootViewController:fvc];
 
-    [fvc setModalPresentationStyle:UIModalPresentationFullScreen];
-    [self presentViewController:fvc animated:YES completion:NULL];
+    [fnv setModalPresentationStyle:UIModalPresentationFullScreen];
+    [self presentViewController:fnv animated:YES completion:NULL];
+}
+
+- (void)OpenParseGallery:(id)sender
+{
+    [self folderWillClose:nil];
+    PFUser *currentUser = [PFUser currentUser];
+    if( !currentUser )
+    {
+        MyLoginViewController *logInController = [[MyLoginViewController alloc] init];
+        logInController.delegate = self;
+        logInController.fields = PFLogInFieldsUsernameAndPassword
+        | PFLogInFieldsLogInButton | PFLogInFieldsSignUpButton
+        | PFLogInFieldsPasswordForgotten  | PFLogInFieldsDismissButton;
+        logInController.facebookPermissions = [NSArray arrayWithObjects:@"friends_about_me", nil];
+        [self presentViewController:logInController animated:YES completion:^{
+            ;
+        }];
+    }
+    else
+    {
+        // Just go to storage browser
+        ParseGalleryViewController *pvc = [[ParseGalleryViewController alloc] init];
+        [pvc.tableView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
+        UINavigationController *tnv = [[UINavigationController alloc] initWithRootViewController:pvc];
+        [tnv setModalPresentationStyle:UIModalPresentationFormSheet];
+//        [tnv.navigationBar setTintColor:[UIColor darkGrayColor]];
+        [self presentViewController:tnv animated:YES completion:nil];
+    }
 }
 
 - (IBAction)showGearList:(id)sender
@@ -241,11 +286,23 @@ enum alertTypes {
         [layerButton setEnabled:NO];
         [gearListButton setEnabled:NO];
         [menuButton setEnabled:NO];
+        [resetButton setEnabled:NO];
         [playButton setImage:[UIImage imageNamed:@"stop_.png"]];
 
         [[NSNotificationCenter defaultCenter] postNotificationName:NOTI_RUN
                                                             object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(showKeyboard:)
+                                                     name:UIKeyboardWillShowNotification object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(hideKeyboard:)
+                                                     name:UIKeyboardWillHideNotification object:nil];
+
         [self makeRunIndicatorView];
+
+        // backup for reset feature
+        [self saveAppFile:YES];
     }
     else
     {
@@ -253,13 +310,24 @@ enum alertTypes {
         [layerButton setEnabled:YES];
         [gearListButton setEnabled:YES];
         [menuButton setEnabled:YES];
+        [resetButton setEnabled:YES];
         [playButton setImage:[UIImage imageNamed:@"run_.png"]];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:NOTI_STOP
                                                             object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+
         [runIndicator removeFromSuperview];
         runIndicator = nil;
     }
+}
+
+- (void) resetAction:(id)sender
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:NOTI_FILELOAD
+                                                        object:cachingFilePath];
+    [resetButton setEnabled:NO];
 }
 
 - (IBAction)openMenuFolder:(id)sender
@@ -271,6 +339,9 @@ enum alertTypes {
     UIButton *b0 = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
     [b0 setBackgroundImage:[UIImage imageNamed:@"i_files.png"] forState:UIControlStateNormal];
     [b0 addTarget:self action:@selector(OpenFileGallery:) forControlEvents:UIControlEventTouchUpInside];
+    UIButton *b01 = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
+    [b01 setBackgroundImage:[UIImage imageNamed:@"i_cloud.png"] forState:UIControlStateNormal];
+    [b01 addTarget:self action:@selector(OpenParseGallery:) forControlEvents:UIControlEventTouchUpInside];
     UIButton *b1 = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
     [b1 setBackgroundImage:[UIImage imageNamed:@"i_new.png"] forState:UIControlStateNormal];
     [b1 addTarget:self action:@selector(newContentAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -288,24 +359,26 @@ enum alertTypes {
     [b5 addTarget:self action:@selector(infoAction:) forControlEvents:UIControlEventTouchUpInside];
 
     UILabel *l0 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 44, 15)];
-    [l0 setText:@"Files"];
+    [l0 setText:NSLocalizedString(@"Files",@"menu_files")];
+    UILabel *l01 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 44, 15)];
+    [l01 setText:NSLocalizedString(@"Share",@"menu_share")];
     UILabel *l1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 44, 15)];
-    [l1 setText:@"New"];
+    [l1 setText:NSLocalizedString(@"New",@"menu_new")];
     UILabel *l2 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 44, 15)];
-    [l2 setText:@"Save"];
+    [l2 setText:NSLocalizedString(@"Save",@"menu_save")];
     UILabel *l3 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 44, 15)];
-    [l3 setText:@"Paper"];
+    [l3 setText:NSLocalizedString(@"Paper",@"menu_paper")];
     UILabel *l4 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 44, 15)];
-    [l4 setText:@"Setting"];
+    [l4 setText:NSLocalizedString(@"Settings",@"menu_settings")];
     UILabel *l5 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 44, 15)];
-    [l5 setText:@"Info"];
+    [l5 setText:NSLocalizedString(@"Info",@"menu_info")];
     UIScrollView *hsview = [[UIScrollView alloc] initWithFrame:menuFolder.view.frame];
     [hsview setBackgroundColor:[UIColor clearColor]];
     [hsview setShowsHorizontalScrollIndicator:NO];
     [hsview setShowsVerticalScrollIndicator:NO];
 
-    NSArray *btns = @[b0,b1,b2,b3,b4,b5];
-    NSArray *labs = @[l0,l1,l2,l3,l4,l5];
+    NSArray *btns = @[b0,b01,b1,b2,b3,b4,b5];
+    NSArray *labs = @[l0,l01,l1,l2,l3,l4,l5];
     [hsview setContentSize:CGSizeMake([btns count]*65+50, menuFolder.view.frame.size.height)];
     NSUInteger idx = 0;
     for( UIButton *btn in btns ){
@@ -391,13 +464,24 @@ enum alertTypes {
 
 - (void)newContentAction:(id)sender
 {
-    UIAlertView *newAlert = [[UIAlertView alloc] initWithTitle:@"New Slate"
-                                                          message:@"Reset your slate." delegate:self
-                                                cancelButtonTitle:@"Cancel"
-                                                otherButtonTitles:@"OK", nil];
-    [newAlert setAlertViewStyle:UIAlertViewStyleDefault];
-    [newAlert setTag:kNewAlert];
-    [newAlert show];
+    UIBAlertView *na = [[UIBAlertView alloc]  initWithTitle:NSLocalizedString(@"New Slate",@"")
+                                                    message:NSLocalizedString(@"Reset your slate.",@"")
+                                          cancelButtonTitle:NSLocalizedString(@"Cancel",@"Cancel")
+                                          otherButtonTitles:@"OK", nil];
+    [na showWithDismissHandler:^(NSInteger selectedIndex, BOOL didCancel) {
+        if (didCancel)
+            return;
+
+        switch (selectedIndex) {
+            case 1:
+                NSLog(@"Do New");
+                [self folderWillClose:nil];
+                [blueprintCtrl deleteAllGear];
+                USERCONTEXT.appName = @"noname";
+                USERCONTEXT.parseId = nil;
+                break;
+        }
+    }];
 }
 
 - (void)saveAction:(id)sender
@@ -414,29 +498,35 @@ enum alertTypes {
 //    NSLog(@"%f %f", blueprintViewImage.size.width, blueprintViewImage.scale);
 	UIGraphicsEndImageContext();
 
-    if( nil == USERCONTEXT.appName )
-        USERCONTEXT.appName = @"noname";
+    modalPanel = [[SaveModal alloc] initWithFrame:blueprintCtrl.view.bounds];
+    modalPanel.delegate = self;
+    modalPanel.onClosePressed = ^(UAModalPanel* panel) {
+        [panel hideWithOnComplete:^(BOOL finished) {
+            [panel removeFromSuperview];
+        }];
+    };
 
-    UIActionSheet *ac = [[UIActionSheet alloc] initWithTitle:USERCONTEXT.appName delegate:self
-                                           cancelButtonTitle:@"Cancel"
-                                      destructiveButtonTitle:nil
-                                           otherButtonTitles:@"Save", @"Change Name and Save", nil];
-    [ac showInView:self.view];
+    [self folderWillClose:nil];
+    
+    [blueprintCtrl.view addSubview:modalPanel];
+    [modalPanel showFromPoint:[(UIButton*)sender center]];
 }
 
 -(UIImage*)resizedImage:(UIImage*)inImage inRect:(CGRect)thumbRect
 {     
 	CGImageRef			imageRef = [inImage CGImage];
-	CGImageAlphaInfo	alphaInfo = CGImageGetAlphaInfo(imageRef);
-    
+//	CGImageAlphaInfo	alphaInfo = CGImageGetAlphaInfo(imageRef);
+
+    CGBitmapInfo        bitmapInfo = CGImageGetBitmapInfo(imageRef);
+
 	// There's a wierdness with kCGImageAlphaNone and CGBitmapContextCreate
 	// see Supported Pixel Formats in the Quartz 2D Programming Guide
 	// Creating a Bitmap Graphics Context section
 	// only RGB 8 bit images with alpha of kCGImageAlphaNoneSkipFirst, kCGImageAlphaNoneSkipLast, kCGImageAlphaPremultipliedFirst,
 	// and kCGImageAlphaPremultipliedLast, with a few other oddball image kinds are supported
 	// The images on input here are likely to be png or jpeg files
-	if (alphaInfo == kCGImageAlphaNone)
-		alphaInfo = kCGImageAlphaNoneSkipLast;
+//	if (alphaInfo == kCGImageAlphaNone)
+//		alphaInfo = kCGImageAlphaNoneSkipLast;
     
 	// Build a bitmap context that's the size of the thumbRect
 	CGFloat bytesPerRow;
@@ -453,7 +543,7 @@ enum alertTypes {
                                                 8, //CGImageGetBitsPerComponent(imageRef),	// really needs to always be 8
                                                 bytesPerRow, //4 * thumbRect.size.width,	// rowbytes
                                                 CGImageGetColorSpace(imageRef),
-                                                alphaInfo );
+                                                bitmapInfo );
 
 	// Draw into the context, this scales the image
 	CGContextDrawImage(bitmap, thumbRect, imageRef);
@@ -470,10 +560,10 @@ enum alertTypes {
 
 -(void)paperAction:(id)sender
 {
-    PaperSetModal *modalPanel = [[PaperSetModal alloc] initWithFrame:blueprintCtrl.view.bounds
-                                                               title:@"Slate Wallpaper"];
-    modalPanel.delegate = self;
-    modalPanel.onClosePressed = ^(UAModalPanel* panel) {
+    PaperSetModal *mPanel = [[PaperSetModal alloc] initWithFrame:blueprintCtrl.view.bounds
+                                                               title:NSLocalizedString(@"Slate Wallpaper",@"")];
+    mPanel.delegate = self;
+    mPanel.onClosePressed = ^(UAModalPanel* panel) {
         // [panel hide];
         [panel hideWithOnComplete:^(BOOL finished) {
             [panel removeFromSuperview];
@@ -482,16 +572,16 @@ enum alertTypes {
 
     [self folderWillClose:nil];
 
-    [blueprintCtrl.view addSubview:modalPanel];
-    [modalPanel showFromPoint:[(UIButton*)sender center]];
+    [blueprintCtrl.view addSubview:mPanel];
+    [mPanel showFromPoint:[(UIButton*)sender center]];
 }
 
 -(void)settingAction:(id)sender
 {
-    AppSettingModal *modalPanel = [[AppSettingModal alloc] initWithFrame:blueprintCtrl.view.bounds
-                                                               title:@"Settings"];
-    modalPanel.delegate = self;
-    modalPanel.onClosePressed = ^(UAModalPanel* panel) {
+    AppSettingModal *sPanel = [[AppSettingModal alloc] initWithFrame:blueprintCtrl.view.bounds
+                                                               title:NSLocalizedString(@"Settings",@"menu_settings")];
+    sPanel.delegate = self;
+    sPanel.onClosePressed = ^(UAModalPanel* panel) {
         // [panel hide];
         [panel hideWithOnComplete:^(BOOL finished) {
             [panel removeFromSuperview];
@@ -500,15 +590,15 @@ enum alertTypes {
     
     [self folderWillClose:nil];
     
-    [blueprintCtrl.view addSubview:modalPanel];
-    [modalPanel showFromPoint:[(UIButton*)sender center]];
+    [blueprintCtrl.view addSubview:sPanel];
+    [sPanel showFromPoint:[(UIButton*)sender center]];
 }
 
 -(void)infoAction:(id)sender
 {
-    InfoModal *modalPanel = [[InfoModal alloc] initWithFrame:blueprintCtrl.view.bounds];
-    modalPanel.delegate = self;
-    modalPanel.onClosePressed = ^(UAModalPanel* panel) {
+    InfoModal *iPanel = [[InfoModal alloc] initWithFrame:blueprintCtrl.view.bounds];
+    iPanel.delegate = self;
+    iPanel.onClosePressed = ^(UAModalPanel* panel) {
         // [panel hide];
         [panel hideWithOnComplete:^(BOOL finished) {
             [panel removeFromSuperview];
@@ -517,54 +607,31 @@ enum alertTypes {
     
     [self folderWillClose:nil];
     
-    [blueprintCtrl.view addSubview:modalPanel];
-    [modalPanel showFromPoint:[(UIButton*)sender center]];
+    [blueprintCtrl.view addSubview:iPanel];
+    [iPanel showFromPoint:[(UIButton*)sender center]];
 }
 
-#pragma mark - Delegate
 
--(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+#pragma mark - Parse Log In Dialog
+
+- (void)logInViewController:(PFLogInViewController *)controller
+               didLogInUser:(PFUser *)user
 {
-    switch ( buttonIndex ) {
-        case 0:
-            NSLog(@"Save");
-            [self saveAppFile:NO];
-            break;
-        case 1:
-            NSLog(@"Change Name and Save");
-            UIAlertView *renameAlert = [[UIAlertView alloc] initWithTitle:@"Rename"
-                                                                  message:nil delegate:self
-                                                        cancelButtonTitle:@"Cancel"
-                                                        otherButtonTitles:@"OK", nil];
-            [renameAlert setAlertViewStyle:UIAlertViewStylePlainTextInput];
-            [[renameAlert textFieldAtIndex:0] setText:USERCONTEXT.appName];
-            [renameAlert setTag:kRenameAlert];
-            [renameAlert show];
-            break;
-    }
+    [self dismissViewControllerAnimated:YES completion:^{
+        // Just go to storage browser
+        ParseGalleryViewController *pvc = [[ParseGalleryViewController alloc] init];
+        [pvc.tableView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
+        UINavigationController *tnv = [[UINavigationController alloc] initWithRootViewController:pvc];
+        [tnv setModalPresentationStyle:UIModalPresentationFormSheet];
+        [self presentViewController:tnv animated:YES completion:nil];
+    }];
+
+    NSLog(@"Log In ; %@", user);
 }
 
--(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+- (void)logInViewControllerDidCancelLogIn:(PFLogInViewController *)logInController
 {
-    if( 0 == buttonIndex ) return;  // cancel is do nothing.
-
-    switch ( alertView.tag ) {
-        case kRenameAlert:            
-            NSLog(@"Do rename");
-            [USERCONTEXT setAppName:[alertView textFieldAtIndex:0].text];
-            
-            [self saveAppFile:NO];
-            break;
-        case kNewAlert:
-            NSLog(@"Do New");
-            [self folderWillClose:nil];
-            [blueprintCtrl deleteAllGear];
-            USERCONTEXT.appName = @"noname";
-            break;
-
-        default:
-            break;
-    }
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 //------------------------------------------------------------------------------------------------------
@@ -596,8 +663,10 @@ enum alertTypes {
     }
 
     NSString *theFile = [documentsPath stringByAppendingPathComponent:pkgName];
-    // TODO:Save As 인 경우 덮어쓰기 체크를 해 주자.
+    // TODO: Overwriting check at same name
 //    BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:theFile];
+    if( isCaching )
+        cachingFilePath = theFile;
 
     dispatch_async(dispatch_get_main_queue(), ^(void)
     {
@@ -640,7 +709,110 @@ enum alertTypes {
 
         STOP_WAIT_VIEW;
     });
+}
 
+- (void) saveAppFileToLocal
+{
+    USERCONTEXT.appName = modalPanel.nField.text;
+
+    [self saveAppFile:NO];
+    [modalPanel hide];
+}
+
+- (void) saveAppFileToParse
+{
+    USERCONTEXT.appName = modalPanel.nField.text;
+
+    if( [PFUser currentUser] )
+        [self saveAppWorld];
+    else {
+        MyLoginViewController *logInController = [[MyLoginViewController alloc] init];
+        logInController.delegate = self;
+        logInController.fields = PFLogInFieldsUsernameAndPassword
+        | PFLogInFieldsLogInButton | PFLogInFieldsSignUpButton
+        | PFLogInFieldsPasswordForgotten  | PFLogInFieldsDismissButton
+        | PFLogInFieldsFacebook | PFLogInFieldsTwitter;
+        logInController.facebookPermissions = [NSArray arrayWithObjects:@"friends_about_me", nil];
+        [self presentViewController:logInController animated:YES completion:^{
+            ;
+        }];
+    }
+}
+
+// Saving to Parse.com
+- (void) saveAppWorld
+{
+    START_WAIT_VIEW;
+    NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
+    timeFormatter.dateFormat = @"HHmmss";
+    PFFile *file = [PFFile fileWithName:[NSString stringWithFormat:@"%@%@.dat", USERCONTEXT.appName, [timeFormatter stringFromDate:[NSDate date]]]
+                                   data:[NSKeyedArchiver archivedDataWithRootObject:USERCONTEXT.gearsArray]];
+    PFFile *thumbFile = [PFFile fileWithData:UIImagePNGRepresentation(blueprintViewImage)];
+
+    [file saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error)
+    {
+        if( succeeded ){
+            // case 1. update
+            if( nil != USERCONTEXT.parseId ) {
+                PFQuery *query = [PFQuery queryWithClassName:@"appPkg"];
+                [query getObjectInBackgroundWithId:USERCONTEXT.parseId block:^(PFObject *fileObject, NSError *error) {
+                    [fileObject setObject:file forKey:@"appFile"];
+                    [fileObject setObject:thumbFile forKey:@"thumbnail"];
+                    [fileObject setObject:modalPanel.dField.text forKey:@"description"];
+                    [fileObject setObject:USERCONTEXT.appName forKey:@"name"];
+                    [fileObject saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                        [self saveEndingProcessWithSucceeded:succeeded];
+                    }];
+                }];
+                return;
+            }
+
+            // case 2. new save
+            PFObject *appPackage = [PFObject objectWithClassName:@"appPkg"];
+            [appPackage setObject:USERCONTEXT.appName forKey:@"name"];
+            [appPackage setObject:[PFUser currentUser] forKey:@"user"];
+            [appPackage setObject:file forKey:@"appFile"];
+            [appPackage setObject:modalPanel.dField.text forKey:@"description"];
+            [appPackage setObject:@(USERCONTEXT.wallpaperIndex) forKey:@"wallpaperIdx"];
+            [appPackage setObject:thumbFile forKey:@"thumbnail"];
+            if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
+                [appPackage setObject:@"Pad" forKey:@"device"];
+            else
+                [appPackage setObject:@"Phone" forKey:@"device"];
+
+            [appPackage saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                [self saveEndingProcessWithSucceeded:succeeded];
+            }];
+        }  else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error",@"Error")
+                                                            message:NSLocalizedString(@"I can't upload now.",@"error msg") delegate:nil
+                                                  cancelButtonTitle:nil
+                                                  otherButtonTitles:NSLocalizedString(@"Confirm",@"Confirm"), nil];
+            [alert show];
+        }
+    } progressBlock:^(int percentDone) {
+        // change percent to float
+        UPDATE_WAIT_VIEW(percentDone);
+    }];
+}
+
+- (void) saveEndingProcessWithSucceeded:(BOOL) succeeded
+{
+    STOP_WAIT_VIEW;
+    [modalPanel hide];
+    if( succeeded ){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Share World",@"s_title")
+                                                        message:NSLocalizedString(@"Upload done",@"") delegate:nil
+                                              cancelButtonTitle:nil
+                                              otherButtonTitles:@"OK", nil];
+        [alert show];
+    } else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error",@"Error")
+                                                        message:NSLocalizedString(@"I can't upload now.",@"error msg") delegate:nil
+                                              cancelButtonTitle:nil
+                                              otherButtonTitles:NSLocalizedString(@"Confirm",@"Confirm"), nil];
+        [alert show];
+    }
 }
 
 -(void) loadAppFile:(NSNotification*) noti
@@ -679,8 +851,25 @@ enum alertTypes {
         else
             USERCONTEXT.appName = [chName substringToIndex:[chName length]-4];
 
+        USERCONTEXT.parseId = nil;
+
         STOP_WAIT_VIEW;
     });
+}
+
+
+-(void) loadAppParse:(NSNotification*) noti
+{
+    [blueprintCtrl deleteAllGear];
+
+    USERCONTEXT.gearsArray = [NSKeyedUnarchiver unarchiveObjectWithData:noti.object];
+
+    [blueprintCtrl putAllGearsToView];
+
+    for( CSGearObject *g in USERCONTEXT.gearsArray )
+        [g makeUpSelectorArray];
+
+    [self setBlueprintColor:(USERCONTEXT.wallpapers)[USERCONTEXT.wallpaperIndex]];
 }
 
 // set the background paper's color
@@ -692,7 +881,58 @@ enum alertTypes {
 // Remove the button guide view
 -(void) removeGuide:(UITapGestureRecognizer*)recognizer
 {
-    [recognizer.view removeFromSuperview];
+    [UIView animateWithDuration:0.5 animations:^{
+        [recognizer.view setAlpha:0.0];
+    } completion:^(BOOL finished) {
+        [recognizer.view removeFromSuperview];
+    }];
 }
+
+#pragma mark -
+
+// 키보드가 나타나면, 화면 아래쪽에 있어서 키보드에 가려지는 경우를 피하기 위해 view 의 위치를 조정하기 위한 작업.
+-(void)showKeyboard:(NSNotification*)notif
+{
+    NSDictionary *dic = notif.userInfo;
+    NSValue *v = [dic objectForKey:UIKeyboardFrameEndUserInfoKey];
+    CGRect rc = [v CGRectValue]; // keyboard rect
+    float dur = [[dic objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    CGFloat h = [[UIScreen mainScreen] bounds].size.height;
+
+    UIView *fr = [self _findFirstResponder:blueprintCtrl.view];
+    CGFloat newY;
+
+    if( fr.frame.origin.y >= h - rc.size.height - 20 ){
+        newY = fr.frame.origin.y - rc.size.height - 20 + fr.frame.size.height;
+        [UIView animateWithDuration:dur animations:^{
+            [blueprintCtrl.view setFrame:CGRectMake(0, -newY, blueprintCtrl.view.frame.size.width, blueprintCtrl.view.frame.size.height)];
+        }];
+    }
+}
+
+// return the blueprint view's position.
+- (void)hideKeyboard:(NSNotification*)notif
+{
+    NSDictionary *dic = notif.userInfo;
+    float dur = [[dic objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+
+    [UIView animateWithDuration:dur animations:^{
+        [blueprintCtrl.view setFrame:CGRectMake(0, 0, blueprintCtrl.view.frame.size.width, blueprintCtrl.view.frame.size.height)];
+    }];
+}
+
+- (UIView *)_findFirstResponder:(UIView *)t_view
+{
+    if([t_view isFirstResponder])
+        return t_view;
+    
+    for( UIView *v in t_view.subviews ){
+        UIView *ret = [self _findFirstResponder:v];
+        if(ret)
+            return ret;
+    }
+    return nil;
+}
+
 
 @end

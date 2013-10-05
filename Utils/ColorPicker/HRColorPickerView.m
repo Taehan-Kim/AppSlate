@@ -146,6 +146,19 @@
         _timeInterval15fps.tv_usec = 1000000.0/15.0;
         
         _delegateHasSELColorWasChanged = FALSE;
+    
+        lR = [[UILabel alloc] initWithFrame:CGRectZero];
+        lG = [[UILabel alloc] initWithFrame:CGRectZero];
+        lB = [[UILabel alloc] initWithFrame:CGRectZero];
+        [lR setFont:[UIFont systemFontOfSize:12.0]];
+        [lG setFont:[UIFont systemFontOfSize:12.0]];
+        [lB setFont:[UIFont systemFontOfSize:12.0]];
+        [lR setTextColor:[UIColor darkGrayColor]];
+        [lB setTextColor:[UIColor darkGrayColor]];
+        [lG setTextColor:[UIColor darkGrayColor]];
+        [self addSubview:lR];
+        [self addSubview:lG];
+        [self addSubview:lB];
     }
     return self;
 }
@@ -396,9 +409,15 @@
     
     float textHeight = 20.0f;
     float textCenter = CGRectGetMidY(_currentColorFrame) - 5.0f;
-    [[NSString stringWithFormat:@"R:%3d%%",(int)(currentRgbColor.r*100)] drawAtPoint:CGPointMake(_currentColorFrame.origin.x+_currentColorFrame.size.width+10.0f, textCenter - textHeight) withFont:[UIFont boldSystemFontOfSize:12.0f]];
-    [[NSString stringWithFormat:@"G:%3d%%",(int)(currentRgbColor.g*100)] drawAtPoint:CGPointMake(_currentColorFrame.origin.x+_currentColorFrame.size.width+10.0f, textCenter) withFont:[UIFont boldSystemFontOfSize:12.0f]];
-    [[NSString stringWithFormat:@"B:%3d%%",(int)(currentRgbColor.b*100)] drawAtPoint:CGPointMake(_currentColorFrame.origin.x+_currentColorFrame.size.width+10.0f, textCenter + textHeight) withFont:[UIFont boldSystemFontOfSize:12.0f]];
+
+    [lR setFrame:CGRectMake(_currentColorFrame.origin.x+_currentColorFrame.size.width+10.0f, textCenter - textHeight, 50, 13)];
+    [lR setText:[NSString stringWithFormat:@"R:%3d%%",(int)(currentRgbColor.r*100)]];
+
+    [lG setFrame:CGRectMake(_currentColorFrame.origin.x+_currentColorFrame.size.width+10.0f, textCenter, 50, 13)];
+    [lG setText:[NSString stringWithFormat:@"G:%3d%%",(int)(currentRgbColor.g*100)]];
+
+    [lB setFrame:CGRectMake(_currentColorFrame.origin.x+_currentColorFrame.size.width+10.0f, textCenter + textHeight, 50, 13)];
+    [lB setText:[NSString stringWithFormat:@"B:%3d%%",(int)(currentRgbColor.b*100)]];
 }
 
 

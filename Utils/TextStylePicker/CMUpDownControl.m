@@ -347,8 +347,8 @@
 	UIFont *valueFont = [UIFont systemFontOfSize:36.0];
 	UIFont *unitsFont = [UIFont systemFontOfSize:14.0];
 	
-	CGSize valueSize = [valueStr sizeWithFont:valueFont];
-	CGSize unitsSize = [units sizeWithFont:unitsFont];
+    CGSize valueSize = [valueStr sizeWithAttributes:@{NSFontAttributeName:valueFont}];
+	CGSize unitsSize = [units sizeWithAttributes:@{NSFontAttributeName:unitsFont}];
 
 	CGPoint valuePoint = CGPointMake(10.0, (bounds.size.height-valueSize.height)/2);
 	CGPoint unitsPoint = CGPointMake(valuePoint.x+valueSize.width+3.0, (valuePoint.y+valueSize.height)-unitsSize.height-5.0);

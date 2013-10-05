@@ -98,6 +98,8 @@ typedef struct HRColorPickerStyle HRColorPickerStyle;
     timeval _timeInterval15fps;
     
     bool _delegateHasSELColorWasChanged;
+
+    UILabel *lR, *lG, *lB;
 }
 
 // スタイルを取得

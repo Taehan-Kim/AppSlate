@@ -17,6 +17,12 @@
 -(void) setImage:(UIImage*) imageD;
 -(UIImage*) getImage;
 
+-(void) setSave:(NSNumber*) boolValue;
+-(BOOL) getSave;
+
+-(void) setEdit:(NSNumber*) boolValue;
+-(BOOL) getEdit;
+
 -(void) setAspectFit:(NSNumber*) boolValue;
 -(NSNumber*) getAspectFit;
 

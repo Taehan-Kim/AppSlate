@@ -173,8 +173,6 @@
     [((UITableView*)csView) setDelegate:self];
     [((UITableView*)csView) setDataSource:self];
 
-    self.info = NSLocalizedString(@"Table", @"Table");
-
     DEFAULT_CENTER_D;
     NSDictionary *d0 = ALPHA_D;
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Table Cell Number", P_NUM, @selector(setCellNumber:),@selector(getCellNumber));

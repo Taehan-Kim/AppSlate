@@ -72,7 +72,13 @@
 
 -(void) viewWillAppear:(BOOL)animated
 {
-    [self.view setBackgroundColor:[UIColor scrollViewTexturedBackgroundColor]];
+    [self.view setBackgroundColor:[UIColor groupTableViewBackgroundColor]];
+
+    UIBarButtonItem *closeBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(closeMe)];
+    UIBarButtonItem *deleteBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(delMode)];
+
+    self.navigationItem.leftBarButtonItem = closeBtn;
+    self.navigationItem.rightBarButtonItem = deleteBtn;
 }
 
 -(void) viewDidAppear:(BOOL)animated
@@ -86,10 +92,35 @@
             (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) );
 }
 
-// normal mode, delete mode, or another modes...
--(void) setMode:(NSUInteger)md
+#pragma mark -
+
+- (void) closeMe
 {
-    mode = md;
+    if( SELECTION != mode )
+    {
+        mode = SELECTION;
+        
+        UIBarButtonItem *closeBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(closeMe)];
+        UIBarButtonItem *deleteBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(delMode)];
+        
+        self.navigationItem.leftBarButtonItem = closeBtn;
+        self.navigationItem.rightBarButtonItem = deleteBtn;
+        
+        return;
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
+
+// normal mode, delete mode, or another modes...
+- (void) delMode
+{
+    mode = DELETING;
+
+    UIBarButtonItem *deleteBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeMe)];
+    
+    self.navigationItem.leftBarButtonItem = nil;
+    self.navigationItem.rightBarButtonItem = deleteBtn;
 
     [_gridView reloadData];
 }
@@ -98,7 +129,13 @@
 
 - (NSUInteger) numberOfItemsInGridView: (AQGridView *) aGridView
 {
-    return ( [_imageNames count] );
+    NSUInteger cnt = [_imageNames count];
+
+    if( 0 == cnt ){
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Empty?" message:@"Please go to 'AppWorld', and get other people's awesome works." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [av show];
+    }
+    return cnt;
 }
 
 - (AQGridViewCell *) gridView: (AQGridView *) aGridView cellForItemAtIndex: (NSUInteger) index

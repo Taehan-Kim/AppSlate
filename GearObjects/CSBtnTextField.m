@@ -67,7 +67,7 @@
 
 -(void) setTextAlignment:(NSNumber*)alignNum
 {
-    UITextAlignment align;
+    NSTextAlignment align;
     if( [alignNum isKindOfClass:[NSNumber class]] )
         align = [alignNum integerValue];
     else
@@ -140,8 +140,6 @@
     [txtField setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
     [txtField setDelegate:self];
     [txtField setClearButtonMode:UITextFieldViewModeWhileEditing];
-
-    self.info = NSLocalizedString(@"Button Text Field", @"Button Text Field");
 
     DEFAULT_CENTER_D;
     NSDictionary *d0 = ALPHA_D;

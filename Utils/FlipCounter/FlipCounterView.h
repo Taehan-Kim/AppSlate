@@ -2,6 +2,8 @@
 //  FlipCounterView.h
 //  FlipCounter
 //
+//  original code : https://github.com/reklis/flipcounter
+//  and docs: http://cnanney.com/journal/code/apple-style-counter-revisited/
 
 #import <UIKit/UIKit.h>
 

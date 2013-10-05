@@ -18,7 +18,7 @@
 #import "CSButton.h"
 #import "CSTouchButton.h"
 #import "CSToggleButton.h"
-#import "CSMAskedlabel.h"
+//#import "CSMAskedlabel.h"
 #import "CSFlipCounter.h"
 #import "CSSlider.h"
 #import "CSProgressBar.h"
@@ -65,6 +65,8 @@
 #import "CSPlay.h"
 #import "CSCamera.h"
 #import "CSBToothPeer.h"
+#import "CSWeiboComposer.h"
+#import "CSStoreView.h"
 #import "TSPopoverController.h"
 
 @interface CSBlueprintController : UIViewController

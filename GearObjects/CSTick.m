@@ -99,8 +99,6 @@
 
     interval = 1.0;
     outputNum = 1.0;
-
-    self.info = NSLocalizedString(@"Tick Signal Generator", @"Tick");
     
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Timer Run", P_BOOL, @selector(setRun:),@selector(getRun));
     NSDictionary *d2 = MAKE_PROPERTY_D(@"Interval seconds", P_NUM, @selector(setInterval:),@selector(getInterval));

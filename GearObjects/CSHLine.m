@@ -57,8 +57,6 @@
 
     csCode = CS_LINE_H;
     
-    self.info = NSLocalizedString(@"Horizontal Line", @"H Line");
-    
     DEFAULT_CENTER_D;
     NSDictionary *d0 = ALPHA_D;
     NSDictionary *d1 = MAKE_PROPERTY_D(@">Length", P_NUM, @selector(setWidth:),@selector(getWidth));

@@ -2,7 +2,7 @@
 //  CMPopTipView.h
 //
 //  Created by Chris Miles on 18/07/10.
-//  Copyright (c) Chris Miles 2010-2011.
+//  Copyright (c) Chris Miles 2010-2012.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +22,11 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 //
+
+/*
+	Version: 1.2.0
+ */
+
 
 /** \brief	Display a speech bubble-like popup on screen, pointing at the
 			designated view or button.
@@ -84,8 +89,9 @@
 #import <UIKit/UIKit.h>
 
 typedef enum {
-	PointDirectionUp = 0,
-	PointDirectionDown
+    PointDirectionAny = 0,
+	PointDirectionUp,
+	PointDirectionDown,
 } PointDirection;
 
 typedef enum {
@@ -99,11 +105,18 @@ typedef enum {
 
 @interface CMPopTipView : UIView {
 	UIColor					*backgroundColor;
-	id<CMPopTipViewDelegate>	delegate;
+	id <CMPopTipViewDelegate> __unsafe_unretained	delegate;
+    NSString                *title;
 	NSString				*message;
 	id						targetObject;
+    UIColor                 *titleColor;
+    UIFont                  *titleFont;
 	UIColor					*textColor;
 	UIFont					*textFont;
+    BOOL                    has3DStyle;
+    UIColor                 *borderColor;
+    CGFloat                 borderWidth;
+    BOOL                    hasShadow;
     CMPopTipAnimation       animation;
 
 	@private
@@ -118,29 +131,37 @@ typedef enum {
 }
 
 @property (nonatomic, retain)			UIColor					*backgroundColor;
-//@property (nonatomic, assign)		id<CMPopTipViewDelegate>	delegate;
+@property (nonatomic, assign)		id<CMPopTipViewDelegate>	delegate;
 @property (nonatomic, assign)			BOOL					disableTapToDismiss;
+@property (nonatomic, assign)			BOOL					dismissTapAnywhere;
+@property (nonatomic, retain)			NSString				*title;
 @property (nonatomic, retain)			NSString				*message;
 @property (nonatomic, retain)           UIView	                *customView;
 @property (nonatomic, retain, readonly)	id						targetObject;
+@property (nonatomic, retain)			UIColor					*titleColor;
+@property (nonatomic, retain)			UIFont					*titleFont;
 @property (nonatomic, retain)			UIColor					*textColor;
 @property (nonatomic, retain)			UIFont					*textFont;
-@property (nonatomic, assign)			UITextAlignment			textAlignment;
+@property (nonatomic, assign)			NSTextAlignment			titleAlignment;
+@property (nonatomic, assign)			NSTextAlignment			textAlignment;
+@property (nonatomic, assign)           BOOL                    has3DStyle;
+@property (nonatomic, retain)			UIColor					*borderColor;
+@property (nonatomic, assign)			CGFloat					borderWidth;
+@property (nonatomic, assign)           BOOL                    hasShadow;
 @property (nonatomic, assign)           CMPopTipAnimation       animation;
 @property (nonatomic, assign)           CGFloat                 maxWidth;
+@property (nonatomic, assign)           PointDirection          preferredPointDirection;
 
 /* Contents can be either a message or a UIView */
+- (id)initWithTitle:(NSString *)titleToShow message:(NSString *)messageToShow;
 - (id)initWithMessage:(NSString *)messageToShow;
 - (id)initWithCustomView:(UIView *)aView;
 
 - (void)presentPointingAtView:(UIView *)targetView inView:(UIView *)containerView animated:(BOOL)animated;
 - (void)presentPointingAtBarButtonItem:(UIBarButtonItem *)barButtonItem animated:(BOOL)animated;
 - (void)dismissAnimated:(BOOL)animated;
-
+- (void)autoDismissAnimated:(BOOL)animated atTimeInterval:(NSTimeInterval)timeInvertal;
 - (PointDirection) getPointDirection;
-
-- (id) getDelegate;
-- (void) setDelegate:(__unsafe_unretained id<CMPopTipViewDelegate>)_delegate;
 
 @end
 

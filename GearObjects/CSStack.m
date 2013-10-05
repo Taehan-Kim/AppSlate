@@ -80,8 +80,6 @@
     csShow = NO;
     stack = [[NSMutableArray alloc] initWithCapacity:10];
 
-    self.info = NSLocalizedString(@"Stack Data Structure", @"Stack");
-
     NSDictionary *d1 = MAKE_PROPERTY_D(@">Push", P_NUM, @selector(setPushValue:),@selector(getPushValue));
     NSDictionary *d2 = MAKE_PROPERTY_D(@">Pop", P_NUM, @selector(setPop:),@selector(getPop));
     pListArray = @[d1,d2];

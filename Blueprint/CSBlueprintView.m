@@ -30,7 +30,7 @@
 {
     // Drawing code
     if( 0 != newP.x )
-        draw1PxStroke(UIGraphicsGetCurrentContext(), linkStartPoint, newP, [UIColor orangeColor].CGColor);
+        draw1PxStroke(UIGraphicsGetCurrentContext(), linkStartPoint, newP, [UIColor orangeColor].CGColor, 4.0);
 }
 
 // 액션 -> 프로퍼티 연결 작업을 시작하도록 요구가 주어졌다. 연결 표시 손잡이를 보여주고 움직일 수 있도록 세팅한다.
@@ -136,7 +136,7 @@
         if( UIUserInterfaceIdiomPhone == UI_USER_INTERFACE_IDIOM() )
         {
             USERCONTEXT.pop = [[TSPopoverController alloc] initWithContentViewController:plc];
-            [(TSPopoverController*)USERCONTEXT.pop setContentSizeForViewInPopover:CGSizeMake(200, 220)];
+            [(TSPopoverController*)USERCONTEXT.pop setPreferredContentSize:CGSizeMake(200, 220)];
             [(TSPopoverController*)USERCONTEXT.pop showPopoverWithRect:pointedObj.csView.frame];
         } else {
             USERCONTEXT.pop = [[UIPopoverController alloc] initWithContentViewController:plc];

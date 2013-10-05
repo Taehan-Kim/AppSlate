@@ -18,7 +18,7 @@
     self = [super initWithStyle:style];
     if (self) {
         // Custom initialization
-        self.title = NSLocalizedString(@"Property", @"Prop list");
+        self.title = NSLocalizedString(@"Property", @"Property");
     }
     return self;
 }
@@ -58,18 +58,17 @@
     else height = [[destGear getPropertiesList] count] * 42;
 
     CGSize size = CGSizeMake(200, height); // size of view in popover
-    self.contentSizeForViewInPopover = size;
-    self.tableView.backgroundColor = [UIColor clearColor];
+    self.preferredContentSize = size;
+    if( UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM() )
+        self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.separatorColor = [UIColor grayColor];
 }
 
 // UIPopover Controller 의 크기를 조정해주기 위해서 사용하는 팁 같은 코드.
 -(void) viewDidAppear:(BOOL)animated
 {
-    CGSize currentSetSizeForPopover = self.contentSizeForViewInPopover;
-    CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
-    self.contentSizeForViewInPopover = fakeMomentarySize;
-    self.contentSizeForViewInPopover = currentSetSizeForPopover;
+    if( UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM() )
+        [[NSNotificationCenter defaultCenter] postNotificationName:NOTI_CHANGE_POPOVER object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -115,9 +114,10 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.contentView.backgroundColor = [UIColor clearColor];
-        cell.textLabel.textColor = [UIColor whiteColor];
+        cell.backgroundColor = [UIColor clearColor];
+        cell.textLabel.textColor = [UIColor blackColor];
         cell.textLabel.font = CS_FONT(15);
-        cell.textLabel.shadowColor = [UIColor blackColor];
+        cell.textLabel.shadowColor = [UIColor whiteColor];
         cell.textLabel.shadowOffset = CGSizeMake(1, 1);
     }
     

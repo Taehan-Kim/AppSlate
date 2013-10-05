@@ -116,8 +116,6 @@
     csResizable = NO;
     csShow = NO;
     
-    self.info = NSLocalizedString(@"Radian/Degree Converter", @"RadDeg");
-    
     NSDictionary *d1 = MAKE_PROPERTY_D(@">Degree Value", P_NUM, @selector(setDegreeValue:),@selector(getDegreeValue));
     NSDictionary *d2 = MAKE_PROPERTY_D(@">Radian Value", P_NUM, @selector(setRadianValue:),@selector(getRadianValue));
     pListArray = @[d1,d2];

@@ -51,11 +51,13 @@
 {
     if( ![super init] ) return nil;
 
-    csView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 28, 28)];
-    [(UIImageView*)csView setImage:[UIImage imageNamed:@"bulbOff.png"]];
+    csView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+    [csView setClipsToBounds:YES];
+    [csView.layer setCornerRadius:15];
+    [csView setBackgroundColor:[UIColor lightGrayColor]];
     [csView setUserInteractionEnabled:YES];
 
-    light = [[UIView alloc] initWithFrame:CGRectMake(8, 8, 12, 12)];
+    light = [[UIView alloc] initWithFrame:CGRectMake(9, 9, 12, 12)];
     [light setClipsToBounds:YES];
     [light.layer setCornerRadius:6];
     [light setBackgroundColor:[UIColor redColor]];
@@ -65,8 +67,6 @@
 
     csCode = CS_BULB;
     csResizable = NO;
-
-    self.info = NSLocalizedString(@"Light Bulb", @"Light Bulb");
 
     DEFAULT_CENTER_D;
     NSDictionary *d0 = ALPHA_D;

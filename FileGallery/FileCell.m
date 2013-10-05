@@ -25,8 +25,8 @@
     _title.adjustsFontSizeToFitWidth = YES;
     _title.textAlignment = NSTextAlignmentCenter;
     _title.backgroundColor = [UIColor clearColor];
-    _title.textColor = [UIColor whiteColor];
-    _title.shadowColor = [UIColor darkGrayColor];
+    _title.textColor = [UIColor darkGrayColor];
+    _title.shadowColor = [UIColor whiteColor];
     _title.shadowOffset = CGSizeMake(0, -1);
 //    _title.minimumFontSize = 10.0;
 

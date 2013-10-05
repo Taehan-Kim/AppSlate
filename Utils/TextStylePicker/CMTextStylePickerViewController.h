@@ -56,7 +56,7 @@
 
 + (CMTextStylePickerViewController *)textStylePickerViewController;
 - (IBAction)doneAction;
-- (IBAction)defaultTextSettingsAction:(UISwitch *)defaultSwitch;
+//- (IBAction)defaultTextSettingsAction:(UISwitch *)defaultSwitch;
 - (IBAction)fontSizeValueChanged:(CMUpDownControl *)control;
 
 @end

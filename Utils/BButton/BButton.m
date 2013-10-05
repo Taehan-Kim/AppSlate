@@ -20,11 +20,11 @@
     [self.layer setCornerRadius:5.0];
     [self.layer setBorderColor:[UIColor darkGrayColor].CGColor];
     
-    gradient = [CAGradientLayer layer];
-    [gradient setFrame:[self bounds]];
-    [gradient setColors:@[ (id)[[UIColor clearColor] CGColor], (id)[[UIColor blackColor] CGColor] ]];
-    [gradient setOpacity:0.5];
-    [self.layer addSublayer:gradient];
+//    gradient = [CAGradientLayer layer];
+//    [gradient setFrame:[self bounds]];
+//    [gradient setColors:@[ (id)[[UIColor clearColor] CGColor], (id)[[UIColor blackColor] CGColor] ]];
+//    [gradient setOpacity:0.5];
+//    [self.layer addSublayer:gradient];
     
     btn = [[UIButton alloc] initWithFrame:self.bounds];
     [btn setBackgroundColor:[UIColor clearColor]];
@@ -53,13 +53,13 @@
     if( self = [super initWithCoder:decoder] ){
         self.clipsToBounds = YES;
         [self.layer setBorderWidth:2.5];
-        [self.layer setCornerRadius:5.0];
+        [self.layer setCornerRadius:4.0];
         [self.layer setBorderColor:[UIColor darkGrayColor].CGColor];
-        gradient = [CAGradientLayer layer];
-        [gradient setFrame:[self bounds]];
-        [gradient setColors:@[ (id)[[UIColor clearColor] CGColor], (id)[[UIColor blackColor] CGColor] ]];
-        [gradient setOpacity:0.5];
-        [self.layer addSublayer:gradient];
+//        gradient = [CAGradientLayer layer];
+//        [gradient setFrame:[self bounds]];
+//        [gradient setColors:@[ (id)[[UIColor clearColor] CGColor], (id)[[UIColor blackColor] CGColor] ]];
+//        [gradient setOpacity:0.5];
+//        [self.layer addSublayer:gradient];
 
         btn = (UIButton*)[self viewWithTag:2386];
         [btn addTarget:self action:@selector(touchIn:) forControlEvents:UIControlEventTouchDown];
@@ -70,26 +70,32 @@
     return self;
 }
 
--(void)layoutSubviews
-{
-    gradient.frame = self.bounds;   // make the subview frame match its view
-
-    [super layoutSubviews];
-}
+//-(void)layoutSubviews
+//{
+//    gradient.frame = self.bounds;   // make the subview frame match its view
+//
+//    [super layoutSubviews];
+//}
 
 
 
 -(void) touchIn:(id)sender
 {
-    gradient.opacity = 0.9;
-    [gradient setColors:@[ (id)[[UIColor blackColor] CGColor], (id)[[UIColor clearColor] CGColor] ]];
+//    gradient.opacity = 0.9;
+//    [gradient setColors:@[ (id)[[UIColor blackColor] CGColor], (id)[[UIColor clearColor] CGColor] ]];
+    UIColor *swapColor = self.backgroundColor;
+    [self setBackgroundColor: [btn titleColorForState:UIControlStateNormal]];
+    [btn setTitleColor:swapColor forState:UIControlStateHighlighted];
+
     [self.layer setBorderColor:[UIColor whiteColor].CGColor];
 }
 
 -(void) touchUp:(id)sender
 {
-    gradient.opacity = 0.5;
-    [gradient setColors:@[ (id)[[UIColor clearColor] CGColor], (id)[[UIColor blackColor] CGColor] ]];
+//    gradient.opacity = 0.5;
+//    [gradient setColors:@[ (id)[[UIColor clearColor] CGColor], (id)[[UIColor blackColor] CGColor] ]];
+    [self setBackgroundColor: [btn titleColorForState:UIControlStateHighlighted]];
+
     [self.layer setBorderColor:[UIColor darkGrayColor].CGColor];
 }
 
@@ -99,7 +105,6 @@
 {
     [btn setTitle:txt forState:UIControlStateNormal];
     [btn setTitle:txt forState:UIControlStateHighlighted];
-    [btn setTitle:txt forState:UIControlStateSelected];
 
     [self setNeedsDisplay];
 }
@@ -108,7 +113,6 @@
 {
     [btn setTitleColor:color forState:UIControlStateNormal];
     [btn setTitleColor:color forState:UIControlStateHighlighted];
-    [btn setTitleColor:color forState:UIControlStateSelected];
 }
 
 -(void) addTarget:(id)tg action:(SEL)selector

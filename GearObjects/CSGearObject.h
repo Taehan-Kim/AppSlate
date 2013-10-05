@@ -45,6 +45,8 @@
 #define CS_PLAY         160
 #define CS_CAMERA       161
 #define CS_BTOOTH       162
+#define CS_WEIBOSEND    163
+#define CS_STOREVIEW    164
 
 #define CS_NOT          200
 #define CS_AND          201

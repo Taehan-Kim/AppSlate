@@ -23,7 +23,7 @@
 
     if (self) {
         // Custom initialization
-        self.view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 300)];
+        self.view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 269 + 60)];
         SEL selector = [pInfoDic[@"getSelector"] pointerValue];
         UIFont *fnt = [theGear performSelector:selector];
         cmtController = [CMTextStylePickerViewController textStylePickerViewController];
@@ -53,29 +53,31 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    CGSize size = CGSizeMake(320, 219); // size of view in popover
-    self.contentSizeForViewInPopover = size;
+    CGSize size = CGSizeMake(320, 269 + 60); // size of view in popover
+    self.preferredContentSize = size;
 
     [cmtController.view setFrame:self.view.frame];
     [cmtController viewWillAppear:animated];
     [self.view addSubview:cmtController.view];
 
-    saveBtn = [[BButton alloc] initWithFrame:CGRectMake(C_GAP, 150.0+(C_GAP*3), C_WIDTH, 40)];
+    saveBtn = [[BButton alloc] initWithFrame:CGRectMake(C_GAP, 4+150.0+(C_GAP*1), C_WIDTH, 40)];
     [saveBtn setTitle:NSLocalizedString(@"APPLY",@"APPLY")];
     [saveBtn addTarget:self action:@selector(setTheValue:)];
 //    [saveBtn setEnabled:YES];
     [cmtController.view addSubview:saveBtn];
 
+    if( UIUserInterfaceIdiomPhone == UI_USER_INTERFACE_IDIOM() )
+    {
+        [saveBtn setFrame:CGRectOffset(saveBtn.frame, 0, 60)];
+    }
     [super viewWillAppear:animated];
 }
 
 // for UIPopover Controller
 -(void) viewDidAppear:(BOOL)animated
 {
-    CGSize currentSetSizeForPopover = self.contentSizeForViewInPopover;
-    CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
-    self.contentSizeForViewInPopover = fakeMomentarySize;
-    self.contentSizeForViewInPopover = currentSetSizeForPopover;
+    if( UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM() )
+        [[NSNotificationCenter defaultCenter] postNotificationName:NOTI_CHANGE_POPOVER object:nil];
 }
 
 #pragma mark - Setting Button Action

@@ -108,7 +108,6 @@
     csResizable = NO;
     csShow = NO;
 
-    self.info = NSLocalizedString(@"Number Compare", @"Num Comp");
     base = 0.0;
     var = 0.0;
     

@@ -160,8 +160,6 @@
     musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
     [self registerMediaPlayerNotifications];
 
-    self.info = NSLocalizedString(@"Music Player", @"Music Player");
-
     NSDictionary *d1 = MAKE_PROPERTY_D(@">Show List Action", P_BOOL, @selector(setShowList:),@selector(getShowList));
     NSDictionary *d2 = MAKE_PROPERTY_D(@">Play or Stop", P_BOOL, @selector(setPlayNStop:),@selector(getPlayNStop));
     NSDictionary *d3 = MAKE_PROPERTY_D(@"Soungs Shuffle On", P_BOOL, @selector(setShuffleMode:),@selector(getShuffleMode));

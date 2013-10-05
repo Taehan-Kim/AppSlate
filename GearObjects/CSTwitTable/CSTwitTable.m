@@ -54,8 +54,11 @@
     [ac setDelegate:self];
     for( ACAccount *as in accounts )
         [ac addButtonWithTitle:as.username];
-    
-    [ac showInView:self.csView];
+
+    if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
+        [ac showInView:self.csView];
+    else
+        [ac showInView:[UIApplication sharedApplication].windows[0]];
 }
 
 -(void) setLoadTimeline:(NSNumber*) BoolValue
@@ -156,17 +159,15 @@
     [csView setUserInteractionEnabled:YES];
     accountStore = [[ACAccountStore alloc] init];
     ACAccountType *accountTypeTwitter = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
-    [accountStore requestAccessToAccountsWithType:accountTypeTwitter withCompletionHandler:^(BOOL granted, NSError *error)
-    { 
-        if(granted) {
-            // 사용자가 접근을 허용함 
-            accounts = [accountStore accountsWithAccountType:accountTypeTwitter];
-        } 
-        else {
-            // 사용자가 접근을 허용하지 않음
-            accounts = nil;
-        } 
-    }];
+
+    if([accountTypeTwitter accessGranted] ) {
+        // 사용자가 접근을 허용함 
+        accounts = [accountStore accountsWithAccountType:accountTypeTwitter];
+    } 
+    else {
+        // 사용자가 접근을 허용하지 않음
+        accounts = nil;
+    }
 
     csCode = CS_TWTABLE;
     isUIObj = YES;
@@ -176,8 +177,6 @@
 
     [((UITableView*)csView) setDelegate:self];
     [((UITableView*)csView) setDataSource:self];
-
-    self.info = NSLocalizedString(@"Twitter Table", @"Twitter Table");
 
     DEFAULT_CENTER_D;
     NSDictionary *d0 = ALPHA_D;

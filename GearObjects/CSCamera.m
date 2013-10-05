@@ -65,8 +65,6 @@
     csResizable = NO;
     csShow = NO;
     
-    self.info = NSLocalizedString(@"Camera", @"Camera");
-
     NSDictionary *d1 = MAKE_PROPERTY_D(@">Show Action", P_BOOL, @selector(setShow:),@selector(getShow));
     pListArray = @[d1];
 

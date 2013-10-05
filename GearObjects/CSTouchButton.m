@@ -95,12 +95,10 @@
     csCode = CS_TOUCHBTN;
     output = 1.0;
 
-    [((BButton*)csView) setTitle:@"Touch Button"];
+    [((BButton*)csView) setTitle:NSLocalizedString(@"Touch Button", @"Touch Button")];
     [((BButton*)csView).btn addTarget:self action:@selector(pushAction) forControlEvents:UIControlEventTouchDown];
     [((BButton*)csView).btn addTarget:self action:@selector(releaseAction) forControlEvents:UIControlEventTouchUpInside];
     [((BButton*)csView).btn addTarget:self action:@selector(releaseAction) forControlEvents:UIControlEventTouchUpOutside];
-
-    self.info = NSLocalizedString(@"Touch Button", @"Touch Button");
 
     DEFAULT_CENTER_D;
     NSDictionary *d0 = ALPHA_D;

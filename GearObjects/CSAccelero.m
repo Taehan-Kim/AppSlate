@@ -49,10 +49,9 @@
     csResizable = NO;
     csShow = NO;
     
-    self.info = NSLocalizedString(@"Accelerometer", @"ACLO");
-    ac = [UIAccelerometer sharedAccelerometer];
-    [ac setDelegate:self];
-    [ac setUpdateInterval:0.1];
+    ac = [[CMMotionManager alloc] init];
+    ac.accelerometerUpdateInterval = 0.1;
+
     isRun = NO;
 
 
@@ -63,7 +62,12 @@
     NSMutableDictionary MAKE_ACTION_D(@"Output Y", A_NUM, a2);
     NSMutableDictionary MAKE_ACTION_D(@"Output Z", A_NUM, a3);
     actionArray = @[a1,a2,a3];
-    
+
+    [ac startAccelerometerUpdatesToQueue:[NSOperationQueue currentQueue] withHandler:^(CMAccelerometerData *accelerometerData, NSError *error)
+    {
+        [self accelerometerX:accelerometerData.acceleration.x Y:accelerometerData.acceleration.y Z:accelerometerData.acceleration.z];
+    } ];
+
     return self;
 }
 
@@ -71,10 +75,14 @@
 {
     if( (self=[super initWithCoder:decoder]) ) {
         [(UIImageView*)csView setImage:[UIImage imageNamed:@"gi_aclo.png"]];
-        ac = [UIAccelerometer sharedAccelerometer];
-        [ac setDelegate:self];
-        [ac setUpdateInterval:0.1];
+        ac = [[CMMotionManager alloc] init];
+        ac.accelerometerUpdateInterval = 0.1;
         isRun = [decoder decodeBoolForKey:@"isRun"];
+
+        [ac startAccelerometerUpdatesToQueue:[NSOperationQueue currentQueue] withHandler:^(CMAccelerometerData *accelerometerData, NSError *error)
+         {
+             [self accelerometerX:accelerometerData.acceleration.x Y:accelerometerData.acceleration.y Z:accelerometerData.acceleration.z];
+         } ];
     }
     return self;
 }
@@ -85,9 +93,9 @@
     [encoder encodeBool:isRun forKey:@"isRun"];
 }
 
-#pragma mark - Delegate
+#pragma mark -
 
-- (void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration
+- (void)accelerometerX:(CGFloat) _x Y:(CGFloat) _y Z:(CGFloat) _z
 {
     if( USERCONTEXT.imRunning && isRun )
     {
@@ -106,7 +114,7 @@
             
             if( nil != gObj ){
                 if( [gObj respondsToSelector:act] )
-                    [gObj performSelector:act withObject:@(acceleration.x)];
+                    [gObj performSelector:act withObject:@(_x)];
             }
         }
         act = ((NSValue*)((NSDictionary*)actionArray[1])[@"selector"]).pointerValue;
@@ -116,7 +124,7 @@
             
             if( nil != gObj ){
                 if( [gObj respondsToSelector:act] )
-                    [gObj performSelector:act withObject:@(acceleration.y)];
+                    [gObj performSelector:act withObject:@(_y)];
             }
         }
         act = ((NSValue*)((NSDictionary*)actionArray[2])[@"selector"]).pointerValue;
@@ -126,7 +134,7 @@
             
             if( nil != gObj ){
                 if( [gObj respondsToSelector:act] )
-                    [gObj performSelector:act withObject:@(acceleration.z)];
+                    [gObj performSelector:act withObject:@(_z)];
             }
         }
 

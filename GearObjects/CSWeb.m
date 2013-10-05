@@ -115,10 +115,9 @@
     [(UIWebView*)csView setScalesPageToFit:YES];
     [csView setUserInteractionEnabled:YES];
 
-    csCode = CS_IMAGE;
+    csCode = CS_WEBVIEW;
     isUIObj = YES;
     
-    self.info = NSLocalizedString(@"Web View", @"Web View");
     urlStr = @"http://";
 
     DEFAULT_CENTER_D;

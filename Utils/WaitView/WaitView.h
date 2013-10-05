@@ -12,6 +12,9 @@
 @interface WaitView : UIView
 {
 	UIActivityIndicatorView *activityIndicationView;
+    UIView *progressBox;
 }
+
+- (void) setProgress:(CGFloat) progress;
 
 @end

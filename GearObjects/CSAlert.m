@@ -108,8 +108,6 @@
     csResizable = NO;
     csShow = NO;
 
-    self.info = NSLocalizedString(@"Alert View", @"Alert View");
-
     message = @"Default Message";
     btn1 = @"Button1";
     btn2 = @"Button2";

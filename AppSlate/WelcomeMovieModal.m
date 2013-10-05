@@ -8,7 +8,6 @@
 
 #import "WelcomeMovieModal.h"
 #import <MediaPlayer/MediaPlayer.h>
-#import "ZipArchive.h"
 
 @implementation WelcomeMovieModal
 
@@ -21,7 +20,7 @@
         if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
             // I am iPad
             self.outerMargin = 100.0f;
-            self.cornerRadius = 20.0;
+            self.cornerRadius = 10.0;
             // Margin between edge of panel and the content area. Default = 20.0
             self.innerMargin = 10.0f;
             [self setTitleBarHeight:40];
@@ -34,7 +33,7 @@
             [self.headerLabel setFont:CS_FONT(13)];
         }
 
-        self.headerLabel.text = @"Welcome to AppSlate";
+        self.headerLabel.text = NSLocalizedString(@"Welcome to AppSlate",@"");
 
         if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
             [self embedYouTube:@"http://www.youtube.com/embed/TegeaJsCOvc" frame:CGRectMake(10, 90, 530, 380)];
@@ -47,7 +46,7 @@
         else
             tBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 210, 298, 25)];
         [tBtn setBackgroundColor:CS_RGBA(0, 10, 200, 0.4)];
-        [tBtn setTitle:@"Tutorial - Making 'Tip Calculator'" forState:UIControlStateNormal];
+        [tBtn setTitle:NSLocalizedString(@"Tutorial - Making 'Tip Calculator'",@"") forState:UIControlStateNormal];
         [tBtn.titleLabel setFont:CS_FONT(15)];
         [tBtn.titleLabel setTextColor:[UIColor blueColor]];
         [tBtn addTarget:self action:@selector(gotoTutorial1:) forControlEvents:UIControlEventTouchUpInside];
@@ -57,7 +56,7 @@
         if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
             txtView = [[UITextView alloc] initWithFrame:CGRectMake(30, 530, 490, 120)];
         else
-            txtView = [[UITextView alloc] initWithFrame:CGRectMake(0, 230, 298, 60)];
+            txtView = [[UITextView alloc] initWithFrame:CGRectMake(0, 230, 298, 90)];
         [txtView setBackgroundColor:CSCLEAR];
         [txtView setFont:CS_FONT(14)];
         [txtView setTextColor:[UIColor lightGrayColor]];
@@ -81,34 +80,10 @@
         [turnOffLabel setBackgroundColor:CSCLEAR];
         [turnOffLabel setTextColor:[UIColor grayColor]];
         [turnOffLabel setFont:CS_FONT(13)];
-        [turnOffLabel setText:@"Do not show this again"];
+        [turnOffLabel setText:NSLocalizedString(@"Do not show this again",@"welcome modal")];
         [self.contentView addSubview:turnOffLabel];
     }
 
-#if 1
-    // TODO: Check about first run. and unarchive the sample application files.
-    if( [[NSUserDefaults standardUserDefaults] boolForKey:@"AppSlateFirst"] == NO ){
-        [[NSUserDefaults standardUserDefaults] setBool:YES
-                                                forKey:@"AppSlateFirst"];
-
-        ZipArchive *z = [[ZipArchive alloc] init];
-        [z setDelegate:self];
-        NSString *src;
-        if( UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM() )
-            src = [[[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"SampleFiles.zip"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        else
-            src = [[[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"SampleFilesPhone.zip"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        NSString *documentsPath;
-//#ifdef TARGET_IPHONE_SIMULATOR
-//        documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-//#else
-        documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-//#endif
-        [z UnzipOpenFile:src];
-        [z UnzipFileTo:documentsPath overWrite:YES];
-        [z UnzipCloseFile];
-    }
-#endif
     return self;
 }
 

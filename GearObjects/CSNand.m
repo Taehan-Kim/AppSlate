@@ -102,8 +102,6 @@
     csResizable = NO;
     csShow = NO;
     
-    self.info = NSLocalizedString(@"Logical NAND", @"NAND");
-
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Input #1", P_NUM, @selector(setInput1Value:),@selector(getInput1Value));
     NSDictionary *d2 = MAKE_PROPERTY_D(@">Input #2", P_NUM, @selector(setInput2Value:),@selector(getInput2Value));
     pListArray = @[d1,d2];

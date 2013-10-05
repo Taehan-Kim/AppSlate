@@ -136,8 +136,6 @@
     [((UISlider*)csView) setThumbTintColor:[UIColor whiteColor]];
     [((UISlider*)csView) addTarget:self action:@selector(changedValue:) forControlEvents:UIControlEventValueChanged];
 
-    self.info = NSLocalizedString(@"Slider", @"Slider");
-
     DEFAULT_CENTER_D;
     NSDictionary *d0 = ALPHA_D;
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Value", P_NUM, @selector(setThumbValue:),@selector(getThumbValue));
@@ -145,10 +143,10 @@
     NSDictionary *d3 = MAKE_PROPERTY_D(@"Maximum Value", P_NUM, @selector(setMaximumValue:),@selector(getMaximumValue));
     NSDictionary *d4 = MAKE_PROPERTY_D(@"Minimum Bar Color", P_COLOR, @selector(setMinimumBarColor:),@selector(getMinimumBarColor));
     NSDictionary *d5 = MAKE_PROPERTY_D(@"Maximum Bar Color", P_COLOR, @selector(setMaximumBarColor:),@selector(getMaximumBarColor));
-    NSDictionary *d6 = MAKE_PROPERTY_D(@"Thumb Color", P_COLOR, @selector(setThumbColor:),@selector(getThumbColor));
+//    NSDictionary *d6 = MAKE_PROPERTY_D(@"Thumb Color", P_COLOR, @selector(setThumbColor:),@selector(getThumbColor));
     NSDictionary *d7 = MAKE_PROPERTY_D(@"Continuos Change", P_BOOL, @selector(setContinuosChange:),@selector(getContinuosChange));
 
-    pListArray = @[xc,yc,d0,d1,d2,d3,d4,d5,d6,d7];
+    pListArray = @[xc,yc,d0,d1,d2,d3,d4,d5,d7];
 
     NSMutableDictionary MAKE_ACTION_D(@"Changed Value", A_NUM, a1);
     NSMutableDictionary MAKE_ACTION_D(@"Minimum Value", A_NUM, a2);

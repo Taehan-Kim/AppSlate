@@ -37,6 +37,7 @@
 // Waiting View
 #define STOP_WAIT_VIEW  	[[UserContext sharedUserContext] stopWaitView]
 #define START_WAIT_VIEW		[[UserContext sharedUserContext] startWaitView:0]
+#define UPDATE_WAIT_VIEW(_p) [[UserContext sharedUserContext] updateWaitView:(_p)]
 
 // NSNotification
 #define NOTI_PUT_GEAR       @"noti_put_gear"
@@ -45,3 +46,5 @@
 #define NOTI_ACTION_LINK    @"noti_action_link_start"
 #define NOTI_FILELOAD       @"noti_file_load"
 #define NOTI_RESET_ALPHA    @"noti_reset_alpha_0"
+#define NOTI_PARSELOAD      @"noti_parse_load"
+#define NOTI_CHANGE_POPOVER @"noti_popover_size_change"

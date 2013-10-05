@@ -79,7 +79,6 @@
     
     [(FlipCounterView*)csView setCounterValue:10];
     checkNumber = 10;
-    self.info = NSLocalizedString(@"Flip Counter", @"Flip Counter");
 
     DEFAULT_CENTER_D;
     NSDictionary *d0 = ALPHA_D;

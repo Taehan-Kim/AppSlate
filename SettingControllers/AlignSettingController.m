@@ -49,33 +49,37 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    CGSize size = CGSizeMake(320, 109); // size of view in popover
-    self.contentSizeForViewInPopover = size;
-    self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
+    CGSize size = CGSizeMake(320, 109 + 60); // size of view in popover
+    self.preferredContentSize = size;
+    self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
 
     alignSegment = [[UISegmentedControl alloc] initWithItems:@[NSLocalizedString(@"Left",@"L"), NSLocalizedString(@"Center",@"C"), NSLocalizedString(@"Right",@"R")]];
-    [alignSegment setFrame:CGRectMake(C_GAP, C_GAP, C_WIDTH, 40.0)];
-    [alignSegment setSegmentedControlStyle:UISegmentedControlStylePlain];
+    [alignSegment setFrame:CGRectMake(C_GAP, 4 + C_GAP, C_WIDTH, 40.0)];
+//    [alignSegment setSegmentedControlStyle:UISegmentedControlStyle];
     NSNumber *alignNum = objc_msgSend(theGear,[pInfoDic[@"getSelector"] pointerValue]);
     [alignSegment setSelectedSegmentIndex:[alignNum integerValue]];
     [self.view addSubview:alignSegment];
 
-    saveBtn = [[BButton alloc] initWithFrame:CGRectMake(C_GAP, 45.0+(C_GAP*2), C_WIDTH, 40)];
+    saveBtn = [[BButton alloc] initWithFrame:CGRectMake(C_GAP, 4 + 45.0+(C_GAP*2), C_WIDTH, 40)];
     [saveBtn setTitle:NSLocalizedString(@"APPLY",@"APPLY")];
     [saveBtn addTarget:self action:@selector(setTheValue:)];
 //    [saveBtn setEnabled:YES];
     [self.view addSubview:saveBtn];
-    
+
+    if( UIUserInterfaceIdiomPhone == UI_USER_INTERFACE_IDIOM() )
+    {
+        [alignSegment setFrame:CGRectOffset(alignSegment.frame, 0, 60)];
+        [saveBtn setFrame:CGRectOffset(saveBtn.frame, 0, 60)];
+    }
+
     [super viewWillAppear:animated];
 }
 
 // for UIPopover Controller
 -(void) viewDidAppear:(BOOL)animated
 {
-    CGSize currentSetSizeForPopover = self.contentSizeForViewInPopover;
-    CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
-    self.contentSizeForViewInPopover = fakeMomentarySize;
-    self.contentSizeForViewInPopover = currentSetSizeForPopover;
+    if( UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM() )
+        [[NSNotificationCenter defaultCenter] postNotificationName:NOTI_CHANGE_POPOVER object:nil];
 }
 
 #pragma mark - Setting Button Action

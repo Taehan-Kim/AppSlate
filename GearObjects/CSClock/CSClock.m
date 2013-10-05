@@ -80,7 +80,7 @@
     
     if( [hour isKindOfClass:[NSString class]] )
         value = [(NSString*)hour integerValue];
-    else  if( [hour isKindOfClass:[NSNumber class]] )
+    else
         value = [hour integerValue];
 
     if( 24 < value ) value = 24;
@@ -100,9 +100,9 @@
     
     if( [min isKindOfClass:[NSString class]] )
         value = [(NSString*)min integerValue];
-    else  if( [min isKindOfClass:[NSNumber class]] )
+    else
         value = [min integerValue];
-    
+
     if( 60 < value ) value = 60;
     
     clock.minutes = value;
@@ -120,8 +120,7 @@
 
     if( [sec isKindOfClass:[NSString class]] )
         value = [(NSString*)sec integerValue];
-    else  if( [sec isKindOfClass:[NSNumber class]] )
-        value = [sec integerValue];
+    else  value = [sec integerValue];
 
     if( 60 < value ) value = 60;
 
@@ -160,7 +159,6 @@
     [csView setUserInteractionEnabled:YES];
 
     clock = [[ClockView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
-    [clock setClockBackgroundImage:[UIImage imageNamed:@"clock-background-day.png"].CGImage];
     [clock setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
     clock.addHour = 0;
     clock.addMin = 0;
@@ -170,8 +168,6 @@
 
     csCode = CS_CLOCK;
     
-    self.info = NSLocalizedString(@"Analog Clock", @"Analog Clock");
-
     DEFAULT_CENTER_D;
     NSDictionary *d0 = ALPHA_D;
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Add Hour", P_NUM, @selector(setAddHour:),@selector(getAddHour));
@@ -190,7 +186,6 @@
 {
     if( (self=[super initWithCoder:decoder]) ) {
         clock = [csView subviews][0];
-        [clock setClockBackgroundImage:[UIImage imageNamed:@"clock-background-day.png"].CGImage];
         clock.addHour = [decoder decodeIntegerForKey:@"addHour"];
         clock.addMin = [decoder decodeIntegerForKey:@"addMin"];
         clock.addSec = [decoder decodeIntegerForKey:@"addSec"];

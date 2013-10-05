@@ -191,8 +191,6 @@
 
     csResizable = NO;
     csShow = NO;
-
-    self.info = NSLocalizedString(@"Calculator + - x /", @"calc");
     resultSave = NO;
     
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Input #1", P_NUM, @selector(setInput1Value:),@selector(getInput1Value));

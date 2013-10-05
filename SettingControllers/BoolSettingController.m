@@ -49,9 +49,9 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    CGSize size = CGSizeMake(320, 106); // size of view in popover
-    self.contentSizeForViewInPopover = size;
-    self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
+    CGSize size = CGSizeMake(320, 106 + 60); // size of view in popover
+    self.preferredContentSize = size;
+    self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
 
     switchBtn = [[UISwitch alloc] initWithFrame:CGRectMake(320 - C_GAP - 90, C_GAP+6, 60, 40.0)];
     NSNumber *alignNum = objc_msgSend(theGear,[pInfoDic[@"getSelector"] pointerValue]);
@@ -68,7 +68,13 @@
     [nameLabel setShadowOffset:CGSizeMake(1, 1)];
     [self.view addSubview:nameLabel];
 
-    saveBtn = [[BButton alloc] initWithFrame:CGRectMake(C_GAP, 45.0+(C_GAP*2), C_WIDTH, 40)];
+    if( UIUserInterfaceIdiomPhone == UI_USER_INTERFACE_IDIOM() )
+    {
+        [nameLabel setFrame:CGRectOffset(nameLabel.frame, 0, 60)];
+        [switchBtn setFrame:CGRectOffset(switchBtn.frame, 0, 60)];
+    }
+
+    saveBtn = [[BButton alloc] initWithFrame:CGRectMake(C_GAP, switchBtn.frame.origin.y+C_GAP+40.0, C_WIDTH, 40)];
     [saveBtn setTitle:NSLocalizedString(@"APPLY",@"APPLY")];
     [saveBtn addTarget:self action:@selector(setTheValue:)];
 //    [saveBtn setEnabled:YES];
@@ -80,10 +86,8 @@
 // the size of UIPopover Controller
 -(void) viewDidAppear:(BOOL)animated
 {
-    CGSize currentSetSizeForPopover = self.contentSizeForViewInPopover;
-    CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
-    self.contentSizeForViewInPopover = fakeMomentarySize;
-    self.contentSizeForViewInPopover = currentSetSizeForPopover;
+    if( UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM() )
+        [[NSNotificationCenter defaultCenter] postNotificationName:NOTI_CHANGE_POPOVER object:nil];
 }
 
 #pragma mark - Setting Button Action

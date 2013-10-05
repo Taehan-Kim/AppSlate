@@ -14,8 +14,9 @@
 #import "PaperSetModal.h"
 #import "AppSettingModal.h"
 #import "InfoModal.h"
+#import "MyLoginViewController.h"
 
-@interface CSMainViewController : UIViewController <CSFlipsideViewControllerDelegate, UIActionSheetDelegate, UIAlertViewDelegate, UAModalPanelDelegate>
+@interface CSMainViewController : UIViewController <CSFlipsideViewControllerDelegate, UAModalPanelDelegate, PFLogInViewControllerDelegate>
 {
     CSBlueprintController   *blueprintCtrl;
     UIToolbar   *toolBar;
@@ -25,6 +26,7 @@
 
     UIBarButtonItem *gearListButton;
     UIBarButtonItem *playButton;
+    UIBarButtonItem *resetButton;
     UIBarButtonItem *menuButton;
     UIBarButtonItem *layerButton;
 
@@ -32,6 +34,7 @@
     UIView  *runIndicator;
 
     UIPopoverController *_layerPopoverController;
+    NSString *cachingFilePath;
 }
 
 @property (strong, nonatomic) UIPopoverController *flipsidePopoverController;

@@ -13,7 +13,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 
-#define CORNER_RADIUS 5
+#define CORNER_RADIUS 4
 #define MARGIN 5
 #define OUTER_MARGIN 5
 #define TITLE_LABEL_HEIGHT 25
@@ -51,8 +51,8 @@
         self.titleFont = [UIFont boldSystemFontOfSize:14];
         self.view.backgroundColor = [UIColor clearColor];
         self.arrowPosition = TSPopoverArrowPositionVertical;
-        self.popoverBaseColor = [UIColor blackColor];
-        self.popoverGradient = YES;
+        self.popoverBaseColor = [UIColor grayColor];
+        self.popoverGradient = NO;
         screenRect = [[UIScreen mainScreen] bounds];
         if(self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft || self.interfaceOrientation == UIInterfaceOrientationLandscapeRight){
             screenRect.size.width = [[UIScreen mainScreen] bounds].size.height;
@@ -342,8 +342,8 @@
         
         popoverRect = CGRectMake(popoverX, popoverY, popoverWidth, popoverHeight);
         
-    }else if(self.arrowPosition = TSPopoverArrowPositionHorizontal){
-        
+    }else if(self.arrowPosition == TSPopoverArrowPositionHorizontal){
+
         popoverWidth = contentFrame.size.width+ARROW_SIZE+MARGIN*2;
         popoverHeight = contentFrame.size.height+titleLabelheight+MARGIN*2;
 

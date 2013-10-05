@@ -29,6 +29,6 @@
 
 -(void) setParentController:(id) obj;
 
--(void) setMode:(NSUInteger) mode;
+///-(void) setMode:(NSUInteger) mode;
 
 @end

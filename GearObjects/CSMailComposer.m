@@ -19,7 +19,7 @@
 
 //===========================================================================
 
--(void) setText:(NSString*)txt;
+-(void) setText:(NSString*)txt
 {
     if( [txt isKindOfClass:[NSString class]] )
         textStr = txt;
@@ -33,7 +33,7 @@
     return textStr;
 }
 
--(void) setTitle:(NSString*)txt;
+-(void) setTitle:(NSString*)txt
 {
     if( [txt isKindOfClass:[NSString class]] )
         titleStr = txt;
@@ -45,6 +45,34 @@
 -(NSString*) getTitle
 {
     return titleStr;
+}
+
+-(void) setToAddr:(NSString*)txt
+{
+    if( [txt isKindOfClass:[NSString class]] )
+        toAddressStr = txt;
+    
+    else if([txt isKindOfClass:[NSNumber class]] )
+        toAddressStr = [((NSNumber*)txt) stringValue];
+}
+
+-(NSString*) getToAddr
+{
+    return toAddressStr;
+}
+
+-(void) setCcAddr:(NSString*)txt
+{
+    if( [txt isKindOfClass:[NSString class]] )
+        ccAddressStr = txt;
+    
+    else if([txt isKindOfClass:[NSNumber class]] )
+        ccAddressStr = [((NSNumber*)txt) stringValue];
+}
+
+-(NSString*) getCcAddr
+{
+    return ccAddressStr;
 }
 
 -(void) setImage:(UIImage *)img
@@ -68,6 +96,10 @@
         MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
         picker.mailComposeDelegate = self;
         [picker setSubject:titleStr];
+        if( nil != toAddressStr )
+            [picker setToRecipients:@[toAddressStr]];
+        if( nil != ccAddressStr )
+            [picker setCcRecipients:@[ccAddressStr]];
         NSMutableString *emailBody = [[NSMutableString alloc] initWithString:@"<html><body>"];
         [emailBody appendFormat:@"<p>%@</p>", textStr];
         if( nil != mailImage ){
@@ -107,16 +139,16 @@
     csShow = NO;
     mailImage = nil;
 
-    self.info = NSLocalizedString(@"Mail Composer", @"Mail Composer");
-    
     titleStr = @"My E-mail";
     textStr = @"AppSlate is awesome.";
     
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Title", P_TXT, @selector(setTitle:),@selector(getTitle));
     NSDictionary *d2 = MAKE_PROPERTY_D(@"Mail Text", P_TXT, @selector(setText:),@selector(getText));
-    NSDictionary *d3 = MAKE_PROPERTY_D(@"Image", P_IMG, @selector(setImage:),@selector(getImage));
-    NSDictionary *d4 = MAKE_PROPERTY_D(@">Show Action", P_BOOL, @selector(setShow:),@selector(getShow));
-    pListArray = @[d1,d2,d3,d4];
+    NSDictionary *d3 = MAKE_PROPERTY_D(@"To Recipient", P_TXT, @selector(setToAddr:),@selector(getToAddr));
+    NSDictionary *d4 = MAKE_PROPERTY_D(@"Cc Recipient", P_TXT, @selector(setCcAddr:),@selector(getCcAddr));
+    NSDictionary *d5 = MAKE_PROPERTY_D(@"Image", P_IMG, @selector(setImage:),@selector(getImage));
+    NSDictionary *d6 = MAKE_PROPERTY_D(@">Show Action", P_BOOL, @selector(setShow:),@selector(getShow));
+    pListArray = @[d1,d2,d3,d4,d5,d6];
 
     NSMutableDictionary MAKE_ACTION_D(@"Closed", A_NUM, a1);
     actionArray = @[a1];
@@ -130,6 +162,8 @@
         [(UIImageView*)csView setImage:[UIImage imageNamed:@"gi_mail.png"]];
         titleStr = [decoder decodeObjectForKey:@"titleStr"];
         textStr = [decoder decodeObjectForKey:@"textStr"];
+        toAddressStr = [decoder decodeObjectForKey:@"toAddressStr"];
+        ccAddressStr = [decoder decodeObjectForKey:@"ccAddressStr"];
         mailImage = nil;
     }
     return self;
@@ -140,6 +174,8 @@
     [super encodeWithCoder:encoder];
     [encoder encodeObject:titleStr forKey:@"titleStr"];
     [encoder encodeObject:textStr forKey:@"textStr"];
+    [encoder encodeObject:toAddressStr forKey:@"toAddressStr"];
+    [encoder encodeObject:ccAddressStr forKey:@"ccAddressStr"];
 }
 
 

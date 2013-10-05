@@ -22,6 +22,7 @@
     NSInteger minutes;
     NSInteger hours;
 
+    CGFloat secAngle, minAngle, hourAngle;
     BOOL night_view;
 }
 
@@ -33,12 +34,6 @@
 - (void)stop;
 -(BOOL) isStarted;
 - (void) updateForceClock;
-
-//customize appearence
-- (void)setHourHandImage:(CGImageRef)image;
-- (void)setMinHandImage:(CGImageRef)image;
-- (void)setSecHandImage:(CGImageRef)image;
-- (void)setClockBackgroundImage:(CGImageRef)image;
 
 //to customize hands size: adjust following values in .m file
 //HOURS_HAND_LENGTH

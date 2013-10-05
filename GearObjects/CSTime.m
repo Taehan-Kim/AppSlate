@@ -157,8 +157,6 @@
     csResizable = NO;
     csShow = NO;
     
-    self.info = NSLocalizedString(@"Now Date & Time", @"Date");
-
     NSDictionary *d1 = MAKE_PROPERTY_D(@">Now Date & Time", P_NUM, @selector(setNowAction:),@selector(getNowAction));
     pListArray = @[d1];
 

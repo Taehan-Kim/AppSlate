@@ -14,6 +14,7 @@
 @interface CSMailComposer : CSGearObject <MFMailComposeViewControllerDelegate>
 {
     NSString *titleStr, *textStr;
+    NSString *toAddressStr, *ccAddressStr;
     UIImage *mailImage;
 }
 
@@ -24,6 +25,12 @@
 
 -(void) setText:(NSString*)txt;
 -(NSString*) getText;
+
+-(void) setCcAddr:(NSString*)txt;
+-(NSString*) getCcAddr;
+
+-(void) setToAddr:(NSString*)txt;
+-(NSString*) getToAddr;
 
 -(void) setShow:(NSNumber*)BoolValue;
 -(NSNumber*) getShow;

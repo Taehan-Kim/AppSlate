@@ -48,9 +48,9 @@ static UserContext *_sharedUserContext = nil;
               [UIColor colorWithPatternImage:[UIImage imageNamed:@"blockPaper.png"]],
               [UIColor colorWithPatternImage:[UIImage imageNamed:@"leatherPaper.png"]],
               [UIColor colorWithPatternImage:[UIImage imageNamed:@"brownLeatherPaper.png"]],
-              [UIColor viewFlipsideBackgroundColor],
-              [UIColor scrollViewTexturedBackgroundColor],
-              [UIColor underPageBackgroundColor],
+              [UIColor colorWithPatternImage:[UIImage imageNamed:@"whiteNormalPaper.png"]],
+              [UIColor colorWithPatternImage:[UIImage imageNamed:@"legoPaper.png"]],
+              [UIColor colorWithPatternImage:[UIImage imageNamed:@"aspaltPaper.png"]],
               [UIColor colorWithPatternImage:[UIImage imageNamed:@"woodPaper.png"]],
               [UIColor colorWithPatternImage:[UIImage imageNamed:@"darkWoodPaper.png"]]
             ];
@@ -79,19 +79,21 @@ static UserContext *_sharedUserContext = nil;
 	if( nil == waitV ) {
 		UIWindow* mainWindow = [[UIApplication sharedApplication] keyWindow];
 		waitV = [[WaitView alloc] initWithFrame:CGRectMake(mainWindow.frame.size.width/2-40, (mainWindow.frame.size.height/2)-40+yDeltaPos,80,80)];
-
-        [waitV setAlpha:0.0];
-        [waitV setTransform:CGAffineTransformMakeScale(1.5, 1.5)];
-		[mainWindow addSubview:waitV];
-
-        [UIView animateWithDuration:0.4 animations:^(void) {
-            [waitV setTransform:CGAffineTransformMakeScale(1.0, 1.0)];
-            [waitV setAlpha:1.0];
-        } completion:^(BOOL finished) {
-            ;
-        }];
+        [mainWindow addSubview:waitV];
 //??        [mainWindow setUserInteractionEnabled:NO];
-	}
+	} else {
+        [waitV setProgress:0.0];
+    }
+
+    [waitV setAlpha:0.0];
+    [waitV setTransform:CGAffineTransformMakeScale(1.5, 1.5)];
+    
+    [UIView animateWithDuration:0.4 animations:^(void) {
+        [waitV setTransform:CGAffineTransformMakeScale(1.0, 1.0)];
+        [waitV setAlpha:1.0];
+    } completion:^(BOOL finished) {
+        ;
+    }];
 }
 
 - (void) stopWaitView
@@ -107,6 +109,13 @@ static UserContext *_sharedUserContext = nil;
 		waitV = nil;
 //??        [[[UIApplication sharedApplication] keyWindow] setUserInteractionEnabled:YES];
 	}
+}
+
+- (void) updateWaitView: (NSUInteger) percentValue
+{
+    if( waitV ){
+        [waitV setProgress:percentValue/100.0];
+    }
 }
 
 #pragma mark - Error Toast Mark
@@ -157,14 +166,14 @@ static UserContext *_sharedUserContext = nil;
 
 @end
 
-void draw1PxStroke(CGContextRef context, CGPoint startPoint, CGPoint endPoint, CGColorRef color)
+void draw1PxStroke(CGContextRef context, CGPoint startPoint, CGPoint endPoint, CGColorRef color, CGFloat width)
 {
     //    CGFloat dash1[] = {5.0, 2.0};
     CGContextSaveGState(context);
     CGContextSetLineCap(context, kCGLineCapSquare);
     CGContextSetStrokeColorWithColor(context, color);
     //    CGContextSetLineDash(context, 2.0, dash1, 0);
-    CGContextSetLineWidth(context, 4.0);
+    CGContextSetLineWidth(context, width);
     CGContextMoveToPoint(context, startPoint.x + 0.5, startPoint.y + 0.5);
     CGContextAddLineToPoint(context, endPoint.x + 0.5, endPoint.y + 0.5);
     CGContextStrokePath(context);

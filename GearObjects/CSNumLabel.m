@@ -111,7 +111,7 @@
 
 -(void) setTextAlignment:(NSNumber*)alignNum
 {
-    UITextAlignment align;
+    NSTextAlignment align;
     
     if( [alignNum isKindOfClass:[NSNumber class]] )
         align = [alignNum integerValue];
@@ -169,7 +169,6 @@
     [(UILabel*)csView setText:@"0"];
     [(UILabel*)csView setClipsToBounds:YES];
 
-    self.info = NSLocalizedString(@"Number Label", @"Number Label");
     showComma = NO;
     number = 0.0;
     

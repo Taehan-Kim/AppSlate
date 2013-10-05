@@ -7,11 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreMotion/CoreMotion.h>
 #import "CSGearObject.h"
 
-@interface CSAccelero : CSGearObject <UIAccelerometerDelegate>
+@interface CSAccelero : CSGearObject
 {
-    UIAccelerometer *ac;
+    CMMotionManager *ac;
 //	UIAccelerationValue x, y, z;
     BOOL isRun;
 }

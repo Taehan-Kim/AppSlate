@@ -13,8 +13,8 @@
 #import "UARoundedRectView.h"
 
 #define DEFAULT_MARGIN				20.0f
-#define DEFAULT_BACKGROUND_COLOR	[UIColor colorWithWhite:0.0 alpha:0.8]
-#define DEFAULT_CORNER_RADIUS		4.0f
+#define DEFAULT_BACKGROUND_COLOR	[UIColor colorWithWhite:0.2 alpha:0.7]
+#define DEFAULT_CORNER_RADIUS		3.0f
 #define DEFAULT_BORDER_WIDTH		1.5f
 #define DEFAULT_BORDER_COLOR		[UIColor whiteColor]
 #define DEFAULT_BOUNCE				YES
@@ -143,9 +143,9 @@
 - (CGRect)roundedRectFrame {
 
 	return CGRectMake(self.outerMargin + self.frame.origin.x,
-					  self.outerMargin + self.frame.origin.y,
+					  self.outerMargin + self.frame.origin.y  + 20.0,
 					  self.frame.size.width - 2*self.outerMargin,
-					  self.frame.size.height - 2*self.outerMargin);
+					  self.frame.size.height - 2*self.outerMargin - 20.0);
 }
 
 - (CGRect)closeButtonFrame {
@@ -245,7 +245,7 @@
 	// Show the view right away
     [UIView animateWithDuration:0.3
 						  delay:0.0
-						options:UIViewAnimationCurveEaseOut
+						options:UIViewAnimationOptionCurveEaseIn
 					 animations:^{
 						 self.alpha = 1.0;
 						 self.contentContainer.center = self.center;

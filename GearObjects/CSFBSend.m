@@ -176,8 +176,6 @@
     csResizable = NO;
     csShow = NO;
 
-    self.info = NSLocalizedString(@"Facebook Feed", @"Facebook Feed");
-
     name = @"AppSlate";
     caption = @"Check this app.";
     message = @"";

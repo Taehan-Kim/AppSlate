@@ -69,7 +69,7 @@ static SDWebImageManager *instance;
     }
 
     // Check the on-disk cache async so we don't block the main thread
-    NSDictionary *info = @{delegate:@"delegate", url:@"url"};
+    NSDictionary *info = @{@"delegate":delegate, @"url":url};
     [[SDImageCache sharedImageCache] queryDiskCacheForKey:[url absoluteString] delegate:self userInfo:info];
 }
 

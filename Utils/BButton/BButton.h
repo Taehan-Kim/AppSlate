@@ -12,7 +12,7 @@
 @interface BButton : UIView
 {
     UIButton        *btn;
-    CAGradientLayer *gradient;
+//    CAGradientLayer *gradient;
 }
 
 -(void) setTitle:(NSString *)title;

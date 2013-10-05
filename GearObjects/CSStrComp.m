@@ -106,7 +106,6 @@
     csResizable = NO;
     csShow = NO;
 
-    self.info = NSLocalizedString(@"String Compare", @"Str Comp");
     base = @"";
     var = @"";
     

@@ -27,13 +27,14 @@
         
 		self.titleBarHeight = DEFAULT_TITLE_BAR_HEIGHT;
 		
-		CGFloat colors[8] = { 1, 1, 1, 1, 0, 0, 0, 1 };
-		self.titleBar = [UANoisyGradientBackground gradientWithFrame:CGRectZero
-															   style:UAGradientBackgroundStyleLinear
-															   color:colors
-															lineMode:UAGradientLineModeTopAndBottom
-														noiseOpacity:0.2
-														   blendMode:kCGBlendModeNormal];
+//		CGFloat colors[8] = { 1, 1, 1, 1, 0, 0, 0, 1 };
+        self.titleBar = [[UIView alloc] initWithFrame:CGRectZero];
+//		self.titleBar = [UANoisyGradientBackground gradientWithFrame:CGRectZero
+//															   style:UAGradientBackgroundStyleLinear
+//															   color:colors
+//															lineMode:UAGradientLineModeTopAndBottom
+//														noiseOpacity:0.2
+//														   blendMode:kCGBlendModeNormal];
 		
 		[self.roundedRect addSubview:self.titleBar];
 		
@@ -68,9 +69,9 @@
 	CGRect roundedRectFrame = [self roundedRectFrame];
 	CGFloat y = titleBarFrame.origin.y + titleBarFrame.size.height;
 	CGRect rect = CGRectMake(self.outerMargin + self.innerMargin,
-							 self.outerMargin + self.innerMargin + y,
+							 self.outerMargin + self.innerMargin + y + 20,
 							 roundedRectFrame.size.width - 2*self.innerMargin,
-							 roundedRectFrame.size.height - y - 2*self.innerMargin);
+							 roundedRectFrame.size.height - y - 2*self.innerMargin - 20);
 	return rect;
 }
 
@@ -94,7 +95,7 @@
 	UADebugLog(@"Fading in content for modalPanel: %@", self);
 	[UIView animateWithDuration:0.2
 						  delay:0.0
-						options:UIViewAnimationCurveEaseIn
+						options:UIViewAnimationOptionCurveEaseIn
 					 animations:^{
 						 self.contentView.alpha = 1.0;
 						 self.titleBar.alpha = 1.0;

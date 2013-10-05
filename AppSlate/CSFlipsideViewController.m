@@ -10,74 +10,80 @@
 #import "CSFlipsideViewController.h"
 #import "CSGearObject.h"
 
+#define NM  @"name"
+#define DE  @"desc"
+#define IC  @"icon"
+#define TG  @"tag"
+
 @implementation CSFlipsideViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self.contentSizeForViewInPopover = CGSizeMake(320.0, 400.0);
+        self.preferredContentSize = CGSizeMake(320.0, 400.0);
 
         // make up the parts list. one dictionary for one item.
-        NSArray  *keys = @[@"name",@"desc",@"icon",@"tag"];
         gearList = @[
-                    [[NSDictionary alloc] initWithObjects: @[@"Label",@"Simple Text Label", @"gi_label.png", @(CS_LABEL)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Number Label",@"Number/Currency Label", @"gi_numLabel.png", @(CS_NUMLABEL)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Note",@"Text Note - with Evernote backup feature", @"gi_note.png", @(CS_NOTE)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Light Bulb",@"Small bulb which changeable color", @"gi_bulb.png", @(CS_BULB)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Flip Counter",@"Flip animation integer number", @"gi_flipcount.png", @(CS_FLIPCNT)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Text Field",@"User can input some text", @"gi_textfield.png", @(CS_TEXTFIELD)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Button Text Field",@"Input text filed with button", @"gi_textfieldbtn.png", @(CS_BTNTEXTFIELD)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Basic Switch",@"On/Off switch", @"gi_switch.png", @(CS_SWITCH)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Button", @"Basic button", @"gi_button.png", @(CS_BUTTON)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Toggle Button", @"Toggle push button", @"gi_togglebtn.png", @(CS_TOGGLEBTN)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Touch Button", @"On value only when touch status", @"gi_touchbtn.png", @(CS_TOUCHBTN)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Slider", @"Horizontal Bar Slider", @"gi_slider.png", @(CS_SLIDER)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Progress Bar", @"Horizontal Progress Bar", @"gi_progress.png", @(CS_PROGRESS)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Table", @"Basic table view", @"gi_table.png", @(CS_TABLE)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"RSS Table", @"RSS Feed table view", @"gi_rsstable.png", @(CS_RSSTABLE)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Twitter Table", @"Twitter Timeline table view", @"gi_twtable.png", @(CS_TWTABLE)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Image", @"Image view & editor", @"gi_image.png", @(CS_IMAGE)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Web View", @"Internet Web view", @"gi_webview.png", @(CS_WEBVIEW)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Map View", @"Google Map view", @"gi_mapview.png", @(CS_MAPVIEW)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Analog Clock", @"Now time clock, and time editable", @"gi_clock.png", @(CS_CLOCK)] forKeys:keys],
+                    @{NM:NSLocalizedString(@"Text Label", @"Text Label"), DE:NSLocalizedString(@"Simple Text Label",@"tl_s"), IC:@"gi_label.png", TG:@(CS_LABEL)},
+                    @{NM:NSLocalizedString(@"Number Label", @"Number Label"),DE:NSLocalizedString(@"Number/Currency Label",@"nl_s"), IC:@"gi_numLabel.png", TG:@(CS_NUMLABEL)},
+                    @{NM:NSLocalizedString(@"Note", @"Note"),DE:NSLocalizedString(@"Text Note - with Evernote backup feature",@"tn_s"), IC:@"gi_note.png", TG:@(CS_NOTE)},
+                    @{NM:NSLocalizedString(@"Light Bulb", @"Light Bulb"), DE:NSLocalizedString(@"Color light bulb", @"lb_s"), IC:@"gi_bulb.png", TG:@(CS_BULB) },
+                    @{NM:NSLocalizedString(@"Flip Counter", @"Flip Counter"),DE:NSLocalizedString(@"Flip animation integer number",@"fc_s"), IC:@"gi_flipcount.png", TG:@(CS_FLIPCNT)},
+                    @{NM:NSLocalizedString(@"Text Field", @"Text Field"),DE:NSLocalizedString(@"User can input some text",@"tf_s"), IC:@"gi_textfield.png", TG:@(CS_TEXTFIELD)},
+                    @{NM:NSLocalizedString(@"Button Text Field", @"Button Text Field"),DE:NSLocalizedString(@"Input text filed with button",@"tfb_s"),IC:@"gi_textfieldbtn.png", TG:@(CS_BTNTEXTFIELD)},
+                    @{NM:NSLocalizedString(@"Basic Switch", @"Basic Switch"),DE:NSLocalizedString(@"On/Off switch",@""), IC:@"gi_switch.png", TG:@(CS_SWITCH)},
+                    @{NM:NSLocalizedString(@"Button", @"Button"), DE:NSLocalizedString(@"Basic button",@""),IC:@"gi_button.png", TG:@(CS_BUTTON)},
+                    @{NM:NSLocalizedString(@"Toggle Button", @"Toggle Button"), DE:NSLocalizedString(@"Toggle push button",@""), IC:@"gi_togglebtn.png", TG:@(CS_TOGGLEBTN)},
+                    @{NM:NSLocalizedString(@"Touch Button", @"Touch Button"), DE:NSLocalizedString(@"On value only when touch status",@""), IC:@"gi_touchbtn.png", TG:@(CS_TOUCHBTN)},
+                    @{NM:NSLocalizedString(@"Slider", @"Slider"), DE:NSLocalizedString(@"Horizontal Bar Slider",@""), IC:@"gi_slider.png", TG:@(CS_SLIDER)},
+                    @{NM:NSLocalizedString(@"Progress Bar", @"Progress Bar"), DE:NSLocalizedString(@"Horizontal Progress Bar",@""), IC:@"gi_progress.png", TG:@(CS_PROGRESS)},
+                    @{NM:NSLocalizedString(@"Table", @"Table"), DE:NSLocalizedString(@"Basic table view",@""), IC:@"gi_table.png", TG:@(CS_TABLE)},
+                    @{NM:NSLocalizedString(@"RSS Table", @"RSS Table"), DE:NSLocalizedString(@"RSS Feed table view",@""), IC:@"gi_rsstable.png", TG:@(CS_RSSTABLE)},
+                    @{NM:NSLocalizedString(@"Twitter Table", @"Twitter Table"), DE:NSLocalizedString(@"Twitter Timeline table view",@""), IC:@"gi_twtable.png", TG:@(CS_TWTABLE)},
+                    @{NM:NSLocalizedString(@"Image", @"Image"), DE:NSLocalizedString(@"Image view & editor",@""), IC:@"gi_image.png", TG:@(CS_IMAGE)},
+                    @{NM:NSLocalizedString(@"Web View", @"Web View"), DE:NSLocalizedString(@"Internet Web view",@""), IC:@"gi_webview.png", TG:@(CS_WEBVIEW)},
+                    @{NM:NSLocalizedString(@"Map View", @"Map View"), DE:NSLocalizedString(@"Apple Map view",@""), IC:@"gi_mapview.png", TG:@(CS_MAPVIEW)},
+                    @{NM:NSLocalizedString(@"Analog Clock", @"Analog Clock"), DE:NSLocalizedString(@"Now time clock, and time editable",@""), IC:@"gi_clock.png", TG:@(CS_CLOCK)},
                     //  -- -- -- -- -- -- -- -- -- -- -- -- --
-                    [[NSDictionary alloc] initWithObjects:@[@"Alert", @"Popup Alert View", @"gi_alert.png", @(CS_ALERT)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Text Input Alert", @"Popup Alert has Text Field", @"gi_textalert.png", @(CS_TEXTALERT)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"E-Mail Composer", @"E-mail Composer View", @"gi_mail.png", @(CS_MAIL)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Tweet Composer", @"Tweet Composer for Twitter", @"gi_tweet.png", @(CS_TWITSEND)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Facebook Feed", @"Facebook Feed Dialog", @"gi_fbook.png", @(CS_FBSEND)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Photo Album", @"iOS Photo Library", @"gi_album.png", @(CS_ALBUM)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Camera", @"iOS Camera for take a photo", @"gi_cam.png", @(CS_CAMERA)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Tick Generator", @"Tick Signal Generator", @"gi_tick.png", @(CS_TICK)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Now", @"Now Date & Time Value", @"gi_date.png", @(CS_NOW)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Random Number Generator", @"Random number generator", @"gi_rand.png", @(CS_RAND)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Accelerometer", @"Hardware Accelerometer", @"gi_aclo.png", @(CS_ACLOMETER)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Music Player", @"iTunes Music Player", @"gi_play.png", @(CS_PLAY)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Bluetooth P2P", @"Peer to peer  data communicate", @"gi_bluetooth.png", @(CS_BTOOTH)] forKeys:keys],
+                    @{NM:NSLocalizedString(@"Alert View", @"Alert View"), DE:NSLocalizedString(@"Popup Alert View",@""), IC:@"gi_alert.png", TG:@(CS_ALERT)},
+                    @{NM:NSLocalizedString(@"Text Input Alert", @"Text Input Alert"), DE:NSLocalizedString(@"Popup Alert has Text Field",@""), IC:@"gi_textalert.png", TG:@(CS_TEXTALERT)},
+                    @{NM:NSLocalizedString(@"Mail Composer", @"Mail Composer"), DE:NSLocalizedString(@"E-mail Composer View",@""), IC:@"gi_mail.png", TG:@(CS_MAIL)},
+                    @{NM:NSLocalizedString(@"Tweet Composer", @"Tweet Composer"), DE:NSLocalizedString(@"Tweet Composer for Twitter",@""), IC:@"gi_tweet.png", TG:@(CS_TWITSEND)},
+                    @{NM:NSLocalizedString(@"Facebook Feed", @"Facebook Feed"), DE:NSLocalizedString(@"Composer for Facebook Feed",@""), IC:@"gi_fbook.png", TG:@(CS_FBSEND)},
+                    @{NM:NSLocalizedString(@"Weibo Composer", @"Weibo Composer"), DE:NSLocalizedString(@"Composer for Sina Weibo",@""), IC:@"gi_weibo.png", TG:@(CS_WEIBOSEND)},
+                    @{NM:NSLocalizedString(@"Photo Album", @"Photo Album"), DE:NSLocalizedString(@"iOS Photo Library",@""), IC:@"gi_album.png", TG:@(CS_ALBUM)},
+                    @{NM:NSLocalizedString(@"Camera", @"Camera"), DE:NSLocalizedString(@"iOS Camera for take a photo",@""), IC:@"gi_cam.png", TG:@(CS_CAMERA)},
+                    @{NM:NSLocalizedString(@"Tick Signal Generator", @"Tick"), DE:NSLocalizedString(@"Tick Signal Generator", @"Tick sig_"), IC:@"gi_tick.png", TG:@(CS_TICK)},
+                    @{NM:NSLocalizedString(@"Now",@""), DE:NSLocalizedString(@"Now Date & Time", @"Date"), IC:@"gi_date.png", TG:@(CS_NOW)},
+                    @{NM:NSLocalizedString(@"Random Number Generator", @"RAND"), DE:NSLocalizedString(@"Random Number Generator",@"RAND"), IC:@"gi_rand.png", TG:@(CS_RAND)},
+                    @{NM:NSLocalizedString(@"Accelerometer", @"ACLO"), DE:NSLocalizedString(@"Hardware Accelerometer",@""), IC:@"gi_aclo.png", TG:@(CS_ACLOMETER)},
+                    @{NM:NSLocalizedString(@"Music Player", @"Music Player"), DE:NSLocalizedString(@"iTunes Music Player",@""), IC:@"gi_play.png", TG:@(CS_PLAY)},
+                    @{NM:NSLocalizedString(@"Bluetooth P2P connect", @"Bluetooth"), DE:NSLocalizedString(@"Peer to peer data communicate",@""), IC:@"gi_bluetooth.png", TG:@(CS_BTOOTH)},
+                    @{NM:NSLocalizedString(@"AppStore View", @"AppStore View"), DE:NSLocalizedString(@"AppStore View", @"AppStore View"), IC:@"gi_store.png", TG:@(CS_STOREVIEW)},
                 //  -- -- -- -- -- -- -- -- -- -- -- -- --
-                    [[NSDictionary alloc] initWithObjects:@[@"NOT", @"Logical NOT Gate", @"gi_not.png", @(CS_NOT)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"AND", @"Logical AND Gate", @"gi_and.png", @(CS_AND)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"OR", @"Logical OR Gate", @"gi_or.png", @(CS_OR)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"XOR", @"Logical Exclusive OR Gate", @"gi_xor.png", @(CS_XOR)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"NAND", @"Logical NAND Gate", @"gi_nand.png", @(CS_NAND)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"NOR", @"Logical NOR Gate", @"gi_nor.png", @(CS_NOR)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"XNOR", @"Logical Exclusive NOR Gate", @"gi_xnor.png", @(CS_XNOR)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Tee", @"Split input value", @"gi_tee.png", @(CS_TEE)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Number Compare", @"Number Compare and output result", @"gi_numcomp.png", @(CS_NUMCOMP)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"String Compare", @"String Compare and output result", @"gi_strcomp.png", @(CS_STRCOMP)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Calculator", @"Number Calculator", @"gi_calc.png", @(CS_CALC)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"String-Number Converter", @"Convert String to Number", @"gi_atof.png", @(CS_ATOF)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"String Concatenator", @"Link String to String", @"gi_strcat.png", @(CS_STRCAT)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"INT , ABS Function", @"Convert Number Integer or Absolute val.", @"gi_abs.png", @(CS_ABS)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Stack", @"First In, Last Out data pocket", @"gi_stack.png", @(CS_STACK)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Queue", @"First In, First Out data pocket", @"gi_queue.png", @(CS_QUEUE)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Radian/Degree Converter", @"Convert Radian value to Degree or Deg to Rad.", @"gi_raddeg.png", @(CS_RADDEG)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Trigonometric Functions", @"Sine, Cosine, and Tangent function", @"gi_trigono.png", @(CS_TRI)] forKeys:keys],
+                    @{NM:@"NOT", DE:NSLocalizedString(@"Logical NOT", @"Not"), IC:@"gi_not.png", TG:@(CS_NOT)},
+                    @{NM:@"AND", DE:NSLocalizedString(@"Logical AND", @"AND"), IC:@"gi_and.png", TG:@(CS_AND)},
+                    @{NM:@"OR", DE:NSLocalizedString(@"Logical OR", @"OR"), IC:@"gi_or.png", TG:@(CS_OR)},
+                    @{NM:@"XOR", DE:NSLocalizedString(@"Logical Exclusive OR", @"XOR"), IC:@"gi_xor.png", TG:@(CS_XOR)},
+                    @{NM:@"NAND", DE:NSLocalizedString(@"Logical NAND", @"NAND"), IC:@"gi_nand.png", TG:@(CS_NAND)},
+                    @{NM:@"NOR", DE:NSLocalizedString(@"Logical NOR", @"NOR"), IC:@"gi_nor.png", TG:@(CS_NOR)},
+                    @{NM:@"XNOR", DE:NSLocalizedString(@"Logical Exclusive NOR", @"XNOR"), IC:@"gi_xnor.png", TG:@(CS_XNOR)},
+                    @{NM:NSLocalizedString(@"Tee", @"Tee"), DE:NSLocalizedString(@"Split input value",@""), IC:@"gi_tee.png", TG:@(CS_TEE)},
+                    @{NM:NSLocalizedString(@"Number Compare", @"Num Comp"), DE:NSLocalizedString(@"Number Compare and output result",@""), IC:@"gi_numcomp.png", TG:@(CS_NUMCOMP)},
+                    @{NM:NSLocalizedString(@"String Compare", @"Str Comp"), DE:NSLocalizedString(@"String Compare and output result",@""), IC:@"gi_strcomp.png", TG:@(CS_STRCOMP)},
+                    @{NM:NSLocalizedString(@"Calculator + - x /", @"calc"), DE:NSLocalizedString(@"Number Calculator",@""), IC:@"gi_calc.png", TG:@(CS_CALC)},
+                    @{NM:NSLocalizedString(@"String-Number Converter",@"sc-n conv"), DE:NSLocalizedString(@"Convert string to number", @"ATOF"), IC:@"gi_atof.png", TG:@(CS_ATOF)},
+                    @{NM:NSLocalizedString(@"String Linker", @"strcat"), DE:NSLocalizedString(@"Link String to String",@""), IC:@"gi_strcat.png", TG:@(CS_STRCAT)},
+                    @{NM:NSLocalizedString(@"ABS and INT function", @"ABS"), DE:NSLocalizedString(@"Convert Number Integer or Absolute val.",@""), IC:@"gi_abs.png", TG:@(CS_ABS)},
+                    @{NM:NSLocalizedString(@"Stack Data Structure", @"Stack"), DE:NSLocalizedString(@"First In, Last Out data pocket",@""), IC:@"gi_stack.png", TG:@(CS_STACK)},
+                    @{NM:NSLocalizedString(@"Queue Data Structure", @"Queue"), DE:NSLocalizedString(@"First In, First Out data pocket",@""), IC:@"gi_queue.png", TG:@(CS_QUEUE)},
+                    @{NM:NSLocalizedString(@"Radian/Degree Converter", @"RadDeg"), DE:NSLocalizedString(@"Convert Radian value to Degree or Deg to Rad.",@""), IC:@"gi_raddeg.png", TG:@(CS_RADDEG)},
+                    @{NM:NSLocalizedString(@"Trigonometric Functions", @"Trigonometric"), DE:NSLocalizedString(@"Sine, Cosine, and Tangent function",@""), IC:@"gi_trigono.png", TG:@(CS_TRI)},
                     //
-                    [[NSDictionary alloc] initWithObjects:@[@"Rectangular", @"Rectangular Decoration", @"gi_rect.png", @(CS_RECT)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects:@[@"Horizontal Line", @"Horizontal Line Decoration", @"gi_hline.png", @(CS_LINE_H)] forKeys:keys],
-                    [[NSDictionary alloc] initWithObjects: @[@"Vertical Line", @"Vertical Line Decoration", @"gi_vline.png", @(CS_LINE_V)] forKeys:keys]
+                    @{NM:NSLocalizedString(@"Rectangular", @"Rectangular"), DE:NSLocalizedString(@"Rectangular Decoration",@""), IC:@"gi_rect.png", TG:@(CS_RECT)},
+                    @{NM:NSLocalizedString(@"Horizontal Line", @"H Line"), DE:NSLocalizedString(@"Horizontal Line Decoration",@""), IC:@"gi_hline.png", TG:@(CS_LINE_H)},
+                    @{NM:NSLocalizedString(@"Vertical Line", @"V Line"), DE:NSLocalizedString(@"Vertical Line Decoration",@""), IC:@"gi_vline.png", TG:@(CS_LINE_V)}
         ];
         
     }
@@ -178,9 +184,9 @@
     }
 
     NSDictionary *cellDic = gearList[indexPath.row];
-    [cell.textLabel setText:cellDic[@"name"]];
-    [cell.detailTextLabel setText:cellDic[@"desc"]];
-    [cell.imageView setImage:[UIImage imageNamed:cellDic[@"icon"]]];
+    [cell.textLabel setText:cellDic[NM]];
+    [cell.detailTextLabel setText:cellDic[DE]];
+    [cell.imageView setImage:[UIImage imageNamed:cellDic[IC]]];
 
     return cell;
 }

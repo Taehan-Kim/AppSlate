@@ -143,7 +143,6 @@
     csResizable = NO;
     csShow = NO;
 
-    self.info = NSLocalizedString(@"String Linker", @"strcat");
     str1 = @"";
     str2 = @"";
     str3 = @"";

@@ -36,4 +36,17 @@
 	[activityIndicationView startAnimating];
 }
 
+- (void) setProgress:(CGFloat) progress
+{
+    if( nil == progressBox ) {
+        progressBox = [[UIView alloc] initWithFrame:self.bounds];
+        [progressBox setBackgroundColor:[UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.9]];
+        [self insertSubview:progressBox belowSubview:activityIndicationView];
+    }
+
+    if( 0 > progress || 1 < progress ) return;
+
+    [progressBox setFrame:CGRectOffset(self.bounds, 0, self.bounds.size.height - (self.bounds.size.height * progress))];
+}
+
 @end

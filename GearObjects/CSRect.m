@@ -109,8 +109,6 @@
 
     csCode = CS_RECT;
 
-    self.info = NSLocalizedString(@"Rectangular", @"Rectangular");
-
     DEFAULT_CENTER_D;
     NSDictionary *d0 = ALPHA_D;
     NSDictionary *d1 = MAKE_PROPERTY_D(@">Width", P_NUM, @selector(setWidth:),@selector(getWidth));

@@ -96,7 +96,6 @@
 
     [((BButton*)csView) setTitle:@"Button"];
     [(BButton*)csView addTarget:self action:@selector(pushAction)];
-    self.info = NSLocalizedString(@"Button", @"Button");
 
     DEFAULT_CENTER_D;
     NSDictionary *d0 = ALPHA_D;

@@ -128,7 +128,7 @@
 	}
 	else {
 		// iPad UI
-		self.contentSizeForViewInPopover = CGSizeMake(320.0, 330.0);
+		self.preferredContentSize = CGSizeMake(320.0, 310.0);
 	}
 }
 

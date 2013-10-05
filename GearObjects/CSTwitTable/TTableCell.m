@@ -32,7 +32,10 @@
         [self addSubview:nameLabel];
 
         tText = [[UITextView alloc] initWithFrame:CGRectMake(50, nameLabel.frame.size.height+10, nameLabel.frame.size.width-50, self.frame.size.height - (nameLabel.frame.size.height+10))];
-        [tText setFont:CS_FONT(15)];
+        if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
+            [tText setFont:CS_FONT(12)];
+        else
+            [tText setFont:CS_FONT(11)];
         [tText setUserInteractionEnabled:NO];
         [tText setEditable:NO];
         [tText setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];

@@ -67,7 +67,7 @@
 
 -(void) setTextAlignment:(NSNumber*)alignNum
 {
-    UITextAlignment align;
+    NSTextAlignment align;
 
     if( [alignNum isKindOfClass:[NSNumber class]] )
         align = [alignNum integerValue];
@@ -136,10 +136,8 @@
 
     ((UILabel*)csView).textColor = [UIColor blackColor];
     ((UILabel*)csView).font = CS_FONT(16);
-    [(UILabel*)csView setText:@"Text Label"];
+    [(UILabel*)csView setText:NSLocalizedString(@"Text Label", @"Text Label")];
     [(UILabel*)csView setClipsToBounds:YES];
-
-    self.info = NSLocalizedString(@"Text Label", @"Text Label");
 
     DEFAULT_CENTER_D;
     NSDictionary *d0 = ALPHA_D;

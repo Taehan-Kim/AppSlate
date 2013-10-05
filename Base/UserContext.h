@@ -20,6 +20,7 @@
 }
 
 @property (nonatomic, strong)   NSString        *appName;
+@property (nonatomic, strong)   NSString        *parseId;
 @property (nonatomic, strong)   NSMutableArray  *gearsArray;
 @property (nonatomic, strong)   id pop;
 @property (nonatomic, strong)   NSArray         *wallpapers;
@@ -34,10 +35,11 @@
 
 - (void) startWaitView: (NSInteger) yDeltaPos;
 - (void) stopWaitView;
+- (void) updateWaitView: (NSUInteger) percentValue;
 - (void) errorTik:(CSGearObject*)obj;
 
 -(CSGearObject*) getGearWithMagicNum:(NSUInteger) magicNum;
 
 @end
 
-void draw1PxStroke(CGContextRef context, CGPoint startPoint, CGPoint endPoint, CGColorRef color);
+void draw1PxStroke(CGContextRef context, CGPoint startPoint, CGPoint endPoint, CGColorRef color, CGFloat width);

@@ -70,8 +70,6 @@
     csResizable = NO;
     csShow = NO;
 
-    self.info = NSLocalizedString(@"Convert string to number", @"ATOF");
-
     NSDictionary *d1 = MAKE_PROPERTY_D(@">Input Text", P_TXT, @selector(setInputString:),@selector(getInputString));
     pListArray = @[d1];
 

@@ -85,13 +85,38 @@
 
 - (void)setEdit:(NSNumber*) BoolValue
 {
-    if( ![BoolValue boolValue] )
+    if( ![BoolValue boolValue] || nil == ((UIImageView*)csView).image )
         return;
 
     AFPhotoEditorController *editorController = [[AFPhotoEditorController alloc] initWithImage:((UIImageView*)csView).image];
     [editorController setDelegate:self];
     [((CSAppDelegate*)([UIApplication sharedApplication].delegate)).window.rootViewController
      presentViewController:editorController animated:YES completion:NULL];
+}
+
+- (BOOL)getEdit
+{
+    return NO;
+}
+
+- (void) setSave:(NSNumber*) BoolValue
+{
+    if( ![BoolValue boolValue] || nil == ((UIImageView*)csView).image )
+        return;
+
+    UIImageWriteToSavedPhotosAlbum(((UIImageView*)csView).image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+    START_WAIT_VIEW;
+}
+
+- (BOOL)getSave
+{
+    return NO;
+}
+
+- (void) image:(UIImage *)image didFinishSavingWithError: (NSError *) error
+                 contextInfo: (void *) contextInfo
+{
+    STOP_WAIT_VIEW;
 }
 
 #pragma mark -
@@ -108,15 +133,14 @@
     csCode = CS_IMAGE;
     isUIObj = YES;
 
-    self.info = NSLocalizedString(@"Image", @"Image");
-
     DEFAULT_CENTER_D;
     NSDictionary *d0 = ALPHA_D;
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Image", P_IMG, @selector(setImage:),@selector(getImage));
     NSDictionary *d2 = MAKE_PROPERTY_D(@"Aspect Fit", P_BOOL, @selector(setAspectFit:),@selector(getAspectFit));
     NSDictionary *d3 = MAKE_PROPERTY_D(@"Background Color", P_COLOR, @selector(setBackgroundColor:),@selector(getBackgroundColor));
     NSDictionary *d4 = MAKE_PROPERTY_D(@">Edit Action", P_BOOL, @selector(setEdit:), @selector(getEdit));
-    pListArray = @[xc,yc,d0,d1,d2,d3,d4];
+    NSDictionary *d5 = MAKE_PROPERTY_D(@">Save to Album", P_BOOL, @selector(setSave:), @selector(getSave));
+    pListArray = @[xc,yc,d0,d1,d2,d3,d4,d5];
 
 
     NSMutableDictionary MAKE_ACTION_D(@"Changed Image", A_IMG, a1);

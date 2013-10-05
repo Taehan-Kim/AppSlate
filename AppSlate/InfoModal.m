@@ -35,7 +35,7 @@
             [self.headerLabel setFont:CS_FONT(13)];
         }
 
-        self.headerLabel.text = @"About AppSlate";
+        self.headerLabel.text = NSLocalizedString(@"About AppSlate",@"about title");
 
         UIImageView *icon;
         UILabel *versionLabel, *itemLabel, *infoLabel, *twLabel, *eLabel;
@@ -83,7 +83,7 @@
         [itemLabel setBackgroundColor:CSCLEAR];
         [itemLabel setFont:CS_FONT(15)];
         [itemLabel setTextColor:[UIColor lightGrayColor]];
-        [itemLabel setText:[NSString stringWithFormat:@"2012 Chocolate Soft"]];
+        [itemLabel setText:[NSString stringWithFormat:@"2013 Chocolate Soft"]];
 
         [infoLabel setBackgroundColor:CSCLEAR];
         [infoLabel setFont:CS_FONT(15)];
@@ -131,7 +131,7 @@
         {
             UIButton *tBtn = [[UIButton alloc] initWithFrame:CGRectMake(145, 260+110, 300, 30)];
             [tBtn setBackgroundColor:CS_RGBA(0, 10, 200, 0.4)];
-            [tBtn setTitle:@"Tutorial - Making 'Tip Calculator'" forState:UIControlStateNormal];
+            [tBtn setTitle:NSLocalizedString(@"Tutorial - Making 'Tip Calculator'",@"") forState:UIControlStateNormal];
             [tBtn.titleLabel setFont:CS_FONT(15)];
             [tBtn.titleLabel setTextColor:[UIColor blueColor]];
             [tBtn addTarget:self action:@selector(gotoTutorial1:) forControlEvents:UIControlEventTouchUpInside];
@@ -139,7 +139,7 @@
 
             UIButton *t2Btn = [[UIButton alloc] initWithFrame:CGRectMake(145, 260+160, 300, 30)];
             [t2Btn setBackgroundColor:CS_RGBA(0, 10, 200, 0.4)];
-            [t2Btn setTitle:@"Tutorial - Making 'Twitter Check App'" forState:UIControlStateNormal];
+            [t2Btn setTitle:NSLocalizedString(@"Tutorial - Making 'Twitter Check App'",@"") forState:UIControlStateNormal];
             [t2Btn.titleLabel setFont:CS_FONT(15)];
             [t2Btn.titleLabel setTextColor:[UIColor blueColor]];
             [t2Btn addTarget:self action:@selector(gotoTutorial2:) forControlEvents:UIControlEventTouchUpInside];
@@ -227,9 +227,9 @@
 			message = NSLocalizedString(@"I Can not send the mail now.",@"mail cant");
 			break;
 	}
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"E-Mail to Developer"
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"E-Mail to Developer",@"mail alert title")
 													message:message
-												   delegate:nil cancelButtonTitle:@"Confirm"
+												   delegate:nil cancelButtonTitle:NSLocalizedString(@"Confirm",@"Confirm")
 										  otherButtonTitles: nil];
 	[alert show];
 

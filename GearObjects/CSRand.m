@@ -97,8 +97,6 @@
     minValue = 0.0;
     maxValue = 10.0;
 
-    self.info = NSLocalizedString(@"Random Number Generator", @"RAND");
-    
     NSDictionary *d1 = MAKE_PROPERTY_D(@">Output Request", P_BOOL, @selector(setRequest:),@selector(getRequest));
     NSDictionary *d2 = MAKE_PROPERTY_D(@"Minimum Int. Value", P_NUM, @selector(setMinValue:),@selector(getMinValue));
     NSDictionary *d3 = MAKE_PROPERTY_D(@"Maximum Int. Value", P_NUM, @selector(setMaxValue:),@selector(getMaxValue));
