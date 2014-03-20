@@ -18,7 +18,7 @@
 
 //===========================================================================
 
--(void) setShowList:(NSNumber*)BoolValue
+-(void) setShowListAction:(NSNumber*)BoolValue
 {
     if( USERCONTEXT.imRunning )
     {
@@ -37,7 +37,7 @@
     return @NO;
 }
 
--(void) setPlayNStop:(NSNumber*)BoolValue
+-(void) setPlayNStopAction:(NSNumber*)BoolValue
 {
     if( USERCONTEXT.imRunning )
     {
@@ -98,7 +98,7 @@
     return@(MPMusicRepeatModeNone != [musicPlayer repeatMode]);
 }
 
--(void) setSkipToNext:(NSNumber*)BoolValue
+-(void) setSkipToNextAction:(NSNumber*)BoolValue
 {
     if( ![BoolValue boolValue] ) return;
     
@@ -110,7 +110,7 @@
     return @NO;
 }
 
--(void) setSkipToPre:(NSNumber*)BoolValue
+-(void) setSkipToPreAction:(NSNumber*)BoolValue
 {
     if( ![BoolValue boolValue] ) return;
 
@@ -146,7 +146,7 @@
 
 -(id) initGear
 {
-    if( ![super init] ) return nil;
+    if( !(self = [super init]) ) return nil;
     
     csView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 33, 33)];
     [(UIImageView*)csView setImage:[UIImage imageNamed:@"gi_play.png"]];
@@ -160,12 +160,12 @@
     musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
     [self registerMediaPlayerNotifications];
 
-    NSDictionary *d1 = MAKE_PROPERTY_D(@">Show List Action", P_BOOL, @selector(setShowList:),@selector(getShowList));
-    NSDictionary *d2 = MAKE_PROPERTY_D(@">Play or Stop", P_BOOL, @selector(setPlayNStop:),@selector(getPlayNStop));
+    NSDictionary *d1 = MAKE_PROPERTY_D(@">Show List Action", P_BOOL, @selector(setShowListAction:),@selector(getShowList));
+    NSDictionary *d2 = MAKE_PROPERTY_D(@">Play or Stop", P_BOOL, @selector(setPlayNStopAction:),@selector(getPlayNStop));
     NSDictionary *d3 = MAKE_PROPERTY_D(@"Soungs Shuffle On", P_BOOL, @selector(setShuffleMode:),@selector(getShuffleMode));
     NSDictionary *d4 = MAKE_PROPERTY_D(@"Soung Repeat On", P_BOOL, @selector(setRepeatMode:),@selector(getRepeatMode));
-    NSDictionary *d5 = MAKE_PROPERTY_D(@">Skip to Next Item", P_BOOL, @selector(setSkipToNext:),@selector(getSkipToNext));
-    NSDictionary *d6 = MAKE_PROPERTY_D(@">Skip to Previous Item", P_BOOL, @selector(setSkipToPre:),@selector(getSkipToPre));
+    NSDictionary *d5 = MAKE_PROPERTY_D(@">Skip to Next Item", P_BOOL, @selector(setSkipToNextAction:),@selector(getSkipToNext));
+    NSDictionary *d6 = MAKE_PROPERTY_D(@">Skip to Previous Item", P_BOOL, @selector(setSkipToPreAction:),@selector(getSkipToPre));
     pListArray = @[d1,d2,d3,d4,d5,d6];
 
     NSMutableDictionary MAKE_ACTION_D(@"Play or Stop", A_NUM, a1);
@@ -330,5 +330,140 @@
 //{
 //    [musicPlayer setVolume:[volumeSlider value]];
 //}
+
+#pragma mark - Code Generator
+
+// If not supported gear, return NO.
+-(BOOL) setDefaultVarName:(NSString *) _name
+{
+    return [super setDefaultVarName:NSStringFromClass([self class])];
+}
+
+-(NSString*) sdkClassName
+{
+    return @"MPMusicPlayerController";
+}
+
+-(NSArray*) importLinesCode
+{
+    return @[@"<MediaPlayer/MediaPlayer.h>"];
+}
+
+-(NSString*) delegateName
+{
+    return @"MPMediaPickerControllerDelegate";
+}
+
+-(NSString*) customClass
+{
+    return [NSString stringWithFormat:@"    *%@ = [MPMusicPlayerController iPodMusicPlayer];\n\
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];\n\
+    [notificationCenter addObserver: self\n\
+                           selector: @selector (handle_NowPlayingItemChanged:)\n\
+                               name: MPMusicPlayerControllerNowPlayingItemDidChangeNotification\n\
+                             object: musicPlayer];\n\
+    [notificationCenter addObserver: self\n\
+                           selector: @selector (handle_PlaybackStateChanged:)\n\
+                               name: MPMusicPlayerControllerPlaybackStateDidChangeNotification\n\
+                             object: musicPlayer];\n\
+    [%@ beginGeneratingPlaybackNotifications];\n",varName,varName];
+}
+
+-(NSArray*) delegateCodes
+{
+    SEL act;
+    NSNumber *nsMagicNum;
+
+    NSMutableString *code1 = [[NSMutableString alloc] initWithCapacity:50];
+    [code1 appendFormat:@"    MPMusicPlaybackState playbackState = [%@ playbackState];\n\
+     if (playbackState == MPMusicPlaybackStateStopped)\n        [%@ stop];\n", varName, varName];
+    
+    act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
+    if( act )
+    {
+        nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
+        CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+        const char *sel_name_c = sel_getName(act);
+        [code1 appendFormat:@"        [%@ %@@(playbackState)];\n",[gObj getVarName],@(sel_name_c)];
+    }
+
+    NSMutableString *code2 = [[NSMutableString alloc] initWithCapacity:50];
+    
+    act = ((NSValue*)((NSDictionary*)actionArray[1])[@"selector"]).pointerValue;
+    if( act )
+    {
+        nsMagicNum = ((NSDictionary*)actionArray[1])[@"mNum"];
+        CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+        const char *sel_name_c = sel_getName(act);
+        
+        [code2 appendFormat:@"        [%@ %@[currentItem valueForProperty:MPMediaItemPropertyTitle]];\n",[gObj getVarName],@(sel_name_c)];
+    }
+
+    act = ((NSValue*)((NSDictionary*)actionArray[2])[@"selector"]).pointerValue;
+    if( act )
+    {
+        nsMagicNum = ((NSDictionary*)actionArray[2])[@"mNum"];
+        CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+        const char *sel_name_c = sel_getName(act);
+        
+        [code2 appendFormat:@"        [%@ %@[currentItem MPMediaItemPropertyArtist]];\n",[gObj getVarName],@(sel_name_c)];
+    }
+
+    act = ((NSValue*)((NSDictionary*)actionArray[3])[@"selector"]).pointerValue;
+    if( act )
+    {
+        nsMagicNum = ((NSDictionary*)actionArray[3])[@"mNum"];
+        CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+        const char *sel_name_c = sel_getName(act);
+        
+        [code2 appendFormat:@"        [%@ %@[currentItem MPMediaItemPropertyAlbumTitle]];\n",[gObj getVarName],@(sel_name_c)];
+    }
+
+    act = ((NSValue*)((NSDictionary*)actionArray[4])[@"selector"]).pointerValue;
+    if( act )
+    {
+        nsMagicNum = ((NSDictionary*)actionArray[4])[@"mNum"];
+        CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+        const char *sel_name_c = sel_getName(act);
+        
+        [code2 appendFormat:@"        [%@ %@[currentItem MPMediaItemPropertyArtwork]];\n",[gObj getVarName],@(sel_name_c)];
+    }
+
+    return @[@"- (void) mediaPicker: (MPMediaPickerController *) mediaPicker didPickMediaItems: (MPMediaItemCollection *) mediaItemCollection\n{\n",
+    [NSString stringWithFormat:@"    if (mediaItemCollection)\n    {\n\
+        [%@ setQueueWithItemCollection: mediaItemCollection];\n\
+        [%@ play];\n    }\n\n\
+        [mediaPicker dismissViewControllerAnimated:YES completion:NULL];\n",varName,varName],@"    }\n\n",
+@"- (void) mediaPickerDidCancel: (MPMediaPickerController *) mediaPicker\n{\n",
+    [NSString stringWithFormat:@"    [%@ dismissViewControllerAnimated:YES completion:NULL];\n",varName],@"}\n",
+         @"- (void) handle_PlaybackStateChanged: (id) notification\n{\n",code1,@"}\n\n",
+         @"- (void) handle_NowPlayingItemChanged: (id) notification\n{\n    MPMediaItem *currentItem = [musicPlayer nowPlayingItem];\n",code2,@"}\n\n"];
+}
+
+-(NSString*) actionPropertyCode:(NSString*)apName valStr:(NSString *)val
+{
+    if( [apName isEqualToString:@"setShowListAction:"] ){
+        
+        return @"MPMediaPickerController *mediaPicker = [[MPMediaPickerController alloc] initWithMediaTypes: MPMediaTypeMusic];\n\n\
+    mediaPicker.delegate = self;\n\
+    mediaPicker.allowsPickingMultipleItems = YES;\n\
+    mediaPicker.prompt = @\"Select songs to play\";\n\
+    [self presentViewController:mediaPicker animated:YES completion:NULL];\n";
+    }
+
+    if( [apName isEqualToString:@"setPlayNStopAction:"] ) {
+        return [NSString stringWithFormat:@"if ([%@ playbackState] == MPMusicPlaybackStatePlaying)\n        [%@ pause];\n    else\n        [%@ stop];\n", varName, varName, varName];
+    }
+
+    if( [apName isEqualToString:@"setSkipToNextAction:"] ) {
+        return [NSString stringWithFormat:@"[%@ skipToNextItem];", varName];
+    }
+
+    if( [apName isEqualToString:@"setSkipToPreAction:"] ) {
+        return [NSString stringWithFormat:@"[%@ skipToPreviousItem];", varName];
+    }
+
+    return nil;
+}
 
 @end

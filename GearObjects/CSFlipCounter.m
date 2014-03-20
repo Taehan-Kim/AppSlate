@@ -68,7 +68,7 @@
 
 -(id) initGear
 {
-    if( ![super init] ) return nil;
+    if( !(self = [super init]) ) return nil;
     
     csView = [[FlipCounterView alloc] initWithFrame:CGRectMake(0, 0, 110, H_SIZE)];
     [csView setBackgroundColor:[UIColor clearColor]];
@@ -180,6 +180,19 @@
                 EXCLAMATION;
         }
     }
+}
+
+#pragma mark - Code Generator
+
+// If not supported gear, return NO.
+-(BOOL) setDefaultVarName:(NSString *) _name
+{
+    return NO;
+}
+
+-(NSString*) sdkClassName
+{
+    return @"";
 }
 
 @end

@@ -130,6 +130,10 @@
 
     // is iOS UI object or not
     BOOL    isUIObj;
+
+
+    // Code Generator
+    NSString *varName;
 }
 
 -(id) object;
@@ -169,4 +173,19 @@
 -(NSNumber*) getAlpha;
 -(void) setAlpha:(NSNumber*) alphaValue;
 
+#pragma mark - for Code Generator
+
+#define  NO_FIRST_ALLOC   @"no alloc in viewDidLoad"
+
+-(NSString*) getVarName;
+-(void) setVarName:(NSString *) newName;
+-(BOOL) setDefaultVarName:(NSString *) _name;
+-(NSArray*) importLinesCode;
+-(NSString*) sdkClassName;
+-(NSString*) delegateName;
+-(NSArray*) delegateCodes;
+-(NSString*) customClass;
+-(NSString*) addTargetCode;
+-(NSString*) actionCode;
+-(NSString*) actionPropertyCode:(NSString*)apName valStr:(NSString*)val;
 @end

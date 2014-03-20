@@ -17,14 +17,14 @@
 -(void) setImage:(UIImage*) imageD;
 -(UIImage*) getImage;
 
--(void) setSave:(NSNumber*) boolValue;
+-(void) setSaveAction:(NSNumber*) boolValue;
 -(BOOL) getSave;
 
--(void) setEdit:(NSNumber*) boolValue;
+-(void) setEditAction:(NSNumber*) boolValue;
 -(BOOL) getEdit;
 
--(void) setAspectFit:(NSNumber*) boolValue;
--(NSNumber*) getAspectFit;
+-(void) setContentMode:(NSNumber*) boolValue;
+-(NSNumber*) getContentMode;
 
 -(void) setBackgroundColor:(UIColor*)color;
 -(UIColor*) getBackgroundColor;

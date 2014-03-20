@@ -24,7 +24,6 @@
 
     if( [txt isKindOfClass:[NSString class]] )
         value = [(NSString*)txt floatValue];
-
     else if([txt isKindOfClass:[NSNumber class]] )
         value = [txt floatValue];
     else {
@@ -156,7 +155,7 @@
 
 -(id) initGear
 {
-    if( ![super init] ) return nil;
+    if( !(self = [super init]) ) return nil;
     
     csView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 300, MINSIZE)];
     [csView setBackgroundColor:[UIColor whiteColor]];
@@ -202,4 +201,71 @@
     [encoder encodeBool:showComma forKey:@"showComma"];
     [encoder encodeFloat:number forKey:@"number"];
 }
+
+#pragma mark - Code Generator
+
+-(NSArray*) importLinesCode
+{
+    return @[@"\"CSNumLabel.h\""];
+}
+
+// If not supported gear, return NO.
+-(BOOL) setDefaultVarName:(NSString *) _name
+{
+    return [super setDefaultVarName:NSStringFromClass([self class])];
+}
+
+-(NSString*) sdkClassName
+{
+    return @"CSNumLabel";
+}
+
+// 커스텀 클래스가 필요한 경우. 이 클래스의 get/set 메소드들은 모두 실제 CSGear 에서 사용하는 것과 같은 이름으로 사용하도록 한다. 코드 자동 생성기가 메소드 이름을 가지고 코드를 만들 수 있게 하기 위해서이다.
+-(NSString*) customClass
+{
+    NSString *r = @"\n\n// CSNumLabel class\n//\n@interface CSNumLabel : UILabel\n\{\n\
+    BOOL showComma;\n    CGFloat number;\n}\n\
+-(void) setNumber:(NSNumber*)num;\n-(NSNumber*) getNumber;\n\
+-(void) setCurrencyStyle:(BOOL)cstyle;\n-(BOOL) getCurrencyStyle;\n@end\n\n\
+@implementation CSNumLabel\n\n\
+-(id)init{\n    if(self=[super init]){\n\
+    }\n    return self;\n}\n\n\
+-(void) setNumber:(NSNumber*)num\n{\n\
+    CGFloat value;\n\n\
+    if( [num isKindOfClass:[NSString class]] )\n\
+        value = [(NSString*)num floatValue];\n\
+    else if([txt isKindOfClass:[NSNumber class]] )\n\
+        value = [txt floatValue];\n\
+    else\n        return;\n\n\
+    if( HUGE_VALF == value || -HUGE_VALF == value )\n        return;\n\n\
+    number = value;\n\n\
+    if( showComma ) {\n\
+        NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];\n\
+        [numberFormatter setNumberStyle: NSNumberFormatterCurrencyStyle];\n\
+        [self setText:[numberFormatter stringFromNumber:@(number)] ];\n    }\n\
+    else\n\
+        [self setText:[NSString stringWithFormat:@\"%%f\",number]];\n\
+}\n\
+-(NSNumber*) getNumber\n{\n\
+    return @(number);\n}\n\n\
+-(void) setShowComma:(NSNumber*)BoolValue\n{\n\
+    if( [BoolValue isKindOfClass:[NSNumber class]] )\n\
+        showComma = [BoolValue boolValue];\n\
+    else\n        return;\n\n\
+    if( showComma ) {\n\
+        NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];\n\
+        [numberFormatter setNumberStyle: NSNumberFormatterCurrencyStyle];\n\
+        [self setText:[numberFormatter stringFromNumber:@(number)] ];\n\
+    }\n\
+    else\n\
+        [self setText:[NSString stringWithFormat:@\"%%f\",number]];\n\n\
+}\n\n\
+-(NSNumber*) getShowComma\n{\n\
+    return @(showComma);\n\
+}\n\n\
+@end\n\n";
+    
+    return r;
+}
+
 @end

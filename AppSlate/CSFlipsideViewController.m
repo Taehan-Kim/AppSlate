@@ -27,7 +27,7 @@
         gearList = @[
                     @{NM:NSLocalizedString(@"Text Label", @"Text Label"), DE:NSLocalizedString(@"Simple Text Label",@"tl_s"), IC:@"gi_label.png", TG:@(CS_LABEL)},
                     @{NM:NSLocalizedString(@"Number Label", @"Number Label"),DE:NSLocalizedString(@"Number/Currency Label",@"nl_s"), IC:@"gi_numLabel.png", TG:@(CS_NUMLABEL)},
-                    @{NM:NSLocalizedString(@"Note", @"Note"),DE:NSLocalizedString(@"Text Note - with Evernote backup feature",@"tn_s"), IC:@"gi_note.png", TG:@(CS_NOTE)},
+                    @{NM:NSLocalizedString(@"Note", @"Note"),DE:NSLocalizedString(@"Text Note",@"tn_s"), IC:@"gi_note.png", TG:@(CS_NOTE)},
                     @{NM:NSLocalizedString(@"Light Bulb", @"Light Bulb"), DE:NSLocalizedString(@"Color light bulb", @"lb_s"), IC:@"gi_bulb.png", TG:@(CS_BULB) },
                     @{NM:NSLocalizedString(@"Flip Counter", @"Flip Counter"),DE:NSLocalizedString(@"Flip animation integer number",@"fc_s"), IC:@"gi_flipcount.png", TG:@(CS_FLIPCNT)},
                     @{NM:NSLocalizedString(@"Text Field", @"Text Field"),DE:NSLocalizedString(@"User can input some text",@"tf_s"), IC:@"gi_textfield.png", TG:@(CS_TEXTFIELD)},
@@ -59,7 +59,7 @@
                     @{NM:NSLocalizedString(@"Random Number Generator", @"RAND"), DE:NSLocalizedString(@"Random Number Generator",@"RAND"), IC:@"gi_rand.png", TG:@(CS_RAND)},
                     @{NM:NSLocalizedString(@"Accelerometer", @"ACLO"), DE:NSLocalizedString(@"Hardware Accelerometer",@""), IC:@"gi_aclo.png", TG:@(CS_ACLOMETER)},
                     @{NM:NSLocalizedString(@"Music Player", @"Music Player"), DE:NSLocalizedString(@"iTunes Music Player",@""), IC:@"gi_play.png", TG:@(CS_PLAY)},
-                    @{NM:NSLocalizedString(@"Bluetooth P2P connect", @"Bluetooth"), DE:NSLocalizedString(@"Peer to peer data communicate",@""), IC:@"gi_bluetooth.png", TG:@(CS_BTOOTH)},
+                    @{NM:NSLocalizedString(@"Multi-connect", @"Multi-connect"), DE:NSLocalizedString(@"Nearby text communicate",@""), IC:@"gi_bluetooth.png", TG:@(CS_BTOOTH)},
                     @{NM:NSLocalizedString(@"AppStore View", @"AppStore View"), DE:NSLocalizedString(@"AppStore View", @"AppStore View"), IC:@"gi_store.png", TG:@(CS_STOREVIEW)},
                 //  -- -- -- -- -- -- -- -- -- -- -- -- --
                     @{NM:@"NOT", DE:NSLocalizedString(@"Logical NOT", @"Not"), IC:@"gi_not.png", TG:@(CS_NOT)},
@@ -181,6 +181,7 @@
     cell = [tView dequeueReusableCellWithIdentifier:@"listCell"];
     if( nil == cell ){
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"listCell"];
+        [cell.backgroundView setBackgroundColor:[UIColor whiteColor]];
     }
 
     NSDictionary *cellDic = gearList[indexPath.row];

@@ -16,10 +16,10 @@
 
 -(id) initGear;
 
--(void) setBaseValue:(NSNumber*) value;
--(NSNumber*) getBaseValue;
+-(void) setInput1Value:(NSNumber*) value;
+-(NSNumber*) getInput1Value;
 
--(void) setVariableValue:(NSNumber*) value;
+-(void) setVariableValueAction:(NSNumber*) value;
 -(NSNumber*) getVariableValue;
 
 @end

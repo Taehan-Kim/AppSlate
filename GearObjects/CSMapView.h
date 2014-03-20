@@ -19,11 +19,11 @@
 
 -(id) initGear;
 
--(void) setStandardMap:(NSNumber*)BoolValue;
--(NSNumber*) getStandardMap;
+-(void) setMapType:(NSNumber*)typeValue;
+-(NSNumber*) getMapType;
 
--(void) setShowUser:(NSNumber*)BoolValue;
--(NSNumber*) getShowUser;
+-(void) setShowUserLocation:(NSNumber*)BoolValue;
+-(NSNumber*) getShowUserLocation;
 
 -(void) setLatitude:(NSNumber*)degree;
 -(NSNumber*) getLatitude;

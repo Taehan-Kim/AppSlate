@@ -98,6 +98,7 @@
     NSUInteger getCode = [[noti userInfo][@"tag"] integerValue];
     cView = ((UIView*)[noti userInfo][@"cell"]);
     [cView setClipsToBounds:YES];
+    [cView setBackgroundColor:[UIColor whiteColor]];
     CGRect startFrame = [cView convertRect:cView.bounds toView:win];
 
 //    [self.view addSubview:cView];
@@ -269,51 +270,28 @@
     // update new position.
     newObj.csView.center = endPoint;
 
-    CGMutablePathRef curvedPath = CGPathCreateMutable();
-    CGPathMoveToPoint(curvedPath, NULL, startFrame.origin.x, startFrame.origin.y);
-    CGPathAddCurveToPoint(curvedPath, NULL, endPoint.x-30, cView.frame.origin.y, endPoint.x-40, endPoint.y, endPoint.x, endPoint.y);
-    pathAnimation.path = curvedPath;
-    CGPathRelease(curvedPath);
-
-    // setup scaling
-    CABasicAnimation *resizeAnimation = [CABasicAnimation animationWithKeyPath:@"bounds.size"];
-    [resizeAnimation setToValue:[NSValue valueWithCGSize:toFrame.size]];
-    resizeAnimation.fillMode = kCAFillModeForwards;
-    resizeAnimation.removedOnCompletion = NO;
-
-    CAAnimationGroup *group = [CAAnimationGroup animation]; 
-    [group setValue:@"_drop" forKey:@"name"];
-    group.fillMode = kCAFillModeForwards;
-    group.removedOnCompletion = NO;
-    [group setAnimations:@[pathAnimation, resizeAnimation]];
-    group.duration = 0.6f;
-    group.delegate = self;
-    [group setValue:cView forKey:@"imageViewBeingAnimated"];
-
-    [cView.layer addAnimation:group forKey:@"myCurveAnimation"];
-    [cView setAlpha:0.7];
-}
-
-- (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag
-{
-    if( [[theAnimation valueForKey:@"name"] isEqualToString:@"_drop"] ){
+    [UIView animateWithDuration:0.6f animations:^{
+        CGRect newRect = CGRectMake(endPoint.x - (toFrame.size.width/2), endPoint.y - (toFrame.size.height/2), toFrame.size.width, toFrame.size.height);
+        [cView setFrame:newRect];
+        [cView setAlpha:0.6];
+    } completion:^(BOOL finished) {
         [cView removeFromSuperview];
         cView = nil;
         [self addNewGear:newObj];
-    }
+    }];
 }
 
-// 청사진에 새로운 객체를 추가한다.
+// Put new gears on the blueprint
 -(void) addNewGear:(id) gearObj
 {
-    // 형상을 만든다.
+    // Make a default shape
     UIView *aV = ((CSGearObject*)gearObj).csView;
 
 
     [((CSGearObject*)gearObj) setTapGR: [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeEditGear:)] ];
     [USERCONTEXT.gearsArray addObject:gearObj];
 
-    // 기어 뷰 를 설계도에 놓는다.
+    // Put the view on the screen
     [aV setTag:((CSGearObject*)gearObj).csMagicNum];
 
     if( NO == ((CSGearObject*)gearObj).isUIObj
@@ -663,13 +641,13 @@
     if( [[NSUserDefaults standardUserDefaults] boolForKey:@"SND_SET"] )
         AudioServicesPlaySystemSound(delSoundID);
 
+    UIView *v = [USERCONTEXT getGearWithMagicNum:((UIButton*)sender).tag].csView;
     [UIView animateWithDuration:0.3 animations:^(){
-        UIView *v = [USERCONTEXT getGearWithMagicNum:((UIButton*)sender).tag].csView;
         [v setAlpha:0.3];
         [v setCenter:v.frame.origin];
         [v setTransform:CGAffineTransformMakeScale(0.0001, 0.0001)];
-        [v removeFromSuperview];
     } completion:^(BOOL finished) {
+        [v removeFromSuperview];
         [self deleteGear:((UIButton*)sender).tag];
     }];
 }

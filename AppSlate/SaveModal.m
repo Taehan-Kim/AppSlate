@@ -52,27 +52,26 @@
         [self.contentView addSubview:localBtn];
         [self.contentView addSubview:parseBtn];
 
+        _nField = [[UITextField alloc] init];
+        [_nField setFont:[UIFont boldSystemFontOfSize:18.0]];
+        [_nField setBackgroundColor:[UIColor lightGrayColor]];
+        UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 5, 20)];
+        _nField.leftView = paddingView;
+        _nField.leftViewMode = UITextFieldViewModeAlways;
+        [_nField setDelegate:self];
+        [_nField setText:USERCONTEXT.appName];
+        
+        _dField = [[UITextField alloc] init];
+        [_dField setFont:[UIFont boldSystemFontOfSize:18.0]];
+        [_dField setBackgroundColor:[UIColor lightGrayColor]];
+        UIView *padView2 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 5, 20)];
+        _dField.leftView = padView2;
+        [_dField setDelegate:self];
+        _dField.leftViewMode = UITextFieldViewModeAlways;
     }
 
     if( nil == USERCONTEXT.appName )
         USERCONTEXT.appName = @"noname";
-
-    _nField = [[UITextField alloc] init];
-    [_nField setFont:[UIFont boldSystemFontOfSize:18.0]];
-    [_nField setBackgroundColor:[UIColor lightGrayColor]];
-    UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 5, 20)];
-    _nField.leftView = paddingView;
-    _nField.leftViewMode = UITextFieldViewModeAlways;
-    [_nField setDelegate:self];
-    [_nField setText:USERCONTEXT.appName];
-
-    _dField = [[UITextField alloc] init];
-    [_dField setFont:[UIFont boldSystemFontOfSize:18.0]];
-    [_dField setBackgroundColor:[UIColor lightGrayColor]];
-    UIView *padView2 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 5, 20)];
-    _dField.leftView = padView2;
-    [_dField setDelegate:self];
-    _dField.leftViewMode = UITextFieldViewModeAlways;
 
     return self;
 }
@@ -91,6 +90,8 @@
 }
 
 #pragma mark -
+
+- (void) saveAppFileToLocal{} // just say for prototype
 
 - (void) toLocalSave:(UIButton*) sender
 {
@@ -139,6 +140,24 @@
 
 - (void) toParseSave:(UIButton*) sender
 {
+#ifdef LITE_VERSION
+    // go to AppStore info window
+    SKStoreProductViewController *Sv = [[SKStoreProductViewController alloc] init];
+    [Sv setDelegate:self];
+    START_WAIT_VIEW;
+    [Sv loadProductWithParameters:@{SKStoreProductParameterITunesItemIdentifier:@"511327336"}
+                  completionBlock:^(BOOL result, NSError *error)
+     {
+         STOP_WAIT_VIEW;
+         [((CSAppDelegate*)([UIApplication sharedApplication].delegate)).window.rootViewController presentViewController:Sv animated:YES                                                                                                              completion:^{
+              [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+              [UIView animateWithDuration:0.3 animations:^(void) {
+              } completion:^(BOOL finished) {
+              }];
+          }];
+     }];
+
+#else
     [UIView animateWithDuration:0.7 animations:^{
         if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
             [parseBtn setFrame:CGRectMake(256, 60, 150, 150)];
@@ -196,6 +215,7 @@
             [_nField becomeFirstResponder];
         }];
     }];
+#endif
 }
 
 #pragma mark - Textfield delegate
@@ -206,4 +226,14 @@
 
     return YES;
 }
+
+#pragma mark - SKStoreProductViewControllerDelegate
+
+// SK store view 를 닫는 요구가 들어오면
+-(void)productViewControllerDidFinish:(SKStoreProductViewController *)viewController
+{
+    [viewController dismissViewControllerAnimated:YES completion:^{
+    } ];
+}
+
 @end

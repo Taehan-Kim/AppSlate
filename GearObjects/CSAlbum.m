@@ -17,7 +17,7 @@
     return (csView);
 }
 
--(void) setShow:(NSNumber*)BoolValue
+-(void) setShowAction:(NSNumber*)BoolValue
 {
     // YES 값인 경우만 반응하자.
     if( ![BoolValue boolValue] )
@@ -57,7 +57,7 @@
 
 -(id) initGear
 {
-    if( ![super init] ) return nil;
+    if( !(self = [super init]) ) return nil;
     
     csView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 33, 33)];
     [(UIImageView*)csView setImage:[UIImage imageNamed:@"gi_album.png"]];
@@ -71,7 +71,7 @@
     albumPop = nil;
     imgPicker = nil;
 
-    NSDictionary *d1 = MAKE_PROPERTY_D(@">Show Action", P_BOOL, @selector(setShow:),@selector(getShow));
+    NSDictionary *d1 = MAKE_PROPERTY_D(@">Show Action", P_BOOL, @selector(setShowAction:),@selector(getShow));
     pListArray = @[d1];
 
     NSMutableDictionary MAKE_ACTION_D(@"Selected Image", A_IMG, a1);
@@ -124,6 +124,65 @@
     } else {
         [albumPop dismissPopoverAnimated:YES];
     }
+}
+
+#pragma mark - Code Generator
+
+// If not supported gear, return NO.
+-(BOOL) setDefaultVarName:(NSString *) _name
+{
+    return [super setDefaultVarName:NSStringFromClass([self class])];
+}
+
+-(NSString*) sdkClassName
+{
+    return @"UIImagePickerController";
+}
+
+// viewDidLoad 에서 alloc - init 하지 않을 것일때는 NO_FIRST_ALLOC 을 리턴하자.
+-(NSString*) customClass
+{
+    return NO_FIRST_ALLOC;
+}
+
+-(NSString*) delegateName
+{
+    return @"UINavigationControllerDelegate, UIImagePickerControllerDelegate";
+}
+
+-(NSArray*) delegateCodes
+{
+    SEL act;
+    NSNumber *nsMagicNum;
+    
+    NSMutableString *code = [NSMutableString stringWithFormat:@"    if([%@ isEqual:picker]){\n",varName];
+    // code 추가. actionArray 에 연결된 CSGearObject 의 메소드를 호출하는 코드 작성 & 삽입.
+    act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
+    
+    if( act )
+    {
+        nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
+        CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+        const char *sel_name_c = sel_getName(act);
+        
+        [code appendFormat:@"        [%@ %@image];\n",[gObj getVarName],@(sel_name_c)];
+    }
+    [code appendString:@"    }\n"];
+    
+    
+    return @[@"- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker\n{\n",@"    [self dismissViewControllerAnimated:YES completion:NULL];\n",@"}\n\n",
+             @"- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)Info\n",code,@"}\n\n"];
+}
+
+-(NSString*) actionPropertyCode:(NSString*)apName valStr:(NSString *)val
+{
+    if( [apName isEqualToString:@"setShowAction:"] ){
+        
+        return [NSString stringWithFormat:@"    %@ = [[UIImagePickerController alloc] init];\n\
+    [%@ setDelegate:self];\n\
+    [%@ setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];",varName,varName,varName];
+    }
+    return nil;
 }
 
 @end

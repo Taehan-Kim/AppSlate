@@ -19,10 +19,9 @@
 -(id)initWithGear:(id)gear propertyInfo:(NSDictionary*)infoDic
 {
     if( self = [super init] ){
-        ;
+        theGear = gear;
+        pInfoDic = infoDic;
     }
-    theGear = gear;
-    pInfoDic = infoDic;
 
     return self;
 }
@@ -45,7 +44,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    CGSize size = CGSizeMake(320, 156 + 60); // size of view in popover
+    CGSize size = CGSizeMake(self.view.superview.frame.size.width, 156 + 60); // size of view in popover
     self.preferredContentSize = size;
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
 

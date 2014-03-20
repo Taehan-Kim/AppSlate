@@ -47,7 +47,6 @@ typedef void (^UAModalDisplayPanelAnimationComplete)(BOOL finished);
 	CGFloat		cornerRadius;
 	UIColor		*contentColor;
 	BOOL		shouldBounce;
-	
 }
 
 @property (nonatomic, assign) NSObject<UAModalPanelDelegate>	*delegate;
@@ -56,6 +55,7 @@ typedef void (^UAModalDisplayPanelAnimationComplete)(BOOL finished);
 @property (nonatomic, retain) UIView		*roundedRect;
 @property (nonatomic, retain) UIButton		*closeButton;
 @property (nonatomic, retain) UIView		*contentView;
+@property (nonatomic, retain) UIView		*backgroundview;
 
 // Margin between edge of container frame and panel. Default = 20.0
 @property (nonatomic, assign) CGFloat		outerMargin;

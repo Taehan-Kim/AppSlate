@@ -16,6 +16,8 @@
 @synthesize titleBarHeight, titleBar, headerLabel;
 
 - (void)dealloc {
+//    [headerLabel release];
+//    [titleBar release];
     self.titleBar = nil;
 	self.headerLabel = nil;
     [super dealloc];
@@ -37,7 +39,7 @@
 //														   blendMode:kCGBlendModeNormal];
 		
 		[self.roundedRect addSubview:self.titleBar];
-		
+    
 		self.headerLabel = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
 		self.headerLabel.font = [UIFont systemFontOfSize:24];
 		self.headerLabel.backgroundColor = [UIColor clearColor];
@@ -46,13 +48,9 @@
 		self.headerLabel.shadowOffset = CGSizeMake(0, -1);
 		self.headerLabel.textAlignment = NSTextAlignmentCenter;
 		[self.titleBar addSubview:self.headerLabel];
-
-		
     }
     return self;
 }
-
-
 
 - (CGRect)titleBarFrame { 
 	CGRect frame = [self.roundedRect bounds];

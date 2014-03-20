@@ -34,7 +34,7 @@
     return urlStr;
 }
 
--(void) setScaleFit:(NSNumber*)BoolValue
+-(void) setScalesPageToFit:(NSNumber*)BoolValue
 {
     BOOL value;
 
@@ -49,7 +49,7 @@
     [((UIWebView*)csView) reload];
 }
 
--(NSNumber*) getScaleFit
+-(NSNumber*) getScalesPageToFit
 {
     return@( ((UIWebView*)csView).scalesPageToFit );
 }
@@ -107,7 +107,7 @@
 
 -(id) initGear
 {
-    if( ![super init] ) return nil;
+    if( !(self = [super init]) ) return nil;
     
     csView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 300, 300)];
     [csView setBackgroundColor:[UIColor whiteColor]];
@@ -123,7 +123,7 @@
     DEFAULT_CENTER_D;
     NSDictionary *d0 = ALPHA_D;
     NSDictionary *d1 = MAKE_PROPERTY_D(@"URL", P_TXT, @selector(setURL:),@selector(getURL));
-    NSDictionary *d2 = MAKE_PROPERTY_D(@"Scale Fit", P_BOOL, @selector(setScaleFit:),@selector(getScaleFit));
+    NSDictionary *d2 = MAKE_PROPERTY_D(@"Scale Fit", P_BOOL, @selector(setScalesPageToFit:),@selector(getScalesPageToFit));
     NSDictionary *d3 = MAKE_PROPERTY_D(@">Reload", P_BOOL, @selector(setReloadAction:),@selector(getReloadAction));
     NSDictionary *d4 = MAKE_PROPERTY_D(@">Go Back", P_BOOL, @selector(setBackAction:),@selector(getBackAction));
     NSDictionary *d5 = MAKE_PROPERTY_D(@">Go Forward", P_BOOL, @selector(setForwardAction:),@selector(getForwardAction));
@@ -163,6 +163,43 @@
 -(void) webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+}
+
+#pragma mark - Code Generator
+
+// If not supported gear, return NO.
+-(BOOL) setDefaultVarName:(NSString *) _name
+{
+    return [super setDefaultVarName:NSStringFromClass([self class])];
+}
+
+-(NSString*) sdkClassName
+{
+    return @"UIWebView";
+}
+
+-(NSString*) delegateName
+{
+    return @"UIWebViewDelegate";
+}
+
+-(NSArray*) delegateCodes
+{
+    return @[@"- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType\n{\n",@"",@"    return YES;\n}\n\n"];
+}
+
+-(NSString*) actionPropertyCode:(NSString*)apName valStr:(NSString *)val
+{
+    if( [apName isEqualToString:@"setReloadAction:"] ){
+        return [NSString stringWithFormat:@"[%@ reload];", varName];
+    } else if( [apName isEqualToString:@"setBackAction:"] ){
+        return [NSString stringWithFormat:@"[%@ goBack];", varName];
+    } else if( [apName isEqualToString:@"setForwardAction:"] ){
+        return [NSString stringWithFormat:@"[%@ goForward];", varName];
+    } else if( [apName isEqualToString:@"setStopAction:"] ){
+        return [NSString stringWithFormat:@"[%@ stopLoading];", varName];
+    }
+    return nil;
 }
 
 @end

@@ -18,31 +18,31 @@
 //===========================================================================
 #pragma mark -
 
--(void) setBarColor:(UIColor*)color
+-(void) setProgressTintColor:(UIColor*)color
 {
     if( [color isKindOfClass:[UIColor class]] )
         [((UIProgressView*)csView) setProgressTintColor:color];
 }
 
--(UIColor*) getBarColor
+-(UIColor*) getProgressTintColor
 {
     return ((UIProgressView*)csView).progressTintColor;
 }
 
--(void) setTrackColor:(UIColor*)color
+-(void) setTrackTintColor:(UIColor*)color
 {
     if( [color isKindOfClass:[UIColor class]] )
         [((UIProgressView*)csView) setTrackTintColor:color];
 }
 
 
--(UIColor*) getTrackColor
+-(UIColor*) getTrackTintColor
 {
     return ((UIProgressView*)csView).trackTintColor;
 }
 
 
--(void) setBarValue:(NSNumber*)number
+-(void) setProgress:(NSNumber*)number
 {
     if( [number isKindOfClass:[NSNumber class]] )
         [((UIProgressView*)csView) setProgress:[number floatValue] animated:YES];
@@ -50,7 +50,7 @@
         [((UIProgressView*)csView) setProgress:[(NSString*)number floatValue] animated:YES];
 }
 
--(NSNumber*) getBarValue
+-(NSNumber*) getProgress
 {
     return @( ((UIProgressView*)csView).progress );
 }
@@ -59,12 +59,12 @@
 
 -(id) initGear
 {
-    if( ![super init] ) return nil;
+    if( !(self = [super init]) ) return nil;
     
     csView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, 0, 400, MINSIZE)];
     [csView setBackgroundColor:[UIColor clearColor]];
     [csView setUserInteractionEnabled:YES];
-    
+
     csCode = CS_PROGRESS;
     isUIObj = YES;
 
@@ -75,13 +75,26 @@
     
     DEFAULT_CENTER_D;
     NSDictionary *d0 = ALPHA_D;
-    NSDictionary *d1 = MAKE_PROPERTY_D(@"Bar Color", P_COLOR, @selector(setBarColor:),@selector(getBarColor));
-    NSDictionary *d2 = MAKE_PROPERTY_D(@"Track Color", P_COLOR, @selector(setTrackColor:),@selector(getTrackColor));
-    NSDictionary *d3 = MAKE_PROPERTY_D(@"Value", P_NUM, @selector(setBarValue:),@selector(getBarValue));
+    NSDictionary *d1 = MAKE_PROPERTY_D(@"Bar Color", P_COLOR, @selector(setProgressTintColor:),@selector(getProgressTintColor));
+    NSDictionary *d2 = MAKE_PROPERTY_D(@"Track Color", P_COLOR, @selector(setTrackTintColor:),@selector(getTrackTintColor));
+    NSDictionary *d3 = MAKE_PROPERTY_D(@"Value", P_NUM, @selector(setProgress:),@selector(getProgress));
 
     pListArray = @[xc,yc,d0,d1,d2,d3];
 
     return self;
+}
+
+#pragma mark - Code Generator
+
+// If not supported gear, return NO.
+-(BOOL) setDefaultVarName:(NSString *) _name
+{
+    return [super setDefaultVarName:NSStringFromClass([self class])];
+}
+
+-(NSString*) sdkClassName
+{
+    return @"UIProgressView";
 }
 
 @end

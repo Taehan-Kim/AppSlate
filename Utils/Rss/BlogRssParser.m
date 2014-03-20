@@ -20,10 +20,10 @@
 @synthesize rssURL = _rssURL;
 @synthesize parser = _parser;
 
-- (id)init{
-	if(![super init]){
-		return nil;
-	}
+- (id)init
+{
+    if( !(self = [super init]) ) return nil;
+
 	_rssItems = [[NSMutableArray alloc]init];
 	return self;
 }

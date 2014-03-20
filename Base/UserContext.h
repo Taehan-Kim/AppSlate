@@ -40,6 +40,9 @@
 
 -(CSGearObject*) getGearWithMagicNum:(NSUInteger) magicNum;
 
+// Code Generator
+-(BOOL) isThereSameVarNameWith:(NSString*) theName;
+
 @end
 
 void draw1PxStroke(CGContextRef context, CGPoint startPoint, CGPoint endPoint, CGColorRef color, CGFloat width);

@@ -32,7 +32,7 @@
     return appID;
 }
 
--(void) setShow:(NSNumber*)BoolValue
+-(void) setShowAction:(NSNumber*)BoolValue
 {
     // YES 값인 경우만 반응하자.
     if( ![BoolValue isKindOfClass:[NSNumber class]] || NO == [BoolValue boolValue] )
@@ -68,7 +68,7 @@
 
 -(id) initGear
 {
-    if( ![super init] ) return nil;
+    if( !(self = [super init]) ) return nil;
     
     csView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 33, 33)];
     [(UIImageView*)csView setImage:[UIImage imageNamed:@"gi_store.png"]];
@@ -82,7 +82,7 @@
     [Sv setDelegate:self];
 
     NSDictionary *d1 = MAKE_PROPERTY_D(@"App ID", P_NUM, @selector(setID:),@selector(getID));
-    NSDictionary *d4 = MAKE_PROPERTY_D(@">Show Action", P_BOOL, @selector(setShow:),@selector(getShow));
+    NSDictionary *d4 = MAKE_PROPERTY_D(@">Show Action", P_BOOL, @selector(setShowAction:),@selector(getShow));
     pListArray = @[d1,d4];
 
     return self;
@@ -112,4 +112,47 @@
     } ];
 }
 
+#pragma mark - Code Generator
+
+// If not supported gear, return NO.
+-(BOOL) setDefaultVarName:(NSString *) _name
+{
+    return [super setDefaultVarName:NSStringFromClass([self class])];
+}
+
+-(NSString*) sdkClassName
+{
+    return @"SKStoreProductViewController";
+}
+
+-(NSArray*) importLinesCode
+{
+    return @[@"<StoreKit/StoreKit.h>"];
+}
+
+// viewDidLoad 에서 alloc - init 하지 않을 것일때는 NO_FIRST_ALLOC 을 리턴하자.
+-(NSString*) customClass
+{
+    return NO_FIRST_ALLOC;
+}
+
+-(NSString*) delegateName
+{
+    return @"SKStoreProductViewControllerDelegate";
+}
+
+-(NSArray*) delegateCodes
+{
+    return @[@"-(void)productViewControllerDidFinish:(SKStoreProductViewController *)viewController\n{\n",@"    [viewController dismissViewControllerAnimated:YES completion:nil];\n",@"}\n\n"];
+}
+
+-(NSString*) actionPropertyCode:(NSString*)apName valStr:(NSString *)val
+{
+    if( [apName isEqualToString:@"setShowAction:"] ){
+        return [NSString stringWithFormat:@"    NSDictionary *parameters = @{SKStoreProductParameterITunesItemIdentifier:%@};\n\
+    [%@ loadProductWithParameters:parameters completionBlock:^(BOOL result, NSError *error){\n\
+        [self presentViewController:%@ animated:YES completion:nil];\n    }];\n", appID,varName,varName];
+    }
+    return nil;
+}
 @end

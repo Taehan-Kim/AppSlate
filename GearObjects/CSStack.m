@@ -17,7 +17,7 @@
 
 //===========================================================================
 
--(void) setPushValue:(id) object
+-(void) setPushValueAction:(id) object
 {
     [stack addObject:object];
 }
@@ -27,7 +27,7 @@
     return nil;
 }
 
--(void) setPop:(NSNumber*) BoolValue
+-(void) setPopAction:(NSNumber*) BoolValue
 {
     if( 0 >= [stack count] ) return;
 
@@ -68,7 +68,7 @@
 
 -(id) initGear
 {
-    if( ![super init] ) return nil;
+    if( !(self = [super init]) ) return nil;
     
     csView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 33, 33)];
     [(UIImageView*)csView setImage:[UIImage imageNamed:@"gi_stack.png"]];
@@ -80,8 +80,8 @@
     csShow = NO;
     stack = [[NSMutableArray alloc] initWithCapacity:10];
 
-    NSDictionary *d1 = MAKE_PROPERTY_D(@">Push", P_NUM, @selector(setPushValue:),@selector(getPushValue));
-    NSDictionary *d2 = MAKE_PROPERTY_D(@">Pop", P_NUM, @selector(setPop:),@selector(getPop));
+    NSDictionary *d1 = MAKE_PROPERTY_D(@">Push", P_NUM, @selector(setPushValueAction:),@selector(getPushValue));
+    NSDictionary *d2 = MAKE_PROPERTY_D(@">Pop", P_NUM, @selector(setPopAction:),@selector(getPop));
     pListArray = @[d1,d2];
 
     NSMutableDictionary MAKE_ACTION_D(@"Pop Output", A_NUM, a1);
@@ -97,6 +97,51 @@
         stack = [[NSMutableArray alloc] initWithCapacity:10];
     }
     return self;
+}
+
+#pragma mark - Code Generator
+
+// If not supported gear, return NO.
+-(BOOL) setDefaultVarName:(NSString *) _name
+{
+    return [super setDefaultVarName:NSStringFromClass([self class])];
+}
+
+-(NSString*) sdkClassName
+{
+    return @"NSMutableArray";
+}
+
+-(NSString*) customClass
+{
+    return [NSString stringWithFormat:@"    %@ = [[NSMutableArray alloc] initWithCapacity:10];\n", varName];
+}
+
+-(NSString*) actionPropertyCode:(NSString*)apName valStr:(NSString *)val
+{
+    SEL act;
+    NSNumber *nsMagicNum;
+
+    if( [apName isEqualToString:@"setPushValueAction:"] ){
+        act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
+        if( act )
+        {
+            nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
+            CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+            return [NSString stringWithFormat:@"[%@ addObject:%@];\n",[gObj getVarName],val];
+        }
+    }
+    if( [apName isEqualToString:@"setPopAction:"] ){
+        act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
+        if( act )
+        {
+            nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
+            CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+            const char *sel_name_c = sel_getName(act);
+            return [NSString stringWithFormat:@"[%@ %@[%@ lastObject]];\n    [%@ removeLastObject];",[gObj getVarName],@(sel_name_c),varName,varName];
+        }
+    }
+    return nil;
 }
 
 @end

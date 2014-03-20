@@ -86,7 +86,7 @@
 
 -(id) initGear
 {
-    if( ![super init] ) return nil;
+    if( !(self = [super init]) ) return nil;
     
     csView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 33, 33)];
     [(UIImageView*)csView setImage:[UIImage imageNamed:@"gi_tick.png"]];
@@ -156,6 +156,57 @@
             }
         }
     }
+}
+
+#pragma mark - Code Generator
+
+// If not supported gear, return NO.
+-(BOOL) setDefaultVarName:(NSString *) _name
+{
+    return [super setDefaultVarName:NSStringFromClass([self class])];
+}
+
+-(NSString*) sdkClassName
+{
+    return @"NSTimer";
+}
+
+-(NSString*) customClass
+{
+    NSString *r = [NSString stringWithFormat:@"    %@ = [NSTimer timerWithTimeInterval:%.2f target:self\n\
+        selector:@selector(%@Tick:) userInfo:nil repeat:YES];\n\
+    [[NSRunLoop mainRunLoop] addTimer:mTimer forMode:NSDefaultRunLoopMode];\n\
+    [%@ fire];\n",
+                   varName,interval,varName,varName];
+    return r;
+}
+
+-(NSString*) actionCode
+{
+    NSMutableString *code = [[NSMutableString alloc] initWithFormat:@"-(void)%@Tick\n{\n",varName];
+    
+    SEL act;
+    NSNumber *nsMagicNum;
+    
+    act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
+    if( act )
+    {
+        nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
+        CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+        const char *sel_name_c = sel_getName(act);
+        NSString *selNameStr = [NSString stringWithCString:sel_name_c encoding:NSUTF8StringEncoding];
+        
+        // Action Property 에 연결되는 경우는 각각 별도의 코드를 주문 받아서 수행한다.
+        if( [selNameStr hasSuffix:@"Action:"] )
+        {
+            [code appendFormat:@"    %@\n",[gObj actionPropertyCode:selNameStr valStr:[NSString stringWithFormat:@"%.2f",outputNum]]];
+        }
+        else
+            [code appendFormat:@"    [%@ %@%.2f];\n",[gObj getVarName],@(sel_name_c),outputNum];
+    }
+    [code appendString:@"}\n"];
+
+    return code;
 }
 
 @end

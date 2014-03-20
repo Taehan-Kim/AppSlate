@@ -126,13 +126,14 @@
 
 -(id) initGear
 {
-    if( ![super init] ) return nil;
+    if( !(self=[super init]) ) return nil;
 
     csView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 300, MINSIZE)];
     [csView setBackgroundColor:[UIColor whiteColor]];
     [csView setUserInteractionEnabled:YES];
 
     csCode = CS_LABEL;
+    isUIObj = YES;
 
     ((UILabel*)csView).textColor = [UIColor blackColor];
     ((UILabel*)csView).font = CS_FONT(16);
@@ -152,6 +153,19 @@
     pListArray = @[xc,yc,d0,d1,d2,d3,d4,d5,d6,d7];
 
     return self;
+}
+
+#pragma mark - Code Generator
+
+// If not supported gear, return NO.
+-(BOOL) setDefaultVarName:(NSString *) _name
+{
+    return [super setDefaultVarName:NSStringFromClass([self class])];
+}
+
+-(NSString*) sdkClassName
+{
+    return @"UILabel";
 }
 
 @end

@@ -219,4 +219,11 @@ extern NSString *const kAFTextFillColors;   /* Text Tool Text Fill Colors */
 + (void)setStatusBarStyle:(UIStatusBarStyle)statusBarStyle;
 
 
+/**
+ Set this property to true if your app is builidng using the iOS6 SDK
+ 
+ @param usingIOS6SDK Whether your app is using the iOS 6 SDK
+ */
++ (void)setUsingIOS6SDK:(BOOL)usingIOS6SDK;
+
 @end

@@ -22,7 +22,7 @@
 -(void) setLink:(NSString*)txt;
 -(NSString*) getLink;
 
--(void) setShow:(NSNumber*)BoolValue;
+-(void) setShowAction:(NSNumber*)BoolValue;
 -(NSNumber*) getShow;
 
 -(void) setImage:(UIImage*)img;

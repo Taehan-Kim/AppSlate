@@ -43,7 +43,7 @@
 
         if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
         {
-            icon = [[UIImageView alloc] initWithFrame:CGRectMake(40, 90, 72, 72)];
+            icon = [[UIImageView alloc] initWithFrame:CGRectMake(40, 90, 76, 76)];
             versionLabel = [[UILabel alloc] initWithFrame:CGRectMake(145, 100, 200, 20)];
             itemLabel = [[UILabel alloc] initWithFrame:CGRectMake(145, 130, 300, 20)];
             infoLabel = [[UILabel alloc] initWithFrame:CGRectMake(145, 195, 300, 20)];
@@ -53,7 +53,7 @@
             eLabel = [[UILabel alloc] initWithFrame:CGRectMake(145, 195+110, 300, 20)];
             eBtn = [[UIButton alloc] initWithFrame:CGRectMake(145, 212+110, 300, 30)];
         } else {
-            icon = [[UIImageView alloc] initWithFrame:CGRectMake(149-36, 24, 72, 72)];
+            icon = [[UIImageView alloc] initWithFrame:CGRectMake(149-36, 24, 76, 76)];
             versionLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 110, 298, 20)];
             [versionLabel setTextAlignment:NSTextAlignmentCenter];
             itemLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 130, 298, 20)];
@@ -69,7 +69,7 @@
             eBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 212+110, 298, 30)];
         }
 
-        [icon setImage:[UIImage imageNamed:@"Icon~ipad.png"]];
+        [icon setImage:[UIImage imageNamed:@"InfoIcon"]];
         [icon setClipsToBounds:YES];
         [icon.layer setCornerRadius:9.0];
         [self.contentView addSubview:icon];
@@ -78,7 +78,11 @@
         [versionLabel setBackgroundColor:CSCLEAR];
         [versionLabel setFont:CS_BOLD_FONT(16)];
         [versionLabel setTextColor:[UIColor lightGrayColor]];
+#ifdef LITE_VERSION
+        [versionLabel setText:[NSString stringWithFormat:@"AppSlate Lite ver. %@",[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]]];
+#else
         [versionLabel setText:[NSString stringWithFormat:@"AppSlate version %@",[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]]];
+#endif
 
         [itemLabel setBackgroundColor:CSCLEAR];
         [itemLabel setFont:CS_FONT(15)];

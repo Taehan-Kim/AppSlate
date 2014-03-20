@@ -28,8 +28,8 @@
 -(void) setForwardAction:(NSNumber*)act;
 -(NSNumber*) getForwardAction;
 
--(void) setScaleFit:(NSNumber*)BoolValue;
--(NSNumber*) getScaleFit;
+-(void) setScalesPageToFit:(NSNumber*)BoolValue;
+-(NSNumber*) getScalesPageToFit;
 
 -(void) setStopAction:(NSNumber*)BoolValue;
 -(NSNumber*) getStopAction;

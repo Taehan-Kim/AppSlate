@@ -16,10 +16,9 @@
 -(id)initWithGear:(id)gear propertyInfo:(NSDictionary*)infoDic
 {
     if( self = [super init] ){
-        ;
+        theGear = gear;
+        pInfoDic = infoDic;
     }
-    theGear = gear;
-    pInfoDic = infoDic;
 
     return self;
 }

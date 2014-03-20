@@ -86,7 +86,7 @@
 
 -(id) initGear
 {
-    if( ![super init] ) return nil;
+    if( !(self=[super init]) ) return nil;
 
     csView = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, 310, MINSIZE)];
     [csView setBackgroundColor:[UIColor whiteColor]];
@@ -170,6 +170,63 @@
         else
             ;
     }
+}
+
+#pragma mark - Code Generator
+
+// If not supported gear, return NO.
+-(BOOL) setDefaultVarName:(NSString *) _name
+{
+    return [super setDefaultVarName:NSStringFromClass([self class])];
+}
+
+-(NSString*) sdkClassName
+{
+    return @"UITextField";
+}
+
+-(NSString*) delegateName
+{
+    return @"UITextFieldDelegate";
+}
+
+-(NSArray*) delegateCodes
+{
+    SEL act;
+    NSNumber *nsMagicNum;
+
+    NSMutableString *code1 = [NSMutableString stringWithFormat:@"    if([%@ isEqual:textField]){\n",varName];
+
+    // code 추가. actionArray 에 연결된 CSGearObject 의 메소드를 호출하는 코드 작성 & 삽입.
+    act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
+    // [connectedVarName selectorName:@(buttonIndex)];
+    if( act )
+    {
+        nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
+        CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+        const char *sel_name_c = sel_getName(act);
+        
+        [code1 appendFormat:@"        [%@ %@textField.text];\n",[gObj getVarName],@(sel_name_c)];
+    }
+    [code1 appendString:@"    }\n"];
+
+    NSMutableString *code2 = [NSMutableString stringWithFormat:@"    if([%@ isEqual:textField]){\n",varName];
+    
+    // code 추가. actionArray 에 연결된 CSGearObject 의 메소드를 호출하는 코드 작성 & 삽입.
+    act = ((NSValue*)((NSDictionary*)actionArray[1])[@"selector"]).pointerValue;
+    // [connectedVarName selectorName:@(buttonIndex)];
+    if( act )
+    {
+        nsMagicNum = ((NSDictionary*)actionArray[1])[@"mNum"];
+        CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+        const char *sel_name_c = sel_getName(act);
+        
+        [code2 appendFormat:@"        [%@ %@textField.text];\n",[gObj getVarName],@(sel_name_c)];
+    }
+    [code2 appendString:@"    }\n"];
+
+    return @[@"-(BOOL)textFieldShouldReturn:(UITextField *)textField\n{\n",code1,@"    return YES;\n}\n\n",
+             @"-(void)textFieldDidEndEditing:(UITextField *)textField\n{\n",code2,@"}\n"];
 }
 
 @end

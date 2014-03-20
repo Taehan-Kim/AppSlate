@@ -156,10 +156,11 @@
 
 -(id) initGear
 {
-    if( ![super init] ) return nil;
+    if( !(self = [super init]) ) return nil;
 
     csView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 300, 350)];
     [csView setUserInteractionEnabled:YES];
+    [(UITableView*)csView registerClass:[UITableViewCell class] forCellReuseIdentifier:[NSString stringWithFormat:@"Cell%d",csMagicNum]];
 
     csCode = CS_TABLE;
     isUIObj = YES;
@@ -224,7 +225,7 @@
 
 #pragma mark - Table View Delegate
 
--(float) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+-(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return cellHeight;
 }
@@ -238,16 +239,13 @@
 {
     UITableViewCell *cell;
 
-    cell = [tableView dequeueReusableCellWithIdentifier:@"SimpleCell"];
+    cell = [tableView dequeueReusableCellWithIdentifier:[NSString stringWithFormat:@"Cell%d",csMagicNum]];
     if( nil == cell ){
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"SimpleCell"];
-        UIImageView *bgv = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cell_bg.png"]];
-        [bgv setFrame:cell.contentView.bounds];
-        [bgv setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
-        [cell.contentView addSubview:bgv];
-        [cell.textLabel setBackgroundColor:CSCLEAR];
-        [cell.detailTextLabel setBackgroundColor:CSCLEAR];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:[NSString stringWithFormat:@"Cell%d",csMagicNum]];
     }
+
+    [cell.textLabel setBackgroundColor:CSCLEAR];
+    [cell.detailTextLabel setBackgroundColor:CSCLEAR];
 
     cell.textLabel.text = ((NSDictionary*)cellArray[indexPath.row])[@"Text"];
     cell.detailTextLabel.text = ((NSDictionary*)cellArray[indexPath.row])[@"Sub"];
@@ -289,6 +287,76 @@
                 EXCLAMATION;
         }
     }
+}
+
+#pragma mark - Code Generatorz
+
+// If not supported gear, return NO.
+-(BOOL) setDefaultVarName:(NSString *) _name
+{
+    return [super setDefaultVarName:NSStringFromClass([self class])];
+}
+
+-(NSString*) sdkClassName
+{
+    return @"UITableView";
+}
+
+-(NSString*) delegateName
+{
+    return @"UITableViewDelegate, UITableViewDataSource";
+}
+
+-(NSArray*) delegateCodes
+{
+    SEL act;
+    NSNumber *nsMagicNum;
+
+    NSMutableString *code1 = [NSMutableString stringWithFormat:@"    if([%@ isEqual:tableView)\n",varName];
+    [code1 appendFormat:@"    return %d;\n",(NSUInteger)cellHeight];
+
+    NSMutableString *code2 = [NSMutableString stringWithFormat:@"    if([%@ isEqual:tableView)\n",varName];
+    [code2 appendFormat:@"    return %d;\n",[cellArray count]];
+
+    NSMutableString *code3 = [NSMutableString stringWithFormat:@"    if([%@ isEqual:tableView){\n",varName];
+    [code3 appendFormat:@"        cell = [tableView dequeueReusableCellWithIdentifier:@\"%@CellId\" forIndexPath:indexPath];\n",varName];
+    [code3 appendString:@"        switch( indexPath.row ) {\n"];
+    for( NSUInteger idx = 0; idx < cellArray.count; idx++ ) {
+        [code3 appendFormat:@"            case %d:\n",idx];
+        [code3 appendFormat:@"                cell.textLabel.text = @\"%@\";\n", ((NSDictionary*)cellArray[idx])[@"Text"]];
+        [code3 appendFormat:@"                cell.detailTextLabel.text = @\"%@\";\n", ((NSDictionary*)cellArray[idx])[@"Sub"]];
+        [code3 appendString:@"                break;\n"];
+    }
+    [code3 appendString:@"        }\n    }\n"];
+
+
+    NSMutableString *code4 = [NSMutableString stringWithFormat:@"    if([%@ isEqual:tableView){\n",varName];
+
+    act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
+    if( act )
+    {
+        nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
+        CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+        const char *sel_name_c = sel_getName(act);
+        
+        [code4 appendFormat:@"        [%@ %@@(indexPath.row)];\n",[gObj getVarName],@(sel_name_c)];
+    }
+    act = ((NSValue*)((NSDictionary*)actionArray[1])[@"selector"]).pointerValue;
+    if( act )
+    {
+        nsMagicNum = ((NSDictionary*)actionArray[1])[@"mNum"];
+        CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+        const char *sel_name_c = sel_getName(act);
+        
+        [code4 appendFormat:@"        [%@ %@[tableView cellForRowAtIndexPath:indexPath].textLabel.text];\n",[gObj getVarName],@(sel_name_c)];
+    }
+
+    [code4 appendString:@"    }\n"];
+
+    return @[@"-(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{\n",code1,@"}\n",
+             @"-(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{\n",code2,@"}\n",
+             @"-(UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{\n        UITableViewCell *cell;\n",code3,@"    return cell;\n}\n",
+             @"-(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{\n",code4,@"}\n"];
 }
 
 @end

@@ -27,7 +27,7 @@
 -(void) setAddress:(NSString*) txt;
 -(NSString*) getAddress;
 
--(void) setReloadTable:(NSNumber*)BoolValue;
+-(void) setReloadAction:(NSNumber*)BoolValue;
 -(NSNumber*) getReloadTable;
 
 @end

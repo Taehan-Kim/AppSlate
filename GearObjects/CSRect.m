@@ -18,7 +18,7 @@
 //===========================================================================
 #pragma mark -
 
--(void) setWidth:(NSNumber*)num
+-(void) setWidthAction:(NSNumber*)num
 {
     CGRect theRect = csView.frame;
 
@@ -35,7 +35,7 @@
     return @(csView.frame.size.width);
 }
 
--(void) setHeight:(NSNumber*)num
+-(void) setHeightAction:(NSNumber*)num
 {
     CGRect theRect = csView.frame;
 
@@ -52,13 +52,13 @@
     return @(csView.frame.size.height);
 }
 
--(void) setRectColor:(UIColor*)color
+-(void) setBackgroundColor:(UIColor*)color
 {
     if( [color isKindOfClass:[UIColor class]] )
         [csView setBackgroundColor:color];
 }
 
--(UIColor*) getRectColor
+-(UIColor*) getBackgroundColor
 {
     return csView.backgroundColor;
 }
@@ -100,7 +100,7 @@
 
 -(id) initGear
 {
-    if( ![super init] ) return nil;
+    if( !(self = [super init]) ) return nil;
     
     csView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 150)];
     [csView setBackgroundColor:[UIColor grayColor]];
@@ -111,9 +111,9 @@
 
     DEFAULT_CENTER_D;
     NSDictionary *d0 = ALPHA_D;
-    NSDictionary *d1 = MAKE_PROPERTY_D(@">Width", P_NUM, @selector(setWidth:),@selector(getWidth));
-    NSDictionary *d2 = MAKE_PROPERTY_D(@">Height", P_NUM, @selector(setHeight:),@selector(getHeight));
-    NSDictionary *d3 = MAKE_PROPERTY_D(@"Rect Color", P_COLOR, @selector(setRectColor:),@selector(getRectColor));
+    NSDictionary *d1 = MAKE_PROPERTY_D(@">Width", P_NUM, @selector(setWidthAction:),@selector(getWidth));
+    NSDictionary *d2 = MAKE_PROPERTY_D(@">Height", P_NUM, @selector(setHeightAction:),@selector(getHeight));
+    NSDictionary *d3 = MAKE_PROPERTY_D(@"Rect Color", P_COLOR, @selector(setBackgroundColor:),@selector(getBackgroundColor));
     NSDictionary *d4 = MAKE_PROPERTY_D(@"Border Color", P_COLOR, @selector(setBorderColor:),@selector(getBorderColor));
     NSDictionary *d5 = MAKE_PROPERTY_D(@"Border Width", P_NUM, @selector(setBorderWidth:),@selector(getBorderWidth));
     NSDictionary *d6 = MAKE_PROPERTY_D(@"Corner Radius", P_NUM, @selector(setCornerRadius:),@selector(getCornerRadius));
@@ -138,6 +138,30 @@
     [encoder encodeFloat:csView.layer.borderWidth forKey:@"borderWidth"];
     [encoder encodeFloat:csView.layer.cornerRadius forKey:@"cornerRadius"];
     [encoder encodeObject:[UIColor colorWithCGColor:csView.layer.borderColor] forKey:@"borderColor"];
+}
+
+#pragma mark - Code Generator
+
+// If not supported gear, return NO.
+-(BOOL) setDefaultVarName:(NSString *) _name
+{
+    return [super setDefaultVarName:NSStringFromClass([self class])];
+}
+
+-(NSString*) sdkClassName
+{
+    return @"UIView";
+}
+
+-(NSString*) actionPropertyCode:(NSString*)apName valStr:(NSString *)val
+{
+    if( [apName isEqualToString:@"setWidthAction:"] ){
+        return [NSString stringWithFormat:@"[%@ setFrame:CGRectMake(%@.frame.origon.x,%@.frame.origon.y,%@,%@.frame.size.height)];\n",varName,varName,varName,val,varName];
+    }
+    if( [apName isEqualToString:@"setHeightAction:"] ){
+        return [NSString stringWithFormat:@"[%@ setFrame:CGRectMake(%@.frame.origon.x,%@.frame.origon.y,%@.frame.size.width,%@)];\n",varName,varName,varName,varName,val];
+    }
+    return nil;
 }
 
 @end

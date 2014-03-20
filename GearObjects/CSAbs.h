@@ -13,7 +13,7 @@
 
 -(id) initGear;
 
--(void) setInputValue:(NSNumber*) num;
+-(void) setInputValueAction:(NSNumber*) num;
 -(NSNumber*) getInputValue;
 
 @end

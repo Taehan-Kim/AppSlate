@@ -21,14 +21,14 @@
 -(void) setInput1Value:(NSNumber*) Value;
 -(NSNumber*) getInput1Value;
 
--(void) setPlusValue:(NSNumber*) Value;
+-(void) setPlusValueAction:(NSNumber*) Value;
 -(NSNumber*) getInput2Value;
 
--(void) setMinusValue:(NSNumber*) Value;
+-(void) setMinusValueAction:(NSNumber*) Value;
 
--(void) setMultiValue:(NSNumber*) Value;
+-(void) setMultiValueAction:(NSNumber*) Value;
 
--(void) setDivValue:(NSNumber*) Value;
+-(void) setDivValueAction:(NSNumber*) Value;
 
 -(void) setResultSave:(NSNumber*) boolValue;
 -(NSNumber*) getResultSave;

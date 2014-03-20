@@ -30,7 +30,7 @@
     return @(value1);
 }
 
--(void) setPlusValue:(NSNumber*) Value
+-(void) setPlusValueAction:(NSNumber*) Value
 {
     if( [Value isKindOfClass:[NSString class]] )
         value2 = [(NSString*)Value floatValue];
@@ -65,7 +65,7 @@
     return @(value2);
 }
 
--(void) setMinusValue:(NSNumber*) Value
+-(void) setMinusValueAction:(NSNumber*) Value
 {
     if( [Value isKindOfClass:[NSString class]] )
         value2 = [(NSString*)Value floatValue];
@@ -95,7 +95,7 @@
     }
 }
 
--(void) setMultiValue:(NSNumber*) Value
+-(void) setMultiValueAction:(NSNumber*) Value
 {
     if( [Value isKindOfClass:[NSString class]] )
         value2 = [(NSString*)Value floatValue];
@@ -126,7 +126,7 @@
 }
 
 
--(void) setDivValue:(NSNumber*) Value
+-(void) setDivValueAction:(NSNumber*) Value
 {
     if( [Value isKindOfClass:[NSString class]] )
         value2 = [(NSString*)Value floatValue];
@@ -181,7 +181,7 @@
 
 -(id) initGear
 {
-    if( ![super init] ) return nil;
+    if( !(self = [super init]) ) return nil;
     
     csView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 33, 33)];
     [(UIImageView*)csView setImage:[UIImage imageNamed:@"gi_calc.png"]];
@@ -194,10 +194,10 @@
     resultSave = NO;
     
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Input #1", P_NUM, @selector(setInput1Value:),@selector(getInput1Value));
-    NSDictionary *d2 = MAKE_PROPERTY_D(@">Input for Plus", P_NUM, @selector(setPlusValue:),@selector(getInput2Value));
-    NSDictionary *d3 = MAKE_PROPERTY_D(@">Input for Minus", P_NUM, @selector(setMinusValue:),@selector(getInput2Value));
-    NSDictionary *d4 = MAKE_PROPERTY_D(@">Input for Multiplication", P_NUM, @selector(setMultiValue:),@selector(getInput2Value));
-    NSDictionary *d5 = MAKE_PROPERTY_D(@">Input for Division", P_NUM, @selector(setDivValue:),@selector(getInput2Value));
+    NSDictionary *d2 = MAKE_PROPERTY_D(@">Input for Plus", P_NUM, @selector(setPlusValueAction:),@selector(getInput2Value));
+    NSDictionary *d3 = MAKE_PROPERTY_D(@">Input for Minus", P_NUM, @selector(setMinusValueAction:),@selector(getInput2Value));
+    NSDictionary *d4 = MAKE_PROPERTY_D(@">Input for Multiplication", P_NUM, @selector(setMultiValueAction:),@selector(getInput2Value));
+    NSDictionary *d5 = MAKE_PROPERTY_D(@">Input for Division", P_NUM, @selector(setDivValueAction:),@selector(getInput2Value));
     NSDictionary *d6 = MAKE_PROPERTY_D(@"Output Value Set Input #1 Also", P_BOOL, @selector(setResultSave:),@selector(getResultSave));
     pListArray = @[d1,d2,d3,d4,d5,d6];
     
@@ -222,6 +222,96 @@
     [super encodeWithCoder:encoder];
     [encoder encodeFloat:value1 forKey:@"value1"];
     [encoder encodeBool:resultSave forKey:@"resultSave"];
+}
+
+#pragma mark - Code Generator
+
+-(NSArray*) importLinesCode
+{
+    return @[@"\"CSLGate.h\""];
+}
+
+// If not supported gear, return NO.
+-(BOOL) setDefaultVarName:(NSString *) _name
+{
+    return [super setDefaultVarName:NSStringFromClass([self class])];
+}
+
+-(NSString*) sdkClassName
+{
+    return @"CSLGate";
+}
+
+// viewDidLoad 에서 alloc - init 하지 않을 것일때는 NO_FIRST_ALLOC 을 리턴하자.
+-(NSString*) customClass
+{
+    NSString *r = @"\n\n// CSLGate class\n//\n@interface CSLGate : NSObject\n\{\n}\n\n\
+@property (assign)    BOOL input1Value, input2Value;\n@end\n\n\
+@implementation CSLGate\n\n@synthesize input1Value, input2Value;\n\n\
+@end\n\n";
+    return r;
+}
+
+-(NSString*) actionPropertyCode:(NSString*)apName valStr:(NSString *)val
+{
+    SEL act;
+    NSNumber *nsMagicNum;
+    NSMutableString *rs = [[NSMutableString alloc] initWithCapacity:100];
+
+    if( [apName isEqualToString:@"setPlusValueAction:"] ){
+        act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
+        if( act )
+        {
+            nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
+            CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+            const char *sel_name_c = sel_getName(act);
+            [rs appendFormat:@"%@.input2Value = %@;\n    [%@ %@(%@.input1Value+%@.input2Value)];\n",varName,val, [gObj getVarName],@(sel_name_c),varName,varName];
+            if( resultSave )
+                [rs appendFormat:@"    %@.input1Value = (%@.input1Value+%@.input2Value);\n",varName,varName,varName];
+        }
+    }
+
+    if( [apName isEqualToString:@"setMinusValueAction:"] ){
+        act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
+        if( act )
+        {
+            nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
+            CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+            const char *sel_name_c = sel_getName(act);
+            [rs appendFormat:@"%@.input2Value = %@;\n    [%@ %@(%@.input1Value-%@.input2Value)];\n",varName,val, [gObj getVarName],@(sel_name_c),varName,varName];
+            if( resultSave )
+                [rs appendFormat:@"    %@.input1Value = (%@.input1Value-%@.input2Value);\n",varName,varName,varName];
+        }
+    }
+
+    if( [apName isEqualToString:@"setMultiValueAction:"] ){
+        act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
+        if( act )
+        {
+            nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
+            CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+            const char *sel_name_c = sel_getName(act);
+            [rs appendFormat:@"%@.input2Value = %@;\n    [%@ %@(%@.input1Value*%@.input2Value)];\n",varName,val, [gObj getVarName],@(sel_name_c),varName,varName];
+            if( resultSave )
+                [rs appendFormat:@"    %@.input1Value = (%@.input1Value*%@.input2Value);\n",varName,varName,varName];
+        }
+    }
+
+    if( [apName isEqualToString:@"setDivValueAction:"] ){
+        act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
+        if( act )
+        {
+            nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
+            CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+            const char *sel_name_c = sel_getName(act);
+            [rs appendFormat:@"%@.input2Value = %@;\n    [%@ %@(%@.input1Value/%@.input2Value)];\n",varName,val, [gObj getVarName],@(sel_name_c),varName,varName];
+            if( resultSave )
+                [rs appendFormat:@"    %@.input1Value = (%@.input1Value/%@.input2Value);\n",varName,varName,varName];
+        }
+    }
+
+    if( [rs length] ) return rs;
+    return nil;
 }
 
 @end

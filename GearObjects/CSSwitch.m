@@ -53,7 +53,7 @@
 
 -(id) initGear
 {
-    if( ![super init] ) return nil;
+    if( !(self = [super init]) ) return nil;
 
     csView = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 50, MINSIZE2)];
     [csView setBackgroundColor:[UIColor clearColor]];
@@ -141,5 +141,82 @@
     }
 }
 
+#pragma mark - Code Generator
+
+// If not supported gear, return NO.
+-(BOOL) setDefaultVarName:(NSString *) _name
+{
+    return [super setDefaultVarName:NSStringFromClass([self class])];
+}
+
+-(NSString*) sdkClassName
+{
+    return @"UISwitch";
+}
+
+-(NSString*) addTargetCode
+{
+    return [NSString stringWithFormat:@"    [%@ addTarget:self action:@selector(%@ValueChanged) forControlEvents:UIControlEventValueChanged];\n",varName,varName];
+}
+
+-(NSString*) actionCode
+{
+    NSMutableString *code = [[NSMutableString alloc] initWithFormat:@"-(void)%@ValueChanged\n{\n",varName];
+
+    SEL act;
+    NSNumber *nsMagicNum;
+
+    act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
+    if( act )
+    {
+        nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
+        CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+        const char *sel_name_c = sel_getName(act);
+        NSString *selNameStr = [NSString stringWithCString:sel_name_c encoding:NSUTF8StringEncoding];
+        
+        if( [selNameStr hasSuffix:@"Action:"] )
+        {
+            [code appendFormat:@"    %@\n",[gObj actionPropertyCode:selNameStr valStr:[NSString stringWithFormat:@"%@.on",varName]]];
+        }
+        else
+            [code appendFormat:@"    [%@ %@@(%@.on)];\n",[gObj getVarName],@(sel_name_c),self.getVarName];
+    }
+
+    act = ((NSValue*)((NSDictionary*)actionArray[1])[@"selector"]).pointerValue;
+    if( act )
+    {
+        nsMagicNum = ((NSDictionary*)actionArray[1])[@"mNum"];
+        CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+        const char *sel_name_c = sel_getName(act);
+        NSString *selNameStr = [NSString stringWithCString:sel_name_c encoding:NSUTF8StringEncoding];
+        
+        if( [selNameStr hasSuffix:@"Action:"] )
+        {
+            [code appendFormat:@"    %@\n",[gObj actionPropertyCode:selNameStr valStr:[NSString stringWithFormat:@"%@.on",varName]]];
+        }
+        else
+            [code appendFormat:@"    if( %@.on )[%@ %@@YES];\n",self.getVarName,[gObj getVarName],@(sel_name_c)];
+    }
+
+    act = ((NSValue*)((NSDictionary*)actionArray[2])[@"selector"]).pointerValue;
+    if( act )
+    {
+        nsMagicNum = ((NSDictionary*)actionArray[2])[@"mNum"];
+        CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+        const char *sel_name_c = sel_getName(act);
+        NSString *selNameStr = [NSString stringWithCString:sel_name_c encoding:NSUTF8StringEncoding];
+        
+        if( [selNameStr hasSuffix:@"Action:"] )
+        {
+            [code appendFormat:@"    %@\n",[gObj actionPropertyCode:selNameStr valStr:[NSString stringWithFormat:@"%@.on",varName]]];
+        }
+        else
+            [code appendFormat:@"    if( !%@.on )[%@ %@@NO];\n",self.getVarName,[gObj getVarName],@(sel_name_c)];
+    }
+
+    [code appendString:@"}\n"];
+
+    return code;
+}
 
 @end

@@ -58,7 +58,7 @@
     return image;
 }
 
--(void) setShow:(NSNumber*)BoolValue
+-(void) setShowAction:(NSNumber*)BoolValue
 {
     // YES 값인 경우만 반응하자.
     if( ![BoolValue boolValue] )
@@ -90,7 +90,7 @@
 
 -(id) initGear
 {
-    if( ![super init] ) return nil;
+    if( !(self=[super init]) ) return nil;
     
     csView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 33, 33)];
     [(UIImageView*)csView setImage:[UIImage imageNamed:@"gi_weibo.png"]];
@@ -108,7 +108,7 @@
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Text", P_TXT, @selector(setText:),@selector(getText));
     NSDictionary *d2 = MAKE_PROPERTY_D(@"URL", P_TXT, @selector(setLink:),@selector(getLink));
     NSDictionary *d3 = MAKE_PROPERTY_D(@"Image", P_IMG, @selector(setImage:),@selector(getImage));
-    NSDictionary *d4 = MAKE_PROPERTY_D(@">Show Action", P_BOOL, @selector(setShow:),@selector(getShow));
+    NSDictionary *d4 = MAKE_PROPERTY_D(@">Show Action", P_BOOL, @selector(setShowAction:),@selector(getShow));
     pListArray = @[d1,d2,d3,d4];
     
     return self;
@@ -130,6 +130,57 @@
     [super encodeWithCoder:encoder];
     [encoder encodeObject:linkStr forKey:@"linkStr"];
     [encoder encodeObject:textStr forKey:@"textStr"];
+}
+
+#pragma mark - Code Generator
+
+// If not supported gear, return NO.
+-(BOOL) setDefaultVarName:(NSString *) _name
+{
+    return [super setDefaultVarName:NSStringFromClass([self class])];
+}
+
+-(NSString*) sdkClassName
+{
+    return @"CSWeiboSend";
+}
+
+-(NSArray*) importLinesCode
+{
+    return @[@"<Social/Social.h>"];
+}
+
+-(NSString*) customClass
+{
+    NSString *r = @"\n// CSWeiboSend class\n//\n@interface CSWeiboSend : NSObject\n{}\n\
+-(void)showComp:(UIViewController*)cont;\n\n\
+@property (nonatomic,retain) NSString *name, *caption, *text, *link;\n\
+@property (nonatomic,retain) UIImage *image;\n\
+@end\n\n\
+@implementation CSWeiboSend\n\n\
+@synthesize name, caption, text, link, image;\n\n\
+-(void)showComp:(UIViewController*)cont\n{\n\
+    SLComposeViewController *fbCntrlr = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeSinaWeibo];\n\
+    if( [self.link length] > 5 && [self.link hasPrefix:@\"http\"] )\n\
+    [fbCntrlr addURL:[NSURL URLWithString:self.link]];\n\
+    if( [self.text length] > 1 )\n\
+    [fbCntrlr setInitialText:self.text];\n\
+    if( nil != image )\n\
+    [fbCntrlr addImage:image];\n\n\
+    [cont presentViewController:twtCntrlr animated:YES completion:NULL];\n\
+}\n\n\
+@end\n\n";
+
+    return r;
+}
+
+-(NSString*) actionPropertyCode:(NSString*)apName valStr:(NSString *)val
+{
+    if( [apName isEqualToString:@"setShowAction:"] ){
+        
+        return [NSString stringWithFormat:@"[%@ showComp:self];",varName];
+    }
+    return nil;
 }
 
 @end

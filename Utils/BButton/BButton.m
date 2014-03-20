@@ -29,9 +29,10 @@
     btn = [[UIButton alloc] initWithFrame:self.bounds];
     [btn setBackgroundColor:[UIColor clearColor]];
     [btn setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
+    [btn.titleLabel setFont:CS_FONT(18.0)];
     [btn setTag:2386];
     [self addSubview:btn];
-    
+
     // Default Color
     [self setBackgroundColor:[UIColor blueColor]];
 

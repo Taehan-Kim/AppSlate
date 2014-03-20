@@ -22,9 +22,9 @@
 
 -(id) init
 {
-    if( ![super init] ) return nil;
+    if( !(self=[super init]) ) return nil;
 //[NSDate timeIntervalSinceReferenceDate]
-    csMagicNum = arc4random();
+    self.csMagicNum = arc4random();
 
     // 기본적으로 크기 조절이 가능하다고 세팅한다.
     csResizable = YES;
@@ -36,6 +36,8 @@
     csShow = YES;
 
     actionArray = nil;
+
+    varName = @"_";
 
     return self;
 }
@@ -294,6 +296,82 @@
     else if( a > 1.0 ) a = 1.0;
 
     [csView setAlpha:a];
+}
+
+#pragma mark - for Code Generator
+
+-(NSString*) getVarName
+{
+    return varName;
+}
+
+-(void) setVarName:(NSString *) newName
+{
+    varName = newName;
+    NSLog(@"Cname:%@",newName);
+}
+
+// Make a unique var name for using on code
+-(BOOL) setDefaultVarName:(NSString *) _name
+{
+    NSString *newName = [NSString stringWithFormat:@"%@%@",
+                         [[_name substringToIndex:2] lowercaseString],
+                         [_name substringFromIndex:2] ];
+
+    if( [USERCONTEXT isThereSameVarNameWith:newName] )
+    {
+        for( NSUInteger n = 1; n < 255; n ++ ){
+            if( ![USERCONTEXT isThereSameVarNameWith:[NSString stringWithFormat:@"%@%02X",newName,n]] ) {
+                [self setVarName:[NSString stringWithFormat:@"%@%02X",newName,n]];
+                return YES;
+            }
+        }
+    }
+    
+    [self setVarName:newName];
+
+    return YES;
+}
+
+// Needs import statements for this feature
+-(NSArray*) importLinesCode
+{
+    return nil;
+}
+
+-(NSString*) sdkClassName
+{
+    return nil;
+}
+
+-(NSString*) delegateName
+{
+    return nil;
+}
+
+-(NSArray*) delegateCodes
+{
+    return nil;
+}
+
+-(NSString*) customClass
+{
+    return nil;
+}
+
+-(NSString*) addTargetCode
+{
+    return nil;
+}
+
+-(NSString*) actionCode
+{
+    return nil;
+}
+
+-(NSString*) actionPropertyCode:(NSString*)apName valStr:(NSString*)val
+{
+    return nil;
 }
 
 @end

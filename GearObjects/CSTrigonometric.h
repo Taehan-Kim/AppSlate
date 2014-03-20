@@ -12,7 +12,7 @@
 
 -(id) initGear;
 
--(void) setRadianValue:(NSNumber*) num;
+-(void) setRadianValueAction:(NSNumber*) num;
 -(NSNumber*) getRadianValue;
 
 @end

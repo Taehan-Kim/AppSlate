@@ -118,7 +118,7 @@
 
 -(id) initGear
 {
-    if( ![super init] ) return nil;
+    if( !(self = [super init]) ) return nil;
 
     csView = [[UISlider alloc] initWithFrame:CGRectMake(0, 0, 400, MINSIZE)];
     [csView setBackgroundColor:[UIColor clearColor]];
@@ -134,7 +134,7 @@
     [((UISlider*)csView) setMinimumTrackTintColor:[UIColor darkGrayColor]];
     [((UISlider*)csView) setMaximumTrackTintColor:[UIColor whiteColor]];
     [((UISlider*)csView) setThumbTintColor:[UIColor whiteColor]];
-    [((UISlider*)csView) addTarget:self action:@selector(changedValue:) forControlEvents:UIControlEventValueChanged];
+    [((UISlider*)csView) addTarget:self action:@selector(valueChanged:) forControlEvents:UIControlEventValueChanged];
 
     DEFAULT_CENTER_D;
     NSDictionary *d0 = ALPHA_D;
@@ -159,14 +159,14 @@
 -(id)initWithCoder:(NSCoder *)decoder
 {
     if( (self=[super initWithCoder:decoder]) ) {
-        [((UISlider*)csView) addTarget:self action:@selector(changedValue:) forControlEvents:UIControlEventValueChanged];
+        [((UISlider*)csView) addTarget:self action:@selector(valueChanged:) forControlEvents:UIControlEventValueChanged];
     }
     return self;
 }
 
 #pragma mark - Gear's Unique Actions
 
--(void) changedValue:(id) sender
+-(void) valueChanged:(id) sender
 {
     SEL act;
     NSNumber *nsMagicNum;
@@ -215,6 +215,84 @@
                 EXCLAMATION;
         }
     }
+}
+
+#pragma mark - Code Generatorz
+
+// If not supported gear, return NO.
+-(BOOL) setDefaultVarName:(NSString *) _name
+{
+    return [super setDefaultVarName:NSStringFromClass([self class])];
+}
+
+-(NSString*) sdkClassName
+{
+    return @"UISlider";
+}
+
+-(NSString*) addTargetCode
+{
+    return [NSString stringWithFormat:@"    [%@ addTarget:self action:@selector(%@ValueChanged) forControlEvents:UIControlEventValueChanged];\n",varName,varName];
+}
+
+-(NSString*) actionCode
+{
+    NSMutableString *code = [[NSMutableString alloc] initWithFormat:@"-(void)%@ValueChanged\n{\n",varName];
+    
+    SEL act;
+    NSNumber *nsMagicNum;
+    
+    act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
+    if( act )
+    {
+        nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
+        CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+        const char *sel_name_c = sel_getName(act);
+        NSString *selNameStr = [NSString stringWithCString:sel_name_c encoding:NSUTF8StringEncoding];
+
+        if( [selNameStr hasSuffix:@"Action:"] )
+        {
+            [code appendFormat:@"    %@\n",[gObj actionPropertyCode:selNameStr valStr:[NSString stringWithFormat:@"%@.value",varName]]];
+        }
+        else
+            [code appendFormat:@"    [%@ %@@(%@.value)];\n",[gObj getVarName],@(sel_name_c),self.getVarName];
+    }
+    
+    act = ((NSValue*)((NSDictionary*)actionArray[1])[@"selector"]).pointerValue;
+    if( act )
+    {
+        nsMagicNum = ((NSDictionary*)actionArray[1])[@"mNum"];
+        CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+        const char *sel_name_c = sel_getName(act);
+        NSString *selNameStr = [NSString stringWithCString:sel_name_c encoding:NSUTF8StringEncoding];
+        
+        if( [selNameStr hasSuffix:@"Action:"] )
+        {
+            [code appendFormat:@"    %@\n",[gObj actionPropertyCode:selNameStr valStr:[NSString stringWithFormat:@"%@.value",varName]]];
+        }
+        else
+            [code appendFormat:@"    if( %@.minimumValue == %@.value )[%@ %@@(%@.value)];\n",self.getVarName,self.getVarName,[gObj getVarName],@(sel_name_c),self.getVarName];
+    }
+    
+    act = ((NSValue*)((NSDictionary*)actionArray[2])[@"selector"]).pointerValue;
+    if( act )
+    {
+        nsMagicNum = ((NSDictionary*)actionArray[2])[@"mNum"];
+        CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+        const char *sel_name_c = sel_getName(act);
+        NSString *selNameStr = [NSString stringWithCString:sel_name_c encoding:NSUTF8StringEncoding];
+        
+        if( [selNameStr hasSuffix:@"Action:"] )
+        {
+            [code appendFormat:@"    %@\n",[gObj actionPropertyCode:selNameStr valStr:[NSString stringWithFormat:@"%@.value",varName]]];
+        }
+        else
+            [code appendFormat:@"    if( %@.maximumValue == %@.value )[%@ %@@(%@.value)];\n",self.getVarName,self.getVarName,[gObj getVarName],@(sel_name_c),self.getVarName];
+    }
+    
+    [code appendString:@"}\n"];
+    
+    return code;
 }
 
 @end

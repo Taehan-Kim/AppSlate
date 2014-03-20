@@ -9,8 +9,9 @@
 #import "CSAppDelegate.h"
 #import <Parse/Parse.h>
 #import "CSMainViewController.h"
+#ifndef LITE_VERSION
 #import <FacebookSDK/FacebookSDK.h>
-
+#endif
 @implementation CSAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -27,9 +28,8 @@
 
     USERCONTEXT.inviteCheckEnabled = [defaults boolForKey:@"AppUsageCheck"];
 
-    [Parse setApplicationId:@"your_id"
-                  clientKey:@"your_key"];
-
+    [Parse setApplicationId:@"Wy3eCoI3pV1ua5gzZGgPwgaMOpjU77idqOxjO6ei"
+                  clientKey:@"jvnnd6jYOoT2Xcs8VtybL3dJ2BSw8GYZqIP46RPR"];
 ////[PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
 
     return YES;
@@ -65,9 +65,9 @@
     /*
      Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
      */
-
+#ifndef LITE_VERSION
     [FBAppEvents activateApp];
-
+#endif
     // Check the flag for enabling any prompts. If that flag is on
     // check the app active counter
 //    if( !USERCONTEXT.inviteCheckEnabled && [USERCONTEXT.facebook isSessionValid] &&

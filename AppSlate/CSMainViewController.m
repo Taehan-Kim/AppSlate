@@ -12,7 +12,9 @@
 #import "JWFolders.h"
 #import "WelcomeMovieModal.h"
 #import "SaveModal.h"
+#import "LiteVersionModal.h"
 #import "UIBAlertView.h"
+#import "CodingViewController.h"
 
 #define CACHE_NAME @"AppSlateCacheBackup.pkg"
 
@@ -93,6 +95,15 @@ enum alertTypes {
                                                  name:NOTI_PARSELOAD object:nil];
     [self.view addSubview:blueprintCtrl.view];
 
+
+    // 처음 실행 체크.
+    if( ![[NSUserDefaults standardUserDefaults] boolForKey:@"APPSLATE_FIRST"] ){
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"APPSLATE_FIRST"];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SND_SET"];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HIDE_SET"];
+    }
+    _layerPopoverController = nil;
+
     // 처음 사용자라면 안내 동영상을 보여주자.
     if( ![[NSUserDefaults standardUserDefaults] boolForKey:@"WELCOME_SWITCH"] )
     {
@@ -101,7 +112,7 @@ enum alertTypes {
         UITapGestureRecognizer *g_tapGR = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(removeGuide:)];
         [guideView addGestureRecognizer:g_tapGR];
         [guideView setBackgroundColor:CS_RGBA(0, 0, 0, 0.4)];
-
+        
         UIImageView *ii;
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
             ii = [[UIImageView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height-93, 320, 73)];
@@ -112,7 +123,7 @@ enum alertTypes {
         }
         [guideView addSubview:ii];
         [self.view addSubview:guideView];
-
+        
         // Modal popup view
         WelcomeMovieModal *wmv = [[WelcomeMovieModal alloc] initWithFrame:self.view.bounds];
         
@@ -123,18 +134,10 @@ enum alertTypes {
             }];
             [[NSUserDefaults standardUserDefaults] synchronize];
         };
-
+        
         [self.view addSubview:wmv];
         [wmv showFromPoint:self.view.center];
     }
-
-    // 처음 실행 체크.
-    if( ![[NSUserDefaults standardUserDefaults] boolForKey:@"APPSLATE_FIRST"] ){
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"APPSLATE_FIRST"];
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SND_SET"];
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HIDE_SET"];
-    }
-    _layerPopoverController = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -229,6 +232,21 @@ enum alertTypes {
 
 - (void)OpenParseGallery:(id)sender
 {
+#ifdef LITE_VERSION
+    // go to AppStore info window ...
+    LiteVersionModal *liteModal = [[LiteVersionModal alloc] initWithFrame:blueprintCtrl.view.bounds];
+    liteModal.delegate = self;
+    [liteModal setBackgroundview:blueprintCtrl.view];
+    liteModal.onClosePressed = ^(UAModalPanel* panel) {
+        [panel hideWithOnComplete:^(BOOL finished) {
+            [panel removeFromSuperview];
+        }];
+    };
+
+    [self folderWillClose:nil];
+    [blueprintCtrl.view addSubview:liteModal];
+    [liteModal showFromPoint:((UIButton*)sender).frame.origin ];
+#else
     [self folderWillClose:nil];
     PFUser *currentUser = [PFUser currentUser];
     if( !currentUser )
@@ -253,6 +271,7 @@ enum alertTypes {
 //        [tnv.navigationBar setTintColor:[UIColor darkGrayColor]];
         [self presentViewController:tnv animated:YES completion:nil];
     }
+#endif
 }
 
 - (IBAction)showGearList:(id)sender
@@ -355,8 +374,11 @@ enum alertTypes {
     [b4 setBackgroundImage:[UIImage imageNamed:@"i_setting.png"] forState:UIControlStateNormal];
     [b4 addTarget:self action:@selector(settingAction:) forControlEvents:UIControlEventTouchUpInside];
     UIButton *b5 = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
-    [b5 setBackgroundImage:[UIImage imageNamed:@"i_info.png"] forState:UIControlStateNormal];
-    [b5 addTarget:self action:@selector(infoAction:) forControlEvents:UIControlEventTouchUpInside];
+    [b5 setBackgroundImage:[UIImage imageNamed:@"i_code.png"] forState:UIControlStateNormal];
+    [b5 addTarget:self action:@selector(codingAction:) forControlEvents:UIControlEventTouchUpInside];
+    UIButton *b6 = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
+    [b6 setBackgroundImage:[UIImage imageNamed:@"i_info.png"] forState:UIControlStateNormal];
+    [b6 addTarget:self action:@selector(infoAction:) forControlEvents:UIControlEventTouchUpInside];
 
     UILabel *l0 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 44, 15)];
     [l0 setText:NSLocalizedString(@"Files",@"menu_files")];
@@ -371,14 +393,16 @@ enum alertTypes {
     UILabel *l4 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 44, 15)];
     [l4 setText:NSLocalizedString(@"Settings",@"menu_settings")];
     UILabel *l5 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 44, 15)];
-    [l5 setText:NSLocalizedString(@"Info",@"menu_info")];
+    [l5 setText:@"Obj-C"];
+    UILabel *l6 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 44, 15)];
+    [l6 setText:NSLocalizedString(@"Info",@"menu_info")];
     UIScrollView *hsview = [[UIScrollView alloc] initWithFrame:menuFolder.view.frame];
     [hsview setBackgroundColor:[UIColor clearColor]];
     [hsview setShowsHorizontalScrollIndicator:NO];
     [hsview setShowsVerticalScrollIndicator:NO];
 
-    NSArray *btns = @[b0,b01,b1,b2,b3,b4,b5];
-    NSArray *labs = @[l0,l01,l1,l2,l3,l4,l5];
+    NSArray *btns = @[b0,b01,b1,b2,b3,b4,b5,b6];
+    NSArray *labs = @[l0,l01,l1,l2,l3,l4,l5,l6];
     [hsview setContentSize:CGSizeMake([btns count]*65+50, menuFolder.view.frame.size.height)];
     NSUInteger idx = 0;
     for( UIButton *btn in btns ){
@@ -401,6 +425,7 @@ enum alertTypes {
         [btn setTextAlignment:NSTextAlignmentCenter];
         [btn setShadowColor:[UIColor blackColor]];
         [btn setShadowOffset:CGSizeMake(1, 1)];
+        [btn setAdjustsFontSizeToFitWidth:YES];
 //        [btn.layer setShadowRadius:5.0];
 //        [btn.layer setShadowOffset:CGSizeMake(0, 1)];
 //        [btn.layer setShadowOpacity:0.8];
@@ -499,6 +524,7 @@ enum alertTypes {
 	UIGraphicsEndImageContext();
 
     modalPanel = [[SaveModal alloc] initWithFrame:blueprintCtrl.view.bounds];
+    [modalPanel setBackgroundview:blueprintCtrl.view];
     modalPanel.delegate = self;
     modalPanel.onClosePressed = ^(UAModalPanel* panel) {
         [panel hideWithOnComplete:^(BOOL finished) {
@@ -562,6 +588,7 @@ enum alertTypes {
 {
     PaperSetModal *mPanel = [[PaperSetModal alloc] initWithFrame:blueprintCtrl.view.bounds
                                                                title:NSLocalizedString(@"Slate Wallpaper",@"")];
+    [mPanel setBackgroundview:blueprintCtrl.view];
     mPanel.delegate = self;
     mPanel.onClosePressed = ^(UAModalPanel* panel) {
         // [panel hide];
@@ -580,6 +607,7 @@ enum alertTypes {
 {
     AppSettingModal *sPanel = [[AppSettingModal alloc] initWithFrame:blueprintCtrl.view.bounds
                                                                title:NSLocalizedString(@"Settings",@"menu_settings")];
+    [sPanel setBackgroundview:blueprintCtrl.view];
     sPanel.delegate = self;
     sPanel.onClosePressed = ^(UAModalPanel* panel) {
         // [panel hide];
@@ -594,9 +622,21 @@ enum alertTypes {
     [sPanel showFromPoint:[(UIButton*)sender center]];
 }
 
+-(void) codingAction:(id)sneder
+{
+    CodingViewController *cvc = [[CodingViewController alloc] init];
+
+    [self folderWillClose:nil];
+    [self presentViewController:cvc animated:YES completion:^{
+        ;
+    }];
+}
+
 -(void)infoAction:(id)sender
 {
     InfoModal *iPanel = [[InfoModal alloc] initWithFrame:blueprintCtrl.view.bounds];
+    [iPanel setBackgroundview:blueprintCtrl.view];
+
     iPanel.delegate = self;
     iPanel.onClosePressed = ^(UAModalPanel* panel) {
         // [panel hide];

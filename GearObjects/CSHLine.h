@@ -12,10 +12,10 @@
 
 -(id) initGear;
 
--(void) setWidth:(NSNumber*)num;
+-(void) setWidthAction:(NSNumber*)num;
 -(NSNumber*) getWidth;
 
--(void) setLineColor:(UIColor*)color;
--(UIColor*) getLineColor;
+-(void) setBackgroundColor:(UIColor*)color;
+-(UIColor*) getBackgroundColor;
 
 @end

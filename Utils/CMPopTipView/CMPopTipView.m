@@ -347,7 +347,7 @@
                                  options:NSStringDrawingUsesDeviceMetrics attributes:@{NSFontAttributeName:self.titleFont} context:nil].size.height;
     }
     
-	bubbleSize = CGSizeMake(textSize.width + cornerRadius*2, textSize.height + cornerRadius*2);
+	bubbleSize = CGSizeMake(textSize.width + cornerRadius*2 + 4, textSize.height + cornerRadius*2 + 4);
 	
 	UIView *superview = containerView.superview;
 	if ([superview isKindOfClass:[UIWindow class]])

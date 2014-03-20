@@ -16,8 +16,8 @@
 
 -(id) initGear;
 
--(void) setText:(NSString*)txt;
--(NSString*) getText;
+-(void) setMessage:(NSString*)txt;
+-(NSString*) getMessage;
 
 -(void) setCancelButtonText:(NSString*)txt;
 -(NSString*) getCancelButtonText;
@@ -25,7 +25,7 @@
 -(void) setOkButtonText:(NSString*)txt;
 -(NSString*) getOkButtonText;
 
--(void) setShow:(NSNumber*)BoolValue;
+-(void) setShowAction:(NSNumber*)BoolValue;
 -(NSNumber*) getShow;
 
 @end

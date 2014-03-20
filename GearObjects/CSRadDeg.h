@@ -12,10 +12,10 @@
 
 -(id) initGear;
 
--(void) setDegreeValue:(NSNumber*) num;
+-(void) setDegreeValueAction:(NSNumber*) num;
 -(NSNumber*) getDegreeValue;
 
--(void) setRadianValue:(NSNumber*) num;
+-(void) setRadianValueAction:(NSNumber*) num;
 -(NSNumber*) getRadianValue;
 
 @end

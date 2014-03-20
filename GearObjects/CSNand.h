@@ -19,7 +19,7 @@
 -(void) setInput1Value:(NSNumber*) BoolValue;
 -(NSNumber*) getInput1Value;
 
--(void) setInput2Value:(NSNumber*) BoolValue;
+-(void) setInput2ValueAction:(NSNumber*) BoolValue;
 -(NSNumber*) getInput2Value;
 
 @end

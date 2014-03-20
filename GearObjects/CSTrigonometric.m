@@ -17,7 +17,7 @@
 
 //===========================================================================
 
--(void) setRadianValue:(NSNumber*) num
+-(void) setRadianValueAction:(NSNumber*) num
 {
     CGFloat value;
     
@@ -88,7 +88,7 @@
 
 -(id) initGear
 {
-    if( ![super init] ) return nil;
+    if( !(self = [super init]) ) return nil;
     
     csView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 33, 33)];
     [(UIImageView*)csView setImage:[UIImage imageNamed:@"gi_trigono.png"]];
@@ -99,7 +99,7 @@
     csResizable = NO;
     csShow = NO;
     
-    NSDictionary *d1 = MAKE_PROPERTY_D(@">Radian Value", P_NUM, @selector(setRadianValue:),@selector(getRadianValue));
+    NSDictionary *d1 = MAKE_PROPERTY_D(@">Radian Value", P_NUM, @selector(setRadianValueAction:),@selector(getRadianValue));
     pListArray = @[d1];
     
     NSMutableDictionary MAKE_ACTION_D(@"Sine Output", A_NUM, a1);
@@ -116,6 +116,59 @@
         [(UIImageView*)csView setImage:[UIImage imageNamed:@"gi_trigono.png"]];
     }
     return self;
+}
+
+#pragma mark - Code Generator
+
+// If not supported gear, return NO.
+-(BOOL) setDefaultVarName:(NSString *) _name
+{
+    return YES;
+}
+
+// viewDidLoad 에서 alloc - init 하지 않을 것일때는 NO_FIRST_ALLOC 을 리턴하자.
+-(NSString*) customClass
+{
+    return NO_FIRST_ALLOC;
+}
+
+-(NSString*) actionPropertyCode:(NSString*)apName valStr:(NSString *)val
+{
+    if( [apName isEqualToString:@"setRadianValueAction:"] ){
+        SEL act;
+        NSNumber *nsMagicNum;
+        NSMutableString *rs = [[NSMutableString alloc] initWithCapacity:100];
+        
+        act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
+        if( act )
+        {
+            nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
+            CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+            const char *sel_name_c = sel_getName(act);
+            [rs appendFormat:@"[%@ %@@(sinf(%@))];\n    ",[gObj getVarName],@(sel_name_c),val];
+        }
+
+        act = ((NSValue*)((NSDictionary*)actionArray[1])[@"selector"]).pointerValue;
+        if( act )
+        {
+            nsMagicNum = ((NSDictionary*)actionArray[1])[@"mNum"];
+            CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+            const char *sel_name_c = sel_getName(act);
+            [rs appendFormat:@"[%@ %@@(cosf(%@))];\n    ",[gObj getVarName],@(sel_name_c),val];
+        }
+
+        act = ((NSValue*)((NSDictionary*)actionArray[2])[@"selector"]).pointerValue;
+        if( act )
+        {
+            nsMagicNum = ((NSDictionary*)actionArray[2])[@"mNum"];
+            CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+            const char *sel_name_c = sel_getName(act);
+            [rs appendFormat:@"[%@ %@@(tanf(%@))];\n",[gObj getVarName],@(sel_name_c),val];
+        }
+
+        return rs;
+    }
+    return nil;
 }
 
 @end

@@ -7,9 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <StoreKit/StoreKit.h>
 #import "UATitledModalPanel.h"
 
-@interface SaveModal : UATitledModalPanel <UITextFieldDelegate>
+@interface SaveModal : UATitledModalPanel <UITextFieldDelegate,SKStoreProductViewControllerDelegate>
 {
 //    UITextField *nField, *dField;
     UIButton *localBtn, *parseBtn;

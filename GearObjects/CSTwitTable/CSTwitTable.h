@@ -28,7 +28,7 @@
 -(void) setCellHeight:(NSNumber*) number;
 -(NSNumber*) getCellHeight;
 
--(void) setLoadTimeline:(NSNumber*)BoolValue;
+-(void) setLoadTimelineAction:(NSNumber*)BoolValue;
 -(NSNumber*) getLoadTimeline;
 
 @end

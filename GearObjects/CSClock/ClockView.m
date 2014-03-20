@@ -81,7 +81,7 @@ float Degrees2Radians(float degrees);
 
 float Degrees2Radians(float degrees) { return degrees * M_PI / 180; }
 
-// ㄷ타이머 동작하지 않을 때 강제로 시계를 갱신하도록 할 경우 사용한다.
+// 타이머 동작하지 않을 때 강제로 시계를 갱신하도록 할 경우 사용한다.
 - (void) updateForceClock
 {
     [self updateClock:nil];
@@ -131,7 +131,7 @@ float Degrees2Radians(float degrees) { return degrees * M_PI / 180; }
 	hourAngle = Degrees2Radians(temphours/12.0*360) + minAngle/12.0;
 	
 	//reflect the rotations + 180 degres since CALayers coordinate system is inverted
-    [self setNeedsDisplay]; /// testing
+    [self setNeedsDisplay];
 }
 
 #pragma mark - Overrides

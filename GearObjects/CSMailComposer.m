@@ -86,7 +86,7 @@
     return mailImage;
 }
 
--(void) setShow:(NSNumber*)BoolValue
+-(void) setShowAction:(NSNumber*)BoolValue
 {
     // YES 값인 경우만 반응하자.
     if( ![BoolValue boolValue] )
@@ -127,7 +127,7 @@
 
 -(id) initGear
 {
-    if( ![super init] ) return nil;
+    if( !(self = [super init]) ) return nil;
     
     csView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 33, 33)];
     [(UIImageView*)csView setImage:[UIImage imageNamed:@"gi_mail.png"]];
@@ -147,7 +147,7 @@
     NSDictionary *d3 = MAKE_PROPERTY_D(@"To Recipient", P_TXT, @selector(setToAddr:),@selector(getToAddr));
     NSDictionary *d4 = MAKE_PROPERTY_D(@"Cc Recipient", P_TXT, @selector(setCcAddr:),@selector(getCcAddr));
     NSDictionary *d5 = MAKE_PROPERTY_D(@"Image", P_IMG, @selector(setImage:),@selector(getImage));
-    NSDictionary *d6 = MAKE_PROPERTY_D(@">Show Action", P_BOOL, @selector(setShow:),@selector(getShow));
+    NSDictionary *d6 = MAKE_PROPERTY_D(@">Show Action", P_BOOL, @selector(setShowAction:),@selector(getShow));
     pListArray = @[d1,d2,d3,d4,d5,d6];
 
     NSMutableDictionary MAKE_ACTION_D(@"Closed", A_NUM, a1);
@@ -230,6 +230,98 @@
                 EXCLAMATION;
         }
     }
+}
+
+#pragma mark - Code Generator
+
+// If not supported gear, return NO.
+-(BOOL) setDefaultVarName:(NSString *) _name
+{
+    return [super setDefaultVarName:NSStringFromClass([self class])];
+}
+
+-(NSString*) sdkClassName
+{
+    return @"CSMail";
+}
+
+-(NSArray*) importLinesCode
+{
+    return @[@"<MessageUI/MessageUI.h>",@"<MessageUI/MFMailComposeViewController.h>"];
+}
+
+-(NSString*) delegateName
+{
+    return @"MFMailComposeViewControllerDelegate";
+}
+
+-(NSString*) customClass
+{
+    NSString *r = @"\n// CSMail class\n//\n@interface CSMail : NSObject\n{}\n\
+-(void)showMailCom:(UIViewController*)cont;\n\n\
+@property (nonatomic,retain) NSString *title, *text, *toAddr, *ccAddr;\n\
+@property (nonatomic,retain) UIImage *image;\n\
+@end\n\n\
+@implementation CSMail\n\n\
+@synthesize title, text, toAddr, ccAddr, image;\n\n\
+-(void)showMailCom:(UIViewController*)cont\n{\n\
+    MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];\n\
+    picker.mailComposeDelegate = cont;\n\
+    [picker setSubject:self.title];\n\n\
+    if( nil != self.toAddr )\n\
+        [picker setToRecipients:@[self.toAddr]];\n\
+    if( nil != ccAddr )\n\
+        [picker setCcRecipients:@[self.ccAddr]];\n\n\
+    NSMutableString *emailBody = [[NSMutableString alloc] initWithString:@\"<html><body>\"];\n\
+    [emailBody appendFormat:@\"<p>%@</p>\", self.text];\n\
+    if( nil != self.image ){\n\
+        NSData *imageData = [NSData dataWithData:UIImagePNGRepresentation(self.image)];\n\
+        NSString *base64String = [imageData base64EncodedString];\n\
+        [emailBody appendFormat:@\"<p><b><img src='data:image/png;base64,%@'></b></p>\",base64String];\n\
+    }\n\
+    [emailBody appendString:@\"</body></html>\"];\n\
+    [picker setMessageBody:emailBody isHTML:YES];\n\n\
+    [cont presentViewController:picker animated:YES completion:NULL];\n}\n\n\
+@end\n\n";
+
+    return r;
+}
+
+-(NSArray*) delegateCodes
+{
+    SEL act;
+    NSNumber *nsMagicNum;
+    
+    NSMutableString *code1 = [NSMutableString stringWithFormat:@"    if([%@ isEqual:controller]){\n",varName];
+    
+    // code 추가. actionArray 에 연결된 CSGearObject 의 메소드를 호출하는 코드 작성 & 삽입.
+    act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
+    // [connectedVarName selectorName:@(buttonIndex)];
+    if( act )
+    {
+        nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
+        CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+        const char *sel_name_c = sel_getName(act);
+        
+        [code1 appendFormat:@"        [%@ %@@(YES)];\n",[gObj getVarName],@(sel_name_c)];
+    }
+    [code1 appendString:@"    }\n"];
+    
+    return @[@"- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error\n{\n    switch (result)\n    {\n\
+             // do your works...\
+        case MFMailComposeResultSent:\n            break;\n\
+        case MFMailComposeResultCancelled:\n            break;\n\
+        // etc...\n\
+        }\n    }\n",code1,@"}\n\n"];
+}
+
+-(NSString*) actionPropertyCode:(NSString*)apName valStr:(NSString *)val
+{
+    if( [apName isEqualToString:@"setShowAction:"] ){
+
+        return [NSString stringWithFormat:@"[%@ showMailCom:self];",varName];
+    }
+    return nil;
 }
 
 @end

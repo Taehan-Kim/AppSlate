@@ -38,13 +38,13 @@
 
 -(id) initGear
 {
-    if( ![super init] ) return nil;
+    if( !(self = [super init]) ) return nil;
     
     csView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 33, 33)];
     [(UIImageView*)csView setImage:[UIImage imageNamed:@"gi_aclo.png"]];
     [csView setUserInteractionEnabled:YES];
 
-    csCode = CS_NOR;
+    csCode = CS_ACLOMETER;
     
     csResizable = NO;
     csShow = NO;
@@ -139,6 +139,81 @@
         }
 
     }
+}
+
+#pragma mark - Code Generator
+
+// If not supported gear, return NO.
+-(BOOL) setDefaultVarName:(NSString *) _name
+{
+    return [super setDefaultVarName:NSStringFromClass([self class])];
+}
+
+-(NSArray*) importLinesCode
+{
+    return @[@"<CoreMotion/CoreMotion.h>"];
+}
+
+-(NSString*) sdkClassName
+{
+    return @"CMMotionManager";
+}
+
+-(NSString*) customClass
+{
+    SEL act;
+    NSNumber *nsMagicNum;
+
+    NSMutableString *ms = [NSMutableString stringWithFormat:@"    *%@ = [[CMMotionManager alloc] init];\n    %@.accelerometerUpdateInterval = 0.1;\n",varName,varName];
+    [ms appendFormat:@"    [%@ startAccelerometerUpdatesToQueue:[NSOperationQueue currentQueue] withHandler:^(CMAccelerometerData *accelerometerData, NSError *error)\n    {\n",varName];
+
+    act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
+    if( nil != act ){
+        nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
+        CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+        
+        const char *sel_name_c = sel_getName(act);
+        NSString *selNameStr = [NSString stringWithCString:sel_name_c encoding:NSUTF8StringEncoding];
+        
+        // Action Property 에 연결되는 경우는 각각 별도의 코드를 주문 받아서 수행한다.
+        if( [selNameStr hasSuffix:@"Action:"] )
+            [ms appendFormat:@"        %@\n",[gObj actionPropertyCode:selNameStr valStr:@"accelerometerData.acceleration.x"]];
+        else
+            [ms appendFormat:@"        [%@ %@@(accelerometerData.acceleration.x)];\n",[gObj getVarName],@(sel_name_c)];
+    }
+
+    act = ((NSValue*)((NSDictionary*)actionArray[1])[@"selector"]).pointerValue;
+    if( nil != act ){
+        nsMagicNum = ((NSDictionary*)actionArray[1])[@"mNum"];
+        CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+        
+        const char *sel_name_c = sel_getName(act);
+        NSString *selNameStr = [NSString stringWithCString:sel_name_c encoding:NSUTF8StringEncoding];
+        
+        // Action Property 에 연결되는 경우는 각각 별도의 코드를 주문 받아서 수행한다.
+        if( [selNameStr hasSuffix:@"Action:"] )
+            [ms appendFormat:@"        %@\n",[gObj actionPropertyCode:selNameStr valStr:@"accelerometerData.acceleration.y"]];
+        else
+            [ms appendFormat:@"        [%@ %@@(accelerometerData.acceleration.y)];\n",[gObj getVarName],@(sel_name_c)];
+    }
+
+    act = ((NSValue*)((NSDictionary*)actionArray[2])[@"selector"]).pointerValue;
+    if( nil != act ){
+        nsMagicNum = ((NSDictionary*)actionArray[2])[@"mNum"];
+        CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+        
+        const char *sel_name_c = sel_getName(act);
+        NSString *selNameStr = [NSString stringWithCString:sel_name_c encoding:NSUTF8StringEncoding];
+        
+        // Action Property 에 연결되는 경우는 각각 별도의 코드를 주문 받아서 수행한다.
+        if( [selNameStr hasSuffix:@"Action:"] )
+            [ms appendFormat:@"        %@\n",[gObj actionPropertyCode:selNameStr valStr:@"accelerometerData.acceleration.z"]];
+        else
+            [ms appendFormat:@"        [%@ %@@(accelerometerData.acceleration.z)];\n",[gObj getVarName],@(sel_name_c)];
+    }
+
+    [ms appendString:@"    } ];\n"];
+    return ms;
 }
 
 @end

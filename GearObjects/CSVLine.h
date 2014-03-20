@@ -12,10 +12,10 @@
 
 -(id) initGear;
 
--(void) setHeight:(NSNumber*)num;
+-(void) setHeightAction:(NSNumber*)num;
 -(NSNumber*) getHeight;
 
--(void) setLineColor:(UIColor*)color;
--(UIColor*) getLineColor;
+-(void) setBackgroundColor:(UIColor*)color;
+-(UIColor*) getBackgroundColor;
 
 @end

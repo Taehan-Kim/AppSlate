@@ -17,10 +17,10 @@
 
 -(id) initGear;
 
--(void) setShowList:(NSNumber*)BoolValue;
+-(void) setShowListAction:(NSNumber*)BoolValue;
 -(NSNumber*) getShowList;
 
--(void) setPlayNStop:(NSNumber*)BoolValue;
+-(void) setPlayNStopAction:(NSNumber*)BoolValue;
 -(NSNumber*) getPlayNStop;
 
 -(void) setShuffleMode:(NSNumber*)BoolValue;
@@ -29,10 +29,10 @@
 -(void) setRepeatMode:(NSNumber*)BoolValue;
 -(NSNumber*) getRepeatMode;
 
--(void) setSkipToNext:(NSNumber*)BoolValue;
+-(void) setSkipToNextAction:(NSNumber*)BoolValue;
 -(NSNumber*) getSkipToNext;
 
--(void) setSkipToPre:(NSNumber*)BoolValue;
+-(void) setSkipToPreAction:(NSNumber*)BoolValue;
 -(NSNumber*) getSkipToPre;
 
 @end

@@ -17,7 +17,7 @@
 
 -(id) initGear;
 
--(void) setShow:(NSNumber*)BoolValue;
+-(void) setShowAction:(NSNumber*)BoolValue;
 -(NSNumber*) getShow;
 
 @end

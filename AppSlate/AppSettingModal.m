@@ -121,13 +121,11 @@
         [self.contentView addSubview:alphaLabel];
         [self.contentView addSubview:resetAlphaBtn];
 
+        [sndSwitch setOn:[[NSUserDefaults standardUserDefaults] boolForKey:@"SND_SET"]];
+        [hideSwitch setOn:[[NSUserDefaults standardUserDefaults] boolForKey:@"HIDE_SET"]];
+        [gridSwitch setOn:[[NSUserDefaults standardUserDefaults] boolForKey:@"GRID_SET"]];
+        [lineSwitch setOn:[[NSUserDefaults standardUserDefaults] boolForKey:@"LINE_SET"]];
 	}
-
-    [sndSwitch setOn:[[NSUserDefaults standardUserDefaults] boolForKey:@"SND_SET"]];
-    [hideSwitch setOn:[[NSUserDefaults standardUserDefaults] boolForKey:@"HIDE_SET"]];
-    [gridSwitch setOn:[[NSUserDefaults standardUserDefaults] boolForKey:@"GRID_SET"]];
-    [lineSwitch setOn:[[NSUserDefaults standardUserDefaults] boolForKey:@"LINE_SET"]];
-//    [fbSwitch setOn:nil!=[[NSUserDefaults standardUserDefaults] objectForKey:@"FBAccessTokenKey"]];
 
 	return self;
 }

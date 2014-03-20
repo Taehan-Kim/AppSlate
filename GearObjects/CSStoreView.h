@@ -20,7 +20,7 @@
 -(void) setID:(NSNumber*)num;
 -(NSNumber*) getID;
 
--(void) setShow:(NSNumber*)BoolValue;
+-(void) setShowAction:(NSNumber*)BoolValue;
 -(NSNumber*) getShow;
 
 @end

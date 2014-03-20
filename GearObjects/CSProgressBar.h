@@ -13,13 +13,13 @@
 
 -(id) initGear;
 
--(void) setBarColor:(UIColor*)color;
--(UIColor*) getBarColor;
+-(void) setProgressTintColor:(UIColor*)color;
+-(UIColor*) getProgressTintColor;
 
--(void) setTrackColor:(UIColor*)color;
--(UIColor*) getTrackColor;
+-(void) setTrackTintColor:(UIColor*)color;
+-(UIColor*) getTrackTintColor;
 
--(void) setBarValue:(NSNumber*)num;
--(NSNumber*) getBarValue;
+-(void) setProgress:(NSNumber*)num;
+-(NSNumber*) getProgress;
 
 @end

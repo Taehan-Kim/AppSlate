@@ -8,17 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "CSGearObject.h"
-#import "UserStore.h"
 
 @interface CSNote : CSGearObject <UITextViewDelegate, UIAlertViewDelegate>
 {
-    NSString *userid;
-    NSString *passwd;
-    NSString *title;
-
-    EDAMUser * user;
-    NSString * shardId; 
-    NSString * authToken;
 }
 
 -(id) initGear;
@@ -36,15 +28,6 @@
 -(void) setFont:(UIFont*)font;
 -(UIFont*) getFont;
 
--(void) setUsername:(NSString*)txt;
--(NSString*) getUsername;
-
--(void) setPassword:(NSString*)txt;
--(NSString*) getPassword;
-
--(void) setEvernote:(NSNumber*)BoolValue;
--(NSNumber*) getEvernote;
-
--(void) setSendText:(NSNumber*)BoolValue;
+-(void) setSendTextAction:(NSNumber*)BoolValue;
 
 @end

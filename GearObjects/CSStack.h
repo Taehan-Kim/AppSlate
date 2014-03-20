@@ -16,10 +16,10 @@
 
 -(id) initGear;
 
--(void) setPushValue:(id) object;
+-(void) setPushValueAction:(id) object;
 -(id) getPushValue;
 
--(void) setPop:(NSNumber*) BoolValue;
+-(void) setPopAction:(NSNumber*) BoolValue;
 -(NSNumber*) getPop;
 
 -(void) removeAll;

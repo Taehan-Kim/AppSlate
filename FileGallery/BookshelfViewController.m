@@ -30,25 +30,26 @@
         self.gridView.delegate = self;
         self.gridView.dataSource = self;
         mode = SELECTION;
-    }
-    _imageNames = [[NSMutableArray alloc] initWithCapacity:6];
+
+        _imageNames = [[NSMutableArray alloc] initWithCapacity:6];
 
 #ifdef TARGET_IPHONE_SIMULATOR
-    documentsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+        documentsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
 #else
-    documentsPath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        documentsPath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 #endif
-    NSDirectoryEnumerator *dirEnum = [[NSFileManager defaultManager] enumeratorAtPath:documentsPath];
 
-    NSString *file;
-    while (file = [dirEnum nextObject]) {
-        NSDictionary *attr = [dirEnum fileAttributes];
-        if( [attr[@"NSFileType"] isEqualToString:NSFileTypeDirectory] ){
-            NSLog(@"%@",file);
-            [_imageNames addObject:file]; // add name.
+        NSDirectoryEnumerator *dirEnum = [[NSFileManager defaultManager] enumeratorAtPath:documentsPath];
+        NSString *file;
+        while (file = [dirEnum nextObject]) {
+            NSDictionary *attr = [dirEnum fileAttributes];
+            if( [attr[@"NSFileType"] isEqualToString:NSFileTypeDirectory] ){
+                NSLog(@"%@",file);
+                [_imageNames addObject:file]; // add name.
+            }
+
+            [dirEnum skipDescendants];  // do not recursion.
         }
-
-        [dirEnum skipDescendants];  // do not recursion.
     }
     return self;
 }

@@ -18,29 +18,26 @@
 //===========================================================================
 #pragma mark -
 
--(void) setStandardMap:(NSNumber*)BoolValue
+-(void) setMapType:(NSNumber*)typeValue
 {
-    BOOL value;
+    NSUInteger value;
     
-    if( [BoolValue isKindOfClass:[NSString class]] )
-        value = [(NSString*)BoolValue boolValue];
-    else if( [BoolValue isKindOfClass:[NSNumber class]] )
-        value = [BoolValue boolValue];
+    if( [typeValue isKindOfClass:[NSString class]] )
+        value = [(NSString*)typeValue integerValue];
+    else if( [typeValue isKindOfClass:[NSNumber class]] )
+        value = [typeValue integerValue];
     else
         return;
 
-    if( value )
-        [((MKMapView*)csView) setMapType:MKMapTypeStandard];
-    else
-        [((MKMapView*)csView) setMapType:MKMapTypeSatellite];
+    [((MKMapView*)csView) setMapType:value];
 }
 
--(NSNumber*) getStandardMap
+-(NSNumber*) getMapType
 {
-    return @( (((MKMapView*)csView).mapType == MKMapTypeStandard) );
+    return @( (((MKMapView*)csView).mapType) );
 }
 
--(void) setShowUser:(NSNumber*)BoolValue
+-(void) setShowUserLocation:(NSNumber*)BoolValue
 {
     BOOL value;
     
@@ -54,7 +51,7 @@
     [((MKMapView*)csView) setShowsUserLocation:value];
 }
 
--(NSNumber*) getShowUser
+-(NSNumber*) getShowUserLocation
 {
     return @( ((MKMapView*)csView).showsUserLocation );
 }
@@ -103,7 +100,7 @@
 
 -(id) initGear
 {
-    if( ![super init] ) return nil;
+    if( !(self = [super init]) ) return nil;
     
     csView = [[MKMapView alloc] initWithFrame:CGRectMake(0, 0, 300, 300)];
     [csView setBackgroundColor:[UIColor whiteColor]];
@@ -121,8 +118,8 @@
 
     DEFAULT_CENTER_D;
     NSDictionary *d0 = ALPHA_D;
-    NSDictionary *d1 = MAKE_PROPERTY_D(@"Standard Map Type", P_BOOL, @selector(setStandardMap:),@selector(getStandardMap));
-    NSDictionary *d2 = MAKE_PROPERTY_D(@"Show User Location", P_BOOL, @selector(setShowUser:),@selector(getShowUser));
+    NSDictionary *d1 = MAKE_PROPERTY_D(@"Map Type (0,1,2)", P_NUM, @selector(setMapType:),@selector(getMapType));
+    NSDictionary *d2 = MAKE_PROPERTY_D(@"Show User Location", P_BOOL, @selector(setShowUserLocation:),@selector(getShowUserLocation));
     NSDictionary *d3 = MAKE_PROPERTY_D(@"Latitude", P_NUM, @selector(setLatitude:),@selector(getLatitude));
     NSDictionary *d4 = MAKE_PROPERTY_D(@"Longitude", P_NUM, @selector(setLongitude:),@selector(getLongitude));
     pListArray = @[xc,yc,d0,d1,d2,d3,d4];
@@ -151,11 +148,43 @@
     [encoder encodeDouble:longitude forKey:@"longitude"];
 }
 
-#pragma mark -
+#pragma mark - Delegate
 
 - (void)mapView:(MKMapView *)mapView didChangeUserTrackingMode:(MKUserTrackingMode)mode animated:(BOOL)animated
 {
-    
+}
+
+#pragma mark - Code Generator
+
+// If not supported gear, return NO.
+-(BOOL) setDefaultVarName:(NSString *) _name
+{
+    return [super setDefaultVarName:NSStringFromClass([self class])];
+}
+
+-(NSArray*) importLinesCode
+{
+    return @[@"<MapKit/MKMapView.h>",@"<MapKit/MKAnnotation.h>"];
+}
+
+-(NSString*) customClass
+{
+    return @" ";
+}
+
+-(NSString*) sdkClassName
+{
+    return @"MKMapView";
+}
+
+-(NSString*) delegateName
+{
+    return @"MKMapViewDelegate";
+}
+
+-(NSArray*) delegateCodes
+{
+    return nil;
 }
 
 @end

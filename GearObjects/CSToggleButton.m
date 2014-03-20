@@ -134,7 +134,7 @@
 
 -(id) initGear
 {
-    if( ![super init] ) return nil;
+    if( !(self = [super init]) ) return nil;
 
     csView = [[BButton alloc] initWithFrame:CGRectMake(0, 0, 100, MINSIZE2)];
     [csView setUserInteractionEnabled:YES];
@@ -245,5 +245,164 @@
     }
 }
 
+#pragma mark - Code Generator
+
+-(NSArray*) importLinesCode
+{
+    return @[@"\"CSToggleButton.h\""];
+}
+
+// If not supported gear, return NO.
+-(BOOL) setDefaultVarName:(NSString *) _name
+{
+    return [super setDefaultVarName:NSStringFromClass([self class])];
+}
+
+-(NSString*) sdkClassName
+{
+    return @"CSToggleButton";
+}
+
+// 커스텀 클래스가 필요한 경우. 이 클래스의 get/set 메소드들은 모두 실제 CSGear 에서 사용하는 것과 같은 이름으로 사용하도록 한다. 코드 자동 생성기가 메소드 이름을 가지고 코드를 만들 수 있게 하기 위해서이다.
+-(NSString*) customClass
+{
+    NSString *r = @"\n\n// CSToggleButton class\n//\n@interface CSToggleButton : UIView\n\{\n    BOOL toggleValue;\n\
+    UIButton    *btn;\n    CGFloat outputOn, outputOff;\n    UIColor *onColor, *offColor;\n}\n\n-(void) setOnTintColor:(UIColor*)color;\n-(UIColor*)getOnTintColor;\n-(void) setOffTintColor:(UIColor*)color;\n-(UIColor*)getOffTintColor;\n\
+-(void)setOnText:(NSString*)title;\n-(NSString*)getOnText;\n\
+-(void)setOffText:(NSString*)title;\n-(NSString*)getOffText;\n\
+-(void)setOnValue:(NSNumber*)val;\n-(NSNumber*)getOnValue;\n\
+-(void) setTextColor:(UIColor*)color;\n-(UIColor*)getTextColor;\n\
+-(void) setFont:(UIFont*)font;\n-(UIFont*)getFont;\n\
+@property (nonatomic,strong)    UIButton *btn;\n@property (nonatomic,assign)    BOOL toggleValue;\n@end\n\n\
+@implementation CSToggleButton\n\n@synthesize btn;\n@synthesize toggleValue;\n\n\
+-(id)init{\n    if(self=[super init]){\n\
+        self.clipsToBounds = YES;\n        [self.layer setBorderWidth:2.5];\n        [self.layer setCornerRadius:5.0];\n\
+        [self.layer setBorderColor:[UIColor darkGrayColor].CGColor];\n\
+        btn = [[UIButton alloc] initWithFrame:self.bounds];\n\
+        [btn setBackgroundColor:[UIColor clearColor]];\n\
+        [btn setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];\n\
+        [self addSubview:btn];\n\
+        [self setBackgroundColor:[UIColor blueColor]];\n\n\
+        [btn addTarget:self action:@selector(touchIn:) forControlEvents:UIControlEventTouchDown];\n\
+        [btn addTarget:self action:@selector(touchUp:) forControlEvents:UIControlEventTouchUpOutside];\n\
+        [btn addTarget:self action:@selector(touchUp:) forControlEvents:UIControlEventTouchUpInside];\n\
+    }\n}\n\n\
+-(void) touchIn:(id)sender\n{\n    UIColor *swapColor = self.backgroundColor;\n\
+    [self setBackgroundColor: [btn titleColorForState:UIControlStateNormal]];\n\
+    [btn setTitleColor:swapColor forState:UIControlStateHighlighted];\n\
+    [self.layer setBorderColor:[UIColor whiteColor].CGColor];\n}\n\n\
+-(void) touchUp:(id)sender\n{\n    [self setBackgroundColor: [btn titleColorForState:UIControlStateHighlighted]];\n\
+    [self.layer setBorderColor:[UIColor darkGrayColor].CGColor];\n}\n\n\
+-(void) setOnTintColor:(UIColor*)color\n{\n    onColor = color;\n\
+    if( toggleValue && [color isKindOfClass:[UIColor class]] )\n\
+        [self setBackgroundColor:color];\n}\n\n\
+-(UIColor*) getOnTintColor\n{\n    return onColor;\n}\n\n\
+-(void) setOffTintColor:(UIColor*)color\n{\n    offColor = color;\n\
+    if( toggleValue && [color isKindOfClass:[UIColor class]] )\n\
+        [self setBackgroundColor:color];\n}\n\n\
+-(UIColor*) getOffTintColor\n{\n    return offColor;\n}\n\n\
+-(void) setText:(NSString*)txt;\n{\n\
+    [btn setTitle:txt forState:UIControlStateNormal];\n\
+    [btn setTitle:txt forState:UIControlStateHighlighted];\n\
+    [self setNeedsDisplay];\n}\n\n\
+-(NSString*) getText\n{\n    return btn.titleLabel.text;\n}\n\n\
+-(void) setOnValue:(NSNumber*) number\n{\n\
+    if( [number isKindOfClass:[NSNumber class]] )\n\
+        outputOn = [number floatValue];\n\
+    else if( [number isKindOfClass:[NSString class]] )\n\
+        outputOn = [(NSString*)number floatValue];\n}\n\n\
+-(NSNumber*) getOnValue\n{\n    return @(outputOn);\n}\n\n\
+-(void) setOffValue:(NSNumber*) number\n{\n\
+    if( [number isKindOfClass:[NSNumber class]] )\n\
+        outputOff = [number floatValue];\n\
+    else if( [number isKindOfClass:[NSString class]] )\n\
+        outputOff = [(NSString*)number floatValue];\n}\n\n\
+-(NSNumber*) getOffValue\n{\n    return @(outputOff);\n}\n\n\
+-(void) setTextColor:(UIColor*)color\n{\n\
+    if( [color isKindOfClass:[UIColor class]] ){\n\
+        [btn setTitleColor:color forState:UIControlStateNormal];\n\
+        [btn setTitleColor:color forState:UIControlStateHighlighted];\n    }\n\
+}\n\n\
+-(UIColor*) getTextColor\n{\n    return btn.titleLabel.textColor;\n}\n\n\
+-(void) setFont:(UIFont*)font\n{\n\
+    if( [font isKindOfClass:[UIFont class]] )\n\
+        [btn.titleLabel setFont:font];\n}\n\n\
+-(UIFont*) getFont\n{\n    return btn.titleLabel.font;\n}\n\n\
+-(void)pushAction{\n    toggleValue = (toggleValue) ? NO : YES;\n\
+    if( toggleValue ){\n        [btn setTitle:onText];\n\
+        [((BButton*)csView).layer setBackgroundColor:onColor.CGColor];\n\
+    }else{\n        [((BButton*)csView) setTitle:offText];\n\
+        [((BButton*)csView).layer setBackgroundColor:offColor.CGColor];\n\
+    }\n}\n\n@end\n\n";
+
+    return r;
+}
+
+-(NSString*) addTargetCode
+{
+    return [NSString stringWithFormat:@"    [%@.btn addTarget:self action:@selector(%@Action) forControlEvents:UIControlEventTouchUpInside];\n",varName,varName];
+}
+
+-(NSString*) actionCode
+{
+    NSMutableString *code = [[NSMutableString alloc] initWithFormat:@"-(void)%@Action\n{\n",varName];
+    
+    SEL act;
+    NSNumber *nsMagicNum;
+
+    [code appendFormat:@"    [%@ pushAction];\n",varName];
+
+    act = ((NSValue*)((NSDictionary*)actionArray[0])[@"selector"]).pointerValue;
+    if( act )
+    {
+        nsMagicNum = ((NSDictionary*)actionArray[0])[@"mNum"];
+        CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+        const char *sel_name_c = sel_getName(act);
+        [code appendFormat:@"    if( !%@.toggleValue)\n",varName];
+        NSString *selNameStr = [NSString stringWithCString:sel_name_c encoding:NSUTF8StringEncoding];
+        
+        if( [selNameStr hasSuffix:@"Action:"] )
+        {
+            [code appendFormat:@"    %@\n",[gObj actionPropertyCode:selNameStr valStr:[NSString stringWithFormat:@"[%@ getOnValue]",varName]]];
+        }
+        else
+            [code appendFormat:@"        [%@ %@[%@ getOnValue]];\n",[gObj getVarName],@(sel_name_c),self.getVarName];
+    }
+    act = ((NSValue*)((NSDictionary*)actionArray[1])[@"selector"]).pointerValue;
+    if( act )
+    {
+        nsMagicNum = ((NSDictionary*)actionArray[1])[@"mNum"];
+        CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+        const char *sel_name_c = sel_getName(act);
+        
+        [code appendFormat:@"    if( %@.toggleValue)\n",varName];
+        NSString *selNameStr = [NSString stringWithCString:sel_name_c encoding:NSUTF8StringEncoding];
+        
+        if( [selNameStr hasSuffix:@"Action:"] )
+        {
+            [code appendFormat:@"    %@\n",[gObj actionPropertyCode:selNameStr valStr:[NSString stringWithFormat:@"[%@ getOnValue]",varName]]];
+        }
+        else
+            [code appendFormat:@"        [%@ %@[%@ getOffValue]];\n",[gObj getVarName],@(sel_name_c),self.getVarName];
+    }
+    act = ((NSValue*)((NSDictionary*)actionArray[2])[@"selector"]).pointerValue;
+    if( act )
+    {
+        nsMagicNum = ((NSDictionary*)actionArray[2])[@"mNum"];
+        CSGearObject *gObj = [USERCONTEXT getGearWithMagicNum:nsMagicNum.integerValue];
+        const char *sel_name_c = sel_getName(act);
+        NSString *selNameStr = [NSString stringWithCString:sel_name_c encoding:NSUTF8StringEncoding];
+        
+        if( [selNameStr hasSuffix:@"Action:"] )
+        {
+            [code appendFormat:@"    %@\n",[gObj actionPropertyCode:selNameStr valStr:[NSString stringWithFormat:@"[%@ getOnValue]",varName]]];
+        }
+        else
+            [code appendFormat:@"    [%@ %@%@.toggleValue];\n",[gObj getVarName],@(sel_name_c),self.getVarName];
+    }
+    [code appendString:@"}\n"];
+    
+    return code;
+}
 
 @end

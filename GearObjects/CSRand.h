@@ -15,7 +15,7 @@
 
 -(id) initGear;
 
--(void) setRequest:(NSNumber*)BoolValue;
+-(void) setRequestAction:(NSNumber*)BoolValue;
 -(NSNumber*) getRequest;
 
 -(void) setMinValue:(NSNumber*)val;

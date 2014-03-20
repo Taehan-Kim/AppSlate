@@ -13,7 +13,7 @@
 
 -(id) initGear;
 
--(void) setInputValue:(NSNumber*) BoolValue;
+-(void) setInputValueAction:(NSNumber*) BoolValue;
 -(NSNumber*) getInputValue;
 
 @end

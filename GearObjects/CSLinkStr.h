@@ -16,22 +16,22 @@
 
 -(id) initGear;
 
--(void) setString1:(NSString*)string;
--(NSString*) getString1;
+-(void) setInput1Str:(NSString*)string;
+-(NSString*) getInput1Str;
 
--(void) setString2:(NSString*)string;
--(NSString*) getString2;
+-(void) setInput2Str:(NSString*)string;
+-(NSString*) getInput2Str;
 
--(void) setString3:(NSString*)string;
--(NSString*) getString3;
+-(void) setInput3Str:(NSString*)string;
+-(NSString*) getInput3Str;
 
--(void) setString4:(NSString*)string;
--(NSString*) getString4;
+-(void) setInput4Str:(NSString*)string;
+-(NSString*) getInput4Str;
 
--(void) setString5:(NSString*)string;
--(NSString*) getString5;
+-(void) setInput5Str:(NSString*)string;
+-(NSString*) getInput5Str;
 
--(void) setStringAct:(NSNumber*)BoolValue;
+-(void) setStringAction:(NSNumber*)BoolValue;
 -(NSNumber*) getStringAct;
 
 @end

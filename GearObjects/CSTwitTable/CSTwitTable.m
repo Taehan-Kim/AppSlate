@@ -61,7 +61,7 @@
         [ac showInView:[UIApplication sharedApplication].windows[0]];
 }
 
--(void) setLoadTimeline:(NSNumber*) BoolValue
+-(void) setLoadTimelineAction:(NSNumber*) BoolValue
 {
     // YES 값인 경우만 반응하자.
     if( ![BoolValue boolValue] )
@@ -153,7 +153,7 @@
 
 -(id) initGear
 {
-    if( ![super init] ) return nil;
+    if( !(self = [super init]) ) return nil;
     
     csView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 300, 350)];
     [csView setUserInteractionEnabled:YES];
@@ -182,7 +182,7 @@
     NSDictionary *d0 = ALPHA_D;
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Account", P_NO, @selector(setAccount:),@selector(getAccount));
     NSDictionary *d2 = MAKE_PROPERTY_D(@"Table Cell Height", P_NUM, @selector(setCellHeight:),@selector(getCellHeight));
-    NSDictionary *d3 = MAKE_PROPERTY_D(@">Reload Timeline", P_BOOL, @selector(setLoadTimeline:),@selector(getLoadTimeline));    
+    NSDictionary *d3 = MAKE_PROPERTY_D(@">Reload Timeline", P_BOOL, @selector(setLoadTimelineAction:),@selector(getLoadTimeline));
     NSDictionary *d4 = MAKE_PROPERTY_D(@"Search", P_TXT, @selector(setSearchStr:),@selector(getSearchStr));    
     pListArray = @[xc,yc,d0,d1,d2,d3,d4];
 
@@ -310,4 +310,11 @@
     [self fetchData];
 }
 
+#pragma mark - Code Generator
+
+// If not supported gear, return NO.
+-(BOOL) setDefaultVarName:(NSString *) _name
+{
+    return NO;
+}
 @end

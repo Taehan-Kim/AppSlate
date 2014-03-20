@@ -2,26 +2,35 @@
 //  CSBToothPeer.h
 //  AppSlate
 //
-//  Created by Taehan Kim 태한 김 on 12. 9. 3..
-//  Copyright (c) 2012년 ChocolateSoft. All rights reserved.
+//  Created by Taehan Kim 태한 김 on 13. 12. 20..
+//  Copyright (c) 2013년 ChocolateSoft. All rights reserved.
 //
 
-#import <GameKit/GameKit.h>
+#import <MultipeerConnectivity/MultipeerConnectivity.h>
 #import "CSGearObject.h"
 
-@interface CSBToothPeer : CSGearObject <GKSessionDelegate, GKPeerPickerControllerDelegate>
+@interface CSBToothPeer : CSGearObject <MCBrowserViewControllerDelegate, MCSessionDelegate>
 {
-    GKSession *session;
+    NSString *peerName;
+    MCSession *session;
+    MCAdvertiserAssistant *advertiser;
+    MCPeerID *myPeerID;
     BOOL isPickerShow;
-    NSString *receivedPeerID;
+    UIAlertView *waitAlert;
 }
 
 -(id) initGear;
 
--(void) setActivate:(NSNumber*) BoolVlaue;
--(NSNumber*) getActivate;
+-(void) setMyName:(NSString*) strValue;
+-(NSString*) getMyName;
 
--(void) setDisconnect:(NSNumber*) BoolVlaue;
+-(void) setShowBrowserAction:(NSNumber*) boolValue;
+-(NSNumber*) getShowBrowser;
+
+-(void) setAdvertiserAction:(NSNumber*) boolValue;
+-(NSNumber*) getAdvertiser;
+
+-(void) setDisconnectAction:(NSNumber*) BoolVlaue;
 -(NSNumber*) getDisconnect;
 
 

@@ -164,6 +164,17 @@ static UserContext *_sharedUserContext = nil;
     return nil;
 }
 
+// Code Generator
+-(BOOL) isThereSameVarNameWith:(NSString*) theName
+{
+    for( CSGearObject *g in _gearsArray )
+    {
+        if( [theName isEqualToString:[g getVarName]] )
+            return YES;
+    }
+    return NO;
+}
+
 @end
 
 void draw1PxStroke(CGContextRef context, CGPoint startPoint, CGPoint endPoint, CGColorRef color, CGFloat width)

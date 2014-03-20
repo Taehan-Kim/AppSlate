@@ -51,23 +51,20 @@
     return ((UIImageView*)csView).image;
 }
 
--(void) setAspectFit:(NSNumber*) boolValue
+-(void) setContentMode:(NSNumber*) value
 {
-    BOOL var;
-    if( [boolValue isKindOfClass:[NSString class]] )
-        var = [(NSString*)boolValue boolValue];
-    else  if( [boolValue isKindOfClass:[NSNumber class]] )
-        var = [boolValue boolValue];
+    NSUInteger var;
+    if( [value isKindOfClass:[NSString class]] )
+        var = [(NSString*)value integerValue];
+    else  if( [value isKindOfClass:[NSNumber class]] )
+        var = [value integerValue];
     else
         return;
 
-    if( var )
-        [(UIImageView*)csView setContentMode:UIViewContentModeScaleAspectFit];
-    else
-        [(UIImageView*)csView setContentMode:UIViewContentModeScaleToFill];
+    [(UIImageView*)csView setContentMode:var];
 }
 
--(NSNumber*) getAspectFit
+-(NSNumber*) getContentMode
 {
     return @( (((UIImageView*)csView).contentMode == UIViewContentModeScaleAspectFit) );
 }
@@ -83,7 +80,7 @@
     return csView.backgroundColor;
 }
 
-- (void)setEdit:(NSNumber*) BoolValue
+- (void)setEditAction:(NSNumber*) BoolValue
 {
     if( ![BoolValue boolValue] || nil == ((UIImageView*)csView).image )
         return;
@@ -99,7 +96,7 @@
     return NO;
 }
 
-- (void) setSave:(NSNumber*) BoolValue
+- (void) setSaveAction:(NSNumber*) BoolValue
 {
     if( ![BoolValue boolValue] || nil == ((UIImageView*)csView).image )
         return;
@@ -123,7 +120,7 @@
 
 -(id) initGear
 {
-    if( ![super init] ) return nil;
+    if( !(self = [super init]) ) return nil;
     
     csView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 300, 300)];
     [csView setBackgroundColor:[UIColor grayColor]];
@@ -136,10 +133,10 @@
     DEFAULT_CENTER_D;
     NSDictionary *d0 = ALPHA_D;
     NSDictionary *d1 = MAKE_PROPERTY_D(@"Image", P_IMG, @selector(setImage:),@selector(getImage));
-    NSDictionary *d2 = MAKE_PROPERTY_D(@"Aspect Fit", P_BOOL, @selector(setAspectFit:),@selector(getAspectFit));
+    NSDictionary *d2 = MAKE_PROPERTY_D(@"Content Mode (0,1,2)", P_NUM, @selector(setContentMode:),@selector(getContentMode));
     NSDictionary *d3 = MAKE_PROPERTY_D(@"Background Color", P_COLOR, @selector(setBackgroundColor:),@selector(getBackgroundColor));
-    NSDictionary *d4 = MAKE_PROPERTY_D(@">Edit Action", P_BOOL, @selector(setEdit:), @selector(getEdit));
-    NSDictionary *d5 = MAKE_PROPERTY_D(@">Save to Album", P_BOOL, @selector(setSave:), @selector(getSave));
+    NSDictionary *d4 = MAKE_PROPERTY_D(@">Edit Action", P_BOOL, @selector(setEditAction:), @selector(getEdit));
+    NSDictionary *d5 = MAKE_PROPERTY_D(@">Save to Album", P_BOOL, @selector(setSaveAction:), @selector(getSave));
     pListArray = @[xc,yc,d0,d1,d2,d3,d4,d5];
 
 
@@ -192,6 +189,29 @@
 {
     // Handle cancelation here
     [editor dismissViewControllerAnimated:YES completion:NULL];
+}
+
+#pragma mark - Code Generator
+
+// If not supported gear, return NO.
+-(BOOL) setDefaultVarName:(NSString *) _name
+{
+    return [super setDefaultVarName:NSStringFromClass([self class])];
+}
+
+-(NSString*) sdkClassName
+{
+    return @"UIImageView";
+}
+
+-(NSString*) actionPropertyCode:(NSString*)apName valStr:(NSString *)val
+{
+    if( [apName isEqualToString:@"setEditAction:"] ){
+        return @"// Connect to Aviary editor or something...";
+    } else if( [apName isEqualToString:@"setSaveAction:"] ){
+        return [NSString stringWithFormat:@"UIImageWriteToSavedPhotosAlbum(%@).image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);",varName];
+    }
+    return nil;
 }
 
 @end

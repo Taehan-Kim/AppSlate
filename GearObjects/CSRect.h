@@ -13,14 +13,14 @@
 
 -(id) initGear;
 
--(void) setWidth:(NSNumber*)num;
+-(void) setWidthAction:(NSNumber*)num;
 -(NSNumber*) getWidth;
 
--(void) setHeight:(NSNumber*)num;
+-(void) setHeightAction:(NSNumber*)num;
 -(NSNumber*) getHeight;
 
--(void) setRectColor:(UIColor*)color;
--(UIColor*) getRectColor;
+-(void) setBackgroundColor:(UIColor*)color;
+-(UIColor*) getBackgroundColor;
 
 -(void) setBorderColor:(UIColor*)color;
 -(UIColor*) getBorderColor;

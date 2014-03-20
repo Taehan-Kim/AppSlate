@@ -11,6 +11,7 @@
 
 #import "UAModalPanel.h"
 #import "UARoundedRectView.h"
+#import "UIImage+ImageEffects.h"
 
 #define DEFAULT_MARGIN				20.0f
 #define DEFAULT_BACKGROUND_COLOR	[UIColor colorWithWhite:0.2 alpha:0.7]
@@ -23,6 +24,7 @@
 
 @synthesize roundedRect, closeButton, delegate, contentView, contentContainer;
 @synthesize innerMargin, outerMargin, cornerRadius, borderWidth, borderColor, contentColor, shouldBounce;
+@synthesize backgroundview;
 @synthesize onClosePressed;
 
 
@@ -50,9 +52,7 @@
 		self.contentContainer.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 		self.contentContainer.autoresizesSubviews = YES;
 		[self addSubview:self.contentContainer];
-		
-		[self setBackgroundColor:[UIColor colorWithWhite:0.0 alpha:0.5]]; // Fixed value, the bacground mask.
-				
+
 		[self.contentView setBackgroundColor:[UIColor clearColor]];
 		self.delegate = nil;
 	
@@ -199,17 +199,29 @@
 - (void)showAnimationPart1Finished {};	//subcalsses override
 - (void)showAnimationPart2Finished {};	//subcalsses override
 - (void)showAnimationPart3Finished {};	//subcalsses override
-- (void)showAnimationFinished {};		//subcalsses override
+- (void)showAnimationFinished {};	//subcalsses override
+
 - (void)show {
-	
+
 	if ([delegate respondsToSelector:@selector(willShowModalPanel:)])
 		[delegate willShowModalPanel:self];
 	
 	[self showAnimationStarting];
 	self.alpha = 0.0;
 	self.contentContainer.transform = CGAffineTransformMakeScale(0.00001, 0.00001);
-	
-	
+
+    if( backgroundview ){
+        CGRect backRectInBGViewCoords = [self convertRect:[self roundedRectFrame] toView:backgroundview];
+        UIGraphicsBeginImageContextWithOptions([self roundedRectFrame].size, NO, [[[self window] screen] scale]);
+        [backgroundview drawViewHierarchyInRect:CGRectMake(-backRectInBGViewCoords.origin.x, -backRectInBGViewCoords.origin.y, CGRectGetWidth(backgroundview.frame), CGRectGetHeight(backgroundview.frame)) afterScreenUpdates:NO];
+        UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+
+        newImage = [newImage applyDarkEffect];
+        [roundedRect setBackgroundColor:[UIColor colorWithPatternImage:newImage]];
+    } else {
+        [self setBackgroundColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
+    }
 	void (^animationBlock)(BOOL) = ^(BOOL finished) {
 		[self showAnimationPart1Finished];
 		// Wait one second and then fade in the view

@@ -13,12 +13,12 @@
 #import <QuartzCore/QuartzCore.h>
 
 
-#define CORNER_RADIUS 4
-#define MARGIN 5
-#define OUTER_MARGIN 5
-#define TITLE_LABEL_HEIGHT 25
-#define ARROW_SIZE 20
-#define ARROW_MARGIN 2
+#define CORNER_RADIUS 4.0
+#define MARGIN 5.0
+#define OUTER_MARGIN 5.0
+#define TITLE_LABEL_HEIGHT 25.0
+#define ARROW_SIZE 20.0
+#define ARROW_MARGIN 2.0
 
 @interface TSPopoverController ()
 
@@ -291,7 +291,7 @@
             contentFrameRect.size.height = screenHeight - (OUTER_MARGIN*2+MARGIN*2);
         }
         
-        float popoverX;
+        CGFloat popoverX;
         float popoverWidth = contentFrameRect.size.width+(ARROW_SIZE+MARGIN*2);
         
         if(arrowDirection == TSPopoverArrowDirectionLeft){

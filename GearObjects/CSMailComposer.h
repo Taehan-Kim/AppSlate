@@ -32,7 +32,7 @@
 -(void) setToAddr:(NSString*)txt;
 -(NSString*) getToAddr;
 
--(void) setShow:(NSNumber*)BoolValue;
+-(void) setShowAction:(NSNumber*)BoolValue;
 -(NSNumber*) getShow;
 
 @end

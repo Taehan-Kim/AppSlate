@@ -10,17 +10,11 @@
 
 @interface CSFBSend : CSGearObject
 {
-    NSString *name, *caption, *message, *link;
+    NSString *message, *link;
     UIImage *img;
 }
 
 -(id) initGear;
-
--(void) setName:(NSString*)txt;
--(NSString*) getName;
-
--(void) setCaption:(NSString*)txt;
--(NSString*) getCaption;
 
 -(void) setText:(NSString*)txt;
 -(NSString*) getText;
@@ -31,7 +25,7 @@
 -(void) setImage:(UIImage*)image;
 -(UIImage*) getImage;
 
--(void) setShow:(NSNumber*)BoolValue;
+-(void) setShowAction:(NSNumber*)BoolValue;
 -(NSNumber*) getShow;
 
 @end

@@ -57,7 +57,7 @@
     return url;
 }
 
--(void) setReloadTable:(NSNumber*)BoolValue
+-(void) setReloadAction:(NSNumber*)BoolValue
 {
     // YES 값인 경우만 반응하자.
     if( ![BoolValue boolValue] )
@@ -75,7 +75,7 @@
 
 -(id) initGear
 {
-    if( ![super init] ) return nil;
+    if( !(self = [super init]) ) return nil;
     
     csView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 300, 350)];
     [csView setUserInteractionEnabled:YES];
@@ -97,7 +97,7 @@
     NSDictionary *d0 = ALPHA_D;
     NSDictionary *d1 = MAKE_PROPERTY_D(@"RSS URL", P_TXT, @selector(setAddress:),@selector(getAddress));
     NSDictionary *d2 = MAKE_PROPERTY_D(@"Table Cell Height", P_NUM, @selector(setCellHeight:),@selector(getCellHeight));
-    NSDictionary *d3 = MAKE_PROPERTY_D(@">Reload", P_BOOL, @selector(setReloadTable:),@selector(getReloadTable));    
+    NSDictionary *d3 = MAKE_PROPERTY_D(@">Reload", P_BOOL, @selector(setReloadAction:),@selector(getReloadTable));
     pListArray = @[xc,yc,d0,d1,d2,d3];
     
     NSMutableDictionary MAKE_ACTION_D(@"Selected Cell Index", A_NUM, a1);
@@ -228,6 +228,14 @@
 -(void)processHasErrors
 {
     EXCLAMATION;
+}
+
+#pragma mark - Code Generator
+
+// If not supported gear, return NO.
+-(BOOL) setDefaultVarName:(NSString *) _name
+{
+    return NO;
 }
 
 @end

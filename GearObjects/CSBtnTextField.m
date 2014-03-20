@@ -113,7 +113,7 @@
 
 -(id) initGear
 {
-    if( ![super init] ) return nil;
+    if( !(self = [super init]) ) return nil;
 
     csView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 310, MINSIZE2)];
     [csView setBackgroundColor:[UIColor clearColor]];
@@ -242,6 +242,14 @@
         else
             EXCLAMATION;
     }
+}
+
+#pragma mark - Code Generator
+
+// If not supported gear, return NO.
+-(BOOL) setDefaultVarName:(NSString *) _name
+{
+    return NO;
 }
 
 @end

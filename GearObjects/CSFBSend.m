@@ -19,34 +19,6 @@
 
 //===========================================================================
 
--(void) setName:(NSString*)txt
-{
-    if( [txt isKindOfClass:[NSString class]] )
-        name = txt;
-    
-    else if([txt isKindOfClass:[NSNumber class]] )
-        name = [((NSNumber*)txt) stringValue];
-}
-
--(NSString*) getName
-{
-    return name;
-}
-
--(void) setCaption:(NSString*)txt
-{
-    if( [txt isKindOfClass:[NSString class]] )
-        caption = txt;
-
-    else if([txt isKindOfClass:[NSNumber class]] )
-        caption = [((NSNumber*)txt) stringValue];
-}
-
--(NSString*) getCaption
-{
-    return caption;
-}
-
 -(void) setText:(NSString*)txt;
 {
     if( [txt isKindOfClass:[NSString class]] )
@@ -88,7 +60,7 @@
     return img;
 }
 
--(void) setShow:(NSNumber*)BoolValue
+-(void) setShowAction:(NSNumber*)BoolValue
 {
     // YES 값인 경우만 반응하자.
     if( ![BoolValue boolValue] )
@@ -114,58 +86,13 @@
     return @NO;
 }
 
--(void) setSendFeed:(NSNumber*)BoolValue
-{
-    if( ![BoolValue boolValue] )
-        return;
-
-    if( USERCONTEXT.imRunning )
-    {
-        // 인증 연결되어 있는지 확인해서 SSO 처리.
-//        if (![USERCONTEXT.facebook isSessionValid]) {
-//            NSArray *permissions =  [NSArray arrayWithObjects:@"read_stream", @"publish_stream", @"offline_access",nil];
-//            [USERCONTEXT.facebook authorize:permissions];
-//            return;
-//        }
-//
-//        NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-//                                       @"post", @"type",
-//                                       link, @"link",
-//                                       name, @"name",
-//                                       caption, @"caption",
-////                                       postDescription, @"description",
-//                                       message, @"message",
-////                                       propStr, @"properties",
-//                                       nil];
-//        if( nil != img ){
-//            [params setObject:img forKey:@"picture"];
-////            [params setObject:@"large" forKey:@"type"];
-//            [USERCONTEXT.facebook requestWithGraphPath:@"me/photos"
-//                                             andParams:params
-//                                         andHttpMethod:@"POST" andDelegate:self];
-//        }
-//        else
-//        {
-//            [USERCONTEXT.facebook requestWithGraphPath:@"me/feed"
-//                                             andParams:params
-//                                         andHttpMethod:@"POST" andDelegate:self];
-//        }
-//        START_WAIT_VIEW;
-    }
-}
-
--(NSNumber*) getSendFeed
-{
-    return @NO;
-}
-
 //===========================================================================
 
 #pragma mark -
 
 -(id) initGear
 {
-    if( ![super init] ) return nil;
+    if( !(self = [super init]) ) return nil;
     
     csView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 33, 33)];
     [(UIImageView*)csView setImage:[UIImage imageNamed:@"gi_fbook.png"]];
@@ -176,20 +103,15 @@
     csResizable = NO;
     csShow = NO;
 
-    name = @"AppSlate";
-    caption = @"Check this app.";
     message = @"";
     link = @"http://www.facebook.com/AppSlate";
     img = nil;
-    
-    NSDictionary *d1 = MAKE_PROPERTY_D(@"Feed Name", P_TXT, @selector(setName:),@selector(getName));
-    NSDictionary *d2 = MAKE_PROPERTY_D(@"Feed Caption", P_TXT, @selector(setCaption:),@selector(getCaption));
+
     NSDictionary *d3 = MAKE_PROPERTY_D(@"Text Message", P_TXT, @selector(setText:),@selector(getText));
     NSDictionary *d4 = MAKE_PROPERTY_D(@"Link URL", P_TXT, @selector(setLink:),@selector(getLink));
     NSDictionary *d5 = MAKE_PROPERTY_D(@"Image", P_IMG, @selector(setImage:),@selector(getImage));
-    NSDictionary *d6 = MAKE_PROPERTY_D(@">Show Action", P_BOOL, @selector(setShow:),@selector(getShow));
-    NSDictionary *d7 = MAKE_PROPERTY_D(@">Send Feed Action", P_BOOL, @selector(setSendFeed:),@selector(getSendFeed));
-    pListArray = @[d1,d2,d3,d4,d5,d6,d7];
+    NSDictionary *d6 = MAKE_PROPERTY_D(@">Show Action", P_BOOL, @selector(setShowAction:),@selector(getShow));
+    pListArray = @[d3,d4,d5,d6];
 
     return self;
 }
@@ -199,8 +121,6 @@
     if( (self=[super initWithCoder:decoder]) ) {
         [(UIImageView*)csView setImage:[UIImage imageNamed:@"gi_fbook.png"]];
         message = [decoder decodeObjectForKey:@"message"];
-        name = [decoder decodeObjectForKey:@"name"];
-        caption = [decoder decodeObjectForKey:@"caption"];
         link = [decoder decodeObjectForKey:@"link"];
         img = [decoder decodeObjectForKey:@"img"];
     }
@@ -211,33 +131,59 @@
 {
     [super encodeWithCoder:encoder];
     [encoder encodeObject:message forKey:@"message"];
-    [encoder encodeObject:name forKey:@"name"];
-    [encoder encodeObject:caption forKey:@"caption"];
     [encoder encodeObject:link forKey:@"link"];
     [encoder encodeObject:img forKey:@"img"];
 }
 
-#pragma mark - Delegate
-//
-//- (void)dialogDidNotComplete:(FBDialog *)dialog
-//{
-//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"error" message:@"Do not completed to feed." delegate:nil cancelButtonTitle:@"Confirm" otherButtonTitles: nil];
-//    [alert show];
-//}
-//
-//- (void)request:(FBRequest *)request didLoad:(id)result
-//{
-//    STOP_WAIT_VIEW;
-//    NSLog(@"F did %@",result);
-//    NSLog(@"token;%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"FBAccessTokenKey"]);
-//}
-//
-//- (void) request:(FBRequest *)request didFailWithError:(NSError *)error
-//{
-//    STOP_WAIT_VIEW;
-//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"error" message:@"Do not completed to feed." delegate:nil cancelButtonTitle:@"Confirm" otherButtonTitles: nil];
-//    [alert show];
-//    NSLog(@"F err %@",[error description]);
-//}
+#pragma mark - Code Generator
+
+// If not supported gear, return NO.
+-(BOOL) setDefaultVarName:(NSString *) _name
+{
+    return [super setDefaultVarName:NSStringFromClass([self class])];
+}
+
+-(NSString*) sdkClassName
+{
+    return @"CSFBSend";
+}
+
+-(NSArray*) importLinesCode
+{
+    return @[@"<Social/Social.h>"];
+}
+
+-(NSString*) customClass
+{
+    NSString *r = @"\n// CSFBSend class\n//\n@interface CSFBSend : NSObject\n{}\n\
+-(void)showComp:(UIViewController*)cont;\n\n\
+@property (nonatomic,retain) NSString *name, *caption, *text, *link;\n\
+@property (nonatomic,retain) UIImage *image;\n\
+@end\n\n\
+@implementation CSFBSend\n\n\
+@synthesize name, caption, text, link, image;\n\n\
+-(void)showComp:(UIViewController*)cont\n{\n\
+    SLComposeViewController *fbCntrlr = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];\n\
+    if( [self.link length] > 5 && [self.link hasPrefix:@\"http\"] )\n\
+    [fbCntrlr addURL:[NSURL URLWithString:self.link]];\n\
+    if( [self.text length] > 1 )\n\
+    [fbCntrlr setInitialText:self.text];\n\
+    if( nil != image )\n\
+    [fbCntrlr addImage:image];\n\n\
+    [cont presentViewController:twtCntrlr animated:YES completion:NULL];\n\
+}\n\n\
+@end\n\n";
+    
+    return r;
+}
+
+-(NSString*) actionPropertyCode:(NSString*)apName valStr:(NSString *)val
+{
+    if( [apName isEqualToString:@"setShowAction:"] ){
+        
+        return [NSString stringWithFormat:@"[%@ showComp:self];",varName];
+    }
+    return nil;
+}
 
 @end

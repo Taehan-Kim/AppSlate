@@ -56,7 +56,7 @@
     CGSize size = CGSizeMake(320, 269 + 60); // size of view in popover
     self.preferredContentSize = size;
 
-    [cmtController.view setFrame:self.view.frame];
+    [cmtController.view setFrame:self.view.bounds];
     [cmtController viewWillAppear:animated];
     [self.view addSubview:cmtController.view];
 
