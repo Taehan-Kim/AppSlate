@@ -5,6 +5,8 @@ iOS Application - AppSlate. Please visit to www.facebook.com/AppSlate
 
 Objective-C Source Code Generator is added on version 2.0.0
 
+Intro clip : http://www.youtube.com/watch?v=EiPH4mSW8RY
+
 Please visit to AppStore and Buy it !   :-)
 Or, try the free version, AppSlate Lite.
 
